@@ -1,0 +1,109 @@
+package setup;
+
+import java.util.ArrayList;
+
+import utilities.StockMarketPair;
+
+import log.AgentLogger;
+import log.Logger;
+import log.Logging;
+import log.OrderbookLogger;
+import log.StockLogger;
+import log.WorldLogger;
+import environment.Market;
+import environment.Orderbook;
+import environment.Stock;
+import environment.World;
+import agent.HFT;
+import agent.SingleStockMarketMaker;
+
+public class WorldObjectHandler {
+	
+	private static ArrayList<Logger> logs = new ArrayList<Logger>();
+
+	public static void createAgents(){
+//		HFT agent = new HFT();	
+		int[] stockIDs = {0}; int[] marketIDs = {0, 1}; int[] latencies = {1, 3}; int minimumSpread = 100;  
+		new SingleStockMarketMaker(stockIDs, marketIDs, latencies, minimumSpread);
+//		int[] stockIDs2 = {0}; int[] marketIDs2 = {0, 1}; int[] latencies2 = {10, 30}; int minimumSpread2 = 100;  
+//		new SingleStockMarketMaker(stockIDs2, marketIDs2, latencies2, minimumSpread2);
+	}
+	
+	public static void createStocks(){
+		new Stock();
+	}
+	
+	public static void createMarkets(){
+		new Market();
+		new Market();
+	}
+	
+	public static void createOrderbooks() {
+		/*
+		 * Should be executed whenever one (or several) new stock or market is
+		 * created.
+		 */
+		for (Stock stock : World.getStocks()) {
+			for (Market market : World.getMarkets()) {
+				StockMarketPair p = new StockMarketPair(stock, market);
+				if (!World.getOrderbooksByPair().containsKey(p)) {
+					Orderbook ob = new Orderbook(stock, market);
+					World.getOrderbooksByPair().put(p, ob);
+					market.addOrderbook(ob);
+				}
+			}
+		}
+		World.getOrderbooks().clear();
+		World.getOrderbooks().addAll(World.getOrderbooksByPair().values());
+	}
+	
+	public static void createObjectLoggers() {
+		
+		World.warningLog = new WorldLogger(Logging.logFolder,"lineLog_WorldWarnings", false);
+		logs.add(World.warningLog);
+		World.errorLog = new WorldLogger(Logging.logFolder,"lineLog_errors", false);
+		logs.add(World.errorLog);
+//		World.eventLog = new WorldDataLogger(Logging.logFolder,"lineLog_worldEvents", false);
+//		logs.add(World.eventLog);
+		World.ruleViolationsLog = new WorldLogger(Logging.logFolder,"lineLog_ruleViolations", false);
+		logs.add(World.ruleViolationsLog);
+		World.dataLog = new WorldLogger(Logging.logFolder,"columnLog_worldData", true);
+		logs.add(World.dataLog);
+		
+		for(Stock stock:World.getStocks()){
+			stock.roundBasedDatalog = new StockLogger(Logging.logFolder, "columnLog_roundBased", stock, StockLogger.Type.LOG_AFTER_EVERY_ROUND);
+			logs.add(stock.roundBasedDatalog);
+			stock.transactionBasedDataLog = new StockLogger(Logging.logFolder, "columnLog_transactionBased", stock, StockLogger.Type.LOG_AFTER_EVERY_TRANSACTION);
+			logs.add(stock.transactionBasedDataLog);
+		}
+		
+		for(Orderbook orderbook:World.getOrderbooks()){
+			orderbook.orderflowLog = new OrderbookLogger(Logging.logFolder, "lineLog_orderFlow_", orderbook, false);
+			logs.add(orderbook.orderflowLog);
+//			orderbook.eventLog = new Logger(Logging.orderbookEventFolder, String.format("orderbook_%s_events", orderbook.getIdentifier()));
+//			logs.add(orderbook.eventLog);
+		}
+		
+		for(HFT agent:World.getHFTAgents()){
+			agent.eventlog = new AgentLogger(Logging.logFolder, "lineLog", agent, false);
+			logs.add(agent.eventlog);
+			agent.datalog = new AgentLogger(Logging.logFolder, "columnLog", agent, true);
+			logs.add(agent.datalog);
+		}
+	}
+	
+	public static void closeLogs() {
+		for(Logger log:logs){
+			log.closeLog();
+		}
+	}
+
+	public static void initializeEmptyOrderbooksWithMarketOrders() {
+		for(Orderbook orderbook:World.getOrderbooks()) {
+			orderbook.initializeBookWithRandomOrders();
+		}
+		
+	}
+	
+	
+}
