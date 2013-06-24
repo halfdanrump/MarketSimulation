@@ -2,12 +2,12 @@ package environment;
 
 public class OrderCancellation extends Message{
 	private Order order;
-	private static int cancellationCount = 0;
+	private static long cancellationCount = 0;
 //	private Orderbook orderbook;
-//	private int newPrice;
-//	private int newVolume;
+//	private long newPrice;
+//	private long newVolume;
 
-//	public OrderCancellation(int arrivalTime, int dispatchTime, Order order, Orderbook orderbook, int newPrice, int newVolume) {
+//	public OrderCancellation(long arrivalTime, long dispatchTime, Order order, Orderbook orderbook, long newPrice, long newVolume) {
 //		super(arrivalTime, dispatchTime);
 //		this.order = order;
 //		this.orderbook = orderbook;
@@ -15,8 +15,8 @@ public class OrderCancellation extends Message{
 //		this.newVolume = newVolume;
 //	}
 	
-	public OrderCancellation(int arrivalTime, int dispatchTime, Order order) {
-		super(arrivalTime, dispatchTime);
+	public OrderCancellation(int dispatchTime, int transmissionDelay, Order order) {
+		super(World.getCurrentRound() + transmissionDelay + 1, dispatchTime, order.getTransmissionType());
 		this.order = order;
 		cancellationCount ++;
 		World.addOrderCancellation(this);
@@ -27,7 +27,7 @@ public class OrderCancellation extends Message{
 		return order;
 	}
 	
-	public static int getCancellationCount(){
+	public static long getCancellationCount(){
 		return cancellationCount;
 	}
 //
@@ -35,11 +35,11 @@ public class OrderCancellation extends Message{
 //		return orderbook;
 //	}
 //
-//	public int getUpdatedPrice() {
+//	public long getUpdatedPrice() {
 //		return newPrice;
 //	}
 //	
-//	public int getUpdatedVolume(){
+//	public long getUpdatedVolume(){
 //		return newVolume;
 //	}
 	

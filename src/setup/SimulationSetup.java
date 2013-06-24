@@ -1,12 +1,12 @@
 package setup;
 
-public interface Global {
+public interface SimulationSetup {
 
 	/* Simulation parameters
 	 * */
-	public final int nRounds = 1000;
+	public final int nRounds = 1000000;
 	
-	int nSlowTraderOrdersPerRounds = 100;
+	long nSlowTraderOrdersPerRounds = 2;
 
 	// initial market setting
 		
@@ -18,7 +18,7 @@ public interface Global {
 	
 	/* Agent parameters
 	 * */
-	public static final int nAgents = 100;
+	public static final long nAgents = 100;
 	
 	
 	
@@ -36,13 +36,13 @@ public interface Global {
 	
 	/* Market parameters
 	 * */
-	public static final int nMarkets = 2;
+	public static final long nMarkets = 2;
 	public static final String[] marketNames = {"Market1", "Market2"};
 	public static final double[] marketAgentShare = {0.4, 0.6};
 	
 	/* Stock parameters
 	 * */
-	public static final int nStocks = 1; 
+	public static final long nStocks = 1; 
 	public static final String[] stockIDs = {"Stock1"};
 //	public final double[] stockAgentShare = {0.2, 0.8};
 	public static final int[] initialFundamental = {100};

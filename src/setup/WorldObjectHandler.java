@@ -23,9 +23,9 @@ public class WorldObjectHandler {
 
 	public static void createAgents(){
 //		HFT agent = new HFT();	
-		int[] stockIDs = {0}; int[] marketIDs = {0, 1}; int[] latencies = {1, 3}; int minimumSpread = 100;  
+		int[] stockIDs = {0}; int[] marketIDs = {0, 1}; int[] latencies = {1, 3}; long minimumSpread = 100;  
 		new SingleStockMarketMaker(stockIDs, marketIDs, latencies, minimumSpread);
-//		int[] stockIDs2 = {0}; int[] marketIDs2 = {0, 1}; int[] latencies2 = {10, 30}; int minimumSpread2 = 100;  
+//		int[] stockIDs2 = {0}; int[] marketIDs2 = {0, 1}; int[] latencies2 = {10, 30}; long minimumSpread2 = 100;  
 //		new SingleStockMarketMaker(stockIDs2, marketIDs2, latencies2, minimumSpread2);
 	}
 	
@@ -59,12 +59,12 @@ public class WorldObjectHandler {
 	
 	public static void createObjectLoggers() {
 		
-		World.warningLog = new WorldLogger(Logging.logFolder,"lineLog_WorldWarnings", false);
+		World.warningLog = new WorldLogger(Logging.logFolder,"lineLog_worldWarnings", false);
 		logs.add(World.warningLog);
 		World.errorLog = new WorldLogger(Logging.logFolder,"lineLog_errors", false);
 		logs.add(World.errorLog);
-//		World.eventLog = new WorldDataLogger(Logging.logFolder,"lineLog_worldEvents", false);
-//		logs.add(World.eventLog);
+		World.eventLog = new WorldLogger(Logging.logFolder,"lineLog_worldEvents", false);
+		logs.add(World.eventLog);
 		World.ruleViolationsLog = new WorldLogger(Logging.logFolder,"lineLog_ruleViolations", false);
 		logs.add(World.ruleViolationsLog);
 		World.dataLog = new WorldLogger(Logging.logFolder,"columnLog_worldData", true);
@@ -78,7 +78,7 @@ public class WorldObjectHandler {
 		}
 		
 		for(Orderbook orderbook:World.getOrderbooks()){
-			orderbook.orderflowLog = new OrderbookLogger(Logging.logFolder, "lineLog_orderFlow_", orderbook, false);
+			orderbook.orderflowLog = new OrderbookLogger(Logging.logFolder, "lineLog_orderFlow_", orderbook, OrderbookLogger.Type.ORDER_FLOW_LOG);
 			logs.add(orderbook.orderflowLog);
 //			orderbook.eventLog = new Logger(Logging.orderbookEventFolder, String.format("orderbook_%s_events", orderbook.getIdentifier()));
 //			logs.add(orderbook.eventLog);
@@ -102,6 +102,7 @@ public class WorldObjectHandler {
 		for(Orderbook orderbook:World.getOrderbooks()) {
 			orderbook.initializeBookWithRandomOrders();
 		}
+		World.processNewOrdersInAllOrderbooks();
 		
 	}
 	

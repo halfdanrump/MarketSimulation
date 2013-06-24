@@ -8,16 +8,16 @@ import environment.TransactionReceipt;
 import environment.World;
 
 public class WorldLogger extends Logger {
-	private int nArrivingOrders;
-	private int nArrivingOrderCancellations;
-	private int nArrivingReceipts;
-	private int nInformationRequests;
-	private int nReceiveMarketInformation;
-	private int nFinishedEvaluatingStrategy;
-	private int nExpiredOrders;
+	private long nArrivingOrders;
+	private long nArrivingOrderCancellations;
+	private long nArrivingReceipts;
+	private long nInformationRequests;
+	private long nReceiveMarketInformation;
+	private long nFinishedEvaluatingStrategy;
+	private long nExpiredOrders;
 	
 
-	private int nReRequestionMarketInformation;
+	private long nReRequestionMarketInformation;
 
 	public WorldLogger(String directory, String identifier, boolean recordHeader) {
 		super(directory, identifier);
@@ -47,7 +47,7 @@ public class WorldLogger extends Logger {
 	}
 	
 	public void recordEntry(){
-		String entry = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+		String entry = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
 									World.getCurrentRound(),
 									this.getTotalNStandingOrders(),
 									Order.getOrderCount(),
@@ -68,20 +68,20 @@ public class WorldLogger extends Logger {
 	
 	
 	
-	public void setnInformationRequests(int nInformationRequests) {
+	public void setnInformationRequests(long nInformationRequests) {
 		this.nInformationRequests = nInformationRequests;
 	}
 
-	private int getTotalWealth(){
-		int totalWealth = 0;
+	private long getTotalWealth(){
+		long totalWealth = 0;
 		for(HFT agent:World.getHFTAgents()){
-			totalWealth += agent.getWealth();
+			totalWealth += agent.getTotalWealth();
 		}
 		return totalWealth;
 	}
 	
-	private int getTotalNStandingOrders(){
-		int nOrders = 0;
+	private long getTotalNStandingOrders(){
+		long nOrders = 0;
 		
 		for(Orderbook orderbook:World.getOrderbooks()){
 			nOrders += orderbook.getUnfilledBuyOrders().size();
@@ -91,6 +91,7 @@ public class WorldLogger extends Logger {
 	}
 	
 	public void logOnelineEvent(String line) {
+		line = super.getNewEntry() + line;
 		if(logWorldEventsToFile) {
 			super.writeToFile(line);
 		}
@@ -101,43 +102,44 @@ public class WorldLogger extends Logger {
 	
 	public void logOnelineWarning(String line) {
 		Exception e = new Exception();
+		line = super.getNewEntry() + line;
 		if(logWorldWarningsToFile) {
-			super.writeToFile(line + e.getStackTrace());
+			super.writeToFile(line + e.getStackTrace().toString());
 		}
 		if(logWorldWarningsToConsole) {
 			super.writeToConsole(line + e.getStackTrace());
 		}
 	}
 
-	public void setnArrivingOrders(int nArrivingOrders) {
+	public void setnArrivingOrders(long nArrivingOrders) {
 		this.nArrivingOrders = nArrivingOrders;
 	}
 
-	public void setnArrivingOrderCancellations(int nArrivingOrderCancellations) {
+	public void setnArrivingOrderCancellations(long nArrivingOrderCancellations) {
 		this.nArrivingOrderCancellations = nArrivingOrderCancellations;
 	}
 	
-	public void setNInformationRequests(int nInformationRequests) {
+	public void setNInformationRequests(long nInformationRequests) {
 		this.nInformationRequests = nInformationRequests;
 	}
 
-	public void setnReceiveMarketInformation(int nReceiveMarketInformation) {
+	public void setnReceiveMarketInformation(long nReceiveMarketInformation) {
 		this.nReceiveMarketInformation = nReceiveMarketInformation;
 	}
 
-	public void setnReRequestionMarketInformation(int nReRequestionMarketInformation) {
+	public void setnReRequestionMarketInformation(long nReRequestionMarketInformation) {
 		this.nReRequestionMarketInformation = nReRequestionMarketInformation;
 	}
 	
-	public void setnFinishedEvaluatingStrategy(int nFinishedEvaluatingStrategy) {
+	public void setnFinishedEvaluatingStrategy(long nFinishedEvaluatingStrategy) {
 		this.nFinishedEvaluatingStrategy = nFinishedEvaluatingStrategy;
 	}	
 	
-	public void setnArrivingReceipts(int nArrivingReceipts) {
+	public void setnArrivingReceipts(long nArrivingReceipts) {
 		this.nArrivingReceipts = nArrivingReceipts;
 	}
 	
-	public void setnExpiredOrders(int nExpiredOrders) {
+	public void setnExpiredOrders(long nExpiredOrders) {
 		this.nExpiredOrders = nExpiredOrders;
 	}
 

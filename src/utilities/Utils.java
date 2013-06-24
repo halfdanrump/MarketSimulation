@@ -2,7 +2,7 @@ package utilities;
 
 import java.util.Random;
 
-import setup.Global;
+import setup.SimulationSetup;
 import environment.*;
 
 import java.util.HashMap;
@@ -23,16 +23,16 @@ public class Utils {
 		 * Checking market parameters.
 		 */
 
-		if(Global.marketNames.length != Global.nMarkets){
-			System.out.println("ERROR: The list of market names is too int or short for the specified number of markets!");
+		if(SimulationSetup.marketNames.length != SimulationSetup.nMarkets){
+			System.out.println("ERROR: The list of market names is too long or short for the specified number of markets!");
 			valid = false;
 		}
 		
 		double sum = 0;
-		for(double i:Global.marketAgentShare){
+		for(double i:SimulationSetup.marketAgentShare){
 			sum += i;
 		}
-		int s = (int) Math.round(sum*1000000);
+		long s = (int) Math.round(sum*1000000);
 		if(s != 1000000){
 			System.out.println("ERROR: marketAgentShare must sum to 1!");
 			valid = false;
@@ -42,20 +42,20 @@ public class Utils {
 		 * Checking stock parameters.
 		 */
 
-		if(Global.stockIDs.length != Global.nStocks){
-			System.out.println("ERROR: The list of stock names is too int or short for the specified number of stocks!");
+		if(SimulationSetup.stockIDs.length != SimulationSetup.nStocks){
+			System.out.println("ERROR: The list of stock names is too long or short for the specified number of stocks!");
 			valid = false;
 		}
 		
-		if(Global.initialFundamental.length != Global.nStocks){
-			System.out.println("ERROR: The list of inital stock prices is too int or short for the specified number of stocks!");
+		if(SimulationSetup.initialFundamental.length != SimulationSetup.nStocks){
+			System.out.println("ERROR: The list of inital stock prices is too long or short for the specified number of stocks!");
 			valid = false;
 		}
 		
 		/*
 		 * Checks that orderbook parameters are legal
 		 */
-		if(Global.orderbookSpecification.length != Global.nStocks){
+		if(SimulationSetup.orderbookSpecification.length != SimulationSetup.nStocks){
 			System.out.println("ERROR: orderbookSpecification has too many or few stocks");
 			valid = false;
 		}
@@ -73,16 +73,16 @@ public class Utils {
 	
 	public static int getRandomUniformInteger(int minimum, int maximum){
 		Random random = new Random();
-		int number = random.nextInt(maximum-minimum+1)+minimum;
+		int number = (int) random.nextInt(maximum-minimum+1)+minimum;
 		return number;
 	}
 	
-	public static int getNonNegativeGaussianInteger(double mean, double std){
+	public static long getNonNegativeGaussianInteger(double mean, double std){
 		Random random = new Random();
 		return Math.abs((int) (random.nextGaussian() * std + mean));
 	}
 	
-	public static int getGaussianInteger(double mean, double std){
+	public static long getGaussianInteger(double mean, double std){
 		Random random = new Random();
 		double noise = random.nextGaussian() * std + mean;
 		return (int) Math.round(noise);
@@ -102,9 +102,9 @@ public class Utils {
 		return latencyMap;
 	}
 	
-//	public static Order getRandomOrder(int minPrice, int maxPrice, int minVolume, int maxVolume, Order.Type type, Order.BuySell buysell){
-//		int price = Utils.getRandomUniformInteger(minPrice, maxPrice);
-//		int volume = Utils.getRandomUniformInteger(minVolume, maxVolume);
+//	public static Order getRandomOrder(long minPrice, long maxPrice, long minVolume, long maxVolume, Order.Type type, Order.BuySell buysell){
+//		long price = Utils.getRandomUniformInteger(minPrice, maxPrice);
+//		long volume = Utils.getRandomUniformInteger(minVolume, maxVolume);
 //		Order order = new Order(volume,price,type,buysell);
 //		return order;
 //	}

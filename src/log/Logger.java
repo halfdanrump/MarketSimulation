@@ -14,8 +14,8 @@ import environment.TransactionReceipt;
 import environment.World;
 
 public class Logger implements Logging {
-	public static int nLogs = 0;
-	public static int nWarnings = 0;
+	public static long nLogs = 0;
+	public static long nWarnings = 0;
 	File file;
 	FileWriter writer;
 	BufferedWriter buffer;
@@ -197,7 +197,7 @@ public class Logger implements Logging {
 	// return
 	// }
 
-	public static int getRealTime() {
+	public static long getRealTime() {
 		return (int) (System.currentTimeMillis() - World.creationTime);
 	}
 

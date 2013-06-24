@@ -6,7 +6,7 @@ public interface Logging {
 //	boolean logOrderbookDetails = false;
 	
 	boolean fileLogging = true;
-	boolean consoleLogging = true;
+	boolean consoleLogging = false;
 	
 	/*
 	 * WORLD. What kind of world events to log. A world event could be the cumulative actions of all agents in a round 
@@ -34,7 +34,7 @@ public interface Logging {
 	/*
 	 * ORDERBOOK. What kind of orderbook events to log
 	 */
-	final boolean logOrderbookEventsToConsole = true;
+	final boolean logOrderbookEventsToConsole = false;
 	//////////////////////////////////////////////////
 	final boolean logOrderbookMatches = true; // Logs whenever there's a log (including stylized traders)
 	final boolean logOrderbookTransactions = true; // Logs only when there's a transaction, i.e. a match with an order placed by a HFT

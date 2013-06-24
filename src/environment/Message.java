@@ -1,43 +1,56 @@
 package environment;
 
-
-
 public abstract class Message{
-	private int arrivalTime;
-	private int dispatchTime;
-	private Object sender;
-	private Object recipient;
-	private static int messageCount = 0;
 	
-	public Message(){
-		
+	public enum TransmissionType{
+		INSTANTANEOUS,
+		WITH_TRANSMISSION_DELAY,
+//		WITHIN_SAME_ROUND
 	}
 	
-	public Message(int arrivalTime, int dispatchTime){
-		this.arrivalTime = arrivalTime;
-		this.dispatchTime = dispatchTime;
+	private int arrivalTime;
+	private int dispatchTime;
+	private TransmissionType transmissionType;
+	private static long messageCount = 0;
+	
+//	public Message(TransmissionType transmissionType){
+//		/*
+//		 * Constructor used for messages where the arrival time is given, or undefined. 	
+//		 */
+//		if(transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
+//			World.errorLog.logError("Wrong constructor for Message type TransmissionType.WITH_TRANSMISSION_DELAY");
+//		} else {
+//			this.initializeWithInstantaneousTransmission();
+//		}
+//		setMessageCount(getMessageCount() + 1);
+//	}
+	
+	public Message(int arrivalTime, int dispatchTime, TransmissionType transmissionType){
+		if(transmissionType == TransmissionType.INSTANTANEOUS) {
+			this.arrivalTime = World.getCurrentRound();
+			this.dispatchTime = World.getCurrentRound();
+//		} else if(transmissionType == TransmissionType.WITHIN_SAME_ROUND) {
+//			this.initializeWithInstantaneousTransmission();
+		} else if (transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
+			if(arrivalTime < dispatchTime) {
+				World.errorLog.logError("Message with arrival time before dispatch time was created");
+			}else {
+				this.arrivalTime = arrivalTime;
+				this.dispatchTime = dispatchTime;
+			}
+		} 
 		setMessageCount(getMessageCount() + 1);
 	}
 	
-	
-	
-	public int getArrivalTime() {
+	public long getArrivalTime() {
 		return arrivalTime;
 	}
 	public int getDispatchTime() {
-		try{
-			return dispatchTime;
-		} catch(NullPointerException e){
-			World.errorLog.logError("Tried to return dispatchTime, but the field has not been initialized. Returning 0.");
-			return 0;
-		}
+		return dispatchTime;
 	}
 	
-	public Object getSender() {
-		return sender;
-	}
-	public Object getRecipient() {
-		return recipient;
+	public TransmissionType getTransmissionType() {
+		return this.transmissionType;
 	}
 	
 	public void setArrivalTime(int arrivalTime) {
@@ -46,18 +59,12 @@ public abstract class Message{
 	public void setDispatchTime(int dispatchTime) {
 		this.dispatchTime = dispatchTime;
 	}
-	public void setSender(Object sender) {
-		this.sender = sender;
-	}
-	public void setRecipient(Object recipient) {
-		this.recipient = recipient;
-	}
 
-	public static int getMessageCount() {
+	public static long getMessageCount() {
 		return messageCount;
 	}
 
-	public static void setMessageCount(int messageCount) {
+	public static void setMessageCount(long messageCount) {
 		Message.messageCount = messageCount;
 	}
 	

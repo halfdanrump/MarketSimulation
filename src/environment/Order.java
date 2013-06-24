@@ -14,58 +14,70 @@ public class Order extends Message{
 		BUY,
 	}
 	
+	
+	
 	private Orderbook orderbook;
 	private BuySell buysell;
 	private Type type;
-	private int price;
-	private int agentSideVolume;
-	private int orderbookSideVolume;
-	private int nRoundsInBook;
-	private int expirationTime;
+	private long price;
+	private long initialVolume;
+	private long currentAgentSideVolume;
+	private long currentOrderbookSideVolume;
+	private long nRoundsInBook;
+	private long expirationTime;
 	private HFT owner;
 	private int id;
 	private static int orderCount = 0;
 	
 	
-	public Order(int arrivalTime, int dispatchTime, int nRoundsInBook, int initialVolume, int price, Type type, BuySell buysell, HFT owner, Orderbook orderbook){
+	public Order(int transmissionDelay, int dispatchTime, int nRoundsInBook, long initialVolume, long price, Type type, BuySell buysell, HFT owner, Orderbook orderbook, TransmissionType transmissionType){
 		/*
 		 * Order submitted by HFTs
 		 */
-		super(arrivalTime, dispatchTime);
+		super(World.getCurrentRound() + transmissionDelay + 1, dispatchTime, transmissionType);
+//		Exception e = new Exception();
+//		e.printStackTrace();
 		this.owner = owner;
 //		if(arrivalTime < dispatchTime){
 //			Exception e = new InvalidOrderException(arrivalTime, dispatchTime)
-//		}¹
-		
+//		}
 		if(price <0 | price == Integer.MAX_VALUE | price == 0){
 			new InvalidOrderException(initialVolume, price, owner, orderbook);
 		} else{
 			this.price = price;			
 		}
-		
 		if(initialVolume < 0){
 			new InvalidOrderException(initialVolume, price, owner, orderbook);
 		} else{
-			this.agentSideVolume = initialVolume;
-			this.orderbookSideVolume = initialVolume;
+			this.currentAgentSideVolume = initialVolume;
+			this.currentOrderbookSideVolume = initialVolume;
 		}
-		
-		if(arrivalTime < World.getCurrentRound()){
-			World.warningLog.logOnelineWarning("New order was created. Arrival time was before current world time, so the order will never be used.");
-		}
-		
-		
 		this.nRoundsInBook = nRoundsInBook;
+//		Exception e = new Exception();
+//		e.printStackTrace();
 		this.type = type;
 		this.buysell = buysell;
 		this.orderbook = orderbook;
 		this.expirationTime = World.getCurrentRound() + nRoundsInBook;
 		this.id = Order.orderCount;
 		Order.orderCount++;
-		World.addNewOrder(this);
+		if(transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
+			if(super.getArrivalTime() < World.getCurrentRound()){
+				long currentRound = World.getCurrentRound();
+				System.out.println(currentRound);
+				World.warningLog.logOnelineWarning("New order was created. Arrival time was before current world time, so the order will never be used.");
+			}
+			World.addNewOrder(this);
+		} else if(transmissionType == TransmissionType.INSTANTANEOUS) {
+			orderbook.processNewlyArrivedNewOrder(this);
+		} else {
+			World.errorLog.logError("Order without specified TransmissionType was submitted");
+		}
+		
+		
 	}
 	
-//	public void setVolume(int newVolume){
+//	public void setVolume(long newVolume){
 //		if(newVolume > 0){
 //			this.volume = newVolume;			
 //		} else if (newVolume == 0){
@@ -74,19 +86,19 @@ public class Order extends Message{
 //		}
 //	}
 	
-	public void updateAgentSideVolumeByDifference(int volumeChange){
-		this.agentSideVolume += volumeChange;
+	public void updateAgentSideVolumeByDifference(long volumeChange){
+		this.currentAgentSideVolume += volumeChange;
 	}
 	
-	public void updateOrderbookSideVolumeByDifference(int volumeChange){
-		this.orderbookSideVolume += volumeChange;
+	public void updateOrderbookSideVolumeByDifference(long tradeVolume){
+		this.currentOrderbookSideVolume += tradeVolume;
 	}
 	
 	public Orderbook getOrderbook() {
 		try{
 			return orderbook;
 		} catch(NullPointerException e){
-			World.errorLog.logError("Order doesn't beint to any orderbook!");
+			World.errorLog.logError("Order doesn't belong to any orderbook!");
 			return null;
 		}
 	}
@@ -99,32 +111,32 @@ public class Order extends Message{
 		return this.buysell;
 	}
 
-	public int getPrice() {
+	public long getPrice() {
 		return this.price;
 	}
 
-	public int getAgentSideVolume() {
-		return this.agentSideVolume;
+	public long getCurrentAgentSideVolume() {
+		return this.currentAgentSideVolume;
 	}
 	
-	public int getOrderbookSideVolume() {
-		return this.orderbookSideVolume;
+	public long getCurrentMarketSideVolume() {
+		return this.currentOrderbookSideVolume;
 	}
 
-	public int getExpirationTime() {
+	public long getExpirationTime() {
 		return expirationTime;
 	}
 
 	@Override
 	public String toString() {
 		return "Order [orderbook=" + orderbook + ", buysell=" + buysell
-				+ ", type=" + type + ", price=" + price + ", OSvolume=" + orderbookSideVolume 
-				+ ", ASvolume=" + agentSideVolume  
+				+ ", type=" + type + ", price=" + price + ", OSvolume=" + currentOrderbookSideVolume 
+				+ ", ASvolume=" + currentAgentSideVolume  
 				+ ", expirationTime=" + expirationTime + "]";
 	}
 	
 	public String toStringForOrderbookLog(){
-		return this.id  + "\t" +  buysell + "\t" + type + "\t" + price + "\t" +  orderbookSideVolume;
+		return this.id  + "\t" +  buysell + "\t" + type + "\t" + price + "\t" +  currentOrderbookSideVolume;
 	}
 	
 
@@ -145,7 +157,7 @@ public class Order extends Message{
 		return this.orderbook.getMarket();
 	}
 	
-	public int getArrivalTime(){
+	public long getArrivalTime(){
 		return super.getArrivalTime();
 	}
 	
@@ -165,12 +177,20 @@ public class Order extends Message{
 		return this;
 	}
 	
-	public int getNRoundsInBook(){
+	public long getNRoundsInBook(){
 		return this.nRoundsInBook;
 	}
 	
-	public static int getOrderCount(){
+	public static long getOrderCount(){
 		return Order.orderCount;
+	}
+	
+	public TransmissionType getTransmissionType() {
+		return super.getTransmissionType();
+	}
+	
+	public long getInitialVolume() {
+		return this.initialVolume;
 	}
 	
 }

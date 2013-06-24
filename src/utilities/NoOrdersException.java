@@ -7,11 +7,11 @@ import environment.World;
 @SuppressWarnings("serial")
 public class NoOrdersException extends Exception{
 	Orderbook orderbook;
-	int time;
+	long time;
 	BuySell buysell;
-	private static int count = 0; 
+	private static long count = 0; 
 	
-	public NoOrdersException(int time, Orderbook orderbook, BuySell buysell){
+	public NoOrdersException(long time, Orderbook orderbook, BuySell buysell){
 		count ++;
 		this.time = time;
 		this.orderbook = orderbook;
@@ -19,7 +19,7 @@ public class NoOrdersException extends Exception{
 		World.warningLog.logOnelineWarning(String.format("Orderbook %s contained no %s order", orderbook.getIdentifier(), buysell));
 	}
 	
-	public int getCount() {
+	public long getCount() {
 		return count;
 	}
 }

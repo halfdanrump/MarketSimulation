@@ -22,17 +22,17 @@ public class StockLogger extends Logger {
 		if(loggerType == StockLogger.Type.LOG_AFTER_EVERY_ROUND) {
 			this.recordRoundBasedHeader();
 		} else if(loggerType == StockLogger.Type.LOG_AFTER_EVERY_TRANSACTION){
-			
+			this.recordStockInformationAfterTransactionHeader();
 		}
 	}
 	
 	public void recordStockInformationAfterTransactionHeader() {
-		String header = super.getNewEntry() + "\tOrderbook\tPrice";
+		String header = super.getNewEntry() + "\tBook\tPrice";
 		super.writeToFile(header);
 	}
 	
-	public void recordStockInformationAfterTransaction(int price, Orderbook orderbook) {
-		String entry = super.getNewEntry() + String.format("\t%s\t%s", orderbook.getMarket().getID(), price);
+	public void recordStockInformationAfterTransaction(long tradePrice, Orderbook orderbook) {
+		String entry = super.getNewEntry() + String.format("\t%s\t%s", orderbook.getMarket().getID(), tradePrice);
 		super.writeToFile(entry);
 	}
 	

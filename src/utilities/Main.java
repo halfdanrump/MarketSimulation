@@ -1,11 +1,10 @@
 package utilities;
 import environment.*;
-import agent.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import setup.Global;
+import setup.SimulationSetup;
 import setup.WorldObjectHandler;
 
 public class Main {
@@ -31,35 +30,35 @@ public class Main {
 	
 	public static void testWorld(){
 		World.setupEnvironment();
-		World.executeInitalRounds(10);
-		World.executeNRounds(100);
+//		World.executeInitalRounds(10);
+		World.executeNRounds(SimulationSetup.nRounds);
 		WorldObjectHandler.closeLogs();
 	}
 	
 	public static void testBrownianMotion(){
 		
-		Stock stock = new Stock(1, 0.001, 0.01);
-		for(int i=0; i<Global.nRounds; i++){
-			stock.updateFundamentalPrice();
-		}
+//		Stock stock = new Stock(1, 0.001, 0.01);
+//		for(long i=0; i<Global.nRounds; i++){
+//			stock.updateFundamentalPrice();
+//		}
 //		System.out.println(stock.getFundamentalPrice().toString());
 	}
 	
-	public static void testRandomOrders(){
-		Market market1 = new Market();
-		Stock stock1 = new Stock(100, 0, 1);
-		Orderbook orderbook = new Orderbook(stock1, market1);
-		StylizedTrader.submitRandomLimitBuyOrder(orderbook);
-		StylizedTrader.submitRandomMarketSellOrder(orderbook);
-		World.dispatchArrivingOrders();
-	}
+//	public static void testRandomOrders(){
+//		Market market1 = new Market();
+//		Stock stock1 = new Stock(100, 0, 1);
+//		Orderbook orderbook = new Orderbook(stock1, market1);
+//		StylizedTrader.submitRandomLimitBuyOrder(orderbook);
+//		StylizedTrader.submitRandomMarketSellOrder(orderbook);
+//		World.dispatchArrivingOrders();
+//	}
 	
 //	public static void testCreateAgent(){
 //		
 //		/*
 //		 * Create the stock to be traded
 //		 */
-//		int stockId, initialFundamental;
+//		long stockId, initialFundamental;
 //		Stock stock0 = new Stock(stockId = 0, initialFundamental = 100);
 //		
 //		/*
@@ -72,7 +71,7 @@ public class Main {
 //		/*
 //		 * Specify parameters for an agent ad create it
 //		 */
-//		int wealth, id, minimumSpread;
+//		long wealth, id, minimumSpread;
 //		int[] stocks = {0};
 //		int[] ownedStocks = {100};
 //		int[] markets = {0,1};
@@ -118,7 +117,7 @@ public class Main {
 //		book.processAllNewOrders();
 //		book.printBook();
 		
-//		for(int i = 0; i<100; i++){
+//		for(long i = 0; i<100; i++){
 //			order = Utils.getRandomOrder(100, 200, 10, 30, Order.Type.MARKET, Order.BuySell.BUY);
 //			book.receiveOrder(order);
 //			order2 = Utils.getRandomOrder(100, 200, 10, 30, Order.Type.MARKET, Order.BuySell.SELL);
@@ -163,8 +162,8 @@ public class Main {
 	
 	public static void testWorldOrderQueue(){
 //		World world = new World();
-//		int volume, price;
-//		int arrive, dispatch;
+//		long volume, price;
+//		long arrive, dispatch;
 //		Orderbook orderbook = new Orderbook();
 //		
 ////		Order order1 = new Order(price = 80, volume = 100,Order.Type.MARKET,Order.BuySell.BUY,arrive = 2, dispatch = 0, orderbook);
@@ -181,7 +180,7 @@ public class Main {
 //	public static void testOrderbook(){
 //		HighFrequencyTrader t1 = new MarketMaker();
 //		Orderbook ob = new Orderbook();
-//		int arrivalTime, dispatchTime, volume, price, nRounds;
+//		long arrivalTime, dispatchTime, volume, price, nRounds;
 //		Order os1 = new Order(arrivalTime = 10, dispatchTime = 0, nRounds = 100, volume = 10, price = 35, Order.Type.MARKET, Order.BuySell.SELL);
 //		Order os2 = new Order(arrivalTime = 10, dispatchTime = 0, volume = 10, price = 30, Order.Type.MARKET, Order.BuySell.SELL);
 //		Order os3 = new Order(arrivalTime = 10, dispatchTime = 0, volume = 15, price = 20, Order.Type.MARKET, Order.BuySell.SELL);

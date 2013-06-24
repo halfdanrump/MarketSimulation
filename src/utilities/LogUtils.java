@@ -7,29 +7,29 @@ import environment.World;
 public class LogUtils {
 
 	
-	public static int getNumberOfOrdersInTransit(){
+	public static long getNumberOfOrdersInTransit(){
 		return World.getOrdersInTransit().size();
 	}
 	
-	public static int getNumberOfUnfilledBuyOrders(){
+	public static long getNumberOfUnfilledBuyOrders(){
 //		ArrayList<Orderbook> = World.getOrderbooks();
-		int nOrders = 0;
+		long nOrders = 0;
 		for(Orderbook orderbook:World.getOrderbooks()){
 			nOrders += orderbook.getUnfilledBuyOrders().size();
 		}
 		return nOrders;
 	}
 	
-	public static int getNumberOfUnfilledSellOrders(){
+	public static long getNumberOfUnfilledSellOrders(){
 //		ArrayList<Orderbook> = World.getOrderbooks();
-		int nOrders = 0;
+		long nOrders = 0;
 		for(Orderbook orderbook:World.getOrderbooks()){
 			nOrders += orderbook.getUnfilledBuyOrders().size();
 		}
 		return nOrders;
 	}
 	
-	public static int getNumberOfUnfilledOrders(){
+	public static long getNumberOfUnfilledOrders(){
 		return getNumberOfUnfilledBuyOrders() + getNumberOfUnfilledSellOrders();
 	}
 	

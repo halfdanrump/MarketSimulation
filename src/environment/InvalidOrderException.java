@@ -4,14 +4,14 @@ import agent.HFT;
 
 @SuppressWarnings("serial")
 public class InvalidOrderException extends Exception {
-	int price;
-	int volume;
+	long price;
+	long volume;
 	HFT owner;
 	Orderbook orderbook;
 	
-	public InvalidOrderException(int volume, int price, HFT owner, Orderbook orderbook){
-		this.price = price;
-		this.volume = volume;
+	public InvalidOrderException(long initialVolume, long price2, HFT owner, Orderbook orderbook){
+		this.price = price2;
+		this.volume = initialVolume;
 		this.owner = owner;
 		this.orderbook = orderbook;
 		if(owner == null){

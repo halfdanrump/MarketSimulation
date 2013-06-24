@@ -7,7 +7,7 @@ public interface Strategy {
 	void receiveMarketInformation();
 	Order.BuySell decideOrderSide();
 	Order.Type decideOrderType();
-	int decideMarketOrderLength();
-	int decideTradeVolume();
-	int decideTradePrice();
+	long decideMarketOrderLength();
+	long decideTradeVolume();
+	long decideTradePrice();
 }

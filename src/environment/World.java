@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import log.WorldLogger;
-import setup.Global;
+import setup.SimulationSetup;
 import setup.WorldObjectHandler;
 import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
@@ -17,39 +17,39 @@ import agent.StylizedTrader;
 
 //import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 
-public class World implements Global {
+public class World implements SimulationSetup {
+	private enum roundPhases{
+		MESSAGES_ARRIVE,
+		STYLIZED_TRADING,
+		HFT_TRADING,
+		UPDATE_ORDERBOOKS,
+		LOGGING;
+	}
+	
 	/*
 	 * References to stocks, markets and agents (indexed by IDs)
 	 */
-	// private static HashMap<String, Stock> stocksByID = new HashMap<String,
-	// Stock>();
-	// private static HashMap<String, Market> marketsByID = new HashMap<String,
-	// Market>();
 	private static HashMap<String, HFT> agentsByID = new HashMap<String, HFT>();
 	private static HashMap<StockMarketPair, Orderbook> orderbooksByPair = new HashMap<StockMarketPair, Orderbook>();
-
 	private static ArrayList<Stock> stocks = new ArrayList<Stock>();
 	private static ArrayList<HFT> agents = new ArrayList<HFT>();
 	private static ArrayList<Market> markets = new ArrayList<Market>();
 	private static ArrayList<Orderbook> orderbooks = new ArrayList<Orderbook>();
 
+	/*
+	 * Priority queues for messages
+	 */
 	private static MessageArrivalTimeComparator messageArrivalTimeComparator = new MessageArrivalTimeComparator();
+	private static PriorityQueue<Order> ordersInTransit = new PriorityQueue<Order>(100, messageArrivalTimeComparator);
+	private static PriorityQueue<TransactionReceipt> receiptsInTransit = new PriorityQueue<TransactionReceipt>(100, messageArrivalTimeComparator);
+	private static PriorityQueue<OrderCancellation> orderCancellationsInTransit = new PriorityQueue<OrderCancellation>(100, messageArrivalTimeComparator);
 
-	private static PriorityQueue<Order> ordersInTransit = new PriorityQueue<Order>(
-			100, messageArrivalTimeComparator);
-	private static PriorityQueue<TransactionReceipt> receiptsInTransit = new PriorityQueue<TransactionReceipt>(
-			100, messageArrivalTimeComparator);
-	private static PriorityQueue<OrderCancellation> orderCancellationsInTransit = new PriorityQueue<OrderCancellation>(
-			100, messageArrivalTimeComparator);
-
-	// private static HashMap<Integer, Order> existingOrdersByID = new
-	// HashMap<Integer, Order>();
-
+	/*
+	 * Data structures for managing agents
+	 */
 	private static AgentWakeupComparator agentWakeupComparator = new AgentWakeupComparator();
-	private static PriorityQueue<HFT> waitingAgents = new PriorityQueue<HFT>(
-			10, agentWakeupComparator);
-	private static PriorityQueue<HFT> thinkingAgents = new PriorityQueue<HFT>(
-			10, agentWakeupComparator);
+	private static PriorityQueue<HFT> waitingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
+	private static PriorityQueue<HFT> thinkingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
 	private static ArrayList<HFT> freeAgents = new ArrayList<HFT>();
 	
 	/*
@@ -61,10 +61,13 @@ public class World implements Global {
 	public static WorldLogger ruleViolationsLog;
 	public static WorldLogger dataLog;
 
+	/*
+	 * Other internal variables
+	 */
 	public static final long creationTime = System.currentTimeMillis();
-
 	private static int currentRound = 0;
-
+	private roundPhases roundPhase;
+	
 	public static void setupEnvironment() {
 		WorldObjectHandler.createStocks();
 		WorldObjectHandler.createMarkets();
@@ -74,8 +77,8 @@ public class World implements Global {
 		WorldObjectHandler.initializeEmptyOrderbooksWithMarketOrders();
 	}
 
-	public static void executeInitalRounds(int nRounds) {
-		for (int round = 0; round < nRounds; round++) {
+	public static void executeInitalRounds(long nRounds) {
+		for (long round = 0; round < nRounds; round++) {
 			expireOrdersInAllOrderbooks();
 			prepareNewRound();
 			dispatchArrivingReceipts();
@@ -94,24 +97,20 @@ public class World implements Global {
 		 * Increment time variable Update fundamental prices for each stock.
 		 */
 		prepareNewRound();
-		expireOrdersInAllOrderbooks();
 		
 		/*
 		 * Receipts from the previous rounds are dispatched. The order does not
 		 * matter, so there's no need to randomize it.
 		 */
 		dispatchArrivingReceipts();
-
 		/*
 		 * Cancellations reach the order books and are stored there.
 		 */
 		dispatchOrderCancellations();
+
+		dispatchArrivingOrders();
 		/*
 		 * The new cancellations are processed in random order.
-		 */
-		processOrderCancellationsInAllOrderbooks();
-		/*
-		 * 
 		 */
 		createSlowTraderOrders();
 		/*
@@ -125,7 +124,8 @@ public class World implements Global {
 		 * Arriving orders from HFTs and slow traders are transferred to the
 		 * waiting lists in the order books
 		 */
-		dispatchArrivingOrders();
+		processOrderCancellationsInAllOrderbooks();
+		expireOrdersInAllOrderbooks();
 		/*
 		 * Iterates over orderbook and processes orders in random order.
 		 */
@@ -155,10 +155,10 @@ public class World implements Global {
 	}
 
 	private static void createSlowTraderOrders() {
-		for (int i = 0; i < Global.nSlowTraderOrdersPerRounds; i++) {
+		for (long i = 0; i < SimulationSetup.nSlowTraderOrdersPerRounds; i++) {
 			StylizedTrader.submitRandomOrder();
 		}
-		System.out.println("k");
+//		System.out.println("k");
 	}
 
 	private static void updateFundamental() {
@@ -178,7 +178,7 @@ public class World implements Global {
 		/*
 		 * Transfer order cancellations from in transit to the target orderbook.
 		 */
-		int nArrivingCancellations = 0;
+		long nArrivingCancellations = 0;
 		while (true) {
 			try {
 				OrderCancellation cancellation = orderCancellationsInTransit
@@ -207,7 +207,7 @@ public class World implements Global {
 		 * waiting queue with priority currentTime + agent.getWaitingTime();
 		 * Remove them from active list.
 		 */
-		int nInformationRequests = 0;
+		long nInformationRequests = 0;
 		Iterator<HFT> iterator = freeAgents.iterator();
 		while (iterator.hasNext()) {
 			HFT agent = iterator.next();
@@ -268,8 +268,8 @@ public class World implements Global {
 		 * Loop through agents in priority queue with priority equals current
 		 * time. Update priority by their thinking time.
 		 */
-		int nReceivedMarketInformation = 0;
-		int nReRequest = 0;
+		long nReceivedMarketInformation = 0;
+		long nReRequest = 0;
 		while (true) {
 			try {
 				HFT agent = waitingAgents.element();
@@ -311,7 +311,7 @@ public class World implements Global {
 		 * Loop through agents in priority queue with priority equals current
 		 * time. Agents sumbit orders Add agents on active list.
 		 */
-		int nFinishedEvaluating = 0;
+		long nFinishedEvaluating = 0;
 		while (true) {
 			try {
 				HFT agent = thinkingAgents.element();
@@ -347,7 +347,7 @@ public class World implements Global {
 		 * the order is involved in a trade or an agent decides to update an
 		 * order, the two are different for a period of time.
 		 */
-		int nArrivingOrders = 0;
+		long nArrivingOrders = 0;
 		while (true) {
 			try {
 				Order order = ordersInTransit.element();
@@ -357,8 +357,14 @@ public class World implements Global {
 					order.getOrderbook().receiveOrder(order);
 				} else if (order.getArrivalTime() < World.currentRound){
 					World.warningLog.logOnelineWarning(String.format("Current round is %s but order with arrival time %s exist in queue.", currentRound, order.getArrivalTime()));
+					Exception e = new Exception();
+					e.printStackTrace();
+				} else if(order.getArrivalTime() > World.currentRound) {
+					World.eventLog.logOnelineEvent(String.format("After dispatching %s orders this round there were %s order still transit.", nArrivingOrders, ordersInTransit.size()));
+					break;
 				}
 			} catch (NoSuchElementException e) {
+				World.eventLog.logOnelineEvent(String.format("After dispatching %s orders this round there were no more orders in transit.", nArrivingOrders));
 				break;
 			}
 		}
@@ -388,7 +394,7 @@ public class World implements Global {
 	}
 
 	public static void dispatchArrivingReceipts() {
-		int nArrivingReceipts = 0;
+		long nArrivingReceipts = 0;
 		while (true) {
 			try {
 				TransactionReceipt receipt = receiptsInTransit.element();
@@ -426,7 +432,7 @@ public class World implements Global {
 	}
 
 	public static void expireOrdersInAllOrderbooks() {
-		int totalExpiredOrders = 0;
+		long totalExpiredOrders = 0;
 		for (Orderbook orderbook : orderbooks) {
 			totalExpiredOrders += orderbook.expireOrders();
 		}
@@ -473,8 +479,8 @@ public class World implements Global {
 		currentRound = time;
 	}
 
-	public static void executeNRounds(int N) {
-		for (int round = 0; round < N; round++) {
+	public static void executeNRounds(long N) {
+		for (long round = 0; round < N; round++) {
 			World.executeRound();
 		}
 	}
@@ -527,15 +533,15 @@ public class World implements Global {
 		}
 	}
 
-	public static Orderbook getOrderbookByNumbers(int stock, int market) {
-		StockMarketPair pair = new StockMarketPair(stocks.get(stock), markets.get(market));
+	public static Orderbook getOrderbookByNumbers(int stockID, int marketID) {
+		StockMarketPair pair = new StockMarketPair(stocks.get(stockID), markets.get(marketID));
 		if (orderbooksByPair.containsKey(pair)) {
 			return orderbooksByPair.get(pair);
 		} else {
 			World.errorLog
 					.logError(String
 							.format("Orderbook for stock %d and market %d has not been created yet!",
-									stock, market));
+									stockID, marketID));
 			// System.exit(1);
 			return null;
 		}

@@ -5,17 +5,17 @@ import environment.Order.BuySell;
 import environment.World;
 
 public class TransactionReceipt extends Message{
-	private static int receiptsCount = 0;
-	private int id;
-	private int volume;
-	private int price;
-	private int total;
+	private static long receiptsCount = 0;
+	private long id;
+	private long volume;
+	private long price;
+	private long total;
 	private HFT owner;
-	private int dispatchTime, arrivalTime;
 	private Order filledOrder;
 	
 	
-	TransactionReceipt(Order order, int volume, int price, int total){
+	TransactionReceipt(Order order, long volume, long price, long total){
+		super(calculateArrivalTime(order), World.getCurrentRound(), Message.TransmissionType.WITH_TRANSMISSION_DELAY);
 		this.setId(receiptsCount);		
 		receiptsCount++;
 		this.volume = volume;
@@ -31,11 +31,16 @@ public class TransactionReceipt extends Message{
 			World.errorLog.logError("Receipt price must be positive!");
 		}
 		
-		this.dispatchTime = World.getCurrentRound();
+		
 		this.filledOrder = order;
 		this.owner = order.getOwner();
-		this.arrivalTime = World.getCurrentRound() + owner.getLatency(order.getMarket());
 		this.initialize();
+	}
+	
+	private static int calculateArrivalTime(Order order) {
+		int latency = order.getOwner().getLatency(order.getMarket());
+		int arrivalTime = World.getCurrentRound() + latency;
+		return arrivalTime;
 	}
 	
 	private void initialize(){
@@ -48,11 +53,13 @@ public class TransactionReceipt extends Message{
 		return this.owner;
 	}
 	
+	
 	public String toStringForLog(){
 		return this.filledOrder.getBuySell() + "\t\t" + price + "\t" + volume + "\t" + total;
 	}
 	
-	public int getSignedTotal(){
+	
+	public long getSignedTotal(){
 		if(this.filledOrder.getBuySell() == Order.BuySell.BUY){
 			return -1*Math.abs(total);
 		} else{
@@ -61,15 +68,18 @@ public class TransactionReceipt extends Message{
 		
 	}
 	
-	public int getAbsoluteTotal(){
+	
+	public long getAbsoluteTotal(){
 		return this.total;
 	}
 
+	
 	public Stock getStock() {
 		return this.filledOrder.getStock();
 	}
 
-	public int getSignedVolume() {
+	
+	public long getSignedVolume() {
 		if(this.filledOrder.getBuySell() == Order.BuySell.BUY){
 			return Math.abs(volume);
 		} else{
@@ -77,27 +87,34 @@ public class TransactionReceipt extends Message{
 		}
 	}
 	
-	public int getAbsoluteVolume(){
+	
+	public long getUnsignedVolume() {
+		if(this.volume < 0) {
+			World.errorLog.logError("Transaction receipt had negative volume, but the stored volume should be unsigned, and hence always positive");
+		}
 		return this.volume;
 	}
+	
 
-	public int getPrice() {
+	public long getPrice() {
 		return price;
 	}
+	
 
 	public BuySell getBuySell() {
 		return this.filledOrder.getBuySell();
 	}
 
+	
 	public int getDispatchTime() {
-		return dispatchTime;
+		return super.getDispatchTime();
 	}
 
-	public int getArrivalTime() {
-		return arrivalTime;
+	public long getArrivalTime() {
+		return super.getArrivalTime();
 	}
 	
-	public Order getOriginalOrder(){
+	public Order getFilledOrder(){
 		return this.filledOrder;
 	}
 
@@ -105,17 +122,19 @@ public class TransactionReceipt extends Message{
 		return this.filledOrder.getOrderbook();
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
-	public static int getReceiptCount(){
+	public static long getReceiptCount(){
 		return receiptsCount;
 	}
+
+	
 	
 	
 	

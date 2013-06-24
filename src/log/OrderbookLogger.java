@@ -3,20 +3,28 @@ package log;
 import environment.Order;
 import environment.Orderbook;
 import environment.TransactionReceipt;
+import environment.World;
 
 public class OrderbookLogger extends Logger implements Logging{
 	@SuppressWarnings("unused")
+	public enum Type{
+		ORDER_FLOW_LOG,
+		ORDERBOOK_ROUND_BASED_DATA
+	}
+	
 	private Orderbook orderbook;
 
-	public OrderbookLogger(String directory, String logName, Orderbook orderbook, boolean recordHeader) {
+	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType) {
 		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()));
-		if(recordHeader) {
-			this.recordHeader();
+		if(logType == Type.ORDER_FLOW_LOG) {
+			this.recordOrderFlowHeader();
+		} else {
+			World.errorLog.logError("Other types that ORDER_FLOW_LOG has not yet been implemented");
 		}
 		this.orderbook = orderbook;
 	}
 	
-	private void recordHeader()	{
+	private void recordOrderFlowHeader()	{
 		String header =
 				"LogNum\t" +
 				"Time\t" +
@@ -40,9 +48,11 @@ public class OrderbookLogger extends Logger implements Logging{
 
 	public void logEventAddOrder(Order order) {
 		if (Logging.logOrderbookAddOrder) {
-			String line = super.getNewEntry() + "Add\t"
-					+ order.toStringForOrderbookLog();
+			String line = super.getNewEntry() + "Add\t" + order.toStringForOrderbookLog();
 			super.writeToFile(line);
+			if(Logging.logOrderbookEventsToConsole) {
+				this.writeToConsole(line);
+			}
 		}
 	}
 
@@ -57,9 +67,9 @@ public class OrderbookLogger extends Logger implements Logging{
 		
 	}
 
-	public void logEventUpdateOrderVolume(Order order, int volChange) {
+	public void logEventUpdateOrderVolume(Order order, long tradeVolume) {
 		if (Logging.logOrderbookUpdateOrderVolume) {
-			String line = super.getNewEntry() + "UpdVol\t" + order.getID() + "\t\t\t\t" + -volChange;
+			String line = super.getNewEntry() + "UpdVol\t" + order.getID() + "\t\t\t\t" + -tradeVolume;
 			super.writeToFile(line);
 			if(Logging.logOrderbookEventsToConsole){
 				this.writeToConsole(line);

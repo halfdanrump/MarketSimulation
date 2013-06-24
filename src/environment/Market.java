@@ -32,7 +32,7 @@ public class Market implements MarketRules{
 		return this.id;
 	}
 	
-	public int getDelayedBestSellPrice(HFT agent, Stock stock) throws NoOrdersException{
+	public long getDelayedBestSellPrice(HFT agent, Stock stock) throws NoOrdersException{
 		int time = World.getCurrentRound() - agent.getLatency(this);
 		try {
 			Orderbook orderbook = this.orderbooksByStock.get(stock);
@@ -43,7 +43,7 @@ public class Market implements MarketRules{
 		}
 	}
 	
-	public int getDelayedBestBuyPrice(HFT agent, Stock stock) throws NoOrdersException{
+	public long getDelayedBestBuyPrice(HFT agent, Stock stock) throws NoOrdersException{
 		int time = World.getCurrentRound() - agent.getLatency(this);
 		try{
 			return this.orderbooksByStock.get(stock).getBestBuyPrice(time);
@@ -56,20 +56,7 @@ public class Market implements MarketRules{
 		return this.orderbooksByStock.get(stock);
 	}
 
-	public void submitOrderAtLastTradedPrice(Orderbook orderbook, Order.BuySell buysell) {
-		if(buysell == Order.BuySell.BUY) {
-			int price = orderbook.getLastTradedMarketOrderBuyPrice();
-			new Order(World.getCurrentRound(), World.getCurrentRound(), MarketRules.orderLengthWhenMarketFillsEmptyBook, MarketRules.orderVolumeWhenMarketFillsEmptyBook, price, MarketRules.orderTypeWhenMarketFillsEmptyBook, buysell, null, orderbook);
-		} else {
-			int price = orderbook.getLastTradedMarketOrderSellPrice();
-			new Order(World.getCurrentRound(), World.getCurrentRound(), MarketRules.orderLengthWhenMarketFillsEmptyBook, MarketRules.orderVolumeWhenMarketFillsEmptyBook, price, MarketRules.orderTypeWhenMarketFillsEmptyBook, buysell, null, orderbook);
 
-		}
-		
-		
-		// TODO Auto-generated method stub
-//		new Order
-	}
 	
 }
 	

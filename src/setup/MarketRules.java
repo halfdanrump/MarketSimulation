@@ -14,7 +14,7 @@ public interface MarketRules {
 //	final institutionPriceDeterminationTypes institutionPriceDetermination =
 //											institutionPriceDeterminationTypes.LAST_PRICE;
 	final boolean marketFillsEmptyBook = true;
-	final int orderVolumeWhenMarketFillsEmptyBook = 99;
+	final long orderVolumeWhenMarketFillsEmptyBook = 99;
 	final Order.Type orderTypeWhenMarketFillsEmptyBook = Order.Type.MARKET;
 	final int orderLengthWhenMarketFillsEmptyBook = 5;
 }
