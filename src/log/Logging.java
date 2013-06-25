@@ -12,7 +12,7 @@ public interface Logging {
 	 * WORLD. What kind of world events to log. A world event could be the cumulative actions of all agents in a round 
 	 */
 	boolean logWorldEventsToFile = true;
-	boolean logWorldEventsToConsole = true;
+	boolean logWorldEventsToConsole = false;
 	boolean logWorldWarningsToFile = true;
 	boolean logWorldWarningsToConsole = true;
 	
@@ -21,7 +21,7 @@ public interface Logging {
 	 */
 	
 	boolean logAgentActionsToFile = true;
-	boolean logAgentActionsToConsole = true;
+	boolean logAgentActionsToConsole = false;
 	boolean logAgentWarningsToFile = true;
 	boolean logAgentWarningsToConsole = true;
 	
@@ -35,6 +35,8 @@ public interface Logging {
 	 * ORDERBOOK. What kind of orderbook events to log
 	 */
 	final boolean logOrderbookEventsToConsole = false;
+	final boolean logOrderbookOnelineEvents = true;
+	boolean logOrderbookOnelineEventsToConsole = false;
 	//////////////////////////////////////////////////
 	final boolean logOrderbookMatches = true; // Logs whenever there's a log (including stylized traders)
 	final boolean logOrderbookTransactions = true; // Logs only when there's a transaction, i.e. a match with an order placed by a HFT
@@ -45,6 +47,7 @@ public interface Logging {
 	final boolean logOrderbookProcessOrder = true;
 	
 	String logFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/";
+
 	
 //	String worldLogPath = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/";
 //	

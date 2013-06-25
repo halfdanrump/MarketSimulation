@@ -83,7 +83,7 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 		long sellPrice, buyPrice;
 		for (Market market : this.markets) {
 			try {
-				sellPrice = market.getDelayedBestSellPrice(this, this.stock);
+				sellPrice = market.getDelayedBestSellPriceAtEndOfRound(this, this.stock);
 				this.knownMarketAsks.put(market, sellPrice);
 			} catch (NoOrdersException e) {
 				this.requestMarketInformation();
@@ -91,7 +91,7 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 				throw e;
 			}
 			try {
-				buyPrice = market.getDelayedBestBuyPrice(this, this.stock);
+				buyPrice = market.getDelayedBestBuyPriceAtEndOfRound(this, this.stock);
 				this.knownMarketBids.put(market, buyPrice);
 			} catch (NoOrdersException e) {
 				this.hibernate();

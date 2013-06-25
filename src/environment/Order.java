@@ -41,12 +41,12 @@ public class Order extends Message{
 //		if(arrivalTime < dispatchTime){
 //			Exception e = new InvalidOrderException(arrivalTime, dispatchTime)
 //		}
-		if(price <0 | price == Integer.MAX_VALUE | price == 0){
+		if(price <= 0 | price == Integer.MAX_VALUE){
 			new InvalidOrderException(initialVolume, price, owner, orderbook);
 		} else{
 			this.price = price;			
 		}
-		if(initialVolume < 0){
+		if(initialVolume <= 0){
 			new InvalidOrderException(initialVolume, price, owner, orderbook);
 		} else{
 			this.currentAgentSideVolume = initialVolume;
@@ -63,8 +63,6 @@ public class Order extends Message{
 		Order.orderCount++;
 		if(transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
 			if(super.getArrivalTime() < World.getCurrentRound()){
-				long currentRound = World.getCurrentRound();
-				System.out.println(currentRound);
 				World.warningLog.logOnelineWarning("New order was created. Arrival time was before current world time, so the order will never be used.");
 			}
 			World.addNewOrder(this);
@@ -76,15 +74,6 @@ public class Order extends Message{
 		
 		
 	}
-	
-//	public void setVolume(long newVolume){
-//		if(newVolume > 0){
-//			this.volume = newVolume;			
-//		} else if (newVolume == 0){
-//			System.out.println("Updated order volume to 0!");
-//			System.exit(1);
-//		}
-//	}
 	
 	public void updateAgentSideVolumeByDifference(long volumeChange){
 		this.currentAgentSideVolume += volumeChange;

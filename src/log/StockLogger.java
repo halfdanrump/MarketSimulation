@@ -57,17 +57,17 @@ public class StockLogger extends Logger {
 			for(Market market:stock.getMarkets()){
 				Orderbook orderbook = market.getOrderbook(stock);
 				try{
-					bestBuyPrice = String.valueOf(orderbook.getBestBuyPrice(round));
+					bestBuyPrice = String.valueOf(orderbook.getBestBuyPriceAtEndOfRound(round));
 				} catch(NoOrdersException e){
 					bestBuyPrice = "NaN";
 				}
 				try {
-					bestSellPrice = String.valueOf(orderbook.getBestSellPrice(round));
+					bestSellPrice = String.valueOf(orderbook.getBestSellPriceAtEndOfRound(round));
 				} catch (NoOrdersException e) {
 					bestSellPrice = "NaN";
 				}
 				
-				String spread = market.getOrderbook(stock).getSpread(round);
+				String spread = market.getOrderbook(stock).getSpreadForBestPricesAtEndOfRound(round);
 				
 				entry += String.format("\t%s\t%s\t%s",bestSellPrice, bestBuyPrice, spread);
 			}

@@ -9,7 +9,8 @@ public class OrderbookLogger extends Logger implements Logging{
 	@SuppressWarnings("unused")
 	public enum Type{
 		ORDER_FLOW_LOG,
-		ORDERBOOK_ROUND_BASED_DATA
+		ORDERBOOK_ROUND_BASED_DATA,
+		EVENT_LOG
 	}
 	
 	private Orderbook orderbook;
@@ -18,7 +19,12 @@ public class OrderbookLogger extends Logger implements Logging{
 		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()));
 		if(logType == Type.ORDER_FLOW_LOG) {
 			this.recordOrderFlowHeader();
-		} else {
+		} else if(logType == Type.EVENT_LOG) {
+			super.writeToFile(	"**********************************************\n" +
+								"Misc events that happened in the orderbook\n" +
+								"**********************************************\n\n");
+		}
+		else {
 			World.errorLog.logError("Other types that ORDER_FLOW_LOG has not yet been implemented");
 		}
 		this.orderbook = orderbook;
@@ -101,6 +107,7 @@ public class OrderbookLogger extends Logger implements Logging{
 			} catch(NullPointerException e) {
 				
 			}
+			line += String.format("\tPrice: %s", matchingOrder.getPrice());
 			super.writeToFile(line);
 			if(Logging.logOrderbookEventsToConsole){
 				this.writeToConsole(line);
@@ -139,6 +146,17 @@ public class OrderbookLogger extends Logger implements Logging{
 		super.writeToFile(line);
 		if(Logging.logOrderbookEventsToConsole) {
 			this.writeToConsole(line);
+		}
+	}
+	
+	
+	public void logOnelineEvent(String line) {
+		line = super.getNewEntry() + line;
+		if(Logging.logOrderbookOnelineEvents) {
+			super.writeToFile(line);
+		}
+		if(Logging.logOrderbookOnelineEventsToConsole) {
+			super.writeToConsole(line);
 		}
 	}
 

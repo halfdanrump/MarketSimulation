@@ -23,12 +23,12 @@ public interface StylizedTraderBehavior {
 	public long noiseWeightStd = 1;
 	
 	//SlowTraderMeanReversionTimeInterval = 2000;
-	double g_1_mu = 0d;				// expected value of fundamentalist weight, g_i_1
-	double g_1_sigma = 5d;			// variance of fundamentalist weight, g_i_1 
-	double g_2_mu = 0d;				// expected value of chartist weight, g_2_1	
-	double g_2_sigma = 20d;			// variance of chartist weight, g_i_2
-	double g_3_mu = 0d;				// expected value of noise weight, g_i_3
-	double g_3_sigma = 1d;			// variance of noise weight, g_i_3
+//	double g_1_mu = 0d;				// expected value of fundamentalist weight, g_i_1
+//	double g_1_sigma = 5d;			// variance of fundamentalist weight, g_i_1 
+//	double g_2_mu = 0d;				// expected value of chartist weight, g_2_1	
+//	double g_2_sigma = 20d;			// variance of chartist weight, g_i_2
+//	double g_3_mu = 0d;				// expected value of noise weight, g_i_3
+//	double g_3_sigma = 1d;			// variance of noise weight, g_i_3
 	
 //	public static long decideVolume();
 //	public long decidePrice();

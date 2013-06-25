@@ -263,8 +263,6 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 				this.updateCash(receipt.getSignedTotal());
 				this.updatePortfolio(stock, receipt.getSignedVolume());
 			} else {
-				System.out.println(this.cash);
-				System.out.println(receipt.getAbsoluteTotal());
 				World.errorLog.logError("Agent should be able to have enough cash by now to borrow stocks, but he didn't...");
 			}
 		} else if(buysell == Order.BuySell.SELL) {

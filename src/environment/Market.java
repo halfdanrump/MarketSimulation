@@ -32,21 +32,21 @@ public class Market implements MarketRules{
 		return this.id;
 	}
 	
-	public long getDelayedBestSellPrice(HFT agent, Stock stock) throws NoOrdersException{
+	public long getDelayedBestSellPriceAtEndOfRound(HFT agent, Stock stock) throws NoOrdersException{
 		int time = World.getCurrentRound() - agent.getLatency(this);
 		try {
 			Orderbook orderbook = this.orderbooksByStock.get(stock);
-			return orderbook.getBestSellPrice(time);		
+			return orderbook.getBestSellPriceAtEndOfRound(time);		
 		} catch (NoOrdersException e) {
 			// TODO Auto-generated catch block
 			throw e;
 		}
 	}
 	
-	public long getDelayedBestBuyPrice(HFT agent, Stock stock) throws NoOrdersException{
+	public long getDelayedBestBuyPriceAtEndOfRound(HFT agent, Stock stock) throws NoOrdersException{
 		int time = World.getCurrentRound() - agent.getLatency(this);
 		try{
-			return this.orderbooksByStock.get(stock).getBestBuyPrice(time);
+			return this.orderbooksByStock.get(stock).getBestBuyPriceAtEndOfRound(time);
 		} catch(NoOrdersException e){
 			throw e;
 		}

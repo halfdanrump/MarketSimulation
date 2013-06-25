@@ -80,8 +80,8 @@ public class WorldObjectHandler {
 		for(Orderbook orderbook:World.getOrderbooks()){
 			orderbook.orderflowLog = new OrderbookLogger(Logging.logFolder, "lineLog_orderFlow_", orderbook, OrderbookLogger.Type.ORDER_FLOW_LOG);
 			logs.add(orderbook.orderflowLog);
-//			orderbook.eventLog = new Logger(Logging.orderbookEventFolder, String.format("orderbook_%s_events", orderbook.getIdentifier()));
-//			logs.add(orderbook.eventLog);
+			orderbook.eventLog = new OrderbookLogger(Logging.logFolder, "linelog_events_", orderbook, OrderbookLogger.Type.EVENT_LOG);
+			logs.add(orderbook.eventLog);
 		}
 		
 		for(HFT agent:World.getHFTAgents()){

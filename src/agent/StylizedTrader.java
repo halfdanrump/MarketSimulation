@@ -28,9 +28,6 @@ public class StylizedTrader implements StylizedTraderBehavior{
 		long currentFundamental = stock.getFundamentalPrice(World.getCurrentRound());
 		long additivePriceNoise = Utils.getGaussianInteger(StylizedTraderBehavior.addivePriceNoiseMean, StylizedTraderBehavior.additivePriceNoiseStd); 
 		long price = currentFundamental + additivePriceNoise;
-		if(price <= 0) {
-			System.out.println(price);
-		}
 		return price;
 	}
 	
