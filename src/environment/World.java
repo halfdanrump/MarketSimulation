@@ -65,6 +65,7 @@ public class World implements SimulationSetup {
 	 * Other internal variables
 	 */
 	public static final long creationTime = System.currentTimeMillis();
+	public static long runTime = 0;
 	private static int currentRound = 0;
 	private roundPhases roundPhase;
 	
@@ -92,7 +93,9 @@ public class World implements SimulationSetup {
 	}
 
 	public static void executeRound() {
-
+		if(currentRound % 500 == 0) {
+			System.out.println(String.format("Round %s", currentRound));
+		}
 		/*
 		 * Increment time variable Update fundamental prices for each stock.
 		 */
@@ -132,6 +135,7 @@ public class World implements SimulationSetup {
 		processNewOrdersInAllOrderbooks();
 
 		logRoundBasedData();
+		updateRuntimeAtTheEndOfRound();
 	}
 
 	private static void logRoundBasedData() {
@@ -144,7 +148,7 @@ public class World implements SimulationSetup {
 	private static void logAgentData() {
 		// TODO Auto-generated method stub
 		for(HFT agent:World.agents){
-			agent.datalog.recordDataEntry();
+			agent.datalog.recordDataEntryAtEndOfRound();
 		}
 	}
 
@@ -498,6 +502,10 @@ public class World implements SimulationSetup {
 		return stock;
 
 		// return stocksByID;
+	}
+	
+	private static void updateRuntimeAtTheEndOfRound() {
+		World.runTime = System.currentTimeMillis() - World.creationTime;
 	}
 
 	public static Market getMarketByNumber(int index) {

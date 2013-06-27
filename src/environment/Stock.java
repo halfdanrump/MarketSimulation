@@ -39,7 +39,7 @@ public class Stock implements TradeableAsset{
 		long initialFundamentalPrice = TradeableAsset.initialPrice;
 		this.fundamentalPrice.add(initialFundamentalPrice);
 		this.gbm = new GeometricBrownianMotion(initialFundamentalPrice, fundamentalBrownianMean, fundamentalBrownianVariance, new MRG32k3a());
-		gbm.setObservationTimes(1, SimulationSetup.nRounds);
+		gbm.setObservationTimes(1, SimulationSetup.nRounds+1);
 	}
 	
 	private void initialize(){

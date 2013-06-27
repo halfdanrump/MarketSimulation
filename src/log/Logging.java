@@ -24,6 +24,8 @@ public interface Logging {
 	boolean logAgentActionsToConsole = false;
 	boolean logAgentWarningsToFile = true;
 	boolean logAgentWarningsToConsole = true;
+	boolean logAgentDataToFile = true;
+	boolean logAgentDataToConsole = true;
 	
 	/*
 	 * STOCKS
@@ -47,6 +49,7 @@ public interface Logging {
 	final boolean logOrderbookProcessOrder = true;
 	
 	String logFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/";
+
 
 	
 //	String worldLogPath = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/";

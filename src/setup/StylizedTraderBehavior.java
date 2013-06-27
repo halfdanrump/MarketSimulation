@@ -9,7 +9,7 @@ public interface StylizedTraderBehavior {
 	public double volumeStd = 10d;
 	
 	public double addivePriceNoiseMean = 0d;
-	public double additivePriceNoiseStd = 50d;
+	public double additivePriceNoiseStd = 10000d;
 	
 	
 	public long fundamentalistWeightMean = 0;

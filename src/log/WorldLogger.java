@@ -19,8 +19,8 @@ public class WorldLogger extends Logger {
 
 	private long nReRequestionMarketInformation;
 
-	public WorldLogger(String directory, String identifier, boolean recordHeader) {
-		super(directory, identifier);
+	public WorldLogger(String directory, String identifier, boolean recordHeader, Logger.Type type) {
+		super(directory, identifier, type);
 		if(recordHeader) {
 			recordHeader();
 		}

@@ -2,10 +2,6 @@ package log;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import environment.Order;
 import environment.Stock;
 import environment.World;
@@ -17,8 +13,8 @@ public class AgentLogger extends Logger {
 
 	HFT agent;
 
-	public AgentLogger(String directory, String identifier, HFT agent, boolean recordHeader) {
-		super(directory, String.format("%s_agent_%s", identifier, agent.getID()));
+	public AgentLogger(String directory, String identifier, HFT agent, boolean recordHeader, Logger.Type type) {
+		super(directory, String.format("%s_agent_%s", identifier, agent.getID()), type);
 		this.agent = agent;
 		if(recordHeader) {
 			this.recordDataHeader();
@@ -26,13 +22,14 @@ public class AgentLogger extends Logger {
 	}
 
 	public void recordDataHeader() {
-		String header = "Round, " + "Agent wealth, " + "number of submitted orders, " + "number of cancellations, " + "number of fulfilled orders, " + "number of standing buy orders, " + "number of standing sell orders\n" + "Round\tWealth\tnSubOr\tnCan\tnFull\tNSBO\tNSSO" 
+		String header = "Round, " + "Agent wealth, " + "number of submitted orders, " + "number of cancellations, " + "number of fulfilled orders, " + "number of standing buy orders, " + "number of standing sell orders\n" + 
+						"Round, Cash, Wealth, nSubOr, nCan, nFull, NSBO, NSSO, NTBWNA" 
 						+ this.getPortfolioHeaderAsTabulatedString();
 		super.writeToFile(header);
 	}
 
-	public void recordDataEntry() {
-		String entry = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+	public void recordDataEntryAtEndOfRound() {
+		String entry = String.format("%s, %s, %s, %s, %s, %s, %s, %s",
 									World.getCurrentRound(), 
 									this.agent.getCash(),
 									this.agent.getTotalWealth(),
@@ -42,13 +39,18 @@ public class AgentLogger extends Logger {
 									agent.getnStandingBuyOrders(), 
 									agent.getnStandingSellOrders())
 									+ this.getCurrentPortfolioAsTabulatedString();
-		super.writeToFile(entry);
+		if(Logging.logAgentDataToFile) {
+			super.writeToFile(entry);
+		}
+		if(Logging.logAgentDataToConsole) {
+			this.writeToConsole(entry);
+		}
 	}
 	
 	private String getPortfolioHeaderAsTabulatedString() {
 		String s = "";
 		for(Stock stock:this.agent.getActiveStocks()) {
-			s += String.format("\tStock%s", stock.getID());
+			s += String.format(", Stock%s", stock.getID());
 		}
 //		HashMap<Stock, Integer> ownedStocks = this.agent.getOwnedStocks();
 //		Iterator iterator = ownedStocks.entrySet().iterator();
@@ -56,7 +58,7 @@ public class AgentLogger extends Logger {
 //			Map.Entry<Stock, Integer> pair = (Map.Entry<Stock, Integer>) iterator.next();
 //			Stock stock = pair.getKey();
 //			Integer amount = pair.getValue();
-//			s += String.format("\t%s", amount);
+//			s += String.format(", %s", amount);
 //		}
 		return s;
 //		for() {
@@ -68,7 +70,7 @@ public class AgentLogger extends Logger {
 		String s = "";
 		for(Stock stock:this.agent.getActiveStocks()) {
 			long amount = this.agent.getOwnedStocks().get(stock);
-			s += String.format("\t%s", amount);
+			s += String.format(", %s", amount);
 		}
 //		HashMap<Stock, Integer> ownedStocks = this.agent.getOwnedStocks();
 //		Iterator iterator = ownedStocks.entrySet().iterator();
@@ -76,7 +78,7 @@ public class AgentLogger extends Logger {
 //			Map.Entry<Stock, Integer> pair = (Map.Entry<Stock, Integer>) iterator.next();
 //			Stock stock = pair.getKey();
 //			Integer amount = pair.getValue();
-//			s += String.format("\t%s", amount);
+//			s += String.format(", %s", amount);
 //		}
 		return s;
 //		for() {

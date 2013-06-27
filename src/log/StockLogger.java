@@ -15,8 +15,8 @@ public class StockLogger extends Logger {
 	private Stock stock;
 	private Type type;
 	
-	public StockLogger(String directory, String logType, Stock stock, StockLogger.Type loggerType) {
-		super(directory, String.format("%s_stock%s", logType, stock.getID()));
+	public StockLogger(String directory, String logType, Stock stock, StockLogger.Type loggerType, Logger.Type type) {
+		super(directory, String.format("%s_stock%s", logType, stock.getID()), type);
 		this.stock = stock;
 		this.type = loggerType;
 		if(loggerType == StockLogger.Type.LOG_AFTER_EVERY_ROUND) {
@@ -27,21 +27,21 @@ public class StockLogger extends Logger {
 	}
 	
 	public void recordStockInformationAfterTransactionHeader() {
-		String header = super.getNewEntry() + "\tBook\tPrice";
+		String header = super.getNewEntry() + ", Book, Price";
 		super.writeToFile(header);
 	}
 	
 	public void recordStockInformationAfterTransaction(long tradePrice, Orderbook orderbook) {
-		String entry = super.getNewEntry() + String.format("\t%s\t%s", orderbook.getMarket().getID(), tradePrice);
+		String entry = super.getNewEntry() + String.format(", %s, %s", orderbook.getMarket().getID(), tradePrice);
 		super.writeToFile(entry);
 	}
 	
 	
 	public void recordRoundBasedHeader(){
 		if(this.type == Type.LOG_AFTER_EVERY_ROUND) {
-			String header = "Round\t Fund";
+			String header = "Round,  Fund";
 			for(Market market:stock.getMarkets()){
-				header += String.format("\tbSell%s\tbBuy%s\tSpread", market.getID(), market.getID());
+				header += String.format(", bSell%s, bBuy%s, Spread", market.getID(), market.getID());
 			}
 			super.writeToFile(header);			
 		} else {
@@ -52,7 +52,7 @@ public class StockLogger extends Logger {
 	public void recordEndRoundPriceInformation(int round){
 		if(this.type == Type.LOG_AFTER_EVERY_ROUND) {
 			String bestBuyPrice, bestSellPrice;
-			String entry = String.format("%s\t%s", round, stock.getFundamentalPrice(round));
+			String entry = String.format("%s, %s", round, stock.getFundamentalPrice(round));
 			
 			for(Market market:stock.getMarkets()){
 				Orderbook orderbook = market.getOrderbook(stock);
@@ -69,7 +69,7 @@ public class StockLogger extends Logger {
 				
 				String spread = market.getOrderbook(stock).getSpreadForBestPricesAtEndOfRound(round);
 				
-				entry += String.format("\t%s\t%s\t%s",bestSellPrice, bestBuyPrice, spread);
+				entry += String.format(", %s, %s, %s",bestSellPrice, bestBuyPrice, spread);
 			}
 			super.writeToFile(entry);
 		} else {

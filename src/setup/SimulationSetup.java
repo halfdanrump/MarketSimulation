@@ -4,34 +4,16 @@ public interface SimulationSetup {
 
 	/* Simulation parameters
 	 * */
-	public final int nRounds = 1000000;
+	public final int nRounds = 10000;
 	
-	long nSlowTraderOrdersPerRounds = 2;
+	long nSlowTraderOrdersPerRounds = 10;
 
 	// initial market setting
 		
-
-
-	
-	
-	
 	
 	/* Agent parameters
 	 * */
 	public static final long nAgents = 100;
-	
-	
-	
-	/*
-	 * Agent strategy parameters
-	 */
-	
-	
-	//	
-	/*
-	 * Stylized trader settings
-	 */
-	
 	
 	
 	/* Market parameters

@@ -174,17 +174,17 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 					- standingSellOrder.getPrice();
 
 			if (buyPriceDiff == 0 && sellPriceDiff != 0) {
-				this.updateSellSideOrder(dispatchTime, transmissionDelay,	currentMarketBuyPrice, currentMarketSellPrice,standingSellOrder, spreadViolation, orderbook);
+				this.updateSellSideOrderPrice(dispatchTime, transmissionDelay,	currentMarketBuyPrice, currentMarketSellPrice,standingSellOrder, spreadViolation, orderbook);
 			} else if (buyPriceDiff != 0 && sellPriceDiff == 0) {
-				this.updateBuySideOrder(dispatchTime, transmissionDelay,currentMarketBuyPrice, currentMarketSellPrice, standingBuyOrder, spreadViolation, orderbook);
+				this.updateBuySideOrderPrice(dispatchTime, transmissionDelay,currentMarketBuyPrice, currentMarketSellPrice, standingBuyOrder, spreadViolation, orderbook);
 			} else if (buyPriceDiff != 0 && sellPriceDiff != 0) {
-				this.updateBothSideOrders(dispatchTime, transmissionDelay, currentMarketSpread, currentMarketBuyPrice, currentMarketSellPrice, buyPriceDiff, sellPriceDiff, standingBuyOrder, standingSellOrder, spreadViolation, orderbook);
+				this.updateBothSideOrderPrices(dispatchTime, transmissionDelay, currentMarketSpread, currentMarketBuyPrice, currentMarketSellPrice, buyPriceDiff, sellPriceDiff, standingBuyOrder, standingSellOrder, spreadViolation, orderbook);
 			}
 		}
 		return true;
 	}
 
-	private void updateBothSideOrders(int dispatchTime, int transmissionDelay, long currentMarketSpread, long currentMarketBuyPrice, long currentMarketSellPrice, long buyPriceDiff, long sellPriceDiff,	Order standingBuyOrder, Order standingSellOrder,boolean spreadViolation, Orderbook orderbook) {
+	private void updateBothSideOrderPrices(int dispatchTime, int transmissionDelay, long currentMarketSpread, long currentMarketBuyPrice, long currentMarketSellPrice, long buyPriceDiff, long sellPriceDiff,	Order standingBuyOrder, Order standingSellOrder,boolean spreadViolation, Orderbook orderbook) {
 		
 		this.eventlog.logAgentAction(String.format("Agent %s updated both his standing orders at market %s. Order buy-id: %s, sell-id: %s", this.getID(), orderbook.getMarket().getID(), standingBuyOrder.getID(), standingSellOrder.getID()));
 
@@ -199,12 +199,20 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay, standingBuyOrder));
 		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay, standingSellOrder));
 		Order newBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
-		Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
 		this.submitOrder(newBuyOrder);
-		this.submitOrder(newSellOrder);
+		this.createSellOrder(transmissionDelay, dispatchTime, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		
+	}
+	
+	private void createSellOrder(int transmissionDelay, int dispatchTime, long newSellPrice, Order.Type orderType, Order.BuySell buysell, Orderbook orderbook, Message.TransmissionType transmissionType) {
+		long numberOfOwnedStockAfterSellingOrderIsFullfilled; 
+		if(this.doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
+			Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+			this.submitOrder(newSellOrder);
+		}
 	}
 
-	private void updateSellSideOrder(int dispatchTime, int transmissionDelay,	long currentMarketBuyPrice, long currentMarketSellPrice, Order standingSellOrder, boolean spreadViolation, Orderbook orderbook) {
+	private void updateSellSideOrderPrice(int dispatchTime, int transmissionDelay,	long currentMarketBuyPrice, long currentMarketSellPrice, Order standingSellOrder, boolean spreadViolation, Orderbook orderbook) {
 		this.eventlog.logAgentAction(String.format("Agent %s updated his standing SELL side order", this.getID()));
 		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay,
 				standingSellOrder));
@@ -214,7 +222,7 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 		this.submitOrder(newSellOrder);
 	}
 
-	private void updateBuySideOrder(int dispatchTime, int transmissionDelay, long currentMarketBuyPrice, long currentMarketSellPrice, Order standingBuyOrder, boolean spreadViolation, Orderbook orderbook) {
+	private void updateBuySideOrderPrice(int dispatchTime, int transmissionDelay, long currentMarketBuyPrice, long currentMarketSellPrice, Order standingBuyOrder, boolean spreadViolation, Orderbook orderbook) {
 		this.eventlog.logAgentAction(String.format("Agent %s updated his standing BUY SIDE order, id: %s", this.getID(), standingBuyOrder.getID()));
 		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay,
 				standingBuyOrder));

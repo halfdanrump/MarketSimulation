@@ -15,8 +15,8 @@ public class OrderbookLogger extends Logger implements Logging{
 	
 	private Orderbook orderbook;
 
-	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType) {
-		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()));
+	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType, Logger.Type type) {
+		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()), type);
 		if(logType == Type.ORDER_FLOW_LOG) {
 			this.recordOrderFlowHeader();
 		} else if(logType == Type.EVENT_LOG) {

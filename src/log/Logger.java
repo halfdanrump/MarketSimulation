@@ -20,21 +20,32 @@ public class Logger implements Logging {
 	FileWriter writer;
 	BufferedWriter buffer;
 
+	public enum Type{
+		TXT,
+		CSV
+	}
+	
 	// public Logger(File file){
 	// this.file = file;
 	// }
-	public Logger(String directory, String identifier) {
+	public Logger(String directory, String identifier, Type type) {
 		this.createFolders(directory);
+		
+		if(type == Type.TXT) {
+			identifier += ".txt";
+		} else if(type == Type.CSV) {
+			identifier += ".cvs";
+		}
 		String filepath = getFilePath(directory, identifier);
 		this.file = new File(filepath);
 		try {
 			try {
 				this.writer = new FileWriter(this.file);
 			} catch (FileNotFoundException e) {
-
+				this.writeToConsole(String.format("Creating file %s", filepath));
 			}
 			this.buffer = new BufferedWriter(this.writer);
-			this.createEventLogHeader();
+//			this.createEventLogHeader();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,10 +104,12 @@ public class Logger implements Logging {
 
 	protected void writeToFile(String line) {
 		// System.out.println(line);
-		try {
-			this.writer.write(line + "\n");
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(Logging.fileLogging) {
+			try {
+				this.writer.write(line + "\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -118,6 +131,7 @@ public class Logger implements Logging {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
 	private void createEventLogHeader() {
 		String header = "nLogs\tRT\tRound\tEvent";
 		this.writeToFile(header);
