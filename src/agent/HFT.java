@@ -27,38 +27,55 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 	protected HashMap<Market, Integer> latencyToMarkets;
 	protected ArrayList<TransactionReceipt> receipts;
 	protected HashMap<Stock, Long> ownedStocks;
-	protected HashMap<Stock, Long> stocksInStandingSellOrders;
+	protected HashMap<Stock, Long> numberOfStocksInStandingSellOrders;
+	private HashMap<Stock, Long> numberOfStocksInStandingBuyOrders;
 	protected ArrayList<Market> markets;
 	protected ArrayList<Stock> stocks;
 
+	/*
+	 * For experiments in which the agent is associated with a group
+	 */
+	protected int group;
+	
 	protected long nSubmittedBuyOrders;
 	protected long nSubmittedSellOrders;
 	protected long nSubmittedCancellations;
-	protected long nFulfilledBuyOrders;
-	protected long nFulfilledSellOrders;
+	protected long nReceivedBuyOrderReceipts;
+	protected long nReceivedSellOrderReceipts;
 	protected long nTimesBorrowedCash;
 	protected long nTimesSoldStocksWhenAlreadyHadNegativeAmountOfStock;
+	protected long nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList;
+	protected long nTimesAgentDidShortSelling;
 
 	protected ArrayList<Order> orderHistory;
 
 	protected abstract long getWaitingTime();
 
+	public enum agentAction{
+		SUBMIT_ORDER,
+		CANCEL_ORDER,
+		UPDATE_ORDER
+	}
+	
 	public abstract void storeMarketInformation() throws NoOrdersException;
 
 	public abstract boolean executeStrategyAndSubmit();
 
 	public AgentLogger eventlog;
-	public AgentLogger datalog;
-
-	public HFT(long wealth, int[] stockIDs, int[] startingPortfolio, int[] marketIDs, int[] latencies) {
+	public AgentLogger roundDatalog;
+	public AgentLogger tradeLog;
+	
+	public HFT(long wealth, int[] stockIDs, int[] startingPortfolio, int[] marketIDs, int[] latencies, int group) {
 		this.cash = wealth;
 		this.wakeupTime = World.getCurrentRound();
+		this.group = group;
 		this.initialize(stockIDs, marketIDs, latencies);
 		this.setPortfolio(startingPortfolio);
 		World.addNewAgent(this);
 	}
 
-	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies) {
+	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, int group) {
+		this.group = group;
 		if (randomStartWealth) {
 			this.cash = getRandomInitialTraderWealth();
 		} else {
@@ -72,35 +89,42 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 	private void initialize(int[] stockIDs, int[] marketIDs, int[] marketLatencies) {
 		this.id = nHFTs;
 		nHFTs++;
+		/*
+		 * Variables for logging
+		 */
 		this.nSubmittedBuyOrders = 0;
 		this.nSubmittedSellOrders = 0;
-		this.nFulfilledBuyOrders = 0;
-		this.nFulfilledSellOrders = 0;
+		this.nReceivedBuyOrderReceipts = 0;
+		this.nReceivedSellOrderReceipts = 0;
 		this.nTimesBorrowedCash = 0;
 		this.nTimesSoldStocksWhenAlreadyHadNegativeAmountOfStock = 0;
+		this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList = 0;
+		this.nTimesAgentDidShortSelling = 0;
 		this.receipts = new ArrayList<TransactionReceipt>();
-		this.standingBuyOrders = new HashMap<Orderbook, Order>(); // At present,
-																	// each
-																	// agent can
-																	// only
-																	// maintain
-																	// a single
-																	// order on
-																	// each side
-																	// of the
-																	// book
+
+		/*
+		 * At present, each agent can only maintain a single order on each side
+		 * of the book
+		 */
+		this.standingBuyOrders = new HashMap<Orderbook, Order>();
 		this.standingSellOrders = new HashMap<Orderbook, Order>();
+
 		this.orderbooks = new ArrayList<Orderbook>();
 		this.ownedStocks = new HashMap<Stock, Long>();
 		this.latencyToMarkets = new HashMap<Market, Integer>();
 		this.markets = new ArrayList<Market>();
 		this.stocks = new ArrayList<Stock>();
-		this.stocksInStandingSellOrders = new HashMap<Stock, Long>();
 		this.buildLatencyHashmap(marketIDs, marketLatencies);
 		this.markets.addAll(this.latencyToMarkets.keySet());
 		this.buildOrderbooksHashMap(marketIDs, stockIDs);
 		this.buildStocksList(stockIDs);
 		this.initializePortfolio();
+		this.numberOfStocksInStandingSellOrders = new HashMap<Stock, Long>();
+		this.numberOfStocksInStandingBuyOrders = new HashMap<Stock, Long>();
+		for (Stock stock : this.stocks) {
+			this.numberOfStocksInStandingBuyOrders.put(stock, 0l);
+			this.numberOfStocksInStandingSellOrders.put(stock, 0l);
+		}
 		if (keepOrderHistory) {
 			this.orderHistory = new ArrayList<Order>();
 		}
@@ -196,193 +220,204 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		}
 	}
 
-	// private void updatePortfolio(TransactionReceipt receipt) {
-	// Stock stock = receipt.getStock();
-	// long volumeChange = receipt.getSignedVolume();
-	// long ownedAmountOfStockAfterTransaction = this.ownedStocks.get(stock) +
-	// volumeChange;
-	//
-	// if (ownedAmountOfStockAfterTransaction < 0) {
-	// // if(!(receipt.getOriginalOrder().getBuySell() ==
-	// // Order.BuySell.SELL)) {
-	// //
-	// World.errorLog.logError("Error, because order volume was less than zero, but not a SELL order");
-	// // }
-	// if (MarketRules.allowsShortSelling) {
-	// /*
-	// * If shortselling is allowed, the transaction is simply carried
-	// * through
-	// */
-	// this.receipts.add(receipt);
-	// this.ownedStocks.put(stock, ownedAmountOfStockAfterTransaction);
-	// World.warningLog.logOnelineEvent(String.format("Agent %s shorted a volume of %s of stock number %s",
-	// receipt.getOwner().getID(), receipt.getAbsoluteVolume(),
-	// receipt.getOriginalOrder().getStock().getID()));
-	// } else {
-	// /*
-	// * If not, it has to be handled somehow.
-	// */
-	// World.ruleViolationsLog.logShortSelling(receipt);
-	// World.errorLog.logError("Short selling was not allowed by market rules, but happened. Handling of this situation is not implemented yet");
-	// }
-	// }
-	// // else {
-	// // this.receipts.add(receipt);
-	// // this.ownedStocks.put(stock, ownedAmountOfStockAfterTransaction);
-	// // }
-	// }
+//	private void updateKnowledgeAboutTotalAgentSideVolumeOfCurrentStandingOrders() {
+//		long totalBuyVolume = 0l;
+//		long totalSellVolume = 0l;
+////		Iterator<Orderbook> buySideIterator = this.standingBuyOrders.keySet().iterator();
+////		while(buySideIterator.hasNext()) {
+////			totalBuyVolume += this.standingBuyOrders.get(buySideIterator.next()).getCurrentAgentSideVolume();
+////		}
+//		
+//		/*
+//		 * Setting all entries to zero
+//		 */
+//		Set<Stock> buyStocks= this.numberOfStocksInStandingBuyOrders.keySet();
+//		for(Stock stock:buyStocks) {
+//			this.numberOfStocksInStandingBuyOrders.put(stock, 0l);
+//		}
+//		Set<Stock> sellStocks = this.numberOfStocksInStandingSellOrders.keySet();
+//		for(Stock stock:sellStocks) {
+//			this.numberOfStocksInStandingSellOrders.put(stock, 0l);
+//		}
+//		
+//		Collection<Order> standingBuyOrders = this.standingSellOrders.values();
+//		for(Order buyOrder:standingBuyOrders) {
+//			Stock stock = buyOrder.getStock();
+//			totalSellVolume += buyOrder.getCurrentAgentSideVolume();
+//		}
+//		
+//		Collection<Order> standingSellOrders = this.standingSellOrders.values();
+//		for(Order sellOrder:standingSellOrders) {
+//			totalSellVolume += sellOrder.getCurrentAgentSideVolume();
+//		}
+//		
+//		this.numberOfStocksInStandingBuyOrders.put(stock, totalBuyVolume);
+//		this.numberOfStocksInStandingSellOrders.put(stock, totalSellVolume);
+//	}
 
-	private void updatePortfolio(Stock stock, long signedVolume) {
+	private void updatePortfolio(Stock stock, long volume, Order.BuySell buysell) {
+		/*
+		 * THis function does two things, because they must always be done at the same time. 
+		 * Firstly, it updates the portfolio, that is the number of stocks that the agent owns
+		 * Secondly, it updates his knowledge about how many stocks the agent is currently trying to sell or buy.
+		 * That is, the sum of the volumes of his current standing orders.
+		 * These two things must be done at the same time because, whenever there is a change in the agent's
+		 * portfolio, this must be because a trade, involving one of his orders, was executed.
+		 * There are special cases where the agent cannot fulfill the volume that is required 
+		 * by the receipt. When that happens, the agent will only update his
+		 * portfolio by the volume that he is able to pay, and the change of volume in his standing orders
+		 * must also be the same.  
+		 */
+		
 		long currentlyHolds = this.ownedStocks.get(stock);
-		this.ownedStocks.put(stock, currentlyHolds + signedVolume);
+		this.ownedStocks.put(stock, currentlyHolds + volume);
+		this.updateNumberOfStocksInStandingOrders(stock, buysell, volume, HFT.agentAction.UPDATE_ORDER);
 	}
 
 	public void receiveTransactionReceipt(TransactionReceipt receipt) {
 		this.eventlog.logAgentAction(String.format("Agent %s received a receipt for a %s order, id: %s", this.id, receipt.getBuySell(), receipt.getFilledOrder().getID()));
 
 		Stock stock = receipt.getStock();
-		// long signedTransactionVolume = receipt.getSignedVolume();
-		// long transactionVolume = receipt.getUnsignedVolume();
-		// long receiptTotal = receipt.getAbsoluteTotal();
 		BuySell buysell = receipt.getFilledOrder().getBuySell();
-
+		long borrowedCash = 0l;
+		long numberOfBorrowedStocks = 0l;
+		long tradedVolume = 0l;
+		long tradeTotal = 0;
+		
 		if (buysell == BuySell.BUY) {
 			/*
 			 * The agent is required to buy stocks, so we check to see if he has
 			 * enough cash.
 			 */
 			if (this.standingBuyOrders.containsKey(receipt.getOrderbook())) {
-				this.nFulfilledBuyOrders += 1;
+				this.nReceivedBuyOrderReceipts += 1;
 				this.updateStandingOrder(receipt);
 			} else {
 				this.dealWithOrderForRemovedOrder(receipt);
 			}
 
-			if (receipt.getAbsoluteTotal() >= this.cash) {
+			if (receipt.getTotal() > this.cash) {
 				/*
 				 * The agent has to borrow money
 				 */
-				long amountToBorrow = Math.abs(this.cash - receipt.getAbsoluteTotal());
-				this.borrowCash(amountToBorrow);
-			}
-
-			if (this.cash >= receipt.getAbsoluteTotal()) {
-				/*
-				 * Agent has enough cash, so he adds the stocks to his portfolio
-				 */
-				this.updateCash(receipt.getSignedTotal());
-				this.updatePortfolio(stock, receipt.getSignedVolume());
+				if(MarketRules.agentMustBuyAllStocksAsSpecifiedInReceipt) {
+					borrowedCash = Math.abs(this.cash - receipt.getTotal());
+					this.borrowCash(borrowedCash);
+					tradeTotal = receipt.getTotal();
+					tradedVolume = receipt.getUnsignedVolume();
+				} else {
+					tradeTotal = this.cash;
+					/*
+					 * Calculate the maximum number of stocks that the agent can afford
+					 */
+					tradedVolume = (long) Math.floor((double ) tradeTotal / (double) receipt.getPrice());
+					if(receipt.getFillingOrder().getOwner() != null) {
+						World.errorLog.logError(String.format("Agent %s did only buy %s stocks for an order requiring him to sell %s stocks, but another transaction recept was issued to agent %s with the full amount",
+															this.id, tradedVolume, receipt.getUnsignedVolume(), receipt.getFillingOrder().getOwner().getID()));
+					} else {
+						World.warningLog.logOnelineWarning(String.format("Agent %s did only buy %s stocks for an order requiring him to sell %s stocks, but the opposing trader was a Stylized trader",
+															this.id, tradedVolume, receipt.getUnsignedVolume()));
+					}
+				}
 			} else {
-				World.errorLog.logError("Agent should be able to have enough cash by now to borrow stocks, but he didn't...");
+				/*
+				 * The agent has enough cash to buy the whole volume without further ado
+				 */
+				tradeTotal = receipt.getTotal();
+				tradedVolume = receipt.getUnsignedVolume();
 			}
+			
 		} else if (buysell == Order.BuySell.SELL) {
 
 			if (this.standingSellOrders.containsKey(receipt.getOrderbook())) {
-				this.nFulfilledSellOrders += 1;
+				this.nReceivedSellOrderReceipts += 1;
 				// if(this.ownedStocks.get(receipt.getStock() <= 0))
 				this.updateStandingOrder(receipt);
 			} else {
 				this.dealWithOrderForRemovedOrder(receipt);
 			}
 			/*
-			 * The agent is required to sell stocks, so we check to see if he
-			 * has them
+			 * The agent is required to sell stocks, so we check to see if he has them.
 			 */
-			if (receipt.getUnsignedVolume() >= this.ownedStocks.get(stock)) {
+			long currentlyHoldingNumberOfStocks = this.ownedStocks.get(stock);
+			
+			
+			if(MarketRules.agentMustSellAllStocksAsSpecifiedInReceipt) {
 				/*
-				 * Agent does not have enough stocks, so he has to shortsell
+				 * If the agent is required to fulfill the order, we have to check some things.
+				 */
+				if(receipt.getUnsignedVolume() > currentlyHoldingNumberOfStocks) {
+					/*
+					 * Agent has to borrow stocks
+					 */
+					numberOfBorrowedStocks = this.borrowStocks(stock, receipt.getUnsignedVolume() - currentlyHoldingNumberOfStocks);
+					tradedVolume = currentlyHoldingNumberOfStocks + numberOfBorrowedStocks;
+				} else {
+					/*
+					 * Agent does not have to borrow stocks, that is, he has enough to sell the full volume
+					 */
+					tradedVolume = receipt.getUnsignedVolume();
+					tradeTotal = receipt.getTotal();
+				}
+			} else {
+				/*
+				 * If he is not required to sell the full amount, just sell as many as he has or as many as the receipt requires him to,
+				 * whichever is the smallest volume.
+				 */
+				tradedVolume = Math.min(currentlyHoldingNumberOfStocks, receipt.getUnsignedVolume());
+				
+				if(receipt.getFillingOrder().getOwner() != null) {
+					World.errorLog.logError(String.format("Agent %s did only sell %s stocks for an order requiring him to sell %s stocks, but another transaction recept was issued to agent %s with the full amount",
+														this.id, tradedVolume, receipt.getUnsignedVolume(), receipt.getFillingOrder().getOwner().getID()));
+				} else {
+					World.warningLog.logOnelineWarning(String.format("Agent %s did only sell %s stocks for an order requiring him to sell %s stocks, but the opposing trader was a Stylized trader",
+														this.id, tradedVolume, receipt.getUnsignedVolume()));
+				}
+			}
+			
+			if(tradedVolume < receipt.getUnsignedVolume()) {
+				/*
+				 * Check for short selling. If shortselling is taking place and if it is allowed, do nothing apart from registering that it happened.
 				 */
 				if (!MarketRules.allowsShortSelling) {
 					World.ruleViolationsLog.logShortSelling(receipt);
 					World.errorLog.logError("Short selling was not allowed by market rules, but happened. Handling of this situation is not implemented yet");
 				} else {
-					this.borrowStocks(stock, receipt.getSignedVolume());
+					this.nTimesAgentDidShortSelling ++;
+					this.eventlog.logAgentAction("Agent did short-selling");
 				}
 			}
-			/*
-			 * Both in the case of the agent having enough stocks or not, he has
-			 * to do the same thing.
-			 */
-			this.updatePortfolio(stock, receipt.getSignedVolume());
-			this.updateCash(receipt.getSignedTotal());
+			
+		} else {
+			World.errorLog.logError("Order must be eiter BUY or SELL");
 		}
-	}
-
-	private void borrowStocks(Stock stock, long signedVolumeToBorrow) {
+		
 		/*
-		 * Ath the moment, this function does nothing apart from updating the
-		 * portfolio
+		 * Check trade details and update internal state
 		 */
-		this.updatePortfolio(stock, signedVolumeToBorrow);
+		if(tradedVolume <= 0) {
+			World.errorLog.logError("Agent tried to a sell a negative or zero amount of stocks...");
+		}
+		if(tradeTotal <= 0) {
+			World.errorLog.logError("Agent tried to transact a negative or zero total");
+		}
+		
+		this.updatePortfolio(stock, tradedVolume, buysell);
+		this.updateCash(buysell, tradeTotal);
+		
+		this.tradeLog.logTradeData(receipt, tradedVolume, tradeTotal, borrowedCash, numberOfBorrowedStocks);
 	}
 
-	// private void updatePortfolio(TransactionReceipt receipt) {
-	// Stock stock = receipt.getStock();
-	// long volumeChange = receipt.getSignedVolume();
-	// long ownedAmountOfStockAfterTransaction = this.ownedStocks.get(stock) +
-	// volumeChange;
-	//
-	// if (ownedAmountOfStockAfterTransaction < 0) {
-	// // if(!(receipt.getOriginalOrder().getBuySell() ==
-	// // Order.BuySell.SELL)) {
-	// //
-	// World.errorLog.logError("Error, because order volume was less than zero, but not a SELL order");
-	// // }
-	// if (MarketRules.allowsShortSelling) {
-	// /*
-	// * If shortselling is allowed, the transaction is simply carried
-	// * through
-	// */
-	// this.receipts.add(receipt);
-	// this.ownedStocks.put(stock, ownedAmountOfStockAfterTransaction);
-	// World.warningLog.logOnelineEvent(String.format("Agent %s shorted a volume of %s of stock number %s",
-	// receipt.getOwner().getID(), receipt.getAbsoluteVolume(),
-	// receipt.getStock().getID()));
-	// } else {
-	// /*
-	// * If not, it has to be handled somehow.
-	// */
-	// World.ruleViolationsLog.logShortSelling(receipt);
-	// World.errorLog.logError("Short selling was not allowed by market rules, but happened. Handling of this situation is not implemented yet");
-	// }
-	// }
-	// // else {
-	// // this.receipts.add(receipt);
-	// // this.ownedStocks.put(stock, ownedAmountOfStockAfterTransaction);
-	// // }
-	// }
+	private long borrowStocks(Stock stock, long signedRequestedVolumeToBorrow) {
+		/*
+		 * At the moment, this function does nothing, but it is in here in case we need 
+		 * to implement something to handle the situation in which an agent borrows stock.
+		 * This could be that the rules don't allow an agent to borrow more than a certain amount, for instance.
+		 */
+		return signedRequestedVolumeToBorrow;
+	}
 
-	// public void receiveTransactionReceipt(TransactionReceipt receipt) {
-	// /*
-	// * When the agent receives a receipt, he knows that his order has been
-	// * filled, so he
-	// */
-	// // this.datalog.printOrderHistoryIdString();
-	// this.eventlog.logAgentAction(String.format("Agent %s received a receipt for a %s order, id: %s",
-	// this.id, receipt.getBuySell(), receipt.getFilledOrder().getID()));
-	//
-	//
-	// this.updatePortfolio(receipt);
-	// this.updateCash(receipt.getSignedTotal());
-	//
-	// if (receipt.getBuySell() == BuySell.BUY) {
-	// this.nFulfilledBuyOrders += 1;
-	// if (this.standingBuyOrders.containsKey(receipt.getOrderbook())) {
-	// this.updateStandingOrder(receipt);
-	// } else {
-	// this.dealWithOrderForRemovedOrder(receipt);
-	// }
-	//
-	// } else {
-	// this.nFulfilledSellOrders += 1;
-	// if (this.standingSellOrders.containsKey(receipt.getOrderbook())) {
-	// this.updateStandingOrder(receipt);
-	// } else {
-	// this.dealWithOrderForRemovedOrder(receipt);
-	// }
-	// }
-	// }
-
+	
 	private void dealWithOrderForRemovedOrder(TransactionReceipt receipt) {
 		if (this.orderHistory.contains(receipt.getFilledOrder())) {
 			/*
@@ -392,8 +427,8 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 			 * after the agent issued a cancellation.
 			 */
 			if (MarketRules.agentPaysWhenOrderIsFilledAfterSendingCancellation) {
-				this.nFulfilledBuyOrders += 1;
-				this.eventlog.logAgentAction(String.format("Agent %s had to fullfill an already cancelled order (id: %s)", receipt.getOwner().getID(), receipt.getFilledOrder().getID()));
+				this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList++;
+				this.eventlog.logAgentAction(String.format("Agent %s had to fullfill an already cancelled order (id: %s)", receipt.getOwnerOfFilledStandingOrder().getID(), receipt.getFilledOrder().getID()));
 			} else {
 				World.errorLog.logError(String.format("Agent %s received a transaction receipt for an order that he cancelled (id: %s), but market side handling of this situation has not been implemented yet", this.getID(), receipt.getFilledOrder().getID()));
 			}
@@ -402,12 +437,12 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		}
 	}
 
-	private void updateStockHoldings(Stock stock, BuySell buysell, long volume) {
-		/*
-		 * 
-		 */
-
-	}
+//	private void updateStockHoldings(Stock stock, BuySell buysell, long volume) {
+//		/*
+//		 * 
+//		 */
+//
+//	}
 
 	private void updateStandingOrder(TransactionReceipt receipt) {
 		/*
@@ -424,7 +459,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		if (receiptVolume > agentHoldingStockVolume) {
 			/*
 			 * This does not have to mean that the agent did short-selling on
-			 * purpose.
+			 * purpose, it's merely count many times he, for some reasons, sold more stocks than he owned
 			 */
 			this.nTimesSoldStocksWhenAlreadyHadNegativeAmountOfStock++;
 		}
@@ -443,7 +478,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		}
 
 		if (receipt.getUnsignedVolume() < standingOrder.getCurrentAgentSideVolume()) {
-			standingOrder.updateAgentSideVolumeByDifference(receipt.getSignedVolume());
+			standingOrder.updateAgentSideVolumeByDifference(receipt.getBuySell(), receipt.getUnsignedVolume());
 		}
 
 		if (receipt.getUnsignedVolume() > standingOrder.getCurrentAgentSideVolume()) {
@@ -452,60 +487,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 				World.errorLog.logError("Shortselling was not allowed, but happeed when agent received a transaction receipt for more than ");
 			}
 		}
-		// if(receipt.getAbsoluteVolume() > standingOrder.getInitialVolume()){
-		// World.errorLog.logError("Agent received a receipt for a buy order with a larger volume than the one he placed...");
-		// }
-
 	}
-
-	// private void updateStandingOrder(TransactionReceipt receipt) {
-	// /*
-	// * When the agent receives a receipt for a filled order, he has to
-	// * update his local list of submitted orders. If the receipt volume is
-	// * less than the volume of the filled local order, he just subtracts the
-	// * difference from the local order. If they are equal, he removes the
-	// * local order. If it is more, he throws an error.
-	// */
-	// Order standingOrder;
-	// if (receipt.getBuySell() == BuySell.BUY) {
-	// standingOrder = this.standingBuyOrders.get(receipt.getOrderbook());
-	// if (receipt.getAbsoluteVolume() ==
-	// standingOrder.getCurrentAgentSideVolume()) {
-	// this.standingBuyOrders.remove(receipt.getOrderbook());
-	// }
-	// } else {
-	// standingOrder = this.standingSellOrders.get(receipt.getOrderbook());
-	// if (receipt.getAbsoluteVolume() ==
-	// standingOrder.getCurrentAgentSideVolume()) {
-	// this.standingSellOrders.remove(receipt.getOrderbook());
-	// }
-	// }
-	//
-	// if (receipt.getAbsoluteVolume() <
-	// standingOrder.getCurrentAgentSideVolume()) {
-	// standingOrder.updateAgentSideVolumeByDifference(receipt.getSignedVolume());
-	// }
-	//
-	// if(receipt.getAbsoluteVolume() >
-	// standingOrder.getCurrentAgentSideVolume()) {
-	// this.eventlog.logAgentAction(String.format("Agent received a transaction receipt for %s units of stock %s at market %s. \n"
-	// +
-	// "\t For market order, the current agent side volume was %s, and the market side volume was %s",
-	// receipt.getAbsoluteVolume(),
-	// receipt.getOriginalOrder().getStock().getID(),
-	// receipt.getOriginalOrder().getMarket().getID(),
-	// receipt.getOriginalOrder().getCurrentAgentSideVolume(),
-	// receipt.getOriginalOrder().getCurrentMarketSideVolume()));
-	// if(!MarketRules.allowsShortSelling) {
-	// World.errorLog.logError("Shortselling was not allowed, but happeed when agent received a transaction receipt for more than ")
-	// }
-	// }
-	// // if(receipt.getAbsoluteVolume() > standingOrder.getInitialVolume()){
-	// //
-	// World.errorLog.logError("Agent received a receipt for a buy order with a larger volume than the one he placed...");
-	// // }
-	//
-	// }
 
 	public long getTotalWealth() {
 		long totalWealth;
@@ -520,8 +502,21 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		return cash;
 	}
 
-	public void updateCash(long amount) {
-		this.cash += amount;
+	public void updateCash(Order.BuySell buysell, long amount) {
+		if(amount <0) {
+			World.errorLog.logError(String.format("argument 'amount' must bepositive, but was %s", amount));
+		}
+		if(buysell == Order.BuySell.BUY) {
+			/*
+			 * The agent is BUYING stocks, so the change in his cash holdings must be negative.
+			 */
+			this.cash -= amount;
+		} else if (buysell == Order.BuySell.SELL){
+			/*
+			 * The agent is SELLING stocks, so the change in his cash holdings must be positive
+			 */
+			this.cash += amount;
+		}
 		if (this.cash < 0) {
 			World.errorLog.logError("Agent has negative cash, but he did not use the borrow function");
 		}
@@ -532,7 +527,10 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 			World.errorLog.logError("An agent tried to borrow a negative amount of money. Amount must be positive");
 		} else {
 			this.nTimesBorrowedCash++;
-			this.updateCash(positiveAmount);
+			/*
+			 * Call update cash with SELL (meaning that the agent GETS money
+			 */
+			this.updateCash(Order.BuySell.SELL, positiveAmount);
 			this.eventlog.logAgentAction(String.format("Agent %s borrowed %s cash", this.id, positiveAmount));
 		}
 	}
@@ -569,18 +567,49 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 	public void hibernate() {
 		this.wakeupTime = World.getCurrentRound() + emptyOrderbookWaitTime;
 	}
+	
+	protected void updateNumberOfStocksInStandingOrders(Stock stock, Order.BuySell buysell, long volume, HFT.agentAction action) {
+		if(action == HFT.agentAction.CANCEL_ORDER) {
+			volume = -Math.abs(volume);
+		} else if(action == HFT.agentAction.UPDATE_ORDER) {
+			volume = -Math.abs(volume);
+		} else if(action == HFT.agentAction.SUBMIT_ORDER) {
+			volume = Math.abs(volume);
+		}
+		
+		if(buysell == Order.BuySell.BUY) {
+			long nCurrentStocksInBuyOrders = this.numberOfStocksInStandingBuyOrders.get(stock);
+			nCurrentStocksInBuyOrders += volume;
+			this.numberOfStocksInStandingBuyOrders.put(stock, nCurrentStocksInBuyOrders);
+		} else if(buysell == Order.BuySell.SELL) {
+			long nCurrentStocksInSellOrders = this.numberOfStocksInStandingSellOrders.get(stock);
+			nCurrentStocksInSellOrders += volume;
+			this.numberOfStocksInStandingSellOrders.put(stock, nCurrentStocksInSellOrders);
+		}
+		
+	}
 
 	protected void submitOrder(Order order) {
 		if (order.getBuySell() == Order.BuySell.BUY) {
 			this.standingBuyOrders.put(order.getOrderbook(), order);
+//			Stock stock = order.getStock();
+//			long orderVolume = order.getUnsignedInitialVolume();
+//			long newOwnedAmount = this.numberOfStocksInStandingBuyOrders.get(stock) + orderVolume;
+//			this.numberOfStocksInStandingBuyOrders.put(order.getStock(), newOwnedAmount);
 			this.nSubmittedBuyOrders += 1;
 		} else {
 			this.standingSellOrders.put(order.getOrderbook(), order);
+//			long newOwnedAmount = this.numberOfStocksInStandingSellOrders.get(order.getStock()) + order.getUnsignedInitialVolume();
+//			this.numberOfStocksInStandingSellOrders.put(order.getStock(), newOwnedAmount);
 			this.nSubmittedSellOrders += 1;
 		}
 		if (keepOrderHistory) {
 			this.orderHistory.add(order);
 		}
+		/*
+		 * Verify that the volume is the same as the initial volume
+		 */
+		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.SUBMIT_ORDER);
 	}
 
 	public static HashMap<Market, Integer> getRandomLatencyHashMap(Market[] markets) {
@@ -593,11 +622,18 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		return latencyMap;
 	}
 
-//	private long totalVolumeOfCurrentlyStandingOrders(Stock stock) {
-//		return 
-//	}
-
 	protected void cancelOrder(OrderCancellation cancellation) {
+		Order order = cancellation.getOrder();
+//		if(order.getBuySell() == Order.BuySell.BUY) {
+//			long nCurrentStocksInBuyOrders = this.numberOfStocksInStandingBuyOrders.get(order.getStock());
+//			nCurrentStocksInBuyOrders -= order.getCurrentAgentSideVolume();
+//			this.numberOfStocksInStandingBuyOrders.put(order.getStock(), nCurrentStocksInBuyOrders);
+//		} else if(order.getBuySell() == Order.BuySell.SELL) {
+//			long nCurrentStocksInSellOrders = this.numberOfStocksInStandingSellOrders.get(order.getStock());
+//			nCurrentStocksInSellOrders -= order.getCurrentAgentSideVolume();
+//			this.numberOfStocksInStandingSellOrders.put(order.getStock(), nCurrentStocksInSellOrders);
+//		}
+		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.CANCEL_ORDER);
 		this.nSubmittedCancellations += 1;
 	}
 
@@ -609,16 +645,17 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		return nSubmittedSellOrders;
 	}
 
-	public long getnFulfilledBuyOrders() {
-		return nFulfilledBuyOrders;
+	public long getnReceivedBuyOrderReceipts() {
+		return nReceivedBuyOrderReceipts;
 	}
 
-	public long getnFulfilledSellOrders() {
-		return nFulfilledSellOrders;
+	public long getnReceivedSellOrderReceipts() {
+		return nReceivedSellOrderReceipts;
 	}
 
 	public long getnFullfilledOrders() {
-		return this.nFulfilledBuyOrders + this.nFulfilledSellOrders;
+//		return this.nReceivedBuyOrderReceipts + this.nReceivedSellOrderReceipts;
+		return 0;
 	}
 
 	public long getnSubmittedOrders() {
