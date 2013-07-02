@@ -26,7 +26,7 @@ public class WorldObjectHandler {
 		int nGroups = 2;
 		int nAgentsInGroup = 10;
 		int[] stockIDs = {0}; 
-		int[] marketIDs = {0, 1}; 
+		int[] marketIDs = {0}; 
 		int[] latencies = new int[marketIDs.length];
 		long minimumSpreadForAllAgents = 100;
 		int[] minimumLatencyInGroup = {1, 100};
@@ -36,7 +36,7 @@ public class WorldObjectHandler {
 			/*
 			 * Create agents within each group. Each group have different minimum and maximum latencies
 			 */
-			for(int i=0; i<nAgentsInGroup; i++) {
+			for(int agent=0; agent<nAgentsInGroup; agent++) {
 				for(int j=0; j<marketIDs.length; j++) {
 					latencies[j] = Utils.getRandomUniformInteger(minimumLatencyInGroup[group], maximumLatencyInGroup[group]);
 				}	

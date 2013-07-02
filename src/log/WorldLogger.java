@@ -75,7 +75,7 @@ public class WorldLogger extends Logger {
 	private long getTotalWealth(){
 		long totalWealth = 0;
 		for(HFT agent:World.getHFTAgents()){
-			totalWealth += agent.getTotalWealth();
+			totalWealth += agent.getTotalAgentWorth();
 		}
 		return totalWealth;
 	}

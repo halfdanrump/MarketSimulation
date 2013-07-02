@@ -30,11 +30,11 @@ public class Orderbook {
 	private PriorityQueue<Order> marketOrders;
 //	private int[] bestSellPrice;
 //	private int[] bestBuyPrice;
-	private ArrayList<Long> bestSellPriceAtEndOfRound;
-	private ArrayList<Long> bestBuyPriceAtEndOfRound;
+	private ArrayList<Long> localBestSellPriceAtEndOfRound;
+	private ArrayList<Long> localBestBuyPriceAtEndOfRound;
 	
-	private long lastTradedMarketOrderBuyPrice;
-	private long lastTradedMarketOrderSellPrice;
+	private long localLastTradedMarketOrderBuyPrice;
+	private long localLastTradedMarketOrderSellPrice;
 
 	public OrderbookLogger orderflowLog;
 	public OrderbookLogger eventLog;
@@ -57,8 +57,8 @@ public class Orderbook {
 		this.unfilledBuyOrders = new PriorityQueue<Order>(10, Collections.reverseOrder(new orderPriceComparatorAscending()));
 		this.unfilledSellOrders = new PriorityQueue<Order>(10, new OrderPriceComparatorLowFirst());
 		this.marketOrders = new PriorityQueue<Order>(10, new OrderExpirationTimeComparator());
-		this.bestSellPriceAtEndOfRound = new ArrayList<Long>(SimulationSetup.nRounds); 
-		this.bestBuyPriceAtEndOfRound = new ArrayList<Long>(SimulationSetup.nRounds);
+		this.localBestBuyPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, 0l));
+		this.localBestSellPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
 		
 	}
 	
@@ -82,8 +82,11 @@ public class Orderbook {
 			}
 			
 		}
-		this.lastTradedMarketOrderBuyPrice = buyOrder.getPrice();
-		this.lastTradedMarketOrderSellPrice = sellPrice;
+		
+		this.localLastTradedMarketOrderBuyPrice = buyOrder.getPrice();
+		this.localLastTradedMarketOrderSellPrice = sellPrice;
+//		this.setlastTradedMarketOrderBuyPrice = buyOrder.getPrice();
+//		this.lastTradedMarketOrderSellPrice = sellPrice;
 //		this.processAllNewOrders();
 		World.dispatchArrivingOrders();
 		
@@ -122,13 +125,13 @@ public class Orderbook {
 			Order.BuySell buysell = null;
 			if(this.hasNoBuyOrders() & MarketRules.marketFillsEmptyBook) {
 				buysell = Order.BuySell.BUY;
-				price = this.getLastTradedMarketOrderBuyPrice();
+				price = this.localLastTradedMarketOrderBuyPrice;
 				new Order(now, now, MarketRules.orderLengthWhenMarketFillsEmptyBook, MarketRules.orderVolumeWhenMarketFillsEmptyBook, price, MarketRules.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS);
 				wasEmpty = true;
 			}
 			if(this.hasNoSellOrders() & MarketRules.marketFillsEmptyBook) {
 				buysell = Order.BuySell.SELL;
-				price = this.getLastTradedMarketOrderSellPrice();
+				price = this.localLastTradedMarketOrderSellPrice;
 				new Order(now, now, MarketRules.orderLengthWhenMarketFillsEmptyBook, MarketRules.orderVolumeWhenMarketFillsEmptyBook, price, MarketRules.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS);
 				wasEmpty = true;
 			}		
@@ -184,7 +187,7 @@ public class Orderbook {
 //			Orderbook o = newOrder.getOrderbook();
 //			System.out.println(String.format("Spread after processing order is %s", this.getCurrentInRoundSpread()));
 		}
-		this.updateBestPricesAtTheEndOfEachRound();
+		this.updateLocalBestPricesAtTheEndOfEachRound();
 	}
 
 	public void processNewlyArrivedNewOrder(Order newlyArrivedOrder) {
@@ -217,7 +220,7 @@ public class Orderbook {
 				this.addOrderToBook(newlyArrivedOrder);
 				break;
 			} else {
-				long tradePrice = this.executeTrade(matchingOrder, newlyArrivedOrder);
+				this.executeTrade(matchingOrder, newlyArrivedOrder);
 //				System.out.println(String.format("Executed trade with order %s at price %s", newlyArrivedOrder.getID(), tradePrice));
 			}
 
@@ -244,20 +247,28 @@ public class Orderbook {
 		 * is, a trader that we care about).
 		 */
 		if (!(matchingOrder.getOwner() == null)) {
-			receipt = new TransactionReceipt(matchingOrder, tradeVolume,tradePrice, tradeTotal);
+			/*
+			 * It can happen that a stylized trader submits an order which is matched by a standing order
+			 * owned by an HFT. In this case the owner of the 
+			 */
+			receipt = new TransactionReceipt(matchingOrder, tradeVolume,tradePrice, tradeTotal, newOrder);
 			this.orderflowLog.logEventTransaction(receipt);
 		}
 		if (!(newOrder.getOwner() == null)) {
-			receipt = new TransactionReceipt(newOrder, tradeVolume, tradePrice, tradeTotal);
+			/*
+			 * It can happen that a HFT submits a new order which is matched by a standing order
+			 * owned by a stylized trader. In this case, the owner of the standing order is null.
+			 */
+			receipt = new TransactionReceipt(newOrder, tradeVolume, tradePrice, tradeTotal, matchingOrder);
 			this.orderflowLog.logEventTransaction(receipt);
 		}
 		/*
 		 * Log the event in the orderbook log
 		 */
 		this.orderflowLog.logEventUpdateOrderVolume(newOrder, tradeVolume);
-		matchingOrder.updateOrderbookSideVolumeByDifference(-tradeVolume);
+		matchingOrder.updateMarketSideVolumeByDifference(-tradeVolume);
 		this.orderflowLog.logEventUpdateOrderVolume(matchingOrder, tradeVolume);
-		newOrder.updateOrderbookSideVolumeByDifference(-tradeVolume);
+		newOrder.updateMarketSideVolumeByDifference(-tradeVolume);
 		/*
 		 * Remove the order if there was a complete match (remaining order volume was zero)
 		 */
@@ -268,17 +279,7 @@ public class Orderbook {
 		 * Update the last traded price
 		 */
 		this.updateLastTradedPrices(matchingOrder);		
-		/*
-		 * Handle the situation where one side of the orderbook is empty
-		 */
-//		this.checkForAndHandleEmptyBook(buysell)
-//		if(this.unfilledBuyOrders.isEmpty()) {
-//			this.checkForAndHandleEmptyBook(Order.BuySell.BUY);
-//		}
-//		if(this.unfilledSellOrders.isEmpty()) {
-//			this.checkForAndHandleEmptyBook(Order.BuySell.SELL);
-//		}
-		
+
 		/*
 		 * Log new stock price in the stock column logger
 		 */
@@ -294,9 +295,9 @@ public class Orderbook {
 	
 	private void updateLastTradedPrices(Order lastTradedOrder) {
 		if(lastTradedOrder.getBuySell() == Order.BuySell.BUY) {
-			this.lastTradedMarketOrderBuyPrice = lastTradedOrder.getPrice();
+			this.localLastTradedMarketOrderBuyPrice = lastTradedOrder.getPrice();
 		} else if (lastTradedOrder.getBuySell() == Order.BuySell.SELL) {
-			this.lastTradedMarketOrderSellPrice = lastTradedOrder.getPrice();
+			this.localLastTradedMarketOrderSellPrice = lastTradedOrder.getPrice();
 		}
 	}
 
@@ -394,7 +395,7 @@ public class Orderbook {
 		World.destroyOrder();
 	}
 
-	private void updateBestPricesAtTheEndOfEachRound() {
+	private void updateLocalBestPricesAtTheEndOfEachRound() {
 		/*
 		 * Need to be processed when 
 		 * 1) Orders are entered into the book
@@ -409,22 +410,22 @@ public class Orderbook {
 		int now = World.getCurrentRound();
 		try {
 			if(this.unfilledBuyOrders.isEmpty()) {
-				this.bestBuyPriceAtEndOfRound.add(this.lastTradedMarketOrderBuyPrice);
+				this.localBestBuyPriceAtEndOfRound.set(now, this.localLastTradedMarketOrderBuyPrice);
 //				System.out.println(String.format("Used last best buy: %s", this.lastTradedMarketOrderBuyPrice));
 			} else {
-				this.bestBuyPriceAtEndOfRound.add(this.unfilledBuyOrders.element().getPrice());
+				this.localBestBuyPriceAtEndOfRound.set(now, this.unfilledBuyOrders.element().getPrice());
 //				System.out.println(String.format("Used current best buy: %s", this.unfilledBuyOrders.element().getPrice()));
 			}
 			
 			if(this.unfilledSellOrders.isEmpty()) {
-				this.bestSellPriceAtEndOfRound.add(this.lastTradedMarketOrderSellPrice);
+				this.localBestSellPriceAtEndOfRound.set(now, this.localLastTradedMarketOrderSellPrice);
 //				System.out.println(String.format("Used last best sell: %s", this.lastTradedMarketOrderSellPrice));
 			} else {
-				this.bestSellPriceAtEndOfRound.add(this.unfilledSellOrders.element().getPrice());
+				this.localBestSellPriceAtEndOfRound.set(now, this.unfilledSellOrders.element().getPrice());
 //				System.out.println(String.format("Used current best sell: %s", this.unfilledSellOrders.element().getPrice()));
 			}
 			
-			long spread = this.bestSellPriceAtEndOfRound.get(now) - this.bestBuyPriceAtEndOfRound.get(now);
+			long spread = this.localBestSellPriceAtEndOfRound.get(now) - this.localBestBuyPriceAtEndOfRound.get(now);
 			if(spread <= 0) {
 				Exception e = new Exception();
 				e.printStackTrace();
@@ -493,12 +494,12 @@ public class Orderbook {
 	//
 	// }
 
-	public Long getBestSellPriceAtEndOfRound(int time) throws NoOrdersException {
+	public Long getLocalBestSellPriceAtEndOfRound(int time) throws NoOrdersException {
 		try {
-			if (this.bestSellPriceAtEndOfRound.get(time) == Long.MAX_VALUE) {
+			if (this.localBestSellPriceAtEndOfRound.get(time) == Long.MAX_VALUE) {
 				throw new NoOrdersException(time, this, BuySell.SELL);
 			} else {
-				return this.bestSellPriceAtEndOfRound.get(time);
+				return this.localBestSellPriceAtEndOfRound.get(time);
 			}
 		} catch (IndexOutOfBoundsException e) {
 			World.errorLog.logError(String.format("Cannot return ASK price at time %s. Needs initialization?"));
@@ -506,12 +507,12 @@ public class Orderbook {
 		}
 	}
 
-	public Long getBestBuyPriceAtEndOfRound(int time) throws NoOrdersException {
+	public Long getLocalBestBuyPriceAtEndOfRound(int time) throws NoOrdersException {
 		try {
-			if (this.bestBuyPriceAtEndOfRound.get(time) == 0) {
+			if (this.localBestBuyPriceAtEndOfRound.get(time) == 0) {
 				throw new NoOrdersException(time, this, BuySell.SELL);
 			} else {
-				return this.bestBuyPriceAtEndOfRound.get(time);
+				return this.localBestBuyPriceAtEndOfRound.get(time);
 			}
 		} catch (IndexOutOfBoundsException e) {
 			World.errorLog.logError(String.format("Cannot return BID price at time %s. Needs initialization?"));
@@ -570,7 +571,7 @@ public class Orderbook {
 	public String getSpreadForBestPricesAtEndOfRound(int round) {
 		String spread = null;
 		try {
-			long s = this.getBestSellPriceAtEndOfRound(round) - this.getBestBuyPriceAtEndOfRound(round);
+			long s = this.getLocalBestSellPriceAtEndOfRound(round) - this.getLocalBestBuyPriceAtEndOfRound(round);
 			spread = String.valueOf(s);
 		} catch (NoOrdersException e) {
 			spread = "NaN";
@@ -616,12 +617,15 @@ public class Orderbook {
 		
 	}
 	
-	public long getLastTradedMarketOrderBuyPrice() {
-		return this.lastTradedMarketOrderBuyPrice;
-	}
+//	public long getGlobalLastTradedMarketOrderBuyPrice() {
+//		return this.stock.getGlobalLastTradedMarketOrderBuyPrice();
+//	}
+//
+//	public long getGlobalLastTradedMarketOrderSellPrice() {
+//		return this.stock.getGlobalLastTradedMarketOrderSellPrice();
+//	}
 	
-	public long getLastTradedMarketOrderSellPrice() {
-		return this.lastTradedMarketOrderSellPrice;
-	}
+	
+	
 
 }

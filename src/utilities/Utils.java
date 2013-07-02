@@ -1,5 +1,6 @@
 package utilities;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import setup.SimulationSetup;
@@ -100,6 +101,16 @@ public class Utils {
 			latencyMap.put(markets[i], latencies[i]);
 		}
 		return latencyMap;
+	}
+	
+	public static void initializeStringArrayWithEmptyStrings(ArrayList<String> arrayList, int capacity, String initialValue) {
+		for(int i = 0; i<capacity; i++) {
+			arrayList.add(initialValue);
+		}
+	}
+	
+	public static String convertArrayListToString(@SuppressWarnings("rawtypes") ArrayList arrayList) {
+		return arrayList.toString().replace("[", "").replace("]", "").replace(" ", "");
 	}
 	
 //	public static Order getRandomOrder(long minPrice, long maxPrice, long minVolume, long maxVolume, Order.Type type, Order.BuySell buysell){

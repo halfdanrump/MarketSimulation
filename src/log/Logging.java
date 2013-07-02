@@ -2,7 +2,7 @@ package log;
 
 public interface Logging {
 	
-	boolean appendDateToFiles = false;
+	boolean createTimeSpecificLogFolders = false;
 //	boolean logOrderbookDetails = false;
 	
 	boolean fileLogging = true;
@@ -25,7 +25,7 @@ public interface Logging {
 	boolean logAgentWarningsToFile = true;
 	boolean logAgentWarningsToConsole = true;
 	boolean logAgentDataToFile = true;
-	boolean logAgentDataToConsole = true;
+	boolean logAgentDataToConsole = false;
 	
 	/*
 	 * STOCKS
@@ -37,7 +37,7 @@ public interface Logging {
 	 * ORDERBOOK. What kind of orderbook events to log
 	 */
 	final boolean logOrderbookEventsToConsole = false;
-	final boolean logOrderbookOnelineEvents = true;
+	final boolean logOrderbookOnelineEvents = false;
 	boolean logOrderbookOnelineEventsToConsole = false;
 	//////////////////////////////////////////////////
 	final boolean logOrderbookMatches = true; // Logs whenever there's a log (including stylized traders)
@@ -48,7 +48,7 @@ public interface Logging {
 	final boolean logOrderbookUpdateOrderVolume = true;
 	final boolean logOrderbookProcessOrder = true;
 	
-	String logFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/";
+	String logRootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/";
 
 
 	

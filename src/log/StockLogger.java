@@ -39,9 +39,10 @@ public class StockLogger extends Logger {
 	
 	public void recordRoundBasedHeader(){
 		if(this.type == Type.LOG_AFTER_EVERY_ROUND) {
-			String header = "Round,  Fund";
+			String header = "round,fundamental,smallestLocalSpread,globalLowestBuyPrice,globalHighestBuyPrice," +
+							"globalLowestSellPrice,globalHighestSellPrice";
 			for(Market market:stock.getMarkets()){
-				header += String.format(", bSell%s, bBuy%s, Spread", market.getID(), market.getID());
+				header += String.format(",bestSellAtMarket%s,bestBuyAtMarket%s, spreadAtMarket%s", market.getID(), market.getID(), market.getID());
 			}
 			super.writeToFile(header);			
 		} else {
@@ -52,17 +53,23 @@ public class StockLogger extends Logger {
 	public void recordEndRoundPriceInformation(int round){
 		if(this.type == Type.LOG_AFTER_EVERY_ROUND) {
 			String bestBuyPrice, bestSellPrice;
-			String entry = String.format("%s, %s", round, stock.getFundamentalPrice(round));
+			String entry = String.format("%s,%s,%s,%s,%s,%s,%s",
+										round, stock.getFundamentalPrice(round),
+										stock.getLocalSmallestOrderbookSpread(round),
+										stock.getGlobalLowestBuyPrice(round),
+										stock.getGlobalHighestBuyPrice(round),
+										stock.getGlobalLowestSellPrice(round),
+										stock.getGlobalHighestSellPrice(round));
 			
 			for(Market market:stock.getMarkets()){
 				Orderbook orderbook = market.getOrderbook(stock);
 				try{
-					bestBuyPrice = String.valueOf(orderbook.getBestBuyPriceAtEndOfRound(round));
+					bestBuyPrice = String.valueOf(orderbook.getLocalBestBuyPriceAtEndOfRound(round));
 				} catch(NoOrdersException e){
 					bestBuyPrice = "NaN";
 				}
 				try {
-					bestSellPrice = String.valueOf(orderbook.getBestSellPriceAtEndOfRound(round));
+					bestSellPrice = String.valueOf(orderbook.getLocalBestSellPriceAtEndOfRound(round));
 				} catch (NoOrdersException e) {
 					bestSellPrice = "NaN";
 				}

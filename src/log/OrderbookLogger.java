@@ -6,7 +6,6 @@ import environment.TransactionReceipt;
 import environment.World;
 
 public class OrderbookLogger extends Logger implements Logging{
-	@SuppressWarnings("unused")
 	public enum Type{
 		ORDER_FLOW_LOG,
 		ORDERBOOK_ROUND_BASED_DATA,
@@ -120,7 +119,7 @@ public class OrderbookLogger extends Logger implements Logging{
 			String line = super.getNewEntry() + "Transaction\t"
 					+ receipt.toStringForLog();
 			try {
-				line += String.format("\tSent receipt to agent %s. Arrives in round %s", receipt.getOwner().getID(), receipt.getArrivalTime());
+				line += String.format("\tSent receipt to agent %s. Arrives in round %s", receipt.getOwnerOfFilledStandingOrder().getID(), receipt.getArrivalTime());
 			} finally {
 				super.writeToFile(line);
 				if(Logging.logOrderbookEventsToConsole){

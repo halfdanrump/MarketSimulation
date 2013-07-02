@@ -93,13 +93,13 @@ public class World implements SimulationSetup {
 	}
 
 	public static void executeRound() {
+		prepareNewRound();
 		if(currentRound % 500 == 0) {
 			System.out.println(String.format("Round %s", currentRound));
 		}
 		/*
 		 * Increment time variable Update fundamental prices for each stock.
 		 */
-		prepareNewRound();
 		
 		/*
 		 * Receipts from the previous rounds are dispatched. The order does not
@@ -134,8 +134,25 @@ public class World implements SimulationSetup {
 		 */
 		processNewOrdersInAllOrderbooks();
 
+		updateGlobalKnowledge();
+		
 		logRoundBasedData();
-		updateRuntimeAtTheEndOfRound();
+	}
+
+	private static void updateGlobalKnowledge() {
+		/*
+		 * This function contains calls that must be executed after all trading activity has ended for the round,
+		 * but before round based logging is done.
+		 * 
+		 * Later, this method will contains calls for confirming the validity of trades, and other things.
+		 * 
+		 */
+		World.runTime = System.currentTimeMillis() - World.creationTime;
+
+		for(Stock stock:stocks) {
+			stock.collectGlobalBestPricesAtEndOfRound();
+		}
+		
 	}
 
 	private static void logRoundBasedData() {
@@ -148,7 +165,7 @@ public class World implements SimulationSetup {
 	private static void logAgentData() {
 		// TODO Auto-generated method stub
 		for(HFT agent:World.agents){
-			agent.datalog.recordDataEntryAtEndOfRound();
+			agent.roundDatalog.recordDataEntryAtEndOfRound();
 		}
 	}
 
@@ -405,7 +422,7 @@ public class World implements SimulationSetup {
 				if (receipt.getArrivalTime() == World.getCurrentRound()) {
 					nArrivingReceipts++;
 					receiptsInTransit.remove();
-					HFT recipient = receipt.getOwner();
+					HFT recipient = receipt.getOwnerOfFilledStandingOrder();
 					recipient.receiveTransactionReceipt(receipt);
 				} else {
 					break;
@@ -504,10 +521,6 @@ public class World implements SimulationSetup {
 		// return stocksByID;
 	}
 	
-	private static void updateRuntimeAtTheEndOfRound() {
-		World.runTime = System.currentTimeMillis() - World.creationTime;
-	}
-
 	public static Market getMarketByNumber(int index) {
 		Market market = null;
 		try {

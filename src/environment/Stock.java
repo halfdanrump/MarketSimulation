@@ -1,12 +1,16 @@
 package environment;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 import umontreal.iro.lecuyer.rng.MRG32k3a;
 import utilities.MarketIdComparator;
+import utilities.NoOrdersException;
 import log.StockLogger;
 import setup.SimulationSetup;
+import setup.StylizedTraderBehavior;
 import setup.TradeableAsset;
 import environment.World;
 
@@ -14,12 +18,24 @@ public class Stock implements TradeableAsset{
 //	private World world;
 	private long id;
 	private ArrayList<Long> fundamentalPrice;
+	/*
+	 * 
+	 */
+	private ArrayList<Long> globalLowestBuy;
+	private ArrayList<Long> globalHighestBuy;
+	private ArrayList<Long> globalLowestSell;
+	private ArrayList<Long> globalHighestSell;
+	private ArrayList<Long> localSmallestOrderbookSpread;
+	
+	private ArrayList<Market> bestMarketInRound;
 	private GeometricBrownianMotion gbm;
 	private static long nStocks = 0;
 //	private TreeSet<Orderbook> tradedOn;
 	private TreeSet<Market> markets;
 	public StockLogger roundBasedDatalog;
 	public StockLogger transactionBasedDataLog;
+	private long globalLastTradedMarketOrderBuyPrice;
+	private long globalLastTradedMarketOrderSellPrice;
 //	private int[] fundamentalPrice;
 //	private int[] bestNBBOBID;
 //	private int[] bestNBBOASK;
@@ -36,28 +52,43 @@ public class Stock implements TradeableAsset{
 	
 	public Stock(){
 		initialize();
-		long initialFundamentalPrice = TradeableAsset.initialPrice;
-		this.fundamentalPrice.add(initialFundamentalPrice);
-		this.gbm = new GeometricBrownianMotion(initialFundamentalPrice, fundamentalBrownianMean, fundamentalBrownianVariance, new MRG32k3a());
-		gbm.setObservationTimes(1, SimulationSetup.nRounds+1);
+		
 	}
 	
 	private void initialize(){
 		this.id = nStocks;
 		nStocks++;
-		this.fundamentalPrice = new ArrayList<Long>(SimulationSetup.nRounds);
 		this.markets = new TreeSet<Market>(new MarketIdComparator());
+		this.fundamentalPrice = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, 0l));
+		
+		this.globalLowestBuy = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, 0l));
+		this.globalHighestBuy = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, 0l));
+		this.globalLowestSell = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
+		this.globalHighestSell = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
+		
+		this.bestMarketInRound = new ArrayList<Market>();
+		this.localSmallestOrderbookSpread = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
+		this.fundamentalPrice.set(0,TradeableAsset.initialFundamentalPrice);
+		this.globalLastTradedMarketOrderBuyPrice = TradeableAsset.initialFundamentalPrice - 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
+		this.globalLastTradedMarketOrderSellPrice = TradeableAsset.initialFundamentalPrice + 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
+		this.gbm = new GeometricBrownianMotion(TradeableAsset.initialFundamentalPrice, TradeableAsset.fundamentalBrownianMean, TradeableAsset.fundamentalBrownianVariance, new MRG32k3a());
+		gbm.setObservationTimes(1, SimulationSetup.nRounds+1);
 		World.addStock(this);
 	}
 	
 	public void updateFundamentalPrice(){
 		
 		//		Implement Brownian motion
+		int now = World.getCurrentRound();
 		long price = Math.round(this.gbm.nextObservation());
 		if(price>Integer.MAX_VALUE){
 			World.errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!");
 		} else{
-			this.fundamentalPrice.add((long) Math.round(price));
+			try {
+				this.fundamentalPrice.set(now, (long) Math.round(price));
+			} catch(IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
 		}
 		
 //		WarningLogger.logWarning("BROWNIAN MOTION NOT IMPLEMENTED YET!!!");
@@ -80,10 +111,6 @@ public class Stock implements TradeableAsset{
 		return id;
 	}
 	
-	public ArrayList<Long> getFundamentalPrice(){
-		return this.fundamentalPrice;
-	}
-	
 	public long getFundamentalPrice(int time){
 		return this.fundamentalPrice.get(time);
 	}
@@ -91,11 +118,119 @@ public class Stock implements TradeableAsset{
 	public TreeSet<Market> getMarkets(){
 		return this.markets;
 	}
-
-	public Integer getEstimatedTradedPriceFromEndOfCurrentRound() {
-		return 0;
 	
+	
+
+	public long getGlobalLastTradedMarketOrderBuyPrice() {
+		return globalLastTradedMarketOrderBuyPrice;
 	}
+
+//	public void setGlobalLastTradedMarketOrderBuyPrice(long lastTradedMarketOrderBuyPrice) {
+//		long midOfLastTradedPrices = this.globalLastTradedMarketOrderSellPrice - this.globalLastTradedMarketOrderBuyPrice;
+//		if(midOfLastTradedPrices <= 0) {
+//			Exception e = new Exception();
+//			e.printStackTrace();
+//			World.errorLog.logError("Price must not be negative!");
+//		}
+//		this.globalLastTradedMarketOrderBuyPrice = lastTradedMarketOrderBuyPrice;
+//	}
+
+	public long getGlobalLastTradedMarketOrderSellPrice() {
+		return globalLastTradedMarketOrderSellPrice;
+	}
+	
+	public void collectGlobalBestPricesAtEndOfRound() {
+		/*
+		 * This function collect the best buy/sell prices from all the orderbooks, and therefore it must be run
+		 * AFTER the prices in each orderbook have been updated.
+		 * The prices collected here are used to evaluate agent wealth in that particular round.
+		 */
+		long globalHighestBuyPrice = 0;
+		long globalLowestBuyPrice = Long.MAX_VALUE;
+		long globalHighestSellPrice = 0;
+		long globalLowestSellPrice = Long.MAX_VALUE;
+		
+		long localBestBuyPrice = 0;
+		long localBestSellPrice = Long.MAX_VALUE;
+		long spread = Long.MAX_VALUE;
+		long bestSpread = Long.MAX_VALUE;
+		int now = World.getCurrentRound();
+		Market bestMarket = null;
+		for(Market market:this.markets) {
+			Orderbook orderbook = market.getOrderbook(this);
+			try {
+				localBestBuyPrice = orderbook.getLocalBestBuyPriceAtEndOfRound(now);
+				localBestSellPrice = orderbook.getLocalBestSellPriceAtEndOfRound(now);
+				spread = localBestSellPrice - localBestBuyPrice;
+			} catch(NoOrdersException e) {
+				World.warningLog.logOnelineWarning(String.format("In round %s, Could not collect bestPrices for stock %s at market %s", now, this.id, market.getID()));
+			} finally {
+				globalLowestBuyPrice = (localBestBuyPrice < globalLowestBuyPrice) ? localBestBuyPrice : globalLowestBuyPrice;
+				globalHighestBuyPrice = (localBestBuyPrice > globalHighestBuyPrice) ? localBestBuyPrice : globalHighestBuyPrice;
+				globalHighestSellPrice = (localBestSellPrice > globalHighestSellPrice) ? localBestSellPrice : globalHighestSellPrice;
+				globalLowestSellPrice = (localBestSellPrice < globalLowestSellPrice) ? localBestSellPrice : globalLowestSellPrice;
+				if (spread < bestSpread) {
+					bestSpread = spread;
+					bestMarket = market;
+				}
+//				bestSpread = (spread < bestSpread) ? spread : bestSpread;
+			}
+		}
+		this.globalLowestBuy.set(now, globalLowestBuyPrice);
+		this.globalHighestBuy.set(now, globalHighestBuyPrice);
+		this.globalLowestSell.set(now, globalLowestSellPrice);
+		this.globalHighestSell.set(now, globalHighestSellPrice);
+		this.localSmallestOrderbookSpread.set(now, bestSpread);
+		this.bestMarketInRound.add(bestMarket);
+	}
+	
+	
+	
+//	public long getStockValueAtRound(int round) {
+//		/*
+//		 * The stock value is the mid of the spread at the market where it was traded at the best price in that round.
+//		 */
+//		long stockValue = this.globalLowestSell.get(round) - this.globalHighestBuy.get(round);
+//		if(stockValue<0) {
+//			/*
+//			 * Could this be because the prices are at different levels in different markets?
+//			 */
+//			World.errorLog.logError(String.format("In round %s, the stock value was negative, that is the global best buy was larger than the global best sell.", round));
+//		}
+//		return stockValue;
+//	}
+	
+	public long getLocalSmallestOrderbookSpread(int round) {
+		return this.localSmallestOrderbookSpread.get(round);
+	}
+	
+	public long getGlobalLowestBuyPrice(int round) {
+		return this.globalLowestBuy.get(round);
+	}
+	
+	public long getGlobalHighestBuyPrice(int round) {
+		return this.globalHighestBuy.get(round);
+	}
+	
+	public long getGlobalLowestSellPrice(int round) {
+		return this.globalLowestSell.get(round);
+	}
+	
+	public long getGlobalHighestSellPrice(int round) {
+		return this.globalHighestSell.get(round);
+	}
+
+//	public void setGlobalLastTradedMarketOrderSellPrice(long lastTradedMarketOrderSellPrice) {
+//		long midOfLastTradedPrices = this.globalLastTradedMarketOrderSellPrice - this.globalLastTradedMarketOrderBuyPrice;
+//		if(midOfLastTradedPrices <= 0) {
+//			Exception e = new Exception();
+//			e.printStackTrace();
+//			World.errorLog.logError("Price must not be negative!");
+//		}
+//		this.globalLastTradedMarketOrderSellPrice = lastTradedMarketOrderSellPrice;
+//	}
+
+	
 	
 	
 }

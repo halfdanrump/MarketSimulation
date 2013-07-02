@@ -270,7 +270,11 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		 */
 		
 		long currentlyHolds = this.ownedStocks.get(stock);
-		this.ownedStocks.put(stock, currentlyHolds + volume);
+		if(buysell == Order.BuySell.BUY) {
+			this.ownedStocks.put(stock, currentlyHolds + volume);
+		} else if (buysell == Order.BuySell.SELL) {
+			this.ownedStocks.put(stock, currentlyHolds - volume);
+		}
 		this.updateNumberOfStocksInStandingOrders(stock, buysell, volume, HFT.agentAction.UPDATE_ORDER);
 	}
 
@@ -357,15 +361,15 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 					 * Agent does not have to borrow stocks, that is, he has enough to sell the full volume
 					 */
 					tradedVolume = receipt.getUnsignedVolume();
-					tradeTotal = receipt.getTotal();
 				}
+				tradeTotal = receipt.getTotal();
 			} else {
 				/*
 				 * If he is not required to sell the full amount, just sell as many as he has or as many as the receipt requires him to,
 				 * whichever is the smallest volume.
 				 */
 				tradedVolume = Math.min(currentlyHoldingNumberOfStocks, receipt.getUnsignedVolume());
-				
+				World.errorLog.logError("TradeTotal must be assigned a value!");
 				if(receipt.getFillingOrder().getOwner() != null) {
 					World.errorLog.logError(String.format("Agent %s did only sell %s stocks for an order requiring him to sell %s stocks, but another transaction recept was issued to agent %s with the full amount",
 														this.id, tradedVolume, receipt.getUnsignedVolume(), receipt.getFillingOrder().getOwner().getID()));
@@ -488,14 +492,57 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 			}
 		}
 	}
+	
+//	public long getSumOfCashAndPortfolioValue(int round) {
+//		
+//	}
 
-	public long getTotalWealth() {
-		long totalWealth;
-		totalWealth = this.cash;
+//	public long getTotalWealth() {
+//		int now = World.getCurrentRound();
+//		long totalWealth;
+//		totalWealth = this.cash;
+//		for (Stock stock : this.stocks) {
+//			long stockPrice = stock.getStockValueAtRound(now);
+//			long nStocks = this.ownedStocks.get(stock);
+//			if(Long.MAX_VALUE / nStocks < stockPrice) {
+//				World.errorLog.logError("Numeric overflow when calculating trader wealth");
+//			} else {
+//				totalWealth += nStocks * stockPrice;	
+//			}
+//			
+//			
+//		}
+//		return totalWealth;
+//	}
+	
+	public long evaluatePortfolioValue(int round) {
+		long valueOfHeldStocks = 0;
 		for (Stock stock : this.stocks) {
-			totalWealth += this.ownedStocks.get(stock) * stock.getEstimatedTradedPriceFromEndOfCurrentRound();
+			long nStocks = this.ownedStocks.get(stock);
+			
+			if(nStocks == 0) {
+				
+			} else if(nStocks > 0){
+				/*
+				 * Agent could sell his stocks
+				 */
+				valueOfHeldStocks += nStocks * stock.getGlobalHighestSellPrice(round); 
+			} else if(nStocks < 0) {
+				valueOfHeldStocks += nStocks * stock.getGlobalLowestBuyPrice(round);
+				this.eventlog.logAgentAction(String.format("Agent had negative amount of stock"));
+				//				World.errorLog.logError("Agents are not allowed to hold negative amount of stock");
+			}
+			
+//			long stockPrice = stock.get
+//			if(Long.MAX_VALUE / nStocks < stockPrice) {
+//				World.errorLog.logError("Numeric overflow when calculating trader wealth");
+//			} else {
+//				totalWealth += nStocks * stockPrice;	
+//			}
+			
+			
 		}
-		return totalWealth;
+		return valueOfHeldStocks;
 	}
 
 	public long getCash() {
@@ -569,6 +616,15 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 	}
 	
 	protected void updateNumberOfStocksInStandingOrders(Stock stock, Order.BuySell buysell, long volume, HFT.agentAction action) {
+		/*
+		 *  Implements agent keeping track of how much he is currently selling of each stock.
+			-If he cancels an order, then subtract, no matter if buy or sell.
+			-If he created an order, then add
+			-If he updates an order, this is because a trade involving one of his standing orders was executed. 
+			 Then, no matter if he buys or sells, the volume of stocks in his standing orders is decreased. Hence, subtract the amount that he ends up trading.
+
+
+		 */
 		if(action == HFT.agentAction.CANCEL_ORDER) {
 			volume = -Math.abs(volume);
 		} else if(action == HFT.agentAction.UPDATE_ORDER) {
@@ -587,6 +643,14 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 			this.numberOfStocksInStandingSellOrders.put(stock, nCurrentStocksInSellOrders);
 		}
 		
+	}
+
+	public HashMap<Stock, Long> getNumberOfStocksInStandingSellOrders() {
+		return numberOfStocksInStandingSellOrders;
+	}
+
+	public HashMap<Stock, Long> getNumberOfStocksInStandingBuyOrders() {
+		return numberOfStocksInStandingBuyOrders;
 	}
 
 	protected void submitOrder(Order order) {
@@ -635,6 +699,10 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 //		}
 		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.CANCEL_ORDER);
 		this.nSubmittedCancellations += 1;
+	}
+	
+	public long getTotalAgentWorth() {
+		return this.cash + this.evaluatePortfolioValue(World.getCurrentRound());
 	}
 
 	public long getnSubmittedBuyOrders() {

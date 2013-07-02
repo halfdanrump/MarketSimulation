@@ -9,6 +9,8 @@ public interface MarketRules {
 	
 	final boolean allowsShortSelling = true;
 	final boolean agentPaysWhenOrderIsFilledAfterSendingCancellation = true;
+	final boolean agentMustBuyAllStocksAsSpecifiedInReceipt = true;
+	final boolean agentMustSellAllStocksAsSpecifiedInReceipt = true;
 	
 //	final boolean institutionFillsEmptyOrderbook = true;
 //	final institutionPriceDeterminationTypes institutionPriceDetermination =

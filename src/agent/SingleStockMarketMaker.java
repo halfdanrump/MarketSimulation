@@ -48,8 +48,8 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 	// }
 
 	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies,
-			long minimumSpread) {
-		super(stocks, markets, latencies);
+			long minimumSpread, int group) {
+		super(stocks, markets, latencies, group);
 		if (stocks.length > 1) {
 			World.errorLog
 					.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...");
@@ -198,18 +198,28 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 		}
 		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay, standingBuyOrder));
 		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay, standingSellOrder));
-		Order newBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
-		this.submitOrder(newBuyOrder);
-		this.createSellOrder(transmissionDelay, dispatchTime, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		this.confirmThatBuyOrderIsInAccordanceWithStrategy(transmissionDelay, dispatchTime, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		this.confirmThatSellOrderIsInAccordanceWithStrategy(transmissionDelay, dispatchTime, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
 		
 	}
 	
-	private void createSellOrder(int transmissionDelay, int dispatchTime, long newSellPrice, Order.Type orderType, Order.BuySell buysell, Orderbook orderbook, Message.TransmissionType transmissionType) {
-		long numberOfOwnedStockAfterSellingOrderIsFullfilled; 
-		if(this.doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
+	private void confirmThatSellOrderIsInAccordanceWithStrategy(int transmissionDelay, int dispatchTime, long newSellPrice, Order.Type orderType, Order.BuySell buysell, Orderbook orderbook, Message.TransmissionType transmissionType) {
+		Stock stock = orderbook.getStock();
+		long numberOfOwnedStockAfterSellingOrderIsFullfilled = this.numberOfStocksInStandingSellOrders.get(stock) - this.fixedOrderVolume; 
+		if(numberOfOwnedStockAfterSellingOrderIsFullfilled < 0 & SingleStockMarketMakerBehavior.doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
 			Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
 			this.submitOrder(newSellOrder);
+		} else {
+			this.eventlog.logAgentAction(String.format("Agent would like to place a SELL order, but he could not because he would have %s stocks left if the order was completely filled.", numberOfOwnedStockAfterSellingOrderIsFullfilled));
 		}
+	}
+	
+	private void confirmThatBuyOrderIsInAccordanceWithStrategy(int transmissionDelay, int dispatchTime, long newBuyPrice, Order.Type orderType, Order.BuySell buysell, Orderbook orderbook, Message.TransmissionType transmissionType) {
+		/*
+		 * At present this does nothing apart from accepting the order as the agent has no policy about when not to submit buy orders
+		 */
+		Order newBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		this.submitOrder(newBuyOrder);
 	}
 
 	private void updateSellSideOrderPrice(int dispatchTime, int transmissionDelay,	long currentMarketBuyPrice, long currentMarketSellPrice, Order standingSellOrder, boolean spreadViolation, Orderbook orderbook) {

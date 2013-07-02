@@ -14,8 +14,6 @@ public class Order extends Message{
 		BUY,
 	}
 	
-	
-	
 	private Orderbook orderbook;
 	private BuySell buysell;
 	private Type type;
@@ -29,38 +27,51 @@ public class Order extends Message{
 	private int id;
 	private static int orderCount = 0;
 	
-	
 	public Order(int transmissionDelay, int dispatchTime, int nRoundsInBook, long initialVolume, long price, Type type, BuySell buysell, HFT owner, Orderbook orderbook, TransmissionType transmissionType){
 		/*
 		 * Order submitted by HFTs
 		 */
 		super(World.getCurrentRound() + transmissionDelay + 1, dispatchTime, transmissionType);
-//		Exception e = new Exception();
-//		e.printStackTrace();
+		
 		this.owner = owner;
-//		if(arrivalTime < dispatchTime){
+//		if(dispatchTime < dispatchTime + transmissionDelay){
 //			Exception e = new InvalidOrderException(arrivalTime, dispatchTime)
 //		}
+		
+		/*
+		 * Dealing with order price
+		 */
 		if(price <= 0 | price == Integer.MAX_VALUE){
 			new InvalidOrderException(initialVolume, price, owner, orderbook);
 		} else{
 			this.price = price;			
 		}
+		
+		/*
+		 * Dealing with order volume
+		 */
+		this.initialVolume = initialVolume;
 		if(initialVolume <= 0){
 			new InvalidOrderException(initialVolume, price, owner, orderbook);
 		} else{
 			this.currentAgentSideVolume = initialVolume;
 			this.currentOrderbookSideVolume = initialVolume;
 		}
-		this.nRoundsInBook = nRoundsInBook;
-//		Exception e = new Exception();
-//		e.printStackTrace();
+		
 		this.type = type;
 		this.buysell = buysell;
 		this.orderbook = orderbook;
-		this.expirationTime = World.getCurrentRound() + nRoundsInBook;
 		this.id = Order.orderCount;
 		Order.orderCount++;
+
+		/*
+		 * Dealing with temporal aspects
+		 */
+		if(transmissionDelay < 0) {
+			World.errorLog.logError("Invalid order");
+		}
+		this.nRoundsInBook = nRoundsInBook;
+		this.expirationTime = World.getCurrentRound() + nRoundsInBook;
 		if(transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
 			if(super.getArrivalTime() < World.getCurrentRound()){
 				World.warningLog.logOnelineWarning("New order was created. Arrival time was before current world time, so the order will never be used.");
@@ -71,15 +82,18 @@ public class Order extends Message{
 		} else {
 			World.errorLog.logError("Order without specified TransmissionType was submitted");
 		}
-		
-		
 	}
 	
-	public void updateAgentSideVolumeByDifference(long volumeChange){
+	public void updateAgentSideVolumeByDifference(Order.BuySell buysell, long volumeChange){
+		if(buysell == Order.BuySell.BUY) {
+			this.currentAgentSideVolume += volumeChange;
+		} else if(buysell == Order.BuySell.SELL) {
+			this.currentAgentSideVolume -= volumeChange;
+		}
 		this.currentAgentSideVolume += volumeChange;
 	}
 	
-	public void updateOrderbookSideVolumeByDifference(long tradeVolume){
+	public void updateMarketSideVolumeByDifference(long tradeVolume){
 		this.currentOrderbookSideVolume += tradeVolume;
 	}
 	
@@ -178,7 +192,7 @@ public class Order extends Message{
 		return super.getTransmissionType();
 	}
 	
-	public long getInitialVolume() {
+	public long getUnsignedInitialVolume() {
 		return this.initialVolume;
 	}
 	

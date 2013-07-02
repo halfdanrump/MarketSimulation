@@ -9,7 +9,7 @@ public interface HighFrequencyTradingBehavior {
 	long startStockAmount = 100;
 	
 	boolean randomStartWealth = false;
-	long constantStartWealth = (int) Math.pow(10, 6);
+	long constantStartWealth = (int) Math.pow(10, 8);
 	
 	public static final long wealthMean = (int) Math.pow(10, 6);
 	public static final long wealthStd = (int) Math.pow(10, 4);

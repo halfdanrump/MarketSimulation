@@ -20,68 +20,50 @@ public class Logger implements Logging {
 	FileWriter writer;
 	BufferedWriter buffer;
 
-	public enum Type{
-		TXT,
-		CSV
+	public enum Type {
+		TXT, CSV
 	}
-	
+
 	// public Logger(File file){
 	// this.file = file;
 	// }
-	public Logger(String directory, String identifier, Type type) {
-		this.createFolders(directory);
-		
-		if(type == Type.TXT) {
-			identifier += ".txt";
-		} else if(type == Type.CSV) {
-			identifier += ".cvs";
+	public Logger(String rootDirectory, String filename, Type type) {
+		String directory = this.createFolders(rootDirectory);
+
+		if (type == Type.TXT) {
+			filename += ".txt";
+		} else if (type == Type.CSV) {
+			filename += ".cvs";
 		}
-		String filepath = getFilePath(directory, identifier);
+		String filepath = directory + filename;
 		this.file = new File(filepath);
 		try {
 			try {
 				this.writer = new FileWriter(this.file);
-			} catch (FileNotFoundException e) {
 				this.writeToConsole(String.format("Creating file %s", filepath));
+			} catch (FileNotFoundException e) {
+				System.out.println("Could not create file: " + filepath);
+				System.exit(1);
 			}
 			this.buffer = new BufferedWriter(this.writer);
-//			this.createEventLogHeader();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	private File createFolders(String directory) {
+	private String createFolders(String directory) {
+		if (createTimeSpecificLogFolders) {
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_kk_mm_ss");
+			String time = sdf.format(cal.getTime()) + "/";
+			directory += time;
+		} 
 		File file = new File(directory);
 		if (!file.exists()) {
 			file.mkdirs();
 		}
-		return file;
-
-		// File file = new File("directory path");
-		// if(file.exists()){
-		// System.out.println("File Exists");
-		// }else{
-		// boolean wasDirecotyMade = file.mkdirs();
-		// if(wasDirecotyMade)System.out.println("Direcoty Created");
-		// else System.out.println("Sorry could not create directory");
-		// }
-	}
-
-	public static String getFilePath(String directoryPath, String filename) {
-		String time;
-		if (appendDateToFiles) {
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_kk_mm");
-			time = sdf.format(cal.getTime());
-		} else {
-			time = "";
-		}
-
-		String filepath = directoryPath + filename + time;
-		return filepath;
+		return directory;
 	}
 
 	public void closeLog() {
@@ -104,7 +86,7 @@ public class Logger implements Logging {
 
 	protected void writeToFile(String line) {
 		// System.out.println(line);
-		if(Logging.fileLogging) {
+		if (Logging.fileLogging) {
 			try {
 				this.writer.write(line + "\n");
 			} catch (IOException e) {
@@ -115,8 +97,7 @@ public class Logger implements Logging {
 
 	public void logError(String line) {
 		Exception e = new Exception();
-		writeToConsole(Logger.getNewEntry() + "ERROR!;\t" + line
-				+ "\t Stack:\t ");
+		writeToConsole(Logger.getNewEntry() + "ERROR!;\t" + line + "\t Stack:\t ");
 		e.printStackTrace();
 		WorldObjectHandler.closeLogs();
 		System.exit(1);
@@ -139,51 +120,16 @@ public class Logger implements Logging {
 
 	protected static String getNewEntry() {
 		Logger.nLogs++;
-		String line = String.valueOf(Logger.nLogs) + "\t"
-				+ Logger.getRealTime() + "\t" + World.getCurrentRound() + "\t";
+		String line = String.valueOf(Logger.nLogs) + "\t" + Logger.getRealTime() + "\t" + World.getCurrentRound() + "\t";
 		return line;
 	}
-
-//	private void logOnelineEntry(String line) {
-//		if (fileLogging) {
-//			writeToFile(Logger.getNewEntry() + line);
-//		}
-//		if(consoleLogging) {
-//			writeToConsole(line);
-//		}
-//	} 
-	
-//	public void logOnelineEvent(String line) {
-//		if (fileLogging) {
-//			writeToFile(Logger.getNewEntry() + line);
-//		}
-//		if(consoleLogging) {
-//			writeToConsole(line);
-//		}
-//	}
-//	
-//	public void logOnelineWarning(String line) {
-//		if (fileLogging) {
-//			writeToFile(Logger.getNewEntry() + line);
-//		}
-//		
-//	}
-
-	// public void logWarning(String line){
-	// if(logWarnings){
-	// writeToConsole(Logger.getNewEntry() + line);
-	// }
-	// }
 
 	public void writeLineToLog(String line) {
 		this.writeToFile(line);
 	}
 
 	public void logShortSelling(TransactionReceipt receipt) {
-		String line = String.format(
-				"Agent %d tried to short sell %d units of stock %d", receipt
-						.getOwner().getID(), receipt.getSignedVolume(), receipt
-						.getStock().getID());
+		String line = String.format("Agent %d tried to short sell %d units of stock %d", receipt.getOwnerOfFilledStandingOrder().getID(), receipt.getUnsignedVolume(), receipt.getStock().getID());
 		writeToConsole(getNewEntry() + line);
 	}
 

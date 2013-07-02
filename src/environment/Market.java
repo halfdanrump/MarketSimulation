@@ -36,7 +36,7 @@ public class Market implements MarketRules{
 		int time = World.getCurrentRound() - agent.getLatency(this);
 		try {
 			Orderbook orderbook = this.orderbooksByStock.get(stock);
-			return orderbook.getBestSellPriceAtEndOfRound(time);		
+			return orderbook.getLocalBestSellPriceAtEndOfRound(time);		
 		} catch (NoOrdersException e) {
 			// TODO Auto-generated catch block
 			throw e;
@@ -46,7 +46,7 @@ public class Market implements MarketRules{
 	public long getDelayedBestBuyPriceAtEndOfRound(HFT agent, Stock stock) throws NoOrdersException{
 		int time = World.getCurrentRound() - agent.getLatency(this);
 		try{
-			return this.orderbooksByStock.get(stock).getBestBuyPriceAtEndOfRound(time);
+			return this.orderbooksByStock.get(stock).getLocalBestBuyPriceAtEndOfRound(time);
 		} catch(NoOrdersException e){
 			throw e;
 		}

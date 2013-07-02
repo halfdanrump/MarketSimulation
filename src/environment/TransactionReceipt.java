@@ -10,11 +10,11 @@ public class TransactionReceipt extends Message{
 	private long volume;
 	private long price;
 	private long total;
-	private HFT owner;
 	private Order filledOrder;
+	private Order fillingOrder;
 	
 	
-	TransactionReceipt(Order order, long volume, long price, long total){
+	TransactionReceipt(Order order, long volume, long price, long total, Order fillingOrder){
 		super(calculateArrivalTime(order), World.getCurrentRound(), Message.TransmissionType.WITH_TRANSMISSION_DELAY);
 		this.setId(receiptsCount);		
 		receiptsCount++;
@@ -30,11 +30,13 @@ public class TransactionReceipt extends Message{
 			e.printStackTrace();
 			World.errorLog.logError("Receipt price must be positive!");
 		}
-		
-		
 		this.filledOrder = order;
-		this.owner = order.getOwner();
 		this.initialize();
+		/*
+		 * The transaction receipt is issued to the agent who owns the order which was filled. 
+		 * The filling order is the order on the other side of the transaction
+		 */
+		this.fillingOrder = fillingOrder;
 	}
 	
 	private static int calculateArrivalTime(Order order) {
@@ -49,9 +51,11 @@ public class TransactionReceipt extends Message{
 	
 	
 	
-	public HFT getOwner(){
-		return this.owner;
+	public HFT getOwnerOfFilledStandingOrder(){
+		return this.filledOrder.getOwner();
 	}
+	
+	
 	
 	
 	public String toStringForLog(){
@@ -59,17 +63,21 @@ public class TransactionReceipt extends Message{
 	}
 	
 	
-	public long getSignedTotal(){
-		if(this.filledOrder.getBuySell() == Order.BuySell.BUY){
-			return -1*Math.abs(total);
-		} else{
-			return Math.abs(total);
-		}
-		
-	}
+//	public long getSignedTotal(){
+//		if(this.filledOrder.getBuySell() == Order.BuySell.BUY){
+//			return -1*Math.abs(total);
+//		} else{
+//			return Math.abs(total);
+//		}
+//		
+//	}
+//	
 	
+//	public long getAbsoluteTotal(){
+//		return this.total;
+//	}
 	
-	public long getAbsoluteTotal(){
+	public long getTotal() {
 		return this.total;
 	}
 
@@ -79,13 +87,13 @@ public class TransactionReceipt extends Message{
 	}
 
 	
-	public long getSignedVolume() {
-		if(this.filledOrder.getBuySell() == Order.BuySell.BUY){
-			return Math.abs(volume);
-		} else{
-			return -1*Math.abs(volume);
-		}
-	}
+//	public long getSignedVolume() {
+//		if(this.filledOrder.getBuySell() == Order.BuySell.BUY){
+//			return Math.abs(volume);
+//		} else{
+//			return -1*Math.abs(volume);
+//		}
+//	}
 	
 	
 	public long getUnsignedVolume() {
@@ -132,6 +140,10 @@ public class TransactionReceipt extends Message{
 	
 	public static long getReceiptCount(){
 		return receiptsCount;
+	}
+
+	public Order getFillingOrder() {
+		return fillingOrder;
 	}
 
 	
