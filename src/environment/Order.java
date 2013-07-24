@@ -156,6 +156,14 @@ public class Order extends Message{
 		return this.orderbook.getStock();
 	}
 	
+	public String getOwnerID() {
+		if(owner == null) {
+			return "NA";
+		} else {
+			return String.valueOf(this.owner.getID());
+		}
+	}
+	
 	public Market getMarket(){
 		return this.orderbook.getMarket();
 	}

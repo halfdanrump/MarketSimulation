@@ -3,6 +3,7 @@ package log;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import setup.Logging;
 import utilities.Utils;
 import environment.Order;
 import environment.Stock;
@@ -22,8 +23,8 @@ public class AgentLogger extends Logger {
 		NO_HEADER
 	}
 
-	public AgentLogger(String directory, String identifier, HFT agent, Logger.Type type, AgentLogger.headerType headerType) {
-		super(directory, String.format("%s_agent_%s", identifier, agent.getID()), type);
+	public AgentLogger(String directory, String identifier, HFT agent, Logger.Type type, AgentLogger.headerType headerType, boolean logToFile, boolean logToConsole) {
+		super(directory, String.format("%s_agent_%s", identifier, agent.getID()), type, logToFile, logToConsole);
 		this.agent = agent;
 		if(headerType == AgentLogger.headerType.ROUND_DATA) {
 			String header = "round, cash, portfolio, nSubOrders, nOrderCancellations, nReceivedBuyOrderReceipts, nReceivedSellOrderReceiptsn, nFulfilledOrders, " +
@@ -37,6 +38,7 @@ public class AgentLogger extends Logger {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public void logTradeData(TransactionReceipt receipt, long volume, long total, long borrowedCash, long borrowedStocks) {
 		/*
 		 * Records the following information just after the agent has received the transaction received
@@ -57,55 +59,61 @@ public class AgentLogger extends Logger {
 		 * 9-borrowed cash (0 if not borrowed any cash)
 		 * 10-borrowedStocks
 		 */
-		ArrayList<String> entry = new ArrayList<String>();
-		Utils.initializeStringArrayWithEmptyStrings(entry, 11, "");
-		entry.set(0, String.valueOf(World.getCurrentRound()));
-		entry.set(1, String.valueOf(receipt.getFilledOrder().getStock().getID()));
-		entry.set(2, String.valueOf(receipt.getFilledOrder().getMarket().getID()));
-		if(receipt.getFillingOrder().getOwner() == null) {
-			entry.set(3, "NA");
-		} else {
-			entry.set(3, String.valueOf(receipt.getFillingOrder().getOwner().getID()));
+		if(this.createLogString){
+			ArrayList<String> entry = new ArrayList<String>();
+			Utils.initializeStringArrayWithEmptyStrings(entry, 11, "");
+			entry.set(0, String.valueOf(World.getCurrentRound()));
+			entry.set(1, String.valueOf(receipt.getFilledOrder().getStock().getID()));
+			entry.set(2, String.valueOf(receipt.getFilledOrder().getMarket().getID()));
+			if(receipt.getFillingOrder().getOwner() == null) {
+				entry.set(3, "NA");
+			} else {
+				entry.set(3, String.valueOf(receipt.getFillingOrder().getOwner().getID()));
+			}
+			entry.set(4,String.valueOf(receipt.getBuySell()));
+			entry.set(5,String.valueOf(receipt.getPrice()));
+			entry.set(6,String.valueOf(volume));
+			entry.set(7,String.valueOf(total));
+			entry.set(8,String.valueOf(this.agent.getCash()));
+			entry.set(9,String.valueOf(borrowedCash));
+			entry.set(10,  String.valueOf(borrowedStocks));
+			
+			String line = Utils.convertArrayListToString(entry); 			
+			if(this.logToFile) {
+				super.writeToFile(line);
+			}
+			if(this.logToConsole) {
+				this.writeToConsole(line);
+			}
 		}
-		entry.set(4,String.valueOf(receipt.getBuySell()));
-		entry.set(5,String.valueOf(receipt.getPrice()));
-		entry.set(6,String.valueOf(volume));
-		entry.set(7,String.valueOf(total));
-		entry.set(8,String.valueOf(this.agent.getCash()));
-		entry.set(9,String.valueOf(borrowedCash));
-		entry.set(10,  String.valueOf(borrowedStocks));
 		
-		String line = Utils.convertArrayListToString(entry); 
-		if(Logging.logAgentDataToFile) {
-			super.writeToFile(line);
-		}
-		if(Logging.logAgentDataToConsole) {
-			this.writeToConsole(line);
-		}
 	}
 
+	@SuppressWarnings("unused")
 	public void recordDataEntryAtEndOfRound() {
 		
-		
-		
-		String entry = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-									World.getCurrentRound(), 
-									this.agent.getCash(),
-									this.agent.evaluatePortfolioValue(World.getCurrentRound()),
-									agent.getnSubmittedOrders(), 
-									agent.getnOrderCancellations(),
-									agent.getnReceivedBuyOrderReceipts(),
-									agent.getnReceivedSellOrderReceipts(),
-									agent.getnFullfilledOrders(), 
-									agent.getnStandingBuyOrders(), 
-									agent.getnStandingSellOrders())
-									+ this.getCurrentPortfolioAsTabulatedString();
-		if(Logging.logAgentDataToFile) {
-			super.writeToFile(entry);
+		if(Logging.logAgentRoundDataToFile | Logging.logAgentRoundDataToConsole){
+			String entry = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+					World.getCurrentRound(), 
+					this.agent.getCash(),
+					this.agent.evaluatePortfolioValue(World.getCurrentRound()),
+					agent.getnSubmittedOrders(), 
+					agent.getnOrderCancellations(),
+					agent.getnReceivedBuyOrderReceipts(),
+					agent.getnReceivedSellOrderReceipts(),
+					agent.getnFullfilledOrders(), 
+					agent.getnStandingBuyOrders(), 
+					agent.getnStandingSellOrders())
+					+ this.getCurrentPortfolioAsTabulatedString();
+			if(Logging.logAgentRoundDataToFile) {
+				super.writeToFile(entry);
+			}
+			if(Logging.logAgentRoundDataToConsole) {
+				this.writeToConsole(entry);
+			}
+			
 		}
-		if(Logging.logAgentDataToConsole) {
-			this.writeToConsole(entry);
-		}
+		
 	}
 	
 	private String getPortfolioHeaderAsTabulatedString() {

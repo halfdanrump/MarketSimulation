@@ -4,12 +4,12 @@ public interface StylizedTraderBehavior {
 	public int orderLength = 1000;
 	
 	public boolean randomOrderVolume = false;
-	public long constantVolume = 100;
+	public long constantVolume = 10;
 	public double volumeMean = 100d;
 	public double volumeStd = 10d;
 	
 	public double addivePriceNoiseMean = 0d;
-	public double additivePriceNoiseStd = 10000d;
+	public double additivePriceNoiseStd = Math.pow(10, 5);
 	
 	
 	public long fundamentalistWeightMean = 0;

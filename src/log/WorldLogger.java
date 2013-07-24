@@ -19,8 +19,8 @@ public class WorldLogger extends Logger {
 
 	private long nReRequestionMarketInformation;
 
-	public WorldLogger(String directory, String identifier, boolean recordHeader, Logger.Type type) {
-		super(directory, identifier, type);
+	public WorldLogger(String directory, String identifier, boolean recordHeader, Logger.Type type, boolean logToFile, boolean logToConsole) {
+		super(directory, identifier, type, logToFile, logToConsole);
 		if(recordHeader) {
 			recordHeader();
 		}
@@ -28,42 +28,57 @@ public class WorldLogger extends Logger {
 	}
 	
 	public void recordHeader(){
-		String header = "1) Round, \n" +
-						"2) Total number of standing orders across all the orderbooks, \n" +
-						"3) Total number of submitted orders, \n" +
-						"4) Total number of submitted cancellations, \n" +
-						"5) Total number of fulfilled orders, \n" +
-						"6) Total wealth of all HFTs, \n" +
-						"7) Number of orders that arrived this round, \n" +
-						"8) Number of order cancellations that arrived this round, \n" +
-						"9) Number of receipts that arrived this round\n" +
-						"10) Number of information requests from agents, \n" +
-						"11) Number of agents that received market information, \n" +
-						"12) Number of agents that finished evaluating their strategy\n" +
-						"13) Number of agents that re-requested informaton after receiving\n " +
-						"14) Number of expired orders\n" +
-						"1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14";
-		super.writeToFile(header);
+		if(this.createLogString){
+			String header = "1) Round, \n" +
+					"2) Total number of standing orders across all the orderbooks, \n" +
+					"3) Total number of submitted orders, \n" +
+					"4) Total number of submitted cancellations, \n" +
+					"5) Total number of fulfilled orders, \n" +
+					"6) Total wealth of all HFTs, \n" +
+					"7) Number of orders that arrived this round, \n" +
+					"8) Number of order cancellations that arrived this round, \n" +
+					"9) Number of receipts that arrived this round\n" +
+					"10) Number of information requests from agents, \n" +
+					"11) Number of agents that received market information, \n" +
+					"12) Number of agents that finished evaluating their strategy\n" +
+					"13) Number of agents that re-requested informaton after receiving\n " +
+					"14) Number of expired orders\n" +
+					"1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14";
+			if(this.logToFile){
+				super.writeToFile(header);			
+			}
+			
+			if(this.logToConsole){
+				super.writeToConsole(header);
+			}			
+		}
 	}
 	
 	public void recordEntry(){
-		String entry = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
-									World.getCurrentRound(),
-									this.getTotalNStandingOrders(),
-									Order.getOrderCount(),
-									OrderCancellation.getCancellationCount(),
-									TransactionReceipt.getReceiptCount(),
-									this.getTotalWealth(),
-									this.nArrivingOrders,
-									this.nArrivingOrderCancellations,
-									this.nArrivingReceipts,
-									this.nInformationRequests,
-									this.nReceiveMarketInformation,
-									this.nFinishedEvaluatingStrategy,
-									this.nReRequestionMarketInformation,
-									this.nExpiredOrders
-									);
-		super.writeToFile(entry);
+		if(this.createLogString){
+			String entry = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+					World.getCurrentRound(),
+					this.getTotalNStandingOrders(),
+					Order.getOrderCount(),
+					OrderCancellation.getCancellationCount(),
+					TransactionReceipt.getReceiptCount(),
+					this.getTotalWealth(),
+					this.nArrivingOrders,
+					this.nArrivingOrderCancellations,
+					this.nArrivingReceipts,
+					this.nInformationRequests,
+					this.nReceiveMarketInformation,
+					this.nFinishedEvaluatingStrategy,
+					this.nReRequestionMarketInformation,
+					this.nExpiredOrders
+					);
+			if(this.logToFile){
+				super.writeToFile(entry);
+			}
+			if(this.logToConsole){
+				super.writeToConsole(entry);
+			}
+		}
 	}
 	
 	

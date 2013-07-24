@@ -7,15 +7,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import Experiments.Experiment;
+
 import log.AgentLogger;
-import log.Logging;
 
 import setup.HighFrequencyTradingBehavior;
+import setup.Logging;
 import setup.MarketRules;
-import utilities.NoOrdersException;
 import utilities.Utils;
 
-public abstract class HFT implements HighFrequencyTradingBehavior, Logging, MarketRules, EntityThatCanSubmitOrders {
+public abstract class HFT implements HighFrequencyTradingBehavior, Logging, MarketRules{
+	Experiment experiment;
 	public static long nHFTs = 0;
 	protected long id;
 	protected long cash;
@@ -31,7 +33,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 	private HashMap<Stock, Long> numberOfStocksInStandingBuyOrders;
 	protected ArrayList<Market> markets;
 	protected ArrayList<Stock> stocks;
-
+	
 	/*
 	 * For experiments in which the agent is associated with a group
 	 */
@@ -65,21 +67,22 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 	public AgentLogger roundDatalog;
 	public AgentLogger tradeLog;
 	
-	public HFT(long wealth, int[] stockIDs, int[] startingPortfolio, int[] marketIDs, int[] latencies, int group) {
-		this.cash = wealth;
-		this.wakeupTime = World.getCurrentRound();
-		this.group = group;
-		this.initialize(stockIDs, marketIDs, latencies);
-		this.setPortfolio(startingPortfolio);
-		World.addNewAgent(this);
-	}
+//	public HFT(long wealth, int[] stockIDs, int[] startingPortfolio, int[] marketIDs, int[] latencies, int group) {
+//		this.cash = wealth;
+//		this.wakeupTime = World.getCurrentRound();
+//		this.group = group;
+//		this.initialize(stockIDs, marketIDs, latencies);
+//		this.setPortfolio(startingPortfolio);
+//		World.addNewAgent(this);
+//	}
 
-	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, int group) {
+	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment) {
+		this.experiment = experiment;
 		this.group = group;
-		if (randomStartWealth) {
+		if (experiment.randomStartWealth) {
 			this.cash = getRandomInitialTraderWealth();
 		} else {
-			this.cash = constantStartWealth;
+			this.cash = experiment.constantStartWealth;
 		}
 		this.wakeupTime = World.getCurrentRound();
 		this.initialize(stockIDs, marketIDs, latencies);
@@ -125,7 +128,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 			this.numberOfStocksInStandingBuyOrders.put(stock, 0l);
 			this.numberOfStocksInStandingSellOrders.put(stock, 0l);
 		}
-		if (keepOrderHistory) {
+		if (experiment.keepOrderHistory) {
 			this.orderHistory = new ArrayList<Order>();
 		}
 	}
@@ -168,10 +171,10 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		 * the interface.
 		 */
 		for (Stock stock : this.stocks) {
-			if (HighFrequencyTradingBehavior.randomStartStockAmount) {
+			if (experiment.randomStartStockAmount) {
 				World.errorLog.logError("Random start stock amount not implemented yet!");
 			} else {
-				this.ownedStocks.put(stock, HighFrequencyTradingBehavior.startStockAmount);
+				this.ownedStocks.put(stock, experiment.startStockAmount);
 			}
 		}
 	}
@@ -602,17 +605,17 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		return this.getLatency(market) + World.getCurrentRound();
 	}
 
-	public static long getRandomInitialTraderWealth() {
+	public long getRandomInitialTraderWealth() {
 		Random r = new Random();
 		long w = 0;
 		while (w <= 0) {
-			w = (int) Math.rint(r.nextGaussian() * wealthStd + wealthMean);
+			w = (int) Math.rint(r.nextGaussian() * this.experiment.wealthStd + this.experiment.wealthMean);
 		}
 		return w;
 	}
 
 	public void hibernate() {
-		this.wakeupTime = World.getCurrentRound() + emptyOrderbookWaitTime;
+		this.wakeupTime = World.getCurrentRound() + this.experiment.emptyOrderbookWaitTime;
 	}
 	
 	protected void updateNumberOfStocksInStandingOrders(Stock stock, Order.BuySell buysell, long volume, HFT.agentAction action) {
@@ -667,7 +670,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 //			this.numberOfStocksInStandingSellOrders.put(order.getStock(), newOwnedAmount);
 			this.nSubmittedSellOrders += 1;
 		}
-		if (keepOrderHistory) {
+		if (this.experiment.keepOrderHistory) {
 			this.orderHistory.add(order);
 		}
 		/*
@@ -676,11 +679,11 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.SUBMIT_ORDER);
 	}
 
-	public static HashMap<Market, Integer> getRandomLatencyHashMap(Market[] markets) {
+	public HashMap<Market, Integer> getRandomLatencyHashMap(Market[] markets) {
 		HashMap<Market, Integer> latencyMap = new HashMap<Market, Integer>();
 
 		for (Market market : markets) {
-			int latency = Utils.getRandomUniformInteger(minimumLatency, maximumLatency);
+			int latency = Utils.getRandomUniformInteger(this.experiment.minimumLatency, this.experiment.maximumLatency);
 			latencyMap.put(market, latency);
 		}
 		return latencyMap;

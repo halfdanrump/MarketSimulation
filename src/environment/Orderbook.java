@@ -13,7 +13,6 @@ import environment.Order.BuySell;
 import log.OrderbookLogger;
 import setup.SimulationSetup;
 import setup.MarketRules;
-import utilities.NoOrdersException;
 import utilities.OrderExpirationTimeComparator;
 import utilities.orderPriceComparatorAscending;
 import utilities.OrderPriceComparatorLowFirst;
@@ -285,7 +284,11 @@ public class Orderbook {
 		 */
 		if(newOrder.getStock() == matchingOrder.getStock()) {
 			Stock stock = matchingOrder.getStock();
-			stock.transactionBasedDataLog.recordStockInformationAfterTransaction(tradePrice, this);
+//			if(newOrder.getOwner() != null) {
+//				if(matchingOrder.getOwner() != null)
+//					System.out.println("hum");
+//			}
+			stock.transactionBasedDataLog.recordStockInformationAfterTransaction(tradePrice, this, newOrder, matchingOrder);
 		} else {
 			World.errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()));
 		}

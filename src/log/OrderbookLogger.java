@@ -1,5 +1,6 @@
 package log;
 
+import setup.Logging;
 import environment.Order;
 import environment.Orderbook;
 import environment.TransactionReceipt;
@@ -14,8 +15,9 @@ public class OrderbookLogger extends Logger implements Logging{
 	
 	private Orderbook orderbook;
 
-	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType, Logger.Type type) {
-		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()), type);
+
+	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType, Logger.Type type, boolean logToFile, boolean logToConsole) {
+		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()), type, logToFile, logToConsole);
 		if(logType == Type.ORDER_FLOW_LOG) {
 			this.recordOrderFlowHeader();
 		} else if(logType == Type.EVENT_LOG) {
@@ -45,27 +47,33 @@ public class OrderbookLogger extends Logger implements Logging{
 		if(Logging.logOrderbookEventsToConsole){
 			super.writeToConsole(header);
 		}
-		super.writeToFile(header);
+		if(this.logToFile){
+			super.writeToFile(header);
+		}
 	}
 	
 	
 	
 
 	public void logEventAddOrder(Order order) {
-		if (Logging.logOrderbookAddOrder) {
+		if (this.createLogString) {
 			String line = super.getNewEntry() + "Add\t" + order.toStringForOrderbookLog();
-			super.writeToFile(line);
-			if(Logging.logOrderbookEventsToConsole) {
+			if(this.logToFile){
+				super.writeToFile(line);
+			}
+			if(this.logToConsole) {
 				this.writeToConsole(line);
 			}
 		}
 	}
 
 	public void logEventRemoveOrder(Order order) {
-		if (Logging.logOrderbookRemoveOrder) {
+		if (this.createLogString) {
 			String line = super.getNewEntry() + "Remove\t" + order.toStringForOrderbookLog();
-			super.writeToFile(line);
-			if(Logging.logOrderbookEventsToConsole){
+			if(this.logToFile){
+				super.writeToFile(line);
+			}
+			if(this.logToConsole){
 				this.writeToConsole(line);
 			}
 		}
@@ -73,27 +81,31 @@ public class OrderbookLogger extends Logger implements Logging{
 	}
 
 	public void logEventUpdateOrderVolume(Order order, long tradeVolume) {
-		if (Logging.logOrderbookUpdateOrderVolume) {
+		if (this.createLogString) {
 			String line = super.getNewEntry() + "UpdVol\t" + order.getID() + "\t\t\t\t" + -tradeVolume;
-			super.writeToFile(line);
-			if(Logging.logOrderbookEventsToConsole){
+			if(this.logToFile){
+				super.writeToFile(line);
+			}
+			if(this.logToConsole){
 				this.writeToConsole(line);
 			}
 		}
 	}
 
 	public void logEventProcessNewOrder(Order order) {
-		if (Logging.logOrderbookProcessOrder) {
+		if (this.createLogString) {
 			String line = super.getNewEntry() + "Process\t" + order.toStringForOrderbookLog();
-			super.writeToFile(line);
-			if(Logging.logOrderbookEventsToConsole){
+			if(this.logToFile){
+				super.writeToFile(line);
+			}
+			if(this.logToConsole){
 				this.writeToConsole(line);
 			}
 		}
 	}
 
 	public void logEventMatch(Order newOrder, Order matchingOrder) {
-		if (Logging.logOrderbookMatches) {
+		if (this.createLogString) {
 			String line = super.getNewEntry() + "Match\t"
 					+ matchingOrder.getID() + "," + newOrder.getID();
 			try {
@@ -107,22 +119,26 @@ public class OrderbookLogger extends Logger implements Logging{
 				
 			}
 			line += String.format("\tPrice: %s", matchingOrder.getPrice());
-			super.writeToFile(line);
-			if(Logging.logOrderbookEventsToConsole){
+			if(this.logToFile){
+				super.writeToFile(line);
+			}
+			if(this.logToConsole){
 				this.writeToConsole(line);
 			}
 		}
 	}
 
 	public void logEventTransaction(TransactionReceipt receipt) {
-		if (Logging.logOrderbookTransactions) {
+		if (this.createLogString) {
 			String line = super.getNewEntry() + "Transaction\t"
 					+ receipt.toStringForLog();
 			try {
 				line += String.format("\tSent receipt to agent %s. Arrives in round %s", receipt.getOwnerOfFilledStandingOrder().getID(), receipt.getArrivalTime());
 			} finally {
-				super.writeToFile(line);
-				if(Logging.logOrderbookEventsToConsole){
+				if(this.logToFile){
+					super.writeToFile(line);
+				}
+				if(this.logToConsole){
 					this.writeToConsole(line);
 				}	
 			}
@@ -131,30 +147,36 @@ public class OrderbookLogger extends Logger implements Logging{
 	}
 
 	public void logEventOrderExpired(Order order) {
-		if (Logging.logOrderbookOrderExpire) {
+		if (this.createLogString) {
 			String line = super.getNewEntry() + "Expire\t" + order.getID();
-			super.writeToFile(line);
-			if(Logging.logOrderbookEventsToConsole){
+			if(this.logToFile){
+				super.writeToFile(line);
+			}
+			if(this.logToConsole){
 				this.writeToConsole(line);
 			}
 		}
 	}
 
 	public void logEventNoMarketOrders(Order.BuySell buysell) {
-		String line = Logger.getNewEntry() + String.format("no%s",String.valueOf(buysell));
-		super.writeToFile(line);
-		if(Logging.logOrderbookEventsToConsole) {
-			this.writeToConsole(line);
+		if(this.createLogString){
+			String line = Logger.getNewEntry() + String.format("no%s",String.valueOf(buysell));
+			if(this.logToFile){
+				super.writeToFile(line);
+			}
+			if(Logging.logOrderbookEventsToConsole) {
+				this.writeToConsole(line);
+			}
 		}
 	}
 	
 	
 	public void logOnelineEvent(String line) {
 		line = super.getNewEntry() + line;
-		if(Logging.logOrderbookOnelineEvents) {
+		if(this.logToFile){
 			super.writeToFile(line);
 		}
-		if(Logging.logOrderbookOnelineEventsToConsole) {
+		if(this.logToConsole) {
 			super.writeToConsole(line);
 		}
 	}

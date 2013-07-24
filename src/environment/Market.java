@@ -3,7 +3,6 @@ package environment;
 import java.util.HashMap;
 
 import setup.MarketRules;
-import utilities.NoOrdersException;
 
 import agent.HFT;
 

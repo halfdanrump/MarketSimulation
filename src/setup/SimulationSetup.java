@@ -13,7 +13,7 @@ public interface SimulationSetup {
 	
 	/* Agent parameters
 	 * */
-	public static final long nAgents = 100;
+//	public static final long nAgents = 100;
 	
 	
 	/* Market parameters

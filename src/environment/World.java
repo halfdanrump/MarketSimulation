@@ -7,10 +7,8 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import log.WorldLogger;
 import setup.SimulationSetup;
-import setup.WorldObjectHandler;
 import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
-import utilities.NoOrdersException;
 import utilities.StockMarketPair;
 import agent.HFT;
 import agent.StylizedTrader;
@@ -69,14 +67,14 @@ public class World implements SimulationSetup {
 	private static int currentRound = 0;
 	private roundPhases roundPhase;
 	
-	public static void setupEnvironment() {
-		WorldObjectHandler.createStocks();
-		WorldObjectHandler.createMarkets();
-		WorldObjectHandler.createOrderbooks();
-		WorldObjectHandler.createAgents();
-		WorldObjectHandler.createObjectLoggers();
-		WorldObjectHandler.initializeEmptyOrderbooksWithMarketOrders();
-	}
+//	public static void setupEnvironment() {
+//		WorldObjectHandler.createStocks();
+//		WorldObjectHandler.createMarkets();
+//		WorldObjectHandler.createOrderbooks();
+//		WorldObjectHandler.createAgents();
+//		WorldObjectHandler.createObjectLoggers();
+//		WorldObjectHandler.initializeEmptyOrderbooksWithMarketOrders();
+//	}
 
 	public static void executeInitalRounds(long nRounds) {
 		for (long round = 0; round < nRounds; round++) {
@@ -165,7 +163,11 @@ public class World implements SimulationSetup {
 	private static void logAgentData() {
 		// TODO Auto-generated method stub
 		for(HFT agent:World.agents){
-			agent.roundDatalog.recordDataEntryAtEndOfRound();
+			try{
+				agent.roundDatalog.recordDataEntryAtEndOfRound();
+			} catch(NullPointerException e){
+				
+			}
 		}
 	}
 

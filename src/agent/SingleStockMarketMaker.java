@@ -2,10 +2,14 @@ package agent;
 
 import java.util.HashMap;
 
-import utilities.NoOrdersException;
+import Experiments.Experiment;
+
+import setup.SingleStockMarketMakerBehavior;
+
 
 import environment.Market;
 import environment.Message;
+import environment.NoOrdersException;
 import environment.Order;
 import environment.OrderCancellation;
 import environment.Orderbook;
@@ -34,22 +38,8 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 	 * his ask to the new price. -
 	 */
 
-	// public SingleStockMarketMaker(long wealth, int[] stocks, int[]
-	// ownedStocks, int[] markets, int[] latencies, long minimumSpread) {
-	// super(wealth, stocks, ownedStocks, markets, latencies);
-	// if(stocks.length>1){
-	// WarningLogger.logWarning("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...");
-	// }
-	// this.stock = World.getStockByNumber(stocks[0]);
-	// this.minimumSpread = minimumSpread;
-	// this.fixedOrderVolume = Global.SingleStockMarketMakerTradeVolume;
-	// this.marketOrderLength = Global.SingleStockMarketMakerMarketOrderLength;
-	// this.initialize();
-	// }
-
-	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies,
-			long minimumSpread, int group) {
-		super(stocks, markets, latencies, group);
+	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, int group, Experiment experiment) {
+		super(stocks, markets, latencies, group, experiment);
 		if (stocks.length > 1) {
 			World.errorLog
 					.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...");
@@ -163,15 +153,13 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 			 * order that the agent has in the market. This likely means SMALLER
 			 * spread.
 			 */
-			long buyPriceDiff = currentMarketBuyPrice
-					- standingBuyOrder.getPrice();
+			long buyPriceDiff = currentMarketBuyPrice - standingBuyOrder.getPrice();
 
 			/*
 			 * sellPriceDiff is positive if the sell/ASK prices have gone up,
 			 * likely leading to LARGER spread
 			 */
-			long sellPriceDiff = currentMarketSellPrice
-					- standingSellOrder.getPrice();
+			long sellPriceDiff = currentMarketSellPrice	- standingSellOrder.getPrice();
 
 			if (buyPriceDiff == 0 && sellPriceDiff != 0) {
 				this.updateSellSideOrderPrice(dispatchTime, transmissionDelay,	currentMarketBuyPrice, currentMarketSellPrice,standingSellOrder, spreadViolation, orderbook);

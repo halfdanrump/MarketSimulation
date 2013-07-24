@@ -1,10 +1,10 @@
 package utilities;
-import java.util.ArrayList;
 
+import Experiments.Experiment;
+import Experiments.TwoGroups;
 import environment.*;
 
 import setup.SimulationSetup;
-import setup.WorldObjectHandler;
 
 public class Main {
 
@@ -13,28 +13,12 @@ public class Main {
 	
 	public static void main(String[] args){
 		
+		String logRootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/TwoGroups/";
+		Experiment e = new TwoGroups(logRootFolder);
+		e.runExperiment();
 		
-		Main.testWorld();
-//		Main.test();
+		
 		System.out.println(String.format("Finished simulation in %s seconds", ((double) World.runTime)/1000f));
 	}
 	
-	public static void testWorld(){
-		World.setupEnvironment();
-//		World.executeInitalRounds(10);
-		World.executeNRounds(SimulationSetup.nRounds-1);
-		WorldObjectHandler.closeLogs();
-	}
-	
-	
-	public static void test() {
-		long a = Long.MAX_VALUE;
-		long b = 5l;
-		long c = a*b;
-		System.out.println(String.valueOf(a));
-		System.out.println(String.valueOf(b));
-		System.out.println(String.valueOf(a/b));
-		System.out.println(String.valueOf(a*b));
-		System.out.println(String.valueOf(c));
-	}
 }

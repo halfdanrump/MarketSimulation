@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import setup.WorldObjectHandler;
+import Experiments.Experiment;
+
+import setup.Logging;
 
 import environment.TransactionReceipt;
 import environment.World;
@@ -20,6 +22,10 @@ public class Logger implements Logging {
 	FileWriter writer;
 	BufferedWriter buffer;
 
+	public boolean logToFile;
+	public boolean logToConsole;
+	public boolean createLogString;
+	
 	public enum Type {
 		TXT, CSV
 	}
@@ -27,27 +33,33 @@ public class Logger implements Logging {
 	// public Logger(File file){
 	// this.file = file;
 	// }
-	public Logger(String rootDirectory, String filename, Type type) {
-		String directory = this.createFolders(rootDirectory);
-
-		if (type == Type.TXT) {
-			filename += ".txt";
-		} else if (type == Type.CSV) {
-			filename += ".cvs";
-		}
-		String filepath = directory + filename;
-		this.file = new File(filepath);
-		try {
-			try {
-				this.writer = new FileWriter(this.file);
-				this.writeToConsole(String.format("Creating file %s", filepath));
-			} catch (FileNotFoundException e) {
-				System.out.println("Could not create file: " + filepath);
-				System.exit(1);
+	public Logger(String rootDirectory, String filename, Type type, Boolean logToFile, Boolean logToConsole) {
+		this.logToFile = logToFile;
+		this.logToConsole = logToConsole;
+		this.createLogString = this.logToConsole | this.logToFile;
+		if(logToFile){
+			String directory = this.createFolders(rootDirectory);
+			
+			if (type == Type.TXT) {
+				filename += ".txt";
+			} else if (type == Type.CSV) {
+				filename += ".cvs";
 			}
-			this.buffer = new BufferedWriter(this.writer);
-		} catch (IOException e) {
-			e.printStackTrace();
+			String filepath = directory + filename;
+			this.file = new File(filepath);
+			try {
+				try {
+					this.writer = new FileWriter(this.file);
+					System.out.println(String.format("Creating file %s", filepath));
+//					this.writeToConsole(String.format("Creating file %s", filepath));
+				} catch (FileNotFoundException e) {
+					System.out.println("Could not create file: " + filepath);
+					System.exit(1);
+				}
+				this.buffer = new BufferedWriter(this.writer);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -81,12 +93,14 @@ public class Logger implements Logging {
 	// }
 
 	protected void writeToConsole(String line) {
-		System.out.println(line);
+		if(this.logToConsole){
+			System.out.println(line);
+		}
 	}
 
 	protected void writeToFile(String line) {
 		// System.out.println(line);
-		if (Logging.fileLogging) {
+		if (this.logToFile) {
 			try {
 				this.writer.write(line + "\n");
 			} catch (IOException e) {
@@ -99,7 +113,8 @@ public class Logger implements Logging {
 		Exception e = new Exception();
 		writeToConsole(Logger.getNewEntry() + "ERROR!;\t" + line + "\t Stack:\t ");
 		e.printStackTrace();
-		WorldObjectHandler.closeLogs();
+		Experiment.closeLogs();
+//		WorldObjectHandler.closeLogs();
 		System.exit(1);
 	}
 

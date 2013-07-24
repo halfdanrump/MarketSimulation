@@ -1,20 +1,18 @@
 package environment;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 import umontreal.iro.lecuyer.rng.MRG32k3a;
 import utilities.MarketIdComparator;
-import utilities.NoOrdersException;
 import log.StockLogger;
 import setup.SimulationSetup;
 import setup.StylizedTraderBehavior;
-import setup.TradeableAsset;
+import setup.RandomWalk;
 import environment.World;
 
-public class Stock implements TradeableAsset{ 
+public class Stock implements RandomWalk{ 
 //	private World world;
 	private long id;
 	private ArrayList<Long> fundamentalPrice;
@@ -68,10 +66,10 @@ public class Stock implements TradeableAsset{
 		
 		this.bestMarketInRound = new ArrayList<Market>();
 		this.localSmallestOrderbookSpread = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
-		this.fundamentalPrice.set(0,TradeableAsset.initialFundamentalPrice);
-		this.globalLastTradedMarketOrderBuyPrice = TradeableAsset.initialFundamentalPrice - 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
-		this.globalLastTradedMarketOrderSellPrice = TradeableAsset.initialFundamentalPrice + 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
-		this.gbm = new GeometricBrownianMotion(TradeableAsset.initialFundamentalPrice, TradeableAsset.fundamentalBrownianMean, TradeableAsset.fundamentalBrownianVariance, new MRG32k3a());
+		this.fundamentalPrice.set(0,RandomWalk.initialFundamentalPrice);
+		this.globalLastTradedMarketOrderBuyPrice = RandomWalk.initialFundamentalPrice - 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
+		this.globalLastTradedMarketOrderSellPrice = RandomWalk.initialFundamentalPrice + 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
+		this.gbm = new GeometricBrownianMotion(RandomWalk.initialFundamentalPrice, RandomWalk.fundamentalBrownianMean, RandomWalk.fundamentalBrownianVariance, new MRG32k3a());
 		gbm.setObservationTimes(1, SimulationSetup.nRounds+1);
 		World.addStock(this);
 	}
@@ -80,7 +78,12 @@ public class Stock implements TradeableAsset{
 		
 		//		Implement Brownian motion
 		int now = World.getCurrentRound();
-		long price = Math.round(this.gbm.nextObservation());
+		long price;
+		if(this.isRandomWalk) {
+			price = Math.round(this.gbm.nextObservation());			
+		} else {
+			price = RandomWalk.initialFundamentalPrice;
+		}
 		if(price>Integer.MAX_VALUE){
 			World.errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!");
 		} else{
