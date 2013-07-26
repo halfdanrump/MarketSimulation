@@ -2,11 +2,10 @@ package environment;
 
 import java.util.HashMap;
 
-import setup.MarketRules;
 
 import agent.HFT;
 
-public class Market implements MarketRules{
+public class Market{
 	private static int nMarkets = 0;
 	private int id;
 	private HashMap<Stock, Orderbook> orderbooksByStock;

@@ -15,7 +15,7 @@ public class StockLogger extends Logger {
 	
 	private Stock stock;
 	private Type type;
-	private boolean logToFile;
+//	private boolean logToFile;
 	
 	public StockLogger(String directory, String logType, Stock stock, StockLogger.Type loggerType, Logger.Type type, boolean logToFile, boolean logToConsole) {
 		super(directory, String.format("%s_stock%s", logType, stock.getID()), type, logToFile, logToConsole);

@@ -6,8 +6,20 @@ import environment.Stock;
 import utilities.Utils;
 
 public class TwoGroups extends Experiment{
+	/*
+	 * Override default setup parameters here
+	 */
+	
+	
+	
 	public TwoGroups(String logRootFolder){
-		super(logRootFolder);
+		super();
+		this.overrideDefaultParameters();
+		super.initializeExperimentWithChangedParameters(logRootFolder, this);
+	}
+	
+	public void overrideDefaultParameters() {
+		super.nRounds = 10000;
 	}
 	
 	public void createAgents(){
@@ -16,7 +28,7 @@ public class TwoGroups extends Experiment{
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		int[] latencies = new int[marketIDs.length];
-		long minimumSpreadForAllAgents = (long) Math.pow(10, 6);
+		long minimumSpreadForAllAgents = super.minimumSpread;
 		int[] minimumLatencyInGroup = {1, 10};
 		int[] maximumLatencyInGroup = {10, 20};
 
@@ -39,7 +51,7 @@ public class TwoGroups extends Experiment{
 	}
 	
 	public void createStocks(){
-		new Stock();
+		new Stock(this);
 	}
 	
 	public void createMarkets(){

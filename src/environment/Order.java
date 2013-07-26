@@ -41,7 +41,7 @@ public class Order extends Message{
 		/*
 		 * Dealing with order price
 		 */
-		if(price <= 0 | price == Integer.MAX_VALUE){
+		if(price <= 0 | price == Long.MAX_VALUE){
 			new InvalidOrderException(initialVolume, price, owner, orderbook);
 		} else{
 			this.price = price;			

@@ -4,9 +4,6 @@ import java.util.HashMap;
 
 import Experiments.Experiment;
 
-import setup.SingleStockMarketMakerBehavior;
-
-
 import environment.Market;
 import environment.Message;
 import environment.NoOrdersException;
@@ -16,7 +13,7 @@ import environment.Orderbook;
 import environment.Stock;
 import environment.World;
 
-public class SingleStockMarketMaker extends HFT implements SingleStockMarketMakerBehavior{
+public class SingleStockMarketMaker extends HFT {
 	private long minimumSpread;
 	long fixedOrderVolume;
 	private Stock stock;
@@ -46,8 +43,8 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 		}
 		this.stock = World.getStockByNumber(stocks[0]);
 		this.minimumSpread = minimumSpread;
-		this.fixedOrderVolume = tradeVolume;
-		this.marketOrderLength = SingleStockMarketMakerBehavior.marketOrderLength;
+		this.fixedOrderVolume = this.experiment.ssmm_tradeVolume;
+		this.marketOrderLength = this.experiment.ssmm_marketOrderLength;
 		this.initialize();
 	}
 
@@ -194,7 +191,7 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 	private void confirmThatSellOrderIsInAccordanceWithStrategy(int transmissionDelay, int dispatchTime, long newSellPrice, Order.Type orderType, Order.BuySell buysell, Orderbook orderbook, Message.TransmissionType transmissionType) {
 		Stock stock = orderbook.getStock();
 		long numberOfOwnedStockAfterSellingOrderIsFullfilled = this.numberOfStocksInStandingSellOrders.get(stock) - this.fixedOrderVolume; 
-		if(numberOfOwnedStockAfterSellingOrderIsFullfilled < 0 & SingleStockMarketMakerBehavior.doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
+		if(numberOfOwnedStockAfterSellingOrderIsFullfilled < 0 & this.experiment.doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
 			Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
 			this.submitOrder(newSellOrder);
 		} else {
@@ -237,27 +234,20 @@ public class SingleStockMarketMaker extends HFT implements SingleStockMarketMake
 		} else {
 			newSellPrice = currentMarketSellPrice;
 		}
-		if (newSellPrice < 0 | newSellPrice == Integer.MAX_VALUE
-				| newSellPrice == 0) {
-			Exception e = new Exception();
-			e.printStackTrace();
-		}
 		return newSellPrice;
 	}
 
-	private long getNewBuyPrice(boolean spreadViolation,
-			long currentMarketBuyPrice, long currentMarketSellPrice) {
+	private long getNewBuyPrice(boolean spreadViolation,long currentMarketBuyPrice, long currentMarketSellPrice) {
 		long newBuyPrice;
 		if (spreadViolation) {
 			newBuyPrice = currentMarketSellPrice - this.minimumSpread;
+			if(newBuyPrice < 0) {
+				newBuyPrice = 0;
+			}
 		} else {
 			newBuyPrice = currentMarketBuyPrice;
 		}
-		if (newBuyPrice < 0 | newBuyPrice == Integer.MAX_VALUE
-				| newBuyPrice == 0) {
-			Exception e = new Exception();
-			e.printStackTrace();
-		}
+		
 		return newBuyPrice;
 	}
 

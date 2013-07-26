@@ -11,12 +11,10 @@ import Experiments.Experiment;
 
 import log.AgentLogger;
 
-import setup.HighFrequencyTradingBehavior;
 import setup.Logging;
-import setup.MarketRules;
 import utilities.Utils;
 
-public abstract class HFT implements HighFrequencyTradingBehavior, Logging, MarketRules{
+public abstract class HFT implements Logging{
 	Experiment experiment;
 	public static long nHFTs = 0;
 	protected long id;
@@ -66,15 +64,6 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 	public AgentLogger eventlog;
 	public AgentLogger roundDatalog;
 	public AgentLogger tradeLog;
-	
-//	public HFT(long wealth, int[] stockIDs, int[] startingPortfolio, int[] marketIDs, int[] latencies, int group) {
-//		this.cash = wealth;
-//		this.wakeupTime = World.getCurrentRound();
-//		this.group = group;
-//		this.initialize(stockIDs, marketIDs, latencies);
-//		this.setPortfolio(startingPortfolio);
-//		World.addNewAgent(this);
-//	}
 
 	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment) {
 		this.experiment = experiment;
@@ -307,7 +296,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 				/*
 				 * The agent has to borrow money
 				 */
-				if(MarketRules.agentMustBuyAllStocksAsSpecifiedInReceipt) {
+				if(this.experiment.agentMustBuyAllStocksAsSpecifiedInReceipt) {
 					borrowedCash = Math.abs(this.cash - receipt.getTotal());
 					this.borrowCash(borrowedCash);
 					tradeTotal = receipt.getTotal();
@@ -349,7 +338,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 			long currentlyHoldingNumberOfStocks = this.ownedStocks.get(stock);
 			
 			
-			if(MarketRules.agentMustSellAllStocksAsSpecifiedInReceipt) {
+			if(this.experiment.agentMustSellAllStocksAsSpecifiedInReceipt) {
 				/*
 				 * If the agent is required to fulfill the order, we have to check some things.
 				 */
@@ -386,7 +375,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 				/*
 				 * Check for short selling. If shortselling is taking place and if it is allowed, do nothing apart from registering that it happened.
 				 */
-				if (!MarketRules.allowsShortSelling) {
+				if (!this.experiment.allowsShortSelling) {
 					World.ruleViolationsLog.logShortSelling(receipt);
 					World.errorLog.logError("Short selling was not allowed by market rules, but happened. Handling of this situation is not implemented yet");
 				} else {
@@ -433,7 +422,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 			 * one that I've come up with so far) is that the order was filled
 			 * after the agent issued a cancellation.
 			 */
-			if (MarketRules.agentPaysWhenOrderIsFilledAfterSendingCancellation) {
+			if (this.experiment.agentPaysWhenOrderIsFilledAfterSendingCancellation) {
 				this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList++;
 				this.eventlog.logAgentAction(String.format("Agent %s had to fullfill an already cancelled order (id: %s)", receipt.getOwnerOfFilledStandingOrder().getID(), receipt.getFilledOrder().getID()));
 			} else {
@@ -490,7 +479,7 @@ public abstract class HFT implements HighFrequencyTradingBehavior, Logging, Mark
 
 		if (receipt.getUnsignedVolume() > standingOrder.getCurrentAgentSideVolume()) {
 			this.eventlog.logAgentAction(String.format("Agent received a transaction receipt for %s units of stock %s at market %s. \n" + "\t For market order, the current agent side volume was %s, and the market side volume was %s", receipt.getUnsignedVolume(), receipt.getStock().getID(), receipt.getFilledOrder().getMarket().getID(), receipt.getFilledOrder().getCurrentAgentSideVolume(), receipt.getFilledOrder().getCurrentMarketSideVolume()));
-			if (!MarketRules.allowsShortSelling) {
+			if (!this.experiment.allowsShortSelling) {
 				World.errorLog.logError("Shortselling was not allowed, but happeed when agent received a transaction receipt for more than ");
 			}
 		}

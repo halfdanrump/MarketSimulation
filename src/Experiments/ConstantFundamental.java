@@ -7,13 +7,25 @@ import environment.Stock;
 
 public class ConstantFundamental extends Experiment {
 
+	/*
+	 * Override default setup parameters
+	 */
+	
+	
 	public ConstantFundamental(String logRootFolder) {
-		super(logRootFolder);
+		super();
+		this.overrideDefaultParameters();
+		super.initializeExperimentWithChangedParameters(logRootFolder, this);
 		// TODO Auto-generated constructor stub
 	}
 	
 	boolean isRandomWalk = true;
 
+	@Override
+	public void overrideDefaultParameters() {
+		
+	}
+	
 	@Override
 	public void createAgents(){
 		int nGroups = 2;
@@ -47,7 +59,7 @@ public class ConstantFundamental extends Experiment {
 	@Override
 	public void createStocks() {
 		// TODO Auto-generated method stub
-		new Stock();
+		new Stock(this);
 	}
 
 	@Override

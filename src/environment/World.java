@@ -10,12 +10,15 @@ import setup.SimulationSetup;
 import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
 import utilities.StockMarketPair;
+import Experiments.Experiment;
 import agent.HFT;
 import agent.StylizedTrader;
 
 //import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 
 public class World implements SimulationSetup {
+	private Experiment experiment;
+	
 	private enum roundPhases{
 		MESSAGES_ARRIVE,
 		STYLIZED_TRADING,
@@ -67,30 +70,22 @@ public class World implements SimulationSetup {
 	private static int currentRound = 0;
 	private roundPhases roundPhase;
 	
-//	public static void setupEnvironment() {
-//		WorldObjectHandler.createStocks();
-//		WorldObjectHandler.createMarkets();
-//		WorldObjectHandler.createOrderbooks();
-//		WorldObjectHandler.createAgents();
-//		WorldObjectHandler.createObjectLoggers();
-//		WorldObjectHandler.initializeEmptyOrderbooksWithMarketOrders();
-//	}
 
-	public static void executeInitalRounds(long nRounds) {
+	public static void executeInitalRounds(long nRounds, Experiment experiment) {
 		for (long round = 0; round < nRounds; round++) {
 			expireOrdersInAllOrderbooks();
 			prepareNewRound();
 			dispatchArrivingReceipts();
 			dispatchOrderCancellations();
 			processOrderCancellationsInAllOrderbooks();
-			createSlowTraderOrders();
+			createSlowTraderOrders(experiment);
 			dispatchArrivingOrders();
 			processNewOrdersInAllOrderbooks();
 			logRoundBasedData();
 		}
 	}
 
-	public static void executeRound() {
+	public static void executeRound(Experiment experiment) {
 		prepareNewRound();
 		if(currentRound % 500 == 0) {
 			System.out.println(String.format("Round %s", currentRound));
@@ -113,7 +108,7 @@ public class World implements SimulationSetup {
 		/*
 		 * The new cancellations are processed in random order.
 		 */
-		createSlowTraderOrders();
+		createSlowTraderOrders(experiment);
 		/*
 		 * HFT trade part.
 		 */
@@ -177,9 +172,9 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	private static void createSlowTraderOrders() {
-		for (long i = 0; i < SimulationSetup.nSlowTraderOrdersPerRounds; i++) {
-			StylizedTrader.submitRandomOrder();
+	private static void createSlowTraderOrders(Experiment experiment) {
+		for (long i = 0; i < Experiment.nSlowTraderOrdersPerRounds; i++) {
+			StylizedTrader.submitRandomOrder(experiment);
 		}
 //		System.out.println("k");
 	}
@@ -502,9 +497,9 @@ public class World implements SimulationSetup {
 		currentRound = time;
 	}
 
-	public static void executeNRounds(long N) {
+	public static void executeNRounds(Experiment experiment, long N) {
 		for (long round = 0; round < N; round++) {
-			World.executeRound();
+			World.executeRound(experiment);
 		}
 	}
 

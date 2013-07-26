@@ -3,18 +3,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeSet;
 
+import Experiments.Experiment;
+
 import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 import umontreal.iro.lecuyer.rng.MRG32k3a;
 import utilities.MarketIdComparator;
 import log.StockLogger;
-import setup.SimulationSetup;
-import setup.StylizedTraderBehavior;
-import setup.RandomWalk;
 import environment.World;
 
-public class Stock implements RandomWalk{ 
+public class Stock { 
 //	private World world;
 	private long id;
+	private Experiment experiment;
 	private ArrayList<Long> fundamentalPrice;
 	/*
 	 * 
@@ -48,7 +48,8 @@ public class Stock implements RandomWalk{
 //		gbm.setObservationTimes(1, Global.nRounds);
 //	}
 	
-	public Stock(){
+	public Stock(Experiment experiment){
+		this.experiment = experiment;
 		initialize();
 		
 	}
@@ -57,20 +58,20 @@ public class Stock implements RandomWalk{
 		this.id = nStocks;
 		nStocks++;
 		this.markets = new TreeSet<Market>(new MarketIdComparator());
-		this.fundamentalPrice = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, 0l));
+		this.fundamentalPrice = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
 		
-		this.globalLowestBuy = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, 0l));
-		this.globalHighestBuy = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, 0l));
-		this.globalLowestSell = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
-		this.globalHighestSell = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
+		this.globalLowestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
+		this.globalHighestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
+		this.globalLowestSell = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
+		this.globalHighestSell = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
 		
 		this.bestMarketInRound = new ArrayList<Market>();
-		this.localSmallestOrderbookSpread = new ArrayList<Long>(Collections.nCopies(SimulationSetup.nRounds, Long.MAX_VALUE));
-		this.fundamentalPrice.set(0,RandomWalk.initialFundamentalPrice);
-		this.globalLastTradedMarketOrderBuyPrice = RandomWalk.initialFundamentalPrice - 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
-		this.globalLastTradedMarketOrderSellPrice = RandomWalk.initialFundamentalPrice + 10*(long) StylizedTraderBehavior.additivePriceNoiseStd;
-		this.gbm = new GeometricBrownianMotion(RandomWalk.initialFundamentalPrice, RandomWalk.fundamentalBrownianMean, RandomWalk.fundamentalBrownianVariance, new MRG32k3a());
-		gbm.setObservationTimes(1, SimulationSetup.nRounds+1);
+		this.localSmallestOrderbookSpread = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
+		this.fundamentalPrice.set(0,this.experiment.initialFundamentalPrice);
+		this.globalLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - 10*(long) this.experiment.additivePriceNoiseStd;
+		this.globalLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + 10*(long) this.experiment.additivePriceNoiseStd;
+		this.gbm = new GeometricBrownianMotion(this.experiment.initialFundamentalPrice, this.experiment.fundamentalBrownianMean, this.experiment.fundamentalBrownianVariance, new MRG32k3a());
+		gbm.setObservationTimes(1, this.experiment.nRounds+1);
 		World.addStock(this);
 	}
 	
@@ -79,12 +80,12 @@ public class Stock implements RandomWalk{
 		//		Implement Brownian motion
 		int now = World.getCurrentRound();
 		long price;
-		if(this.isRandomWalk) {
+		if(this.experiment.isRandomWalk) {
 			price = Math.round(this.gbm.nextObservation());			
 		} else {
-			price = RandomWalk.initialFundamentalPrice;
+			price = this.experiment.initialFundamentalPrice;
 		}
-		if(price>Integer.MAX_VALUE){
+		if(price>Long.MAX_VALUE){
 			World.errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!");
 		} else{
 			try {
