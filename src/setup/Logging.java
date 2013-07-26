@@ -27,13 +27,13 @@ public interface Logging {
 	boolean logAgentTradeDataToFile = false;
 	boolean logAgentTradeDataToConsole = false;
 
-	boolean logAgentRoundDataToFile = false;
+	boolean logAgentRoundDataToFile = true;
 	boolean logAgentRoundDataToConsole = false;
 
 	/*
 	 * STOCKS
 	 */
-	boolean logStockRoundDataToFile = false;
+	boolean logStockRoundDataToFile = true;
 	boolean logStockRoundDataToConsole = false;
 
 	boolean logStockTransactionDataToFile = true;
