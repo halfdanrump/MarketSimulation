@@ -5,15 +5,18 @@ import agent.SingleStockMarketMaker;
 import environment.Market;
 import environment.Stock;
 
-public class ConstantFundamental extends Experiment {
+public class ConstantFundamentalSameLatency extends Experiment {
 
 	/*
 	 * Override default setup parameters
 	 */
+	private int nAgents;
+	private int fixedLatency;
 	
-	
-	public ConstantFundamental(String logRootFolder) {
+	public ConstantFundamentalSameLatency(String logRootFolder, int nAgents, int fixedLatency) {
 		super();
+		this.nAgents = nAgents;
+		this.fixedLatency = fixedLatency;
 		this.overrideDefaultParameters();
 		super.initializeExperimentWithChangedParameters(logRootFolder, this);
 		// TODO Auto-generated constructor stub
@@ -27,8 +30,7 @@ public class ConstantFundamental extends Experiment {
 	
 	@Override
 	public void createAgents(){
-		int nAgents = 100;
-		int[] latencyToMarkets = {1};
+		int[] latencyToMarkets = {this.fixedLatency};
 		int group = 0;
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 

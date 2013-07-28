@@ -7,10 +7,10 @@ library(TTR)
 ### Import for postscript()
 library(grDevices)
 
-exportPlotsToFiles = TRUE
+printPlots = FALSE
 
 setwd(dir="/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/")
-logDir = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalRandomLatency/"
+logDir = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalNoHFTs/"
 figuresExportDir = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/graphs/"
 
 loadFiles = function(logDir){
@@ -41,17 +41,8 @@ makeTransactionPriceScatterPlot = function(files){
   }
   
   if(length(which(is.nan(meanPrice)))==0){
-    if(exportPlotsToFiles){
-      setEPS()
-      postscript(file=paste0(figuresExportDir, paste0("ConstantFundamentalRandomLatency_meanTradePrices", ".eps")), width=7, height=9, horizontal=FALSE)
-    }
-    
     plot(rounds, meanPrice, pch=19, cex=0.2, main="No HFTs")
     lines(rounds, files$stock0roundBased$fundamental, col="red", lwd=2)
-    
-    if(exportPlotsToFiles){
-      dev.off()
-    }
   }
 }
 

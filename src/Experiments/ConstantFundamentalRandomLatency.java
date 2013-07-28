@@ -10,10 +10,11 @@ public class ConstantFundamentalRandomLatency extends Experiment {
 	/*
 	 * Override default setup parameters
 	 */
+	private int nAgents;
 	
-	
-	public ConstantFundamentalRandomLatency(String logRootFolder) {
+	public ConstantFundamentalRandomLatency(String logRootFolder, int nAgents) {
 		super();
+		this.nAgents = nAgents;
 		this.overrideDefaultParameters();
 		super.initializeExperimentWithChangedParameters(logRootFolder, this);
 		// TODO Auto-generated constructor stub
@@ -27,15 +28,16 @@ public class ConstantFundamentalRandomLatency extends Experiment {
 	
 	@Override
 	public void createAgents(){
-		int nAgents = 100;
 		int[] latencyToMarkets = new int[1];
+		
+		
 		int group = 0;
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		
 		int minimumLatency = 10;
 		int maximumLatency = 20;
-		for(int agent=0; agent<nAgents; agent++) {
+		for(int agent=0; agent<this.nAgents; agent++) {
 			latencyToMarkets[0] = Utils.getRandomUniformInteger(minimumLatency, maximumLatency);
 			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.minimumSpread, group, this);
 		}
