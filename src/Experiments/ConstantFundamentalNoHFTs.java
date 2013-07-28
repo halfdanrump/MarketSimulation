@@ -5,14 +5,14 @@ import agent.SingleStockMarketMaker;
 import environment.Market;
 import environment.Stock;
 
-public class ConstantFundamental extends Experiment {
+public class ConstantFundamentalNoHFTs extends Experiment {
 
 	/*
 	 * Override default setup parameters
 	 */
 	
 	
-	public ConstantFundamental(String logRootFolder) {
+	public ConstantFundamentalNoHFTs(String logRootFolder) {
 		super();
 		this.overrideDefaultParameters();
 		super.initializeExperimentWithChangedParameters(logRootFolder, this);
@@ -27,14 +27,7 @@ public class ConstantFundamental extends Experiment {
 	
 	@Override
 	public void createAgents(){
-		int nAgents = 100;
-		int[] latencyToMarkets = {1};
-		int group = 0;
-		int[] stockIDs = {0}; 
-		int[] marketIDs = {0}; 
-		for(int i=0; i<nAgents; i++) {
-			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.minimumSpread, group, this);
-		}
+		
 	}
 
 

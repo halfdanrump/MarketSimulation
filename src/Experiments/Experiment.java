@@ -55,8 +55,8 @@ public abstract class Experiment{
 	public long wealthMean = (int) Math.pow(10, 6);
 	public long wealthStd = (int) Math.pow(10, 4);
 	
-	public int minimumLatency = 10;
-	public int maximumLatency = 100;
+//	public int minimumLatency = 10;
+//	public int maximumLatency = 100;
 	
 	/*
 	 * Single stock minimum spread market maker parameters 

@@ -5,14 +5,14 @@ import agent.SingleStockMarketMaker;
 import environment.Market;
 import environment.Stock;
 
-public class ConstantFundamental extends Experiment {
+public class ConstantFundamentalRandomLatency extends Experiment {
 
 	/*
 	 * Override default setup parameters
 	 */
 	
 	
-	public ConstantFundamental(String logRootFolder) {
+	public ConstantFundamentalRandomLatency(String logRootFolder) {
 		super();
 		this.overrideDefaultParameters();
 		super.initializeExperimentWithChangedParameters(logRootFolder, this);
@@ -28,11 +28,15 @@ public class ConstantFundamental extends Experiment {
 	@Override
 	public void createAgents(){
 		int nAgents = 100;
-		int[] latencyToMarkets = {1};
+		int[] latencyToMarkets = new int[1];
 		int group = 0;
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
-		for(int i=0; i<nAgents; i++) {
+		
+		int minimumLatency = 10;
+		int maximumLatency = 20;
+		for(int agent=0; agent<nAgents; agent++) {
+			latencyToMarkets[0] = Utils.getRandomUniformInteger(minimumLatency, maximumLatency);
 			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.minimumSpread, group, this);
 		}
 	}

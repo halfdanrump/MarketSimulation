@@ -668,15 +668,15 @@ public abstract class HFT implements Logging{
 		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.SUBMIT_ORDER);
 	}
 
-	public HashMap<Market, Integer> getRandomLatencyHashMap(Market[] markets) {
-		HashMap<Market, Integer> latencyMap = new HashMap<Market, Integer>();
-
-		for (Market market : markets) {
-			int latency = Utils.getRandomUniformInteger(this.experiment.minimumLatency, this.experiment.maximumLatency);
-			latencyMap.put(market, latency);
-		}
-		return latencyMap;
-	}
+//	public HashMap<Market, Integer> getRandomLatencyHashMap(Market[] markets) {
+//		HashMap<Market, Integer> latencyMap = new HashMap<Market, Integer>();
+//
+//		for (Market market : markets) {
+//			int latency = Utils.getRandomUniformInteger(this.experiment.minimumLatency, this.experiment.maximumLatency);
+//			latencyMap.put(market, latency);
+//		}
+//		return latencyMap;
+//	}
 
 	protected void cancelOrder(OrderCancellation cancellation) {
 		Order order = cancellation.getOrder();

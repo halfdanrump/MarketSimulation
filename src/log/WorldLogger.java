@@ -29,21 +29,36 @@ public class WorldLogger extends Logger {
 	
 	public void recordHeader(){
 		if(this.createLogString){
-			String header = "1) Round, \n" +
-					"2) Total number of standing orders across all the orderbooks, \n" +
-					"3) Total number of submitted orders, \n" +
-					"4) Total number of submitted cancellations, \n" +
-					"5) Total number of fulfilled orders, \n" +
-					"6) Total wealth of all HFTs, \n" +
-					"7) Number of orders that arrived this round, \n" +
-					"8) Number of order cancellations that arrived this round, \n" +
-					"9) Number of receipts that arrived this round\n" +
-					"10) Number of information requests from agents, \n" +
-					"11) Number of agents that received market information, \n" +
-					"12) Number of agents that finished evaluating their strategy\n" +
-					"13) Number of agents that re-requested informaton after receiving\n " +
-					"14) Number of expired orders\n" +
-					"1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14";
+//			String header = "1) Round, \n" +
+//					"2) Total number of standing orders across all the orderbooks, \n" +
+//					"3) Total number of submitted orders, \n" +
+//					"4) Total number of submitted cancellations, \n" +
+//					"5) Total number of fulfilled orders, \n" +
+//					"6) Total wealth of all HFTs, \n" +
+//					"7) Number of orders that arrived this round, \n" +
+//					"8) Number of order cancellations that arrived this round, \n" +
+//					"9) Number of receipts that arrived this round\n" +
+//					"10) Number of information requests from agents, \n" +
+//					"11) Number of agents that received market information, \n" +
+//					"12) Number of agents that finished evaluating their strategy\n" +
+//					"13) Number of agents that re-requested informaton after receiving\n " +
+//					"14) Number of expired orders\n" +
+//					"1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14";
+			String header = "round," +
+					"nStandingOrders," +
+					"totalSubmittedOrders," +
+					"totalSubmittedCancellatons," +
+					"totalFulfilledOrders," +
+					"totalHFTWealth," +
+					"arrivedOrdersThisRound," +
+					"arrivedCancellationsThisRound," +
+					"arrivedReceiptsThisRound," +
+					"informationRequestsThisRound," +
+					"agentsReceivedMarketInfo," +
+					"agentsFinishedEvaluatingStrategy," +
+					"agentsRerequestedInformation," +
+					"expiredOrdersThisRound";
+			
 			if(this.logToFile){
 				super.writeToFile(header);			
 			}

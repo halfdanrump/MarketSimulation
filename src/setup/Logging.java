@@ -27,7 +27,7 @@ public interface Logging {
 	boolean logAgentTradeDataToFile = false;
 	boolean logAgentTradeDataToConsole = false;
 
-	boolean logAgentRoundDataToFile = true;
+	boolean logAgentRoundDataToFile = false;
 	boolean logAgentRoundDataToConsole = false;
 
 	/*
