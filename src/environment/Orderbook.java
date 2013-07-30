@@ -77,7 +77,7 @@ public class Orderbook {
 			if(sellPrice > buyOrder.getPrice()) {
 				long volume = StylizedTrader.getStylizedTraderOrderVolume(this.experiment);
 				int now = World.getCurrentRound();
-				new Order(now, now, 1000, volume, sellPrice, Order.Type.MARKET, Order.BuySell.SELL, null, this, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+				new Order(now, now, 1000, volume, sellPrice, Order.Type.MARKET, Order.BuySell.SELL, null, this, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 //				this.receiveOrder(order);
 				break;
 			}
@@ -127,20 +127,20 @@ public class Orderbook {
 			if(this.hasNoBuyOrders() & this.experiment.marketFillsEmptyBook) {
 				buysell = Order.BuySell.BUY;
 				price = this.localLastTradedMarketOrderBuyPrice;
-				new Order(now, now, this.experiment.orderLengthWhenMarketFillsEmptyBook, this.experiment.orderVolumeWhenMarketFillsEmptyBook, price, this.experiment.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS);
+				new Order(now, now, this.experiment.orderLengthWhenMarketFillsEmptyBook, this.experiment.orderVolumeWhenMarketFillsEmptyBook, price, this.experiment.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS, this.experiment);
 				wasEmpty = true;
 			}
 			if(this.hasNoSellOrders() & this.experiment.marketFillsEmptyBook) {
 				buysell = Order.BuySell.SELL;
 				price = this.localLastTradedMarketOrderSellPrice;
-				new Order(now, now, this.experiment.orderLengthWhenMarketFillsEmptyBook, this.experiment.orderVolumeWhenMarketFillsEmptyBook, price, this.experiment.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS);
+				new Order(now, now, this.experiment.orderLengthWhenMarketFillsEmptyBook, this.experiment.orderVolumeWhenMarketFillsEmptyBook, price, this.experiment.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS, this.experiment);
 				wasEmpty = true;
 			}		
 			if(wasEmpty) {
 				nInsertedOrders++;
 				this.orderflowLog.logEventNoMarketOrders(buysell);
 				if(!this.experiment.marketFillsEmptyBook) {
-					World.errorLog.logError(String.format("Orderbook %s was empty on the %s side, but the market rules are such that the book will remain empty", this.getIdentifier(), buysell));
+					World.errorLog.logError(String.format("Orderbook %s was empty on the %s side, but the market rules are such that the book will remain empty", this.getIdentifier(), buysell), this.experiment);
 				} else {
 					this.eventLog.logOnelineEvent(String.format("The market inserted a %s order at price %s into orderbook %s.", buysell, price, this.getIdentifier()));
 				}
@@ -239,7 +239,7 @@ public class Orderbook {
 		long tradePrice = this.determineTransactionPrice(matchingOrder, newOrder);
 		long tradeTotal = 0l;
 		if(tradeVolume * tradePrice > Long.MAX_VALUE) {
-			World.errorLog.logError("Order total exceeded long range...");
+			World.errorLog.logError("Order total exceeded long range...", this.experiment);
 		} else {
 			tradeTotal = tradeVolume * tradePrice;
 		}
@@ -292,7 +292,7 @@ public class Orderbook {
 //			}
 			stock.transactionBasedDataLog.recordStockInformationAfterTransaction(tradePrice, this, newOrder, matchingOrder);
 		} else {
-			World.errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()));
+			World.errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()), this.experiment);
 		}
 		
 		return tradePrice;
@@ -388,7 +388,7 @@ public class Orderbook {
 				this.unfilledSellOrders.remove(order);
 			}
 		} else {
-			World.errorLog.logError("Something is wrong. Shouldn't be asked to remove a limit order...");
+			World.errorLog.logError("Something is wrong. Shouldn't be asked to remove a limit order...", this.experiment);
 		}
 		
 		/*
@@ -434,7 +434,7 @@ public class Orderbook {
 			if(spread <= 0) {
 				Exception e = new Exception();
 				e.printStackTrace();
-				World.errorLog.logError(String.format("Spread at orderbook %s was %s", this.getIdentifier(), spread));
+				World.errorLog.logError(String.format("Spread at orderbook %s was %s", this.getIdentifier(), spread), this.experiment);
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
@@ -455,7 +455,7 @@ public class Orderbook {
 				return this.localBestSellPriceAtEndOfRound.get(time);
 			}
 		} catch (IndexOutOfBoundsException e) {
-			World.errorLog.logError(String.format("Cannot return ASK price at time %s. Needs initialization?"));
+			World.errorLog.logError(String.format("Cannot return ASK price at time %s. Needs initialization?"), this.experiment);
 			return 0l;
 		}
 	}
@@ -468,7 +468,7 @@ public class Orderbook {
 				return this.localBestBuyPriceAtEndOfRound.get(time);
 			}
 		} catch (IndexOutOfBoundsException e) {
-			World.errorLog.logError(String.format("Cannot return BID price at time %s. Needs initialization?"));
+			World.errorLog.logError(String.format("Cannot return BID price at time %s. Needs initialization?"), this.experiment);
 			return 0l;
 		}
 	}
@@ -568,6 +568,10 @@ public class Orderbook {
 		
 
 		
+	}
+
+	public Experiment getExperiment() {
+		return this.experiment;
 	}
 	
 //	public long getGlobalLastTradedMarketOrderBuyPrice() {

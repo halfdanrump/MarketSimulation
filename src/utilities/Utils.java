@@ -91,17 +91,17 @@ public class Utils {
 	
 	
 	
-	public static HashMap<Market, Integer> getLatencyHashMap(Market[] markets, int[] latencies){
-		HashMap<Market, Integer> latencyMap = new HashMap<Market, Integer>();
-		if(latencies.length != markets.length){
-			World.errorLog.logError("In getLatencyHashMap: Number of given markets must be the same as number of specified latencies!");
-			System.exit(1);
-		}
-		for(int i = 0; i < markets.length; i++){
-			latencyMap.put(markets[i], latencies[i]);
-		}
-		return latencyMap;
-	}
+//	public static HashMap<Market, Integer> getLatencyHashMap(Market[] markets, int[] latencies){
+//		HashMap<Market, Integer> latencyMap = new HashMap<Market, Integer>();
+//		if(latencies.length != markets.length){
+//			World.errorLog.logError("In getLatencyHashMap: Number of given markets must be the same as number of specified latencies!");
+//			System.exit(1);
+//		}
+//		for(int i = 0; i < markets.length; i++){
+//			latencyMap.put(markets[i], latencies[i]);
+//		}
+//		return latencyMap;
+//	}
 	
 	public static void initializeStringArrayWithEmptyStrings(ArrayList<String> arrayList, int capacity, String initialValue) {
 		for(int i = 0; i<capacity; i++) {

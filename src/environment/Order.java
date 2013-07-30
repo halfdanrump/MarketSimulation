@@ -1,5 +1,6 @@
 package environment;
 
+import Experiments.Experiment;
 import agent.HFT;
 
 public class Order extends Message{
@@ -27,12 +28,11 @@ public class Order extends Message{
 	private int id;
 	private static int orderCount = 0;
 	
-	public Order(int transmissionDelay, int dispatchTime, int nRoundsInBook, long initialVolume, long price, Type type, BuySell buysell, HFT owner, Orderbook orderbook, TransmissionType transmissionType){
+	public Order(int transmissionDelay, int dispatchTime, int nRoundsInBook, long initialVolume, long price, Type type, BuySell buysell, HFT owner, Orderbook orderbook, TransmissionType transmissionType, Experiment experiment){
 		/*
 		 * Order submitted by HFTs
 		 */
-		super(World.getCurrentRound() + transmissionDelay + 1, dispatchTime, transmissionType);
-		
+		super(World.getCurrentRound() + transmissionDelay + 1, dispatchTime, transmissionType, experiment);
 		this.owner = owner;
 //		if(dispatchTime < dispatchTime + transmissionDelay){
 //			Exception e = new InvalidOrderException(arrivalTime, dispatchTime)
@@ -68,7 +68,7 @@ public class Order extends Message{
 		 * Dealing with temporal aspects
 		 */
 		if(transmissionDelay < 0) {
-			World.errorLog.logError("Invalid order");
+			World.errorLog.logError("Invalid order", this.owner.getExperiment());
 		}
 		this.nRoundsInBook = nRoundsInBook;
 		this.expirationTime = World.getCurrentRound() + nRoundsInBook;
@@ -80,7 +80,7 @@ public class Order extends Message{
 		} else if(transmissionType == TransmissionType.INSTANTANEOUS) {
 			orderbook.processNewlyArrivedNewOrder(this);
 		} else {
-			World.errorLog.logError("Order without specified TransmissionType was submitted");
+			World.errorLog.logError("Order without specified TransmissionType was submitted", this.owner.getExperiment());
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class Order extends Message{
 		try{
 			return orderbook;
 		} catch(NullPointerException e){
-			World.errorLog.logError("Order doesn't belong to any orderbook!");
+			World.errorLog.logError("Order doesn't belong to any orderbook!", this.owner.getExperiment());
 			return null;
 		}
 	}
@@ -147,7 +147,7 @@ public class Order extends Message{
 		try{
 			return owner;
 		} catch (NullPointerException e){
-			World.errorLog.logError("Tried to return owner of Order, but owner has not been set. Returning null.");
+			World.errorLog.logError("Tried to return owner of Order, but owner has not been set. Returning null.", this.owner.getExperiment());
 			return null;
 		}
 	}

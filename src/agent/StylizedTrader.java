@@ -21,7 +21,7 @@ public class StylizedTrader {
 		int dispatchTime = World.getCurrentRound();
 		long volume = getStylizedTraderOrderVolume(experiment);
 		long price = getStylizedTraderEstimatedPrice(orderbook.getStock(), experiment);
-		Order order = new Order(0,dispatchTime, experiment.orderLength, volume, price, type, buysell, null, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		Order order = new Order(0,dispatchTime, experiment.orderLength, volume, price, type, buysell, null, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, experiment);
 		return order;
 	}
 	

@@ -12,7 +12,6 @@ import Experiments.Experiment;
 import log.AgentLogger;
 
 import setup.Logging;
-import utilities.Utils;
 
 public abstract class HFT implements Logging{
 	Experiment experiment;
@@ -127,7 +126,7 @@ public abstract class HFT implements Logging{
 		 * Initalize latency HashMap
 		 */
 		if (!(marketIDs.length == marketLatencies.length)) {
-			World.errorLog.logError("Length of markets array and length of latenceis array must be the same.");
+			World.errorLog.logError("Length of markets array and length of latenceis array must be the same.", this.experiment);
 		}
 
 		for (int i = 0; i < marketIDs.length; i++) {
@@ -149,7 +148,7 @@ public abstract class HFT implements Logging{
 			if (!this.stocks.contains(stock)) {
 				this.stocks.add(stock);
 			} else {
-				World.errorLog.logError("Problem when building stocks ArrayList in HFT agent (buildStockList): Tried to add the same stock more than one.");
+				World.errorLog.logError("Problem when building stocks ArrayList in HFT agent (buildStockList): Tried to add the same stock more than one.", this.experiment);
 			}
 		}
 	}
@@ -161,7 +160,7 @@ public abstract class HFT implements Logging{
 		 */
 		for (Stock stock : this.stocks) {
 			if (experiment.randomStartStockAmount) {
-				World.errorLog.logError("Random start stock amount not implemented yet!");
+				World.errorLog.logError("Random start stock amount not implemented yet!", this.experiment);
 			} else {
 				this.ownedStocks.put(stock, experiment.startStockAmount);
 			}
@@ -173,7 +172,7 @@ public abstract class HFT implements Logging{
 		 * Used to give the agent a ustom portfolio
 		 */
 		if (portfolio.length != this.stocks.size()) {
-			World.errorLog.logError("Error when creating custom specified portfolio. Size of new portfolio does not match size of agetn stock array.");
+			World.errorLog.logError("Error when creating custom specified portfolio. Size of new portfolio does not match size of agetn stock array.", this.experiment);
 		}
 	}
 
@@ -309,7 +308,7 @@ public abstract class HFT implements Logging{
 					tradedVolume = (long) Math.floor((double ) tradeTotal / (double) receipt.getPrice());
 					if(receipt.getFillingOrder().getOwner() != null) {
 						World.errorLog.logError(String.format("Agent %s did only buy %s stocks for an order requiring him to sell %s stocks, but another transaction recept was issued to agent %s with the full amount",
-															this.id, tradedVolume, receipt.getUnsignedVolume(), receipt.getFillingOrder().getOwner().getID()));
+															this.id, tradedVolume, receipt.getUnsignedVolume(), receipt.getFillingOrder().getOwner().getID()), this.experiment);
 					} else {
 						World.warningLog.logOnelineWarning(String.format("Agent %s did only buy %s stocks for an order requiring him to sell %s stocks, but the opposing trader was a Stylized trader",
 															this.id, tradedVolume, receipt.getUnsignedVolume()));
@@ -361,10 +360,10 @@ public abstract class HFT implements Logging{
 				 * whichever is the smallest volume.
 				 */
 				tradedVolume = Math.min(currentlyHoldingNumberOfStocks, receipt.getUnsignedVolume());
-				World.errorLog.logError("TradeTotal must be assigned a value!");
+				World.errorLog.logError("TradeTotal must be assigned a value!", this.experiment);
 				if(receipt.getFillingOrder().getOwner() != null) {
 					World.errorLog.logError(String.format("Agent %s did only sell %s stocks for an order requiring him to sell %s stocks, but another transaction recept was issued to agent %s with the full amount",
-														this.id, tradedVolume, receipt.getUnsignedVolume(), receipt.getFillingOrder().getOwner().getID()));
+														this.id, tradedVolume, receipt.getUnsignedVolume(), receipt.getFillingOrder().getOwner().getID()), this.experiment);
 				} else {
 					World.warningLog.logOnelineWarning(String.format("Agent %s did only sell %s stocks for an order requiring him to sell %s stocks, but the opposing trader was a Stylized trader",
 														this.id, tradedVolume, receipt.getUnsignedVolume()));
@@ -377,7 +376,7 @@ public abstract class HFT implements Logging{
 				 */
 				if (!this.experiment.allowsShortSelling) {
 					World.ruleViolationsLog.logShortSelling(receipt);
-					World.errorLog.logError("Short selling was not allowed by market rules, but happened. Handling of this situation is not implemented yet");
+					World.errorLog.logError("Short selling was not allowed by market rules, but happened. Handling of this situation is not implemented yet", this.experiment);
 				} else {
 					this.nTimesAgentDidShortSelling ++;
 					this.eventlog.logAgentAction("Agent did short-selling");
@@ -385,17 +384,17 @@ public abstract class HFT implements Logging{
 			}
 			
 		} else {
-			World.errorLog.logError("Order must be eiter BUY or SELL");
+			World.errorLog.logError("Order must be eiter BUY or SELL", this.experiment);
 		}
 		
 		/*
 		 * Check trade details and update internal state
 		 */
 		if(tradedVolume <= 0) {
-			World.errorLog.logError("Agent tried to a sell a negative or zero amount of stocks...");
+			World.errorLog.logError("Agent tried to a sell a negative or zero amount of stocks...", this.experiment);
 		}
 		if(tradeTotal <= 0) {
-			World.errorLog.logError("Agent tried to transact a negative or zero total");
+			World.errorLog.logError("Agent tried to transact a negative or zero total", this.experiment);
 		}
 		
 		this.updatePortfolio(stock, tradedVolume, buysell);
@@ -426,10 +425,10 @@ public abstract class HFT implements Logging{
 				this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList++;
 				this.eventlog.logAgentAction(String.format("Agent %s had to fullfill an already cancelled order (id: %s)", receipt.getOwnerOfFilledStandingOrder().getID(), receipt.getFilledOrder().getID()));
 			} else {
-				World.errorLog.logError(String.format("Agent %s received a transaction receipt for an order that he cancelled (id: %s), but market side handling of this situation has not been implemented yet", this.getID(), receipt.getFilledOrder().getID()));
+				World.errorLog.logError(String.format("Agent %s received a transaction receipt for an order that he cancelled (id: %s), but market side handling of this situation has not been implemented yet", this.getID(), receipt.getFilledOrder().getID()), this.experiment);
 			}
 		} else {
-			World.errorLog.logError(String.format("Agent %s received a transaction receipt for an order that he didn't submit (id: %s)", this.getID(), receipt.getFilledOrder().getID()));
+			World.errorLog.logError(String.format("Agent %s received a transaction receipt for an order that he didn't submit (id: %s)", this.getID(), receipt.getFilledOrder().getID()), this.experiment);
 		}
 	}
 
@@ -480,7 +479,7 @@ public abstract class HFT implements Logging{
 		if (receipt.getUnsignedVolume() > standingOrder.getCurrentAgentSideVolume()) {
 			this.eventlog.logAgentAction(String.format("Agent received a transaction receipt for %s units of stock %s at market %s. \n" + "\t For market order, the current agent side volume was %s, and the market side volume was %s", receipt.getUnsignedVolume(), receipt.getStock().getID(), receipt.getFilledOrder().getMarket().getID(), receipt.getFilledOrder().getCurrentAgentSideVolume(), receipt.getFilledOrder().getCurrentMarketSideVolume()));
 			if (!this.experiment.allowsShortSelling) {
-				World.errorLog.logError("Shortselling was not allowed, but happeed when agent received a transaction receipt for more than ");
+				World.errorLog.logError("Shortselling was not allowed, but happeed when agent received a transaction receipt for more than ", this.experiment);
 			}
 		}
 	}
@@ -543,7 +542,7 @@ public abstract class HFT implements Logging{
 
 	public void updateCash(Order.BuySell buysell, long amount) {
 		if(amount <0) {
-			World.errorLog.logError(String.format("argument 'amount' must bepositive, but was %s", amount));
+			World.errorLog.logError(String.format("argument 'amount' must bepositive, but was %s", amount), this.experiment);
 		}
 		if(buysell == Order.BuySell.BUY) {
 			/*
@@ -557,13 +556,13 @@ public abstract class HFT implements Logging{
 			this.cash += amount;
 		}
 		if (this.cash < 0) {
-			World.errorLog.logError("Agent has negative cash, but he did not use the borrow function");
+			World.errorLog.logError("Agent has negative cash, but he did not use the borrow function", this.experiment);
 		}
 	}
 
 	public void borrowCash(long positiveAmount) {
 		if (positiveAmount < 0) {
-			World.errorLog.logError("An agent tried to borrow a negative amount of money. Amount must be positive");
+			World.errorLog.logError("An agent tried to borrow a negative amount of money. Amount must be positive", this.experiment);
 		} else {
 			this.nTimesBorrowedCash++;
 			/*
@@ -756,6 +755,10 @@ public abstract class HFT implements Logging{
 
 	public int getTransmissionDelayToMarket(Market market) {
 		return this.latencyToMarkets.get(market);
+	}
+
+	public Experiment getExperiment() {
+		return this.experiment;
 	}
 
 }

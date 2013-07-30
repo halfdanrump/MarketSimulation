@@ -16,7 +16,7 @@ public class OrderCancellation extends Message{
 //	}
 	
 	public OrderCancellation(int dispatchTime, int transmissionDelay, Order order) {
-		super(World.getCurrentRound() + transmissionDelay + 1, dispatchTime, order.getTransmissionType());
+		super(World.getCurrentRound() + transmissionDelay + 1, dispatchTime, order.getTransmissionType(), order.getOwner().getExperiment());
 		this.order = order;
 		cancellationCount ++;
 		World.addOrderCancellation(this);

@@ -1,5 +1,6 @@
 package environment;
 
+import Experiments.Experiment;
 import agent.HFT;
 
 @SuppressWarnings("serial")
@@ -15,9 +16,9 @@ public class InvalidOrderException extends Exception {
 		this.owner = owner;
 		this.orderbook = orderbook;
 		if(owner == null){
-			World.errorLog.logError(String.format("Stylized trader submitted invalid order: %s", this.toStringWithoutOwner()));
+			World.errorLog.logError(String.format("Stylized trader submitted invalid order: %s", this.toStringWithoutOwner()), this.owner.getExperiment());
 		} else{
-			owner.eventlog.logError(String.format("Agent %s submitted invalid order %s", owner.getID(), this.toStringWithOwner()));
+			owner.eventlog.logError(String.format("Agent %s submitted invalid order %s", owner.getID(), this.toStringWithOwner()), this.owner.getExperiment());
 		}
 	}
 	

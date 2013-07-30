@@ -38,8 +38,7 @@ public class SingleStockMarketMaker extends HFT {
 	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, int group, Experiment experiment) {
 		super(stocks, markets, latencies, group, experiment);
 		if (stocks.length > 1) {
-			World.errorLog
-					.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...");
+			World.errorLog.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...", this.experiment);
 		}
 		this.stock = World.getStockByNumber(stocks[0]);
 		this.minimumSpread = minimumSpread;
@@ -102,9 +101,9 @@ public class SingleStockMarketMaker extends HFT {
 			long currentMarketSpread = currentMarketSellPrice - currentMarketBuyPrice;
 
 			if (currentMarketSpread == 0) {
-				World.errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is zero", orderbook.getIdentifier()));
+				World.errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is zero", orderbook.getIdentifier()), this.experiment);
 			} else if (currentMarketSpread < 0) {
-				World.errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is negative", orderbook.getIdentifier()));
+				World.errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is negative", orderbook.getIdentifier()), this.experiment);
 			}
 
 			/*
@@ -128,7 +127,7 @@ public class SingleStockMarketMaker extends HFT {
 				 * same, and the agent will do nothing.
 				 */
 				long newBuyPrice = this.getNewBuyPrice(spreadViolation, currentMarketBuyPrice, currentMarketSellPrice);
-				standingBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+				standingBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 				this.submitOrder(standingBuyOrder);
 				this.eventlog.logAgentAction(String.format("Agent %s submitted a new BUY order, id: %s.", this.getID(), standingBuyOrder.getID()));
 			} else {
@@ -137,7 +136,7 @@ public class SingleStockMarketMaker extends HFT {
 
 			if (!this.standingSellOrders.containsKey(orderbook)) {
 				long newSellPrice = this.getNewSellPrice(spreadViolation, currentMarketBuyPrice, currentMarketSellPrice);
-				standingSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+				standingSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 				this.submitOrder(standingSellOrder);
 				this.eventlog.logAgentAction(String.format("Agent %s submitted a new SELL order, id: %s", this.getID(), standingSellOrder.getID()));
 			} else {
@@ -192,7 +191,7 @@ public class SingleStockMarketMaker extends HFT {
 		Stock stock = orderbook.getStock();
 		long numberOfOwnedStockAfterSellingOrderIsFullfilled = this.numberOfStocksInStandingSellOrders.get(stock) - this.fixedOrderVolume; 
 		if(numberOfOwnedStockAfterSellingOrderIsFullfilled < 0 & this.experiment.doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
-			Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+			Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 			this.submitOrder(newSellOrder);
 		} else {
 			this.eventlog.logAgentAction(String.format("Agent would like to place a SELL order, but he could not because he would have %s stocks left if the order was completely filled.", numberOfOwnedStockAfterSellingOrderIsFullfilled));
@@ -203,27 +202,23 @@ public class SingleStockMarketMaker extends HFT {
 		/*
 		 * At present this does nothing apart from accepting the order as the agent has no policy about when not to submit buy orders
 		 */
-		Order newBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		Order newBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 		this.submitOrder(newBuyOrder);
 	}
 
 	private void updateSellSideOrderPrice(int dispatchTime, int transmissionDelay,	long currentMarketBuyPrice, long currentMarketSellPrice, Order standingSellOrder, boolean spreadViolation, Orderbook orderbook) {
 		this.eventlog.logAgentAction(String.format("Agent %s updated his standing SELL side order", this.getID()));
-		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay,
-				standingSellOrder));
-		long newSellPrice = this.getNewSellPrice(spreadViolation,
-				currentMarketBuyPrice, currentMarketSellPrice);
-		Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay, standingSellOrder));
+		long newSellPrice = this.getNewSellPrice(spreadViolation, currentMarketBuyPrice, currentMarketSellPrice);
+		Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 		this.submitOrder(newSellOrder);
 	}
 
 	private void updateBuySideOrderPrice(int dispatchTime, int transmissionDelay, long currentMarketBuyPrice, long currentMarketSellPrice, Order standingBuyOrder, boolean spreadViolation, Orderbook orderbook) {
 		this.eventlog.logAgentAction(String.format("Agent %s updated his standing BUY SIDE order, id: %s", this.getID(), standingBuyOrder.getID()));
-		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay,
-				standingBuyOrder));
-		long newBuyPrice = this.getNewSellPrice(spreadViolation,
-				currentMarketBuyPrice, currentMarketSellPrice);
-		Order newBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		this.cancelOrder(new OrderCancellation(dispatchTime, transmissionDelay, standingBuyOrder));
+		long newBuyPrice = this.getNewSellPrice(spreadViolation, currentMarketBuyPrice, currentMarketSellPrice);
+		Order newBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 		this.submitOrder(newBuyOrder);
 	}
 
@@ -247,7 +242,6 @@ public class SingleStockMarketMaker extends HFT {
 		} else {
 			newBuyPrice = currentMarketBuyPrice;
 		}
-		
 		return newBuyPrice;
 	}
 

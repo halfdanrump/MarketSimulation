@@ -92,13 +92,13 @@ public class Logger implements Logging {
 	// System.out.println(line);
 	// }
 
-	protected void writeToConsole(String line) {
+	public void writeToConsole(String line) {
 		if(this.logToConsole){
 			System.out.println(line);
 		}
 	}
 
-	protected void writeToFile(String line) {
+	public void writeToFile(String line) {
 		// System.out.println(line);
 		if (this.logToFile) {
 			try {
@@ -109,11 +109,11 @@ public class Logger implements Logging {
 		}
 	}
 
-	public void logError(String line) {
+	public void logError(String line, Experiment experiment) {
 		Exception e = new Exception();
 		writeToConsole(Logger.getNewEntry() + "ERROR!;\t" + line + "\t Stack:\t ");
 		e.printStackTrace();
-		Experiment.closeLogs();
+		experiment.closeLogs();
 //		WorldObjectHandler.closeLogs();
 		System.exit(1);
 	}

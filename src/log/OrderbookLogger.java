@@ -26,7 +26,7 @@ public class OrderbookLogger extends Logger implements Logging{
 								"**********************************************\n\n");
 		}
 		else {
-			World.errorLog.logError("Other types that ORDER_FLOW_LOG has not yet been implemented");
+			World.errorLog.logError("Other types that ORDER_FLOW_LOG has not yet been implemented", orderbook.getExperiment());
 		}
 		this.orderbook = orderbook;
 	}

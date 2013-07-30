@@ -14,17 +14,25 @@ public class TwoGroups extends Experiment{
 	
 	public TwoGroups(String logRootFolder){
 		super();
-		this.overrideDefaultParameters();
+		this.overrideExperimentSpecificParameters();
 		super.initializeExperimentWithChangedParameters(logRootFolder, this);
 	}
 	
-	public void overrideDefaultParameters() {
-		super.nRounds = 10000;
+	public void overrideExperimentSpecificParameters() {
+		this.nGroups = 2;
+		this.nHFTsPerGroup = 25;
+		this.randomWalkFundamental = false;
+	}
+	
+	public String getParameterString() {
+		String header = String.format("nGroups,nHFTsPerGroup, randomWalkFundamental");
+		String values = String.format("%s,%s");
+		return header + "\n" + values;
 	}
 	
 	public void createAgents(){
-		int nGroups = 2;
-		int nAgentsInGroup = 25;
+		int nGroups = this.nGroups;
+		int nAgentsInGroup = this.nHFTsPerGroup;
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		int[] latencies = new int[marketIDs.length];

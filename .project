@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>R_HOME</name>
+			<value>file:/Library/Frameworks/R.framework/Versions/2.15/Resources</value>
+		</variable>
+	</variableList>
 </projectDescription>

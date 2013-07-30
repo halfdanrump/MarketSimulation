@@ -80,13 +80,13 @@ public class Stock {
 		//		Implement Brownian motion
 		int now = World.getCurrentRound();
 		long price;
-		if(this.experiment.isRandomWalk) {
+		if(this.experiment.randomWalkFundamental) {
 			price = Math.round(this.gbm.nextObservation());			
 		} else {
 			price = this.experiment.initialFundamentalPrice;
 		}
 		if(price>Long.MAX_VALUE){
-			World.errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!");
+			World.errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!", this.experiment);
 		} else{
 			try {
 				this.fundamentalPrice.set(now, (long) Math.round(price));

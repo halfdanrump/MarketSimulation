@@ -173,7 +173,7 @@ public class World implements SimulationSetup {
 	}
 
 	private static void createSlowTraderOrders(Experiment experiment) {
-		for (long i = 0; i < Experiment.nSlowTraderOrdersPerRounds; i++) {
+		for (long i = 0; i < experiment.nSlowTraderOrdersPerRound; i++) {
 			StylizedTrader.submitRandomOrder(experiment);
 		}
 //		System.out.println("k");
@@ -352,7 +352,7 @@ public class World implements SimulationSetup {
 		if (agent.executeStrategyAndSubmit()) {
 			addAgentToFreeList(agent);
 		} else {
-			warningLog.logError(String.format("Agent %s failed to evaluate strategy", agent.getID()));
+			warningLog.logError(String.format("Agent %s failed to evaluate strategy", agent.getID()), agent.getExperiment());
 		}
 	}
 
@@ -510,7 +510,7 @@ public class World implements SimulationSetup {
 		} catch (IndexOutOfBoundsException e) {
 			// e.printStackTrace();
 			World.errorLog.logError(String.format(
-					"Stock number %d has not been created.", index));
+					"Stock number %d has not been created.", index), null);
 			System.exit(1);
 		}
 		return stock;
@@ -524,7 +524,7 @@ public class World implements SimulationSetup {
 			market = markets.get(index);
 		} catch (IndexOutOfBoundsException e) {
 			World.errorLog.logError(String.format(
-					"Market number %d has not been created.", index));
+					"Market number %d has not been created.", index), null);
 		}
 		return market;
 	}
@@ -545,7 +545,7 @@ public class World implements SimulationSetup {
 			World.errorLog
 					.logError(String
 							.format("Orderbook for stock %d and market %d has not been created yet!",
-									stock, market));
+									stock, market), null);
 			// System.exit(1);
 			return null;
 		}
@@ -559,7 +559,7 @@ public class World implements SimulationSetup {
 			World.errorLog
 					.logError(String
 							.format("Orderbook for stock %d and market %d has not been created yet!",
-									stockID, marketID));
+									stockID, marketID), null);
 			// System.exit(1);
 			return null;
 		}

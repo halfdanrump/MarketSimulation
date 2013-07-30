@@ -15,7 +15,7 @@ public class TransactionReceipt extends Message{
 	
 	
 	TransactionReceipt(Order order, long volume, long price, long total, Order fillingOrder){
-		super(calculateArrivalTime(order), World.getCurrentRound(), Message.TransmissionType.WITH_TRANSMISSION_DELAY);
+		super(calculateArrivalTime(order), World.getCurrentRound(), Message.TransmissionType.WITH_TRANSMISSION_DELAY, order.getOwner().getExperiment());
 		this.setId(receiptsCount);		
 		receiptsCount++;
 		this.volume = volume;
@@ -23,12 +23,12 @@ public class TransactionReceipt extends Message{
 		this.total = total;
 		
 		if(this.volume < 0){
-			World.errorLog.logError("Receipt volume must be positive!");
+			World.errorLog.logError("Receipt volume must be positive!", this.experiment);
 		}
 		if(this.price < 0){
 			Exception e = new Exception();
 			e.printStackTrace();
-			World.errorLog.logError("Receipt price must be positive!");
+			World.errorLog.logError("Receipt price must be positive!", this.experiment);
 		}
 		this.filledOrder = order;
 		this.initialize();
@@ -98,7 +98,7 @@ public class TransactionReceipt extends Message{
 	
 	public long getUnsignedVolume() {
 		if(this.volume < 0) {
-			World.errorLog.logError("Transaction receipt had negative volume, but the stored volume should be unsigned, and hence always positive");
+			World.errorLog.logError("Transaction receipt had negative volume, but the stored volume should be unsigned, and hence always positive", this.experiment);
 		}
 		return this.volume;
 	}

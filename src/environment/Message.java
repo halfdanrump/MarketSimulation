@@ -1,5 +1,7 @@
 package environment;
 
+import Experiments.Experiment;
+
 public abstract class Message{
 	
 	public enum TransmissionType{
@@ -12,6 +14,7 @@ public abstract class Message{
 	private int dispatchTime;
 	private TransmissionType transmissionType;
 	private static long messageCount = 0;
+	Experiment experiment;
 	
 //	public Message(TransmissionType transmissionType){
 //		/*
@@ -25,7 +28,8 @@ public abstract class Message{
 //		setMessageCount(getMessageCount() + 1);
 //	}
 	
-	public Message(int arrivalTime, int dispatchTime, TransmissionType transmissionType){
+	public Message(int arrivalTime, int dispatchTime, TransmissionType transmissionType, Experiment experiment){
+		this.experiment = experiment;
 		if(transmissionType == TransmissionType.INSTANTANEOUS) {
 			this.arrivalTime = World.getCurrentRound();
 			this.dispatchTime = World.getCurrentRound();
@@ -33,7 +37,7 @@ public abstract class Message{
 //			this.initializeWithInstantaneousTransmission();
 		} else if (transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
 			if(arrivalTime < dispatchTime) {
-				World.errorLog.logError("Message with arrival time before dispatch time was created");
+				World.errorLog.logError("Message with arrival time before dispatch time was created", this.experiment);
 			}else {
 				this.arrivalTime = arrivalTime;
 				this.dispatchTime = dispatchTime;

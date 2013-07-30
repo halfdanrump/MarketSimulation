@@ -23,7 +23,9 @@ public abstract class Experiment{
 	 * General setup
 	 */
 	public int nRounds = 10000;
-	public static long nSlowTraderOrdersPerRounds = 10;
+	public long nSlowTraderOrdersPerRound = 50;
+	public int nHFTsPerGroup = 10;
+	public int nGroups = 1;
 
 	/*
 	 * Market rules
@@ -36,7 +38,7 @@ public abstract class Experiment{
 	public long orderVolumeWhenMarketFillsEmptyBook = 99;
 	public Order.Type orderTypeWhenMarketFillsEmptyBook = Order.Type.MARKET;
 	public int orderLengthWhenMarketFillsEmptyBook = 5;
-
+	protected Logger config;
 	
 	
 	/*
@@ -61,7 +63,7 @@ public abstract class Experiment{
 	/*
 	 * Single stock minimum spread market maker parameters 
 	 */
-	public long ssmm_tradeVolume = 20;
+	public long ssmm_tradeVolume = 10;
 	public int ssmm_marketOrderLength = 200;
 	public boolean doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock = true;
 	public long minimumSpread = (long) Math.pow(10,4);
@@ -69,7 +71,7 @@ public abstract class Experiment{
 	/*
 	 * Random walk parameters
 	 */
-	public boolean isRandomWalk = false;
+	public boolean randomWalkFundamental = false;
 	public final long initialFundamentalPrice = (long) Math.pow(10, 9);
 	public final double fundamentalBrownianMean = 0;
 	public final double fundamentalBrownianVariance = 0.00001;
@@ -77,7 +79,7 @@ public abstract class Experiment{
 	/*
 	 * Stylized trader parameters
 	 */
-	public int orderLength = 1000;
+	public int orderLength = 100000;
 	public boolean randomOrderVolume = false;
 	public long constantVolume = 10;
 	public double volumeMean = 100d;
@@ -85,28 +87,17 @@ public abstract class Experiment{
 	public double addivePriceNoiseMean = 0d;
 	public double additivePriceNoiseStd = Math.pow(10, 5);
 	
-	/*
-	 * Single stock market maker default 
-	 */
-
-	
-	
-	
-	//	public long fundamentalistWeightMean = 0;
-//	public long fundamentalistWeightStd = 1;
-////	public long fundamentalMeanReversion = 
-//	
-//	public long chartistWeightMean = 0;
-//	public long chartistWeightStd = 0;
-//	
-//	public long noiseWeightMean = 0;
-//	public long noiseWeightStd = 1;
 	
 	public Experiment(){
-		
+
 	}
 	
 	protected void initializeExperimentWithChangedParameters(String logRootFolder, Experiment experiment) {
+		this.config = new Logger(logRootFolder, "config", Logger.Type.CSV, true, true);
+		this.overrideExperimentSpecificParameters();
+		String parameters = this.getParameterString();
+		this.config.writeToFile(parameters);
+		this.config.writeToConsole(parameters);
 		this.createStocks();
 		this.createMarkets();
 		this.createOrderbooks(experiment);
@@ -115,11 +106,12 @@ public abstract class Experiment{
 		this.initializeEmptyOrderbooksWithMarketOrders();
 	}
 	
-	
 	public abstract void createAgents();
 	public abstract void createStocks();
 	public abstract void createMarkets();
-	public abstract void overrideDefaultParameters();
+	public abstract void overrideExperimentSpecificParameters();
+	public abstract String getParameterString(); 
+	
 	
 	public void createOrderbooks(Experiment experiment) {
 		/*
@@ -195,10 +187,11 @@ public void createObjectLoggers(String logRootFolder) {
 		}
 	}
 	
-	public static void closeLogs() {
+	public void closeLogs() {
 		for(Logger log:openLogs){
 			log.closeLog();
 		}
+		this.config.closeLog();
 	}
 
 	public void initializeEmptyOrderbooksWithMarketOrders() {
