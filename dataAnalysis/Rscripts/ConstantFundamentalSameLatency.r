@@ -37,18 +37,16 @@ makeTransactionPriceScatterPlot = function(files){
   
   
   meanPrice = rep(NA, length(rounds))
-  for(round in rounds){
+  prices = files$stock0transactions$price
+  for(round in rounds[2:length(rounds)]){
     idx = which(files$stock0transactions$round == round)
-    m = mean(files$stock0transactions$price[idx])
-    if(is.nan(m)){
+    mp = mean(files$stock0transactions$price[idx])
+    
+    if(is.nan(mp)){
       print(paste0(c("There were no transactions in round ", round, ", so the price was the same as last round."), collapse=""))
-      if(round == 1){
-        meanPrice[1] = files$stock0roundBased$fundamental[1]
-      } else{
-        meanPrice[round] = meanPrice[round-1]
-      }
+      meanPrice[round] = meanPrice[round-1]
     } else{
-      meanPrice[round] = m
+      meanPrice[round] = mp
     }
   }
   
@@ -58,7 +56,7 @@ makeTransactionPriceScatterPlot = function(files){
       postscript(file=paste0(figuresExportDir, paste0(files$graphPrefix, "_meanTradePrices.eps")), width=9, height=7, horizontal=FALSE)
     }
     
-    makePlot(files, rounds, meanPrice)
+    makePlot(files, rounds, meanPrice, 1000, length(rounds))
     
     if(exportPlotsToFiles){
       dev.off()
@@ -66,10 +64,12 @@ makeTransactionPriceScatterPlot = function(files){
   }
 }
 
-makePlot = function(files, rounds, meanPrice){
-  plot(rounds, meanPrice, pch=19, cex=0.2, main=experimentName, sub=files$graphPrefix)
-  lines(rounds, files$stock0roundBased$fundamental, col="red", lwd=2)
-  text(x=median(rounds), y=(max(meanPrice) - min(meanPrice))*0.9 + min(meanPrice), labels=files$graphPrefix, cex=0.7, col="blue")
+makePlot = function(files, rounds, meanPrice, from, to){
+  plot(rounds[from:to], meanPrice[from:to], pch=19, cex=0.2, main=experimentName, sub=files$graphPrefix)
+  lines(rounds[from:to], files$stock0roundBased$fundamental[from:to], col="red", lwd=2)
+  lines(SMA(meanPrice, n=100), col="green")
+  #lines(SMA(files$stock0roundBased$fundamental[from:to]), col="green")
+  text(x=median(rounds[from:to]), y=(max(meanPrice[from:to]) - min(meanPrice[from:to]))*0.9 + min(meanPrice[from:to]), labels=files$graphPrefix, cex=0.7, col="blue")
 }
 
 main = function(){

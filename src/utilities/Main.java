@@ -1,6 +1,11 @@
 package utilities;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import org.rosuda.JRI.REXP;
+import org.rosuda.JRI.Rengine;
 
 import Experiments.ConstantFundamentalSameLatency;
 import Experiments.ConstantFundamentalRandomLatency;
@@ -12,62 +17,49 @@ import environment.*;
 public class Main {
 	
 	public static void main(String[] args){
-		
+		System.out.println("Creating Rengine (with arguments)");
+	    //If not started with --vanilla, funny things may happen in this R shell.
+	    String[] Rargs = {"--vanilla"};
+	    Rengine re = new Rengine(Rargs, false, null);
 		
 //		String logRootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/TwoGroups/";
 //		Experiment e = new TwoGroups(logRootFolder);
 //		e.runExperiment(e);
 		String logRootFolder;
+		String RscriptFilePath;
 		int nAgents;
 		int nSTOrdersPerRound;
 		
 		
 		logRootFolder = String.format("/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalSameLatency/");
-		nAgents = 71	;
-		int latency = 10;
+		RscriptFilePath = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/ConstantFundamentalSameLatency.r";
+		int fixedLatency = 1;
 		nSTOrdersPerRound = 20;
-		Experiment e1 = new ConstantFundamentalSameLatency(logRootFolder, nAgents, latency, nSTOrdersPerRound);
-		e1.runExperiment(e1);
+//		int[] numberOfAgents = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300};
+		int[] numberOfAgents = {0};
+		ArrayList<Integer> k = new ArrayList<Integer>();
+		for(int na:numberOfAgents) {
+			
+			String logFolder = String.format("%snStylizedOrders=%s/",logRootFolder,nSTOrdersPerRound);
+			System.out.println(logFolder);
+			File f = new File(logFolder);
+			f.mkdir();
+			Experiment e1 = new ConstantFundamentalSameLatency(logFolder, na, fixedLatency, nSTOrdersPerRound);
+			e1.runExperiment(e1);
+//			re.eval(String.format("source('%s')", RscriptFilePath));
+		}
 
 //		logRootFolder = String.format("/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalRandomLatency/");
-//		nAgents = 500	;
-//		int minLatency = 1;
-//		int maxLatency = 10;
+//		nAgents = 150;
+//		int minLatency = 10;
+//		int maxLatency = 50;
 //		nSTOrdersPerRound = 20;
 //		Experiment e2 = new ConstantFundamentalRandomLatency(logRootFolder, nAgents,nSTOrdersPerRound, minLatency, maxLatency);
 //		e2.runExperiment(e2);
 		
 		
-		
-//		ProcessBuilder pb = new ProcessBuilder("/Library/Frameworks/R.framework/Resources/bin/Rscript", "/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/ConstantFundamentalSameLatency.r");
-//		pb.redirectErrorStream(true);
-//		try {
-//			Process p = pb.start();
-//			System.out.println("asdasd");
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		try {
-//			System.out.println("ASDASD");
-//			Runtime.getRuntime().exec("/Library/Frameworks/R.framework/Resources/bin/Rscript ConstantFundamentalSameLatency.r /Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/ConstantFundamentalSameLatency.r");
-//			Runtime.getRuntime().exec("mkdir /Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/asd");
-//			System.out.println("aASDASDASSD");
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-		
-		
-		
-//		String logRootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalNoHFTs/";
-//		Experiment e = new ConstantFundamentalNoHFTs(logRootFolder);
-//		e.runExperiment(e);
-		
-//		String logRootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalRandomLatency/";
-//		Experiment e = new ConstantFundamentalRandomLatency(logRootFolder);
-//		e.runExperiment(e);
-		
+	    
+		re.end();
 		System.out.println(String.format("Finished simulation in %s seconds", ((double) World.runTime)/1000f));
 	}
 	

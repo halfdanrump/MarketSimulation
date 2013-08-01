@@ -69,6 +69,7 @@ makeTransactionPriceScatterPlot = function(files){
 makePlot = function(files, rounds, meanPrice){
   plot(rounds, meanPrice, pch=19, cex=0.2, main=experimentName, sub=files$graphPrefix)
   lines(rounds, files$stock0roundBased$fundamental, col="red", lwd=2)
+  lines(SMA(meanPrice, n=100), col="green")
   text(x=median(rounds), y=(max(meanPrice) - min(meanPrice))*0.9 + min(meanPrice), labels=files$graphPrefix, cex=0.7, col="blue")
 }
 
