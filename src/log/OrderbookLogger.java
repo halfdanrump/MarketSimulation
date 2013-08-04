@@ -1,10 +1,10 @@
 package log;
 
+import Experiments.Experiment;
 import setup.Logging;
 import environment.Order;
 import environment.Orderbook;
 import environment.TransactionReceipt;
-import environment.World;
 
 public class OrderbookLogger extends Logger implements Logging{
 	public enum Type{
@@ -16,8 +16,8 @@ public class OrderbookLogger extends Logger implements Logging{
 	private Orderbook orderbook;
 
 
-	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType, Logger.Type type, boolean logToFile, boolean logToConsole) {
-		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()), type, logToFile, logToConsole);
+	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType, Logger.Type type, boolean logToFile, boolean logToConsole, Experiment experiment) {
+		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()), type, logToFile, logToConsole, experiment);
 		if(logType == Type.ORDER_FLOW_LOG) {
 			this.recordOrderFlowHeader();
 		} else if(logType == Type.EVENT_LOG) {
@@ -26,7 +26,7 @@ public class OrderbookLogger extends Logger implements Logging{
 								"**********************************************\n\n");
 		}
 		else {
-			World.errorLog.logError("Other types that ORDER_FLOW_LOG has not yet been implemented", orderbook.getExperiment());
+			super.experiment.getWorld().errorLog.logError("Other types that ORDER_FLOW_LOG has not yet been implemented", orderbook.getExperiment());
 		}
 		this.orderbook = orderbook;
 	}
@@ -160,7 +160,7 @@ public class OrderbookLogger extends Logger implements Logging{
 
 	public void logEventNoMarketOrders(Order.BuySell buysell) {
 		if(this.createLogString){
-			String line = Logger.getNewEntry() + String.format("no%s",String.valueOf(buysell));
+			String line = super.getNewEntry() + String.format("no%s",String.valueOf(buysell));
 			if(this.logToFile){
 				super.writeToFile(line);
 			}

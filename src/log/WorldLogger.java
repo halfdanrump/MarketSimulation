@@ -1,11 +1,11 @@
 package log;
 
+import Experiments.Experiment;
 import agent.HFT;
 import environment.Order;
 import environment.OrderCancellation;
 import environment.Orderbook;
 import environment.TransactionReceipt;
-import environment.World;
 
 public class WorldLogger extends Logger {
 	private long nArrivingOrders;
@@ -18,9 +18,10 @@ public class WorldLogger extends Logger {
 	
 
 	private long nReRequestionMarketInformation;
-
-	public WorldLogger(String directory, String identifier, boolean recordHeader, Logger.Type type, boolean logToFile, boolean logToConsole) {
-		super(directory, identifier, type, logToFile, logToConsole);
+	private Experiment experiment;
+	public WorldLogger(String directory, String identifier, boolean recordHeader, Logger.Type type, boolean logToFile, boolean logToConsole, Experiment experiment) {
+		super(directory, identifier, type, logToFile, logToConsole, experiment);
+		this.experiment = experiment;
 		if(recordHeader) {
 			recordHeader();
 		}
@@ -72,7 +73,7 @@ public class WorldLogger extends Logger {
 	public void recordEntry(){
 		if(this.createLogString){
 			String entry = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
-					World.getCurrentRound(),
+					this.experiment.getWorld().getCurrentRound(),
 					this.getTotalNStandingOrders(),
 					Order.getOrderCount(),
 					OrderCancellation.getCancellationCount(),
@@ -104,7 +105,7 @@ public class WorldLogger extends Logger {
 
 	private long getTotalWealth(){
 		long totalWealth = 0;
-		for(HFT agent:World.getHFTAgents()){
+		for(HFT agent:this.experiment.getWorld().getHFTAgents()){
 			totalWealth += agent.getTotalAgentWorth();
 		}
 		return totalWealth;
@@ -113,7 +114,7 @@ public class WorldLogger extends Logger {
 	private long getTotalNStandingOrders(){
 		long nOrders = 0;
 		
-		for(Orderbook orderbook:World.getOrderbooks()){
+		for(Orderbook orderbook:this.experiment.getWorld().getOrderbooks()){
 			nOrders += orderbook.getUnfilledBuyOrders().size();
 			nOrders += orderbook.getUnfilledSellOrders().size();
 		}

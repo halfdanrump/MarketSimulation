@@ -15,29 +15,15 @@ public abstract class Message{
 	private TransmissionType transmissionType;
 	private static long messageCount = 0;
 	Experiment experiment;
-	
-//	public Message(TransmissionType transmissionType){
-//		/*
-//		 * Constructor used for messages where the arrival time is given, or undefined. 	
-//		 */
-//		if(transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
-//			World.errorLog.logError("Wrong constructor for Message type TransmissionType.WITH_TRANSMISSION_DELAY");
-//		} else {
-//			this.initializeWithInstantaneousTransmission();
-//		}
-//		setMessageCount(getMessageCount() + 1);
-//	}
-	
+
 	public Message(int arrivalTime, int dispatchTime, TransmissionType transmissionType, Experiment experiment){
 		this.experiment = experiment;
 		if(transmissionType == TransmissionType.INSTANTANEOUS) {
-			this.arrivalTime = World.getCurrentRound();
-			this.dispatchTime = World.getCurrentRound();
-//		} else if(transmissionType == TransmissionType.WITHIN_SAME_ROUND) {
-//			this.initializeWithInstantaneousTransmission();
+			this.arrivalTime = this.experiment.getWorld().getCurrentRound();
+			this.dispatchTime = this.experiment.getWorld().getCurrentRound();
 		} else if (transmissionType == TransmissionType.WITH_TRANSMISSION_DELAY) {
 			if(arrivalTime < dispatchTime) {
-				World.errorLog.logError("Message with arrival time before dispatch time was created", this.experiment);
+				this.experiment.getWorld().errorLog.logError("Message with arrival time before dispatch time was created", this.experiment);
 			}else {
 				this.arrivalTime = arrivalTime;
 				this.dispatchTime = dispatchTime;

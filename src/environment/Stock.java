@@ -72,13 +72,13 @@ public class Stock {
 		this.globalLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + 10*(long) this.experiment.additivePriceNoiseStd;
 		this.gbm = new GeometricBrownianMotion(this.experiment.initialFundamentalPrice, this.experiment.fundamentalBrownianMean, this.experiment.fundamentalBrownianVariance, new MRG32k3a());
 		gbm.setObservationTimes(1, this.experiment.nRounds+1);
-		World.addStock(this);
+		this.experiment.getWorld().addStock(this);
 	}
 	
 	public void updateFundamentalPrice(){
 		
 		//		Implement Brownian motion
-		int now = World.getCurrentRound();
+		int now = this.experiment.getWorld().getCurrentRound();
 		long price;
 		if(this.experiment.randomWalkFundamental) {
 			price = Math.round(this.gbm.nextObservation());			
@@ -86,7 +86,7 @@ public class Stock {
 			price = this.experiment.initialFundamentalPrice;
 		}
 		if(price>Long.MAX_VALUE){
-			World.errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!", this.experiment);
+			this.experiment.getWorld().errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!", this.experiment);
 		} else{
 			try {
 				this.fundamentalPrice.set(now, (long) Math.round(price));
@@ -129,16 +129,6 @@ public class Stock {
 		return globalLastTradedMarketOrderBuyPrice;
 	}
 
-//	public void setGlobalLastTradedMarketOrderBuyPrice(long lastTradedMarketOrderBuyPrice) {
-//		long midOfLastTradedPrices = this.globalLastTradedMarketOrderSellPrice - this.globalLastTradedMarketOrderBuyPrice;
-//		if(midOfLastTradedPrices <= 0) {
-//			Exception e = new Exception();
-//			e.printStackTrace();
-//			World.errorLog.logError("Price must not be negative!");
-//		}
-//		this.globalLastTradedMarketOrderBuyPrice = lastTradedMarketOrderBuyPrice;
-//	}
-
 	public long getGlobalLastTradedMarketOrderSellPrice() {
 		return globalLastTradedMarketOrderSellPrice;
 	}
@@ -158,7 +148,7 @@ public class Stock {
 		long localBestSellPrice = Long.MAX_VALUE;
 		long spread = Long.MAX_VALUE;
 		long bestSpread = Long.MAX_VALUE;
-		int now = World.getCurrentRound();
+		int now = this.experiment.getWorld().getCurrentRound();
 		Market bestMarket = null;
 		for(Market market:this.markets) {
 			Orderbook orderbook = market.getOrderbook(this);
@@ -167,7 +157,7 @@ public class Stock {
 				localBestSellPrice = orderbook.getLocalBestSellPriceAtEndOfRound(now);
 				spread = localBestSellPrice - localBestBuyPrice;
 			} catch(NoOrdersException e) {
-				World.warningLog.logOnelineWarning(String.format("In round %s, Could not collect bestPrices for stock %s at market %s", now, this.id, market.getID()));
+				this.experiment.getWorld().warningLog.logOnelineWarning(String.format("In round %s, Could not collect bestPrices for stock %s at market %s", now, this.id, market.getID()));
 			} finally {
 				globalLowestBuyPrice = (localBestBuyPrice < globalLowestBuyPrice) ? localBestBuyPrice : globalLowestBuyPrice;
 				globalHighestBuyPrice = (localBestBuyPrice > globalHighestBuyPrice) ? localBestBuyPrice : globalHighestBuyPrice;
@@ -177,7 +167,6 @@ public class Stock {
 					bestSpread = spread;
 					bestMarket = market;
 				}
-//				bestSpread = (spread < bestSpread) ? spread : bestSpread;
 			}
 		}
 		this.globalLowestBuy.set(now, globalLowestBuyPrice);
@@ -187,22 +176,6 @@ public class Stock {
 		this.localSmallestOrderbookSpread.set(now, bestSpread);
 		this.bestMarketInRound.add(bestMarket);
 	}
-	
-	
-	
-//	public long getStockValueAtRound(int round) {
-//		/*
-//		 * The stock value is the mid of the spread at the market where it was traded at the best price in that round.
-//		 */
-//		long stockValue = this.globalLowestSell.get(round) - this.globalHighestBuy.get(round);
-//		if(stockValue<0) {
-//			/*
-//			 * Could this be because the prices are at different levels in different markets?
-//			 */
-//			World.errorLog.logError(String.format("In round %s, the stock value was negative, that is the global best buy was larger than the global best sell.", round));
-//		}
-//		return stockValue;
-//	}
 	
 	public long getLocalSmallestOrderbookSpread(int round) {
 		return this.localSmallestOrderbookSpread.get(round);
@@ -223,18 +196,6 @@ public class Stock {
 	public long getGlobalHighestSellPrice(int round) {
 		return this.globalHighestSell.get(round);
 	}
-
-//	public void setGlobalLastTradedMarketOrderSellPrice(long lastTradedMarketOrderSellPrice) {
-//		long midOfLastTradedPrices = this.globalLastTradedMarketOrderSellPrice - this.globalLastTradedMarketOrderBuyPrice;
-//		if(midOfLastTradedPrices <= 0) {
-//			Exception e = new Exception();
-//			e.printStackTrace();
-//			World.errorLog.logError("Price must not be negative!");
-//		}
-//		this.globalLastTradedMarketOrderSellPrice = lastTradedMarketOrderSellPrice;
-//	}
-
-	
 	
 	
 }

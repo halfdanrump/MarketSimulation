@@ -8,7 +8,7 @@ import utilities.Utils;
 import environment.Order;
 import environment.Stock;
 import environment.TransactionReceipt;
-import environment.World;
+import Experiments.Experiment;
 import agent.HFT;
 
 public class AgentLogger extends Logger {
@@ -16,6 +16,7 @@ public class AgentLogger extends Logger {
 	// OrderIDComparatorLowFirst();
 
 	HFT agent;
+	private Experiment experiment;
 	
 	public enum headerType{
 		TRADE_DATA,
@@ -23,9 +24,10 @@ public class AgentLogger extends Logger {
 		NO_HEADER
 	}
 
-	public AgentLogger(String directory, String identifier, HFT agent, Logger.Type type, AgentLogger.headerType headerType, boolean logToFile, boolean logToConsole) {
-		super(directory, String.format("%s_agent_%s", identifier, agent.getID()), type, logToFile, logToConsole);
+	public AgentLogger(String directory, String identifier, HFT agent, Logger.Type type, AgentLogger.headerType headerType, boolean logToFile, boolean logToConsole, Experiment experiment) {
+		super(directory, String.format("%s_agent_%s", identifier, agent.getID()), type, logToFile, logToConsole, experiment);
 		this.agent = agent;
+		this.experiment = experiment;
 		if(headerType == AgentLogger.headerType.ROUND_DATA) {
 			String header = "round, cash, portfolio, nSubOrders, nOrderCancellations, nReceivedBuyOrderReceipts, nReceivedSellOrderReceiptsn, nFulfilledOrders, " +
 							"nStandingBuyOrders, nStandingSellOrders";
@@ -38,7 +40,6 @@ public class AgentLogger extends Logger {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public void logTradeData(TransactionReceipt receipt, long volume, long total, long borrowedCash, long borrowedStocks) {
 		/*
 		 * Records the following information just after the agent has received the transaction received
@@ -62,7 +63,7 @@ public class AgentLogger extends Logger {
 		if(this.createLogString){
 			ArrayList<String> entry = new ArrayList<String>();
 			Utils.initializeStringArrayWithEmptyStrings(entry, 11, "");
-			entry.set(0, String.valueOf(World.getCurrentRound()));
+			entry.set(0, String.valueOf(this.experiment.getWorld().getCurrentRound()));
 			entry.set(1, String.valueOf(receipt.getFilledOrder().getStock().getID()));
 			entry.set(2, String.valueOf(receipt.getFilledOrder().getMarket().getID()));
 			if(receipt.getFillingOrder().getOwner() == null) {
@@ -94,9 +95,9 @@ public class AgentLogger extends Logger {
 		
 		if(Logging.logAgentRoundDataToFile | Logging.logAgentRoundDataToConsole){
 			String entry = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-					World.getCurrentRound(), 
+					this.experiment.getWorld().getCurrentRound(), 
 					this.agent.getCash(),
-					this.agent.evaluatePortfolioValue(World.getCurrentRound()),
+					this.agent.evaluatePortfolioValue(this.experiment.getWorld().getCurrentRound()),
 					agent.getnSubmittedOrders(), 
 					agent.getnOrderCancellations(),
 					agent.getnReceivedBuyOrderReceipts(),
@@ -116,13 +117,13 @@ public class AgentLogger extends Logger {
 		
 	}
 	
-	private String getPortfolioHeaderAsTabulatedString() {
-		String s = "";
-		for(Stock stock:this.agent.getActiveStocks()) {
-			s += String.format(", Stock%s", stock.getID());
-		}
-		return s;
-	}
+//	private String getPortfolioHeaderAsTabulatedString() {
+//		String s = "";
+//		for(Stock stock:this.agent.getActiveStocks()) {
+//			s += String.format(", Stock%s", stock.getID());
+//		}
+//		return s;
+//	}
 	
 	private String getCurrentPortfolioAsTabulatedString() {
 		String s = "";
@@ -130,40 +131,9 @@ public class AgentLogger extends Logger {
 			long amount = this.agent.getOwnedStocks().get(stock);
 			s += String.format(", %s", amount);
 		}
-//		HashMap<Stock, Integer> ownedStocks = this.agent.getOwnedStocks();
-//		Iterator iterator = ownedStocks.entrySet().iterator();
-//		while(iterator.hasNext()) {
-//			Map.Entry<Stock, Integer> pair = (Map.Entry<Stock, Integer>) iterator.next();
-//			Stock stock = pair.getKey();
-//			Integer amount = pair.getValue();
-//			s += String.format(", %s", amount);
-//		}
 		return s;
-//		for() {
-//			
-//		}
 	}
 	
-//	private String getStandingOrderStockAmountAsString() {
-//		String s = "";
-//		for(Stock stock:this.agent.getActiveStocks()) {
-//			long amount = this.agent.getOwnedStocks().get(stock);
-//			s += String.format(", %s", amount);
-//		}
-////		HashMap<Stock, Integer> ownedStocks = this.agent.getOwnedStocks();
-////		Iterator iterator = ownedStocks.entrySet().iterator();
-////		while(iterator.hasNext()) {
-////			Map.Entry<Stock, Integer> pair = (Map.Entry<Stock, Integer>) iterator.next();
-////			Stock stock = pair.getKey();
-////			Integer amount = pair.getValue();
-////			s += String.format(", %s", amount);
-////		}
-//		return s;
-////		for() {
-////			
-////		}
-//	}
-
 	public void logAgentAction(String line) {
 		line = super.getNewEntry() + line;
 		if (logAgentActionsToConsole) {

@@ -1,5 +1,6 @@
 package environment;
 
+import Experiments.Experiment;
 import agent.HFT;
 import environment.Order.BuySell;
 import environment.World;
@@ -12,23 +13,25 @@ public class TransactionReceipt extends Message{
 	private long total;
 	private Order filledOrder;
 	private Order fillingOrder;
+	private Experiment experiment;
 	
 	
 	TransactionReceipt(Order order, long volume, long price, long total, Order fillingOrder){
-		super(calculateArrivalTime(order), World.getCurrentRound(), Message.TransmissionType.WITH_TRANSMISSION_DELAY, order.getOwner().getExperiment());
+		super(calculateArrivalTime(order, order.getExperiment()), order.getOwner().getExperiment().getWorld().getCurrentRound(), Message.TransmissionType.WITH_TRANSMISSION_DELAY, order.getExperiment());
 		this.setId(receiptsCount);		
 		receiptsCount++;
 		this.volume = volume;
 		this.price = price;
 		this.total = total;
+		this.experiment = order.getOwner().getExperiment();
 		
 		if(this.volume < 0){
-			World.errorLog.logError("Receipt volume must be positive!", this.experiment);
+			this.experiment.getWorld().errorLog.logError("Receipt volume must be positive!", this.experiment);
 		}
 		if(this.price < 0){
 			Exception e = new Exception();
 			e.printStackTrace();
-			World.errorLog.logError("Receipt price must be positive!", this.experiment);
+			this.experiment.getWorld().errorLog.logError("Receipt price must be positive!", this.experiment);
 		}
 		this.filledOrder = order;
 		this.initialize();
@@ -39,14 +42,14 @@ public class TransactionReceipt extends Message{
 		this.fillingOrder = fillingOrder;
 	}
 	
-	private static int calculateArrivalTime(Order order) {
+	private static int calculateArrivalTime(Order order, Experiment experiment) {
 		int latency = order.getOwner().getLatency(order.getMarket());
-		int arrivalTime = World.getCurrentRound() + latency;
+		int arrivalTime = experiment.getWorld().getCurrentRound() + latency;
 		return arrivalTime;
 	}
 	
 	private void initialize(){
-		World.addTransactionReceipt(this);
+		this.experiment.getWorld().addTransactionReceipt(this);
 	}
 	
 	
@@ -98,7 +101,7 @@ public class TransactionReceipt extends Message{
 	
 	public long getUnsignedVolume() {
 		if(this.volume < 0) {
-			World.errorLog.logError("Transaction receipt had negative volume, but the stored volume should be unsigned, and hence always positive", this.experiment);
+			this.experiment.getWorld().errorLog.logError("Transaction receipt had negative volume, but the stored volume should be unsigned, and hence always positive", this.experiment);
 		}
 		return this.volume;
 	}
@@ -146,7 +149,9 @@ public class TransactionReceipt extends Message{
 		return fillingOrder;
 	}
 
-	
+	public Experiment getExperiment() {
+		return this.experiment;
+	}
 	
 	
 	

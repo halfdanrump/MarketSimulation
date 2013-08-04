@@ -21,7 +21,7 @@ public class SingleStockMarketMaker extends HFT {
 	private int marketOrderLength;
 	private HashMap<Market, Long> knownMarketAsks;
 	private HashMap<Market, Long> knownMarketBids;
-
+	private Experiment experiment;
 	/*
 	 * -The agent monitors a single stock and tries to trade the stock
 	 * simultaneously on one or several markets. -The agent market maker
@@ -37,10 +37,11 @@ public class SingleStockMarketMaker extends HFT {
 
 	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, int group, Experiment experiment) {
 		super(stocks, markets, latencies, group, experiment);
+		this.experiment = experiment;
 		if (stocks.length > 1) {
-			World.errorLog.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...", this.experiment);
+			this.experiment.getWorld().errorLog.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...", this.experiment);
 		}
-		this.stock = World.getStockByNumber(stocks[0]);
+		this.stock = this.experiment.getWorld().getStockByNumber(stocks[0]);
 		this.minimumSpread = minimumSpread;
 		this.fixedOrderVolume = this.experiment.ssmm_tradeVolume;
 		this.marketOrderLength = this.experiment.ssmm_marketOrderLength;
@@ -92,18 +93,18 @@ public class SingleStockMarketMaker extends HFT {
 	public boolean executeStrategyAndSubmit() {
 		Order standingBuyOrder, standingSellOrder;
 		for (Market market : this.markets) {
-			Orderbook orderbook = World.getOrderbookByObjects(stock, market);
+			Orderbook orderbook = this.experiment.getWorld().getOrderbookByObjects(stock, market);
 
 			int transmissionDelay = super.getTransmissionDelayToMarket(market);
-			int dispatchTime = World.getCurrentRound();
+			int dispatchTime = this.experiment.getWorld().getCurrentRound();
 			long currentMarketBuyPrice = this.knownMarketBids.get(market);
 			long currentMarketSellPrice = this.knownMarketAsks.get(market);
 			long currentMarketSpread = currentMarketSellPrice - currentMarketBuyPrice;
 
 			if (currentMarketSpread == 0) {
-				World.errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is zero", orderbook.getIdentifier()), this.experiment);
+				this.experiment.getWorld().errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is zero", orderbook.getIdentifier()), this.experiment);
 			} else if (currentMarketSpread < 0) {
-				World.errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is negative", orderbook.getIdentifier()), this.experiment);
+				this.experiment.getWorld().errorLog.logError(String.format("SSMM Agent says: Spread at orderbook %s is negative", orderbook.getIdentifier()), this.experiment);
 			}
 
 			/*

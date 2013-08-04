@@ -43,6 +43,7 @@ public abstract class Experiment{
 	public int orderLengthWhenMarketFillsEmptyBook = 5;
 	protected Logger config;
 	protected Logger meta;
+	private World world;
 	
 	/*
 	 * High frequency trader behavior
@@ -101,13 +102,14 @@ public abstract class Experiment{
 	
 	public Experiment(String rootFolder){
 		this.rootFolder = rootFolder;
+		this.world = new World();
 	}
 	
 	protected void initializeExperimentWithChangedParameters(Experiment experiment) {
 		this.setExperimentSpecificFolders(experiment.getClass().getSimpleName());
 		
-		this.config = new Logger(this.logRootFolder, "config", Logger.Type.CSV, true, true);
-		this.meta = new Logger(this.logRootFolder, "meta", Logger.Type.CSV, true, true);
+		this.config = new Logger(this.logRootFolder, "config", Logger.Type.CSV, true, true, experiment);
+		this.meta = new Logger(this.logRootFolder, "meta", Logger.Type.CSV, true, true, experiment);
 		
 		this.overrideExperimentSpecificParameters();
 		String parameters = this.getParameterString();
@@ -117,7 +119,7 @@ public abstract class Experiment{
 		this.createMarkets();
 		this.createOrderbooks(experiment);
 		this.createAgents();
-		this.createObjectLoggers(this.logRootFolder);
+		this.createObjectLoggers(this.logRootFolder, experiment);
 		this.initializeEmptyOrderbooksWithMarketOrders();
 	}
 	
@@ -143,69 +145,69 @@ public abstract class Experiment{
 		 * Should be executed whenever one (or several) new stock or market is
 		 * created.
 		 */
-		for (Stock stock : World.getStocks()) {
-			for (Market market : World.getMarkets()) {
+		for (Stock stock : this.world.getStocks()) {
+			for (Market market : this.world.getMarkets()) {
 				StockMarketPair p = new StockMarketPair(stock, market);
-				if (!World.getOrderbooksByPair().containsKey(p)) {
+				if (!this.world.getOrderbooksByPair().containsKey(p)) {
 					Orderbook ob = new Orderbook(experiment, stock, market);
-					World.getOrderbooksByPair().put(p, ob);
+					this.world.getOrderbooksByPair().put(p, ob);
 					market.addOrderbook(ob);
 				}
 			}
 		}
-		World.getOrderbooks().clear();
-		World.getOrderbooks().addAll(World.getOrderbooksByPair().values());
+		this.world.getOrderbooks().clear();
+		this.world.getOrderbooks().addAll(this.world.getOrderbooksByPair().values());
 	}
 	
-public void createObjectLoggers(String logRootFolder) {
+public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 		
 		
 		
-		World.warningLog = new WorldLogger(logRootFolder,"lineLog_worldWarnings", false, Logger.Type.TXT, true, false);
-		openLogs.add(World.warningLog);
-		World.errorLog = new WorldLogger(logRootFolder,"lineLog_errors", false, Logger.Type.TXT, true, false);
-		openLogs.add(World.errorLog);
-		World.eventLog = new WorldLogger(logRootFolder,"lineLog_worldEvents", false, Logger.Type.TXT, true, false);
-		openLogs.add(World.eventLog);
-		World.ruleViolationsLog = new WorldLogger(logRootFolder,"lineLog_ruleViolations", false, Logger.Type.TXT, true, false);
-		openLogs.add(World.ruleViolationsLog);
-		World.dataLog = new WorldLogger(logRootFolder,"columnLog_worldData", true, Logger.Type.CSV, true, false);
-		openLogs.add(World.dataLog);
+		this.world.warningLog = new WorldLogger(logRootFolder,"lineLog_worldWarnings", false, Logger.Type.TXT, true, false, experiment);
+		openLogs.add(this.world.warningLog);
+		this.world.errorLog = new WorldLogger(logRootFolder,"lineLog_errors", false, Logger.Type.TXT, true, false, experiment);
+		openLogs.add(this.world.errorLog);
+		this.world.eventLog = new WorldLogger(logRootFolder,"lineLog_worldEvents", false, Logger.Type.TXT, true, false, experiment);
+		openLogs.add(this.world.eventLog);
+		this.world.ruleViolationsLog = new WorldLogger(logRootFolder,"lineLog_ruleViolations", false, Logger.Type.TXT, true, false, experiment);
+		openLogs.add(this.world.ruleViolationsLog);
+		this.world.dataLog = new WorldLogger(logRootFolder,"columnLog_worldData", true, Logger.Type.CSV, true, false, experiment);
+		openLogs.add(this.world.dataLog);
 		
-		for(Stock stock:World.getStocks()){
-			stock.roundBasedDatalog = new StockLogger(logRootFolder, "columnLog_roundBased", stock, StockLogger.Type.LOG_AFTER_EVERY_ROUND, Logger.Type.CSV, Logging.logStockRoundDataToFile, Logging.logStockRoundDataToConsole);
+		for(Stock stock:this.world.getStocks()){
+			stock.roundBasedDatalog = new StockLogger(logRootFolder, "columnLog_roundBased", stock, StockLogger.Type.LOG_AFTER_EVERY_ROUND, Logger.Type.CSV, Logging.logStockRoundDataToFile, Logging.logStockRoundDataToConsole, experiment);
 			if(Logging.logStockRoundDataToFile){
 				openLogs.add(stock.roundBasedDatalog);				
 			}
 			
-			stock.transactionBasedDataLog = new StockLogger(logRootFolder, "columnLog_transactionBased", stock, StockLogger.Type.LOG_AFTER_EVERY_TRANSACTION, Logger.Type.CSV, Logging.logStockTransactionDataToFile, Logging.logStockTransactionDataToConsole);
+			stock.transactionBasedDataLog = new StockLogger(logRootFolder, "columnLog_transactionBased", stock, StockLogger.Type.LOG_AFTER_EVERY_TRANSACTION, Logger.Type.CSV, Logging.logStockTransactionDataToFile, Logging.logStockTransactionDataToConsole, experiment);
 			if(Logging.logStockTransactionDataToFile){
 				openLogs.add(stock.transactionBasedDataLog);
 			}
 		}
 		
-		for(Orderbook orderbook:World.getOrderbooks()){
-			orderbook.orderflowLog = new OrderbookLogger(logRootFolder, "lineLog_orderFlow_", orderbook, OrderbookLogger.Type.ORDER_FLOW_LOG, Logger.Type.TXT, Logging.logOrderbookOrderFlowToFile, Logging.logOrderbookOrderFlowToConsole);
+		for(Orderbook orderbook:this.world.getOrderbooks()){
+			orderbook.orderflowLog = new OrderbookLogger(logRootFolder, "lineLog_orderFlow_", orderbook, OrderbookLogger.Type.ORDER_FLOW_LOG, Logger.Type.TXT, Logging.logOrderbookOrderFlowToFile, Logging.logOrderbookOrderFlowToConsole, experiment);
 			if(Logging.logOrderbookOrderFlowToFile){
 				openLogs.add(orderbook.orderflowLog);
 			}
-			orderbook.eventLog = new OrderbookLogger(logRootFolder, "lineLog_events_", orderbook, OrderbookLogger.Type.EVENT_LOG, Logger.Type.TXT, Logging.logOrderbookEventsToFile, Logging.logOrderbookEventsToConsole);
+			orderbook.eventLog = new OrderbookLogger(logRootFolder, "lineLog_events_", orderbook, OrderbookLogger.Type.EVENT_LOG, Logger.Type.TXT, Logging.logOrderbookEventsToFile, Logging.logOrderbookEventsToConsole, experiment);
 			if(Logging.logOrderbookEventsToFile){
 				openLogs.add(orderbook.eventLog);
 			}
 		}
 		
-		for(HFT agent:World.getHFTAgents()){
-			agent.eventlog = new AgentLogger(logRootFolder, "lineLog", agent, Logger.Type.TXT, AgentLogger.headerType.NO_HEADER, Logging.logAgentActionsToFile, Logging.logAgentActionsToConsole);
+		for(HFT agent:this.world.getHFTAgents()){
+			agent.eventlog = new AgentLogger(logRootFolder, "lineLog", agent, Logger.Type.TXT, AgentLogger.headerType.NO_HEADER, Logging.logAgentActionsToFile, Logging.logAgentActionsToConsole, experiment);
 			if(Logging.logAgentActionsToFile){
 				openLogs.add(agent.eventlog);
 			}
-			agent.roundDatalog = new AgentLogger(logRootFolder, "columnLog_roundBased", agent, Logger.Type.CSV, AgentLogger.headerType.ROUND_DATA, Logging.logAgentRoundDataToFile, Logging.logAgentRoundDataToConsole);
+			agent.roundDatalog = new AgentLogger(logRootFolder, "columnLog_roundBased", agent, Logger.Type.CSV, AgentLogger.headerType.ROUND_DATA, Logging.logAgentRoundDataToFile, Logging.logAgentRoundDataToConsole, experiment);
 			if(Logging.logAgentRoundDataToFile){
 				openLogs.add(agent.roundDatalog);
 			}
 			
-			agent.tradeLog = new AgentLogger(logRootFolder, "columnLog_tradelog", agent, Logger.Type.CSV, AgentLogger.headerType.TRADE_DATA, Logging.logAgentTradeDataToFile, Logging.logAgentTradeDataToConsole);
+			agent.tradeLog = new AgentLogger(logRootFolder, "columnLog_tradelog", agent, Logger.Type.CSV, AgentLogger.headerType.TRADE_DATA, Logging.logAgentTradeDataToFile, Logging.logAgentTradeDataToConsole, experiment);
 			if(Logging.logAgentTradeDataToFile){
 				openLogs.add(agent.tradeLog);
 			}
@@ -221,17 +223,17 @@ public void createObjectLoggers(String logRootFolder) {
 	}
 
 	public void initializeEmptyOrderbooksWithMarketOrders() {
-		for(Orderbook orderbook:World.getOrderbooks()) {
+		for(Orderbook orderbook:this.world.getOrderbooks()) {
 			orderbook.initializeBookWithRandomOrders();
 		}
-		World.processNewOrdersInAllOrderbooks();
+		this.world.processNewOrdersInAllOrderbooks();
 		
 	}
 	
 	public void runExperiment(Experiment experiment){
-		World.executeNRounds(experiment, experiment.nRounds-1);
+		this.world.executeNRounds(experiment, experiment.nRounds-1);
 		closeLogs();
-		System.out.println(String.format("Finished simulation in %s seconds", ((double) World.runTime)/1000f));
+		System.out.println(String.format("Finished simulation in %s seconds", ((double) this.world.runTime)/1000f));
 	}
 	
 	public void runRscript(Experiment experiment, Rengine re) {
@@ -247,7 +249,10 @@ public void createObjectLoggers(String logRootFolder) {
 		}
 	}
 	
-	 
+
+	public World getWorld() {
+		return this.world;
+	}
 }
 
 

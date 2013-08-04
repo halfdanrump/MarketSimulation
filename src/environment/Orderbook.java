@@ -76,7 +76,7 @@ public class Orderbook {
 			sellPrice = StylizedTrader.getStylizedTraderEstimatedPrice(this.getStock(), this.experiment);
 			if(sellPrice > buyOrder.getPrice()) {
 				long volume = StylizedTrader.getStylizedTraderOrderVolume(this.experiment);
-				int now = World.getCurrentRound();
+				int now = this.experiment.getWorld().getCurrentRound();
 				new Order(now, now, 1000, volume, sellPrice, Order.Type.MARKET, Order.BuySell.SELL, null, this, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 //				this.receiveOrder(order);
 				break;
@@ -89,7 +89,7 @@ public class Orderbook {
 //		this.setlastTradedMarketOrderBuyPrice = buyOrder.getPrice();
 //		this.lastTradedMarketOrderSellPrice = sellPrice;
 //		this.processAllNewOrders();
-		World.dispatchArrivingOrders();
+		this.experiment.getWorld().dispatchArrivingOrders();
 		
 	}
 	
@@ -104,7 +104,7 @@ public class Orderbook {
 	public long expireOrders() {
 		long nExpiredOrders = 0;
 		try {
-			while (marketOrders.peek().getExpirationTime() == World.getCurrentRound()) {
+			while (marketOrders.peek().getExpirationTime() == this.experiment.getWorld().getCurrentRound()) {
 				removeOrderFromBook(marketOrders.peek());
 				nExpiredOrders++;
 			}
@@ -118,7 +118,7 @@ public class Orderbook {
 		/*
 		 * When the book is empty, the market rules determine what will happen
 		 */
-		int now = World.getCurrentRound();
+		int now = this.experiment.getWorld().getCurrentRound();
 		boolean wasEmpty = false;
 		long price = 0l;
 		int nInsertedOrders = 0;
@@ -140,7 +140,7 @@ public class Orderbook {
 				nInsertedOrders++;
 				this.orderflowLog.logEventNoMarketOrders(buysell);
 				if(!this.experiment.marketFillsEmptyBook) {
-					World.errorLog.logError(String.format("Orderbook %s was empty on the %s side, but the market rules are such that the book will remain empty", this.getIdentifier(), buysell), this.experiment);
+					this.experiment.getWorld().errorLog.logError(String.format("Orderbook %s was empty on the %s side, but the market rules are such that the book will remain empty", this.getIdentifier(), buysell), this.experiment);
 				} else {
 					this.eventLog.logOnelineEvent(String.format("The market inserted a %s order at price %s into orderbook %s.", buysell, price, this.getIdentifier()));
 				}
@@ -239,7 +239,7 @@ public class Orderbook {
 		long tradePrice = this.determineTransactionPrice(matchingOrder, newOrder);
 		long tradeTotal = 0l;
 		if(tradeVolume * tradePrice > Long.MAX_VALUE) {
-			World.errorLog.logError("Order total exceeded long range...", this.experiment);
+			this.experiment.getWorld().errorLog.logError("Order total exceeded long range...", this.experiment);
 		} else {
 			tradeTotal = tradeVolume * tradePrice;
 		}
@@ -292,7 +292,7 @@ public class Orderbook {
 //			}
 			stock.transactionBasedDataLog.recordStockInformationAfterTransaction(tradePrice, this, newOrder, matchingOrder);
 		} else {
-			World.errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()), this.experiment);
+			this.experiment.getWorld().errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()), this.experiment);
 		}
 		
 		return tradePrice;
@@ -369,7 +369,7 @@ public class Orderbook {
 //			this.instantaneouslyInsertOrderAtLastTradedPriceIntoOrderbook(Order.BuySell.SELL);
 //		}
 //		if(this.hasNoBuyOrders() | this.hasNoSellOrders()) {
-//			World.errorLog.logError("In orderbook %s: It should not happen that the orderbook was empty right after inserting an ")
+//			this.experiment.getWorld().errorLog.logError("In orderbook %s: It should not happen that the orderbook was empty right after inserting an ")
 //		}
 		/*
 		 * Update the global best buy/sell prices
@@ -388,7 +388,7 @@ public class Orderbook {
 				this.unfilledSellOrders.remove(order);
 			}
 		} else {
-			World.errorLog.logError("Something is wrong. Shouldn't be asked to remove a limit order...", this.experiment);
+			this.experiment.getWorld().errorLog.logError("Something is wrong. Shouldn't be asked to remove a limit order...", this.experiment);
 		}
 		
 		/*
@@ -397,7 +397,7 @@ public class Orderbook {
 		this.checkForAndHandleEmptyBook();
 //		this.updateLastTradedPrices(order);
 //		this.updateBestPricesAtTheEndOfEachRound();
-		World.destroyOrder();
+		this.experiment.getWorld().destroyOrder();
 	}
 
 	private void updateLocalBestPricesAtTheEndOfEachRound() {
@@ -412,7 +412,7 @@ public class Orderbook {
 		 * These prices can be from the same round, or from previous rounds.
 		 * NOTE: If MarketRules.marketFillsEmptyBook = true; then this should never happen.
 		 */
-		int now = World.getCurrentRound();
+		int now = this.experiment.getWorld().getCurrentRound();
 		try {
 			if(this.unfilledBuyOrders.isEmpty()) {
 				this.localBestBuyPriceAtEndOfRound.set(now, this.localLastTradedMarketOrderBuyPrice);
@@ -434,7 +434,7 @@ public class Orderbook {
 			if(spread <= 0) {
 				Exception e = new Exception();
 				e.printStackTrace();
-				World.errorLog.logError(String.format("Spread at orderbook %s was %s", this.getIdentifier(), spread), this.experiment);
+				this.experiment.getWorld().errorLog.logError(String.format("Spread at orderbook %s was %s", this.getIdentifier(), spread), this.experiment);
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
@@ -455,7 +455,7 @@ public class Orderbook {
 				return this.localBestSellPriceAtEndOfRound.get(time);
 			}
 		} catch (IndexOutOfBoundsException e) {
-			World.errorLog.logError(String.format("Cannot return ASK price at time %s. Needs initialization?"), this.experiment);
+			this.experiment.getWorld().errorLog.logError(String.format("Cannot return ASK price at time %s. Needs initialization?"), this.experiment);
 			return 0l;
 		}
 	}
@@ -468,7 +468,7 @@ public class Orderbook {
 				return this.localBestBuyPriceAtEndOfRound.get(time);
 			}
 		} catch (IndexOutOfBoundsException e) {
-			World.errorLog.logError(String.format("Cannot return BID price at time %s. Needs initialization?"), this.experiment);
+			this.experiment.getWorld().errorLog.logError(String.format("Cannot return BID price at time %s. Needs initialization?"), this.experiment);
 			return 0l;
 		}
 	}

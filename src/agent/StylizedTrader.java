@@ -18,7 +18,7 @@ public class StylizedTrader {
 
 	
 	public static Order submitRandomOrder(Order.Type type, Order.BuySell buysell, Orderbook orderbook, Experiment experiment){
-		int dispatchTime = World.getCurrentRound();
+		int dispatchTime = experiment.getWorld().getCurrentRound();
 		long volume = getStylizedTraderOrderVolume(experiment);
 		long price = getStylizedTraderEstimatedPrice(orderbook.getStock(), experiment);
 		Order order = new Order(0,dispatchTime, experiment.orderLength, volume, price, type, buysell, null, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, experiment);
@@ -26,7 +26,7 @@ public class StylizedTrader {
 	}
 	
 	public static long getStylizedTraderEstimatedPrice(Stock stock, Experiment experiment) {
-		long currentFundamental = stock.getFundamentalPrice(World.getCurrentRound());
+		long currentFundamental = stock.getFundamentalPrice(experiment.getWorld().getCurrentRound());
 		long additivePriceNoise = Utils.getGaussianInteger(experiment.addivePriceNoiseMean, experiment.additivePriceNoiseStd); 
 		long price = currentFundamental + additivePriceNoise;
 		return price;
@@ -49,7 +49,7 @@ public class StylizedTrader {
 		 */
 		Order order = null;
 		Random random = new Random();
-		ArrayList<Orderbook> orderbooks = World.getOrderbooks();
+		ArrayList<Orderbook> orderbooks = experiment.getWorld().getOrderbooks();
 		Orderbook orderbook = orderbooks.get(random.nextInt(orderbooks.size()));
 		long randomlong = random.nextInt(4);
 		if(randomlong == 0){

@@ -69,7 +69,7 @@ public class ConstantFundamentalSameLatency extends Experiment {
 
 	@Override
 	public void createMarkets() {
-		new Market();
+		new Market(this);
 	}
 
 }

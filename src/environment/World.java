@@ -30,48 +30,68 @@ public class World implements SimulationSetup {
 	/*
 	 * References to stocks, markets and agents (indexed by IDs)
 	 */
-	private static HashMap<String, HFT> agentsByID = new HashMap<String, HFT>();
-	private static HashMap<StockMarketPair, Orderbook> orderbooksByPair = new HashMap<StockMarketPair, Orderbook>();
-	private static ArrayList<Stock> stocks = new ArrayList<Stock>();
-	private static ArrayList<HFT> agents = new ArrayList<HFT>();
-	private static ArrayList<Market> markets = new ArrayList<Market>();
-	private static ArrayList<Orderbook> orderbooks = new ArrayList<Orderbook>();
+	private HashMap<String, HFT> agentsByID;
+	private HashMap<StockMarketPair, Orderbook> orderbooksByPair;
+	private ArrayList<Stock> stocks;
+	private ArrayList<HFT> agents;
+	private ArrayList<Market> markets;
+	private ArrayList<Orderbook> orderbooks;
 
 	/*
 	 * Priority queues for messages
 	 */
-	private static MessageArrivalTimeComparator messageArrivalTimeComparator = new MessageArrivalTimeComparator();
-	private static PriorityQueue<Order> ordersInTransit = new PriorityQueue<Order>(100, messageArrivalTimeComparator);
-	private static PriorityQueue<TransactionReceipt> receiptsInTransit = new PriorityQueue<TransactionReceipt>(100, messageArrivalTimeComparator);
-	private static PriorityQueue<OrderCancellation> orderCancellationsInTransit = new PriorityQueue<OrderCancellation>(100, messageArrivalTimeComparator);
+	private MessageArrivalTimeComparator messageArrivalTimeComparator;
+	private PriorityQueue<Order> ordersInTransit;
+	private PriorityQueue<TransactionReceipt> receiptsInTransit;
+	private PriorityQueue<OrderCancellation> orderCancellationsInTransit;
 
 	/*
 	 * Data structures for managing agents
 	 */
-	private static AgentWakeupComparator agentWakeupComparator = new AgentWakeupComparator();
-	private static PriorityQueue<HFT> waitingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
-	private static PriorityQueue<HFT> thinkingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
-	private static ArrayList<HFT> freeAgents = new ArrayList<HFT>();
+	private AgentWakeupComparator agentWakeupComparator;
+	private PriorityQueue<HFT> waitingAgents;
+	private PriorityQueue<HFT> thinkingAgents;
+	private ArrayList<HFT> freeAgents;
 	
 	/*
 	 * Loggers
 	 */
-	public static WorldLogger warningLog;
-	public static WorldLogger errorLog;
-	public static WorldLogger eventLog;
-	public static WorldLogger ruleViolationsLog;
-	public static WorldLogger dataLog;
+	public WorldLogger warningLog;
+	public WorldLogger errorLog;
+	public WorldLogger eventLog;
+	public WorldLogger ruleViolationsLog;
+	public WorldLogger dataLog;
 
 	/*
 	 * Other internal variables
 	 */
-	public static final long creationTime = System.currentTimeMillis();
-	public static long runTime = 0;
-	private static int currentRound = 0;
+	public long creationTime;
+	public long runTime;
+	private int currentRound;
 	private roundPhases roundPhase;
 	
+	public World() {
+		this.creationTime = System.currentTimeMillis();
+		this.runTime = 0;
+		this.currentRound = 0;
+		
+		this.agentsByID =  new HashMap<String, HFT>();
+		this.orderbooksByPair =  new HashMap<StockMarketPair, Orderbook>();
+		this.stocks =  new ArrayList<Stock>();
+		this.agents =  new ArrayList<HFT>();
+		this.markets =  new ArrayList<Market>();
+		this.orderbooks =  new ArrayList<Orderbook>();
+		this.messageArrivalTimeComparator = new MessageArrivalTimeComparator();
+		this.ordersInTransit =  new PriorityQueue<Order>(100, messageArrivalTimeComparator);
+		this.receiptsInTransit =  new PriorityQueue<TransactionReceipt>(100, messageArrivalTimeComparator);
+		this.orderCancellationsInTransit =  new PriorityQueue<OrderCancellation>(100, messageArrivalTimeComparator);
+		this.agentWakeupComparator = new AgentWakeupComparator();
+		this.waitingAgents =  new PriorityQueue<HFT>(10, agentWakeupComparator);
+		this.thinkingAgents =  new PriorityQueue<HFT>(10, agentWakeupComparator);
+		this.freeAgents =  new ArrayList<HFT>();
+	}
 
-	public static void executeInitalRounds(long nRounds, Experiment experiment) {
+	public void executeInitalRounds(long nRounds, Experiment experiment) {
 		for (long round = 0; round < nRounds; round++) {
 			expireOrdersInAllOrderbooks();
 			prepareNewRound();
@@ -85,7 +105,7 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	public static void executeRound(Experiment experiment) {
+	public void executeRound(Experiment experiment) {
 		prepareNewRound();
 		if(currentRound % 1000 == 0) {
 			System.out.println(String.format("Round %s", currentRound));
@@ -132,7 +152,7 @@ public class World implements SimulationSetup {
 		logRoundBasedData();
 	}
 
-	private static void updateGlobalKnowledge() {
+	private void updateGlobalKnowledge() {
 		/*
 		 * This function contains calls that must be executed after all trading activity has ended for the round,
 		 * but before round based logging is done.
@@ -140,7 +160,7 @@ public class World implements SimulationSetup {
 		 * Later, this method will contains calls for confirming the validity of trades, and other things.
 		 * 
 		 */
-		World.runTime = System.currentTimeMillis() - World.creationTime;
+		this.runTime = System.currentTimeMillis() - this.creationTime;
 
 		for(Stock stock:stocks) {
 			stock.collectGlobalBestPricesAtEndOfRound();
@@ -148,16 +168,16 @@ public class World implements SimulationSetup {
 		
 	}
 
-	private static void logRoundBasedData() {
-		World.logStockPrices();
-		World.logAgentData();
-		World.dataLog.recordEntry();
+	private void logRoundBasedData() {
+		this.logStockPrices();
+		this.logAgentData();
+		this.dataLog.recordEntry();
 		
 	}
 
-	private static void logAgentData() {
+	private void logAgentData() {
 		// TODO Auto-generated method stub
-		for(HFT agent:World.agents){
+		for(HFT agent:this.agents){
 			try{
 				agent.roundDatalog.recordDataEntryAtEndOfRound();
 			} catch(NullPointerException e){
@@ -166,33 +186,33 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	private static void logStockPrices() {
-		for (Stock stock : stocks) {
-			stock.roundBasedDatalog.recordEndRoundPriceInformation(World.currentRound);
+	private void logStockPrices() {
+		for (Stock stock : this.stocks) {
+			stock.roundBasedDatalog.recordEndRoundPriceInformation(this.currentRound);
 		}
 	}
 
-	private static void createSlowTraderOrders(Experiment experiment) {
+	private void createSlowTraderOrders(Experiment experiment) {
 		for (long i = 0; i < experiment.nSlowTraderOrdersPerRound; i++) {
 			StylizedTrader.submitRandomOrder(experiment);
 		}
 //		System.out.println("k");
 	}
 
-	private static void updateFundamental() {
-		for (Stock stock : World.stocks) {
+	private void updateFundamental() {
+		for (Stock stock : this.stocks) {
 			stock.updateFundamentalPrice();
 		}
 	}
 
 	
 
-	public static void prepareNewRound() {
+	public void prepareNewRound() {
 		currentRound++;
 		updateFundamental();
 	}
 
-	private static void dispatchOrderCancellations() {
+	private void dispatchOrderCancellations() {
 		/*
 		 * Transfer order cancellations from in transit to the target orderbook.
 		 */
@@ -201,7 +221,7 @@ public class World implements SimulationSetup {
 			try {
 				OrderCancellation cancellation = orderCancellationsInTransit
 						.element();
-				if (cancellation.getArrivalTime() == World.getCurrentRound()) {
+				if (cancellation.getArrivalTime() == this.getCurrentRound()) {
 					nArrivingCancellations++;
 					orderCancellationsInTransit.remove();
 					Orderbook targetOrderbook = cancellation.getOrder()
@@ -214,12 +234,12 @@ public class World implements SimulationSetup {
 				break;
 			}
 		}
-		World.dataLog.setnArrivingOrderCancellations(nArrivingCancellations);
-//		World.eventLog.logOnelineEvent(String.format(
+		this.dataLog.setnArrivingOrderCancellations(nArrivingCancellations);
+//		this.eventLog.logOnelineEvent(String.format(
 //				"%s order cancellations reached orderbooks.", nArrivingCancellations));
 	}
 
-	private static void allAgentsRequestMarketInformation() {
+	private void allAgentsRequestMarketInformation() {
 		/*
 		 * Loop through active agents and request information. Put them on the
 		 * waiting queue with priority currentTime + agent.getWaitingTime();
@@ -233,8 +253,8 @@ public class World implements SimulationSetup {
 			agentRequestMarketInformation(agent);
 			nInformationRequests++;
 		}
-		World.dataLog.setNInformationRequests(nInformationRequests);
-//		World.eventLog.logOnelineEvent(String.format(
+		this.dataLog.setNInformationRequests(nInformationRequests);
+//		this.eventLog.logOnelineEvent(String.format(
 //				"%s agents requested market information", nInformationRequests));
 		// try{
 		//
@@ -243,7 +263,7 @@ public class World implements SimulationSetup {
 		// agentRequestMarketInformation(agent);
 		// i++;
 		// }
-		// World.eventLog.logGeneralEvent(String.format("%s agents requested market information",
+		// this.eventLog.logGeneralEvent(String.format("%s agents requested market information",
 		// i));
 		// }catch(ConcurrentModificationException e){
 		// e.printStackTrace();
@@ -252,12 +272,12 @@ public class World implements SimulationSetup {
 
 	}
 
-	public static void agentRequestMarketInformation(HFT agent) {
+	public void agentRequestMarketInformation(HFT agent) {
 		agent.requestMarketInformation();
 		addAgentToWaitingQueue(agent);
 	}
 
-	private static void addAgentToWaitingQueue(HFT agent) {
+	private void addAgentToWaitingQueue(HFT agent) {
 		freeAgents.remove(agent);
 		if (!waitingAgents.contains(agent)) {
 			waitingAgents.add(agent);
@@ -265,7 +285,7 @@ public class World implements SimulationSetup {
 		thinkingAgents.remove(agent);
 	}
 
-	private static void addAgentToThinkingQueue(HFT agent) {
+	private void addAgentToThinkingQueue(HFT agent) {
 		freeAgents.remove(agent);
 		waitingAgents.remove();
 		if (!thinkingAgents.contains(agent)) {
@@ -273,7 +293,7 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	private static void addAgentToFreeList(HFT agent) {
+	private void addAgentToFreeList(HFT agent) {
 		if (!freeAgents.contains(agent)) {
 			freeAgents.add(agent);
 		}
@@ -281,7 +301,7 @@ public class World implements SimulationSetup {
 		thinkingAgents.remove(agent);
 	}
 
-	private static void allAgentsReceiveMarketInformation() {
+	private void allAgentsReceiveMarketInformation() {
 		/*
 		 * Loop through agents in priority queue with priority equals current
 		 * time. Update priority by their thinking time.
@@ -291,7 +311,7 @@ public class World implements SimulationSetup {
 		while (true) {
 			try {
 				HFT agent = waitingAgents.element();
-				if (agent.getWakeupTime() == World.getCurrentRound()) {
+				if (agent.getWakeupTime() == this.getCurrentRound()) {
 					nReceivedMarketInformation++;
 					boolean reRequest = agentReceiveMarketInformation(agent);
 					if(reRequest) {
@@ -304,27 +324,27 @@ public class World implements SimulationSetup {
 				break;
 			}
 		}
-		World.dataLog.setnReceiveMarketInformation(nReceivedMarketInformation);
-		World.dataLog.setnReRequestionMarketInformation(nReRequest);
-//		World.eventLog.logOnelineEvent(String.format(
+		this.dataLog.setnReceiveMarketInformation(nReceivedMarketInformation);
+		this.dataLog.setnReRequestionMarketInformation(nReRequest);
+//		this.eventLog.logOnelineEvent(String.format(
 //				"%s agents received market information.", nReceivedMarketInformation));
 	}
 
-	private static boolean agentReceiveMarketInformation(HFT agent) {
+	private boolean agentReceiveMarketInformation(HFT agent) {
 		try {
 			agent.receiveMarketInformation();
 			addAgentToThinkingQueue(agent);
 			return true;
 		} catch (NoOrdersException e) {
 			return false;
-//			World.eventLog
+//			this.eventLog
 //					.logOnelineEvent(String
 //							.format("Agent %s did not evaluate strategy, but requested new market information",
 //									agent.getID()));
 		}
 	}
 
-	private static void agentsEvaluateMarketInformation() {
+	private void agentsEvaluateMarketInformation() {
 		/*
 		 * Loop through agents in priority queue with priority equals current
 		 * time. Agents sumbit orders Add agents on active list.
@@ -333,7 +353,7 @@ public class World implements SimulationSetup {
 		while (true) {
 			try {
 				HFT agent = thinkingAgents.element();
-				if (agent.getWakeupTime() == World.getCurrentRound()) {
+				if (agent.getWakeupTime() == this.getCurrentRound()) {
 					nFinishedEvaluating++;
 					agentEvaluateMarketInformation(agent);
 				} else {
@@ -343,12 +363,12 @@ public class World implements SimulationSetup {
 				break;
 			}
 		}
-		World.dataLog.setnFinishedEvaluatingStrategy(nFinishedEvaluating);
-//		World.eventLog.logOnelineEvent(String.format(
+		this.dataLog.setnFinishedEvaluatingStrategy(nFinishedEvaluating);
+//		this.eventLog.logOnelineEvent(String.format(
 //				"%s agents finished evaluating their strategy.", i));
 	}
 
-	private static void agentEvaluateMarketInformation(HFT agent) {
+	private void agentEvaluateMarketInformation(HFT agent) {
 		if (agent.executeStrategyAndSubmit()) {
 			addAgentToFreeList(agent);
 		} else {
@@ -356,7 +376,7 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	public static void dispatchArrivingOrders() {
+	public void dispatchArrivingOrders() {
 		/*
 		 * When orders arrive to markets the object is cloned. This is necessary
 		 * because there essentially exists (at least) two "versions" of an
@@ -369,25 +389,25 @@ public class World implements SimulationSetup {
 		while (true) {
 			try {
 				Order order = ordersInTransit.element();
-				if (order.getArrivalTime() == World.currentRound) {
+				if (order.getArrivalTime() == this.currentRound) {
 					nArrivingOrders++;
 					ordersInTransit.remove();
 					order.getOrderbook().receiveOrder(order);
-				} else if (order.getArrivalTime() < World.currentRound){
-					World.warningLog.logOnelineWarning(String.format("Current round is %s but order with arrival time %s exist in queue.", currentRound, order.getArrivalTime()));
+				} else if (order.getArrivalTime() < this.currentRound){
+					this.warningLog.logOnelineWarning(String.format("Current round is %s but order with arrival time %s exist in queue.", currentRound, order.getArrivalTime()));
 					Exception e = new Exception();
 					e.printStackTrace();
-				} else if(order.getArrivalTime() > World.currentRound) {
-					World.eventLog.logOnelineEvent(String.format("After dispatching %s orders this round there were %s order still transit.", nArrivingOrders, ordersInTransit.size()));
+				} else if(order.getArrivalTime() > this.currentRound) {
+					this.eventLog.logOnelineEvent(String.format("After dispatching %s orders this round there were %s order still transit.", nArrivingOrders, ordersInTransit.size()));
 					break;
 				}
 			} catch (NoSuchElementException e) {
-				World.eventLog.logOnelineEvent(String.format("After dispatching %s orders this round there were no more orders in transit.", nArrivingOrders));
+				this.eventLog.logOnelineEvent(String.format("After dispatching %s orders this round there were no more orders in transit.", nArrivingOrders));
 				break;
 			}
 		}
-		World.dataLog.setnArrivingOrders(nArrivingOrders);
-//		World.eventLog.logOnelineEvent(String.format(
+		this.dataLog.setnArrivingOrders(nArrivingOrders);
+//		this.eventLog.logOnelineEvent(String.format(
 //				"%s orders arrived to orderbooks.", i));
 
 		//
@@ -404,19 +424,19 @@ public class World implements SimulationSetup {
 		// // orderClone.getOrderbook().receiveOrder(orderClone);
 		// }
 		// } catch(NullPointerException e){
-		// World.eventLog.logGeneralEvent("No orders arriving to orderbooks this round.");
+		// this.eventLog.logGeneralEvent("No orders arriving to orderbooks this round.");
 		// }
 		// } else{
-		// World.eventLog.logGeneralEvent("No orders in transit this round.");
+		// this.eventLog.logGeneralEvent("No orders in transit this round.");
 		// }
 	}
 
-	public static void dispatchArrivingReceipts() {
+	public void dispatchArrivingReceipts() {
 		long nArrivingReceipts = 0;
 		while (true) {
 			try {
 				TransactionReceipt receipt = receiptsInTransit.element();
-				if (receipt.getArrivalTime() == World.getCurrentRound()) {
+				if (receipt.getArrivalTime() == this.getCurrentRound()) {
 					nArrivingReceipts++;
 					receiptsInTransit.remove();
 					HFT recipient = receipt.getOwnerOfFilledStandingOrder();
@@ -428,88 +448,76 @@ public class World implements SimulationSetup {
 				break;
 			}
 		}
-		World.dataLog.setnArrivingReceipts(nArrivingReceipts);
-//		World.eventLog..(String.format(
-//				"%s receipts reached agents.", nArrivingReceipts));
-
-		// try{
-		// while(receiptsInTransit.peek().getArrivalTime() == currentTime){
-		// TransactionReceipt receipt = receiptsInTransit.remove();
-		// HFT trader = receipt.getOwner();
-		// trader.updatePortfolio(receipt);
-		// }
-		// } catch(NullPointerException e){
-		// World.eventLog.logGeneralEvent("No receipts in transit in this round");
-		// }
+		this.dataLog.setnArrivingReceipts(nArrivingReceipts);
 	}
 
-	public static void processNewOrdersInAllOrderbooks() {
+	public void processNewOrdersInAllOrderbooks() {
 		for (Orderbook orderbook : orderbooks) {
 			orderbook.processAllNewOrders();
 		}
 	}
 
-	public static void expireOrdersInAllOrderbooks() {
+	public  void expireOrdersInAllOrderbooks() {
 		long totalExpiredOrders = 0;
 		for (Orderbook orderbook : orderbooks) {
 			totalExpiredOrders += orderbook.expireOrders();
 		}
-		World.dataLog.setnExpiredOrders(totalExpiredOrders);
+		this.dataLog.setnExpiredOrders(totalExpiredOrders);
 	}
 
-	public static void processOrderCancellationsInAllOrderbooks() {
+	public void processOrderCancellationsInAllOrderbooks() {
 		for (Orderbook orderbook : orderbooks) {
 			orderbook.processAllCancellations();
 		}
 	}
 
-	public static void addMarket(Market market) {
+	public void addMarket(Market market) {
 		markets.add(market);
 		// marketsByID.put(market.getID(), market);
 	}
 
-	public static void addStock(Stock stock) {
+	public void addStock(Stock stock) {
 		stocks.add(stock);
 	}
 
-	public static void destroyOrder() {
-		// World.warningLog.logWarning("WARNING: DESTROYING ORDERS NOT IMPLEMENTED YET!!");
+	public void destroyOrder() {
+		// this.warningLog.logWarning("WARNING: DESTROYING ORDERS NOT IMPLEMENTED YET!!");
 	}
 
-	public static void addTransactionReceipt(TransactionReceipt receipt) {
+	public void addTransactionReceipt(TransactionReceipt receipt) {
 		receiptsInTransit.add(receipt);
 	}
 
-	public static void addNewOrder(Order order) {
+	public void addNewOrder(Order order) {
 //		Order orderOrderbookSide = orderAgentSide.getCopy();
 		ordersInTransit.add(order);
 	}
 
-	public static void addOrderCancellation(OrderCancellation update) {
+	public void addOrderCancellation(OrderCancellation update) {
 		orderCancellationsInTransit.add(update);
 	}
 
-	public static int getCurrentRound() {
+	public int getCurrentRound() {
 		return currentRound;
 	}
 
-	public static void setTime(int time) {
+	public void setTime(int time) {
 		currentRound = time;
 	}
 
-	public static void executeNRounds(Experiment experiment, long N) {
+	public void executeNRounds(Experiment experiment, long N) {
 		for (long round = 0; round < N; round++) {
-			World.executeRound(experiment);
+			this.executeRound(experiment);
 		}
 	}
 
-	public static Stock getStockByNumber(int index) {
+	public Stock getStockByNumber(int index) {
 		Stock stock = null;
 		try {
 			stock = stocks.get(index);
 		} catch (IndexOutOfBoundsException e) {
 			// e.printStackTrace();
-			World.errorLog.logError(String.format(
+			this.errorLog.logError(String.format(
 					"Stock number %d has not been created.", index), null);
 			System.exit(1);
 		}
@@ -518,31 +526,31 @@ public class World implements SimulationSetup {
 		// return stocksByID;
 	}
 	
-	public static Market getMarketByNumber(int index) {
+	public Market getMarketByNumber(int index) {
 		Market market = null;
 		try {
 			market = markets.get(index);
 		} catch (IndexOutOfBoundsException e) {
-			World.errorLog.logError(String.format(
+			this.errorLog.logError(String.format(
 					"Market number %d has not been created.", index), null);
 		}
 		return market;
 	}
 
-	public static HashMap<String, HFT> getAgentByNumber() {
+	public HashMap<String, HFT> getAgentByNumber() {
 		return agentsByID;
 	}
 
-	public static Orderbook getOrderbookByPair(StockMarketPair pair) {
+	public Orderbook getOrderbookByPair(StockMarketPair pair) {
 		return orderbooksByPair.get(pair);
 	}
 
-	public static Orderbook getOrderbookByObjects(Stock stock, Market market) {
+	public Orderbook getOrderbookByObjects(Stock stock, Market market) {
 		StockMarketPair pair = new StockMarketPair(stock, market);
 		if (orderbooksByPair.containsKey(pair)) {
 			return orderbooksByPair.get(pair);
 		} else {
-			World.errorLog
+			this.errorLog
 					.logError(String
 							.format("Orderbook for stock %d and market %d has not been created yet!",
 									stock, market), null);
@@ -551,12 +559,12 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	public static Orderbook getOrderbookByNumbers(int stockID, int marketID) {
+	public Orderbook getOrderbookByNumbers(int stockID, int marketID) {
 		StockMarketPair pair = new StockMarketPair(stocks.get(stockID), markets.get(marketID));
 		if (orderbooksByPair.containsKey(pair)) {
 			return orderbooksByPair.get(pair);
 		} else {
-			World.errorLog
+			this.errorLog
 					.logError(String
 							.format("Orderbook for stock %d and market %d has not been created yet!",
 									stockID, marketID), null);
@@ -566,40 +574,40 @@ public class World implements SimulationSetup {
 
 	}
 
-	public static void addNewAgent(HFT agent) {
+	public void addNewAgent(HFT agent) {
 		freeAgents.add(agent);
 		agents.add(agent);
 	}
 
-	public static MessageArrivalTimeComparator getArrivalTimeComparator() {
+	public MessageArrivalTimeComparator getArrivalTimeComparator() {
 		return messageArrivalTimeComparator;
 	}
 
-	public static PriorityQueue<Order> getOrdersInTransit() {
+	public PriorityQueue<Order> getOrdersInTransit() {
 		return ordersInTransit;
 	}
 
-	public static PriorityQueue<TransactionReceipt> getReceiptsInTransit() {
+	public PriorityQueue<TransactionReceipt> getReceiptsInTransit() {
 		return receiptsInTransit;
 	}
 
-	public static ArrayList<Stock> getStocks() {
+	public ArrayList<Stock> getStocks() {
 		return stocks;
 	}
 
-	public static ArrayList<HFT> getHFTAgents() {
+	public ArrayList<HFT> getHFTAgents() {
 		return agents;
 	}
 
-	public static ArrayList<Orderbook> getOrderbooks() {
+	public ArrayList<Orderbook> getOrderbooks() {
 		return orderbooks;
 	}
 
-	public static ArrayList<Market> getMarkets() {
+	public ArrayList<Market> getMarkets() {
 		return markets;
 	}
 
-	public static HashMap<StockMarketPair, Orderbook> getOrderbooksByPair() {
+	public HashMap<StockMarketPair, Orderbook> getOrderbooksByPair() {
 		return orderbooksByPair;
 	}
 

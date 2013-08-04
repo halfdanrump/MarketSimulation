@@ -8,9 +8,7 @@ import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
 import Experiments.ConstantFundamentalSameLatency;
-import Experiments.ConstantFundamentalRandomLatency;
 import Experiments.Experiment;
-import Experiments.TwoGroups;
 import environment.*;
 
 
@@ -31,7 +29,7 @@ public class Main {
 		int fixedLatency = 1;
 		nSTOrdersPerRound = 20;
 //		int[] numberOfAgents = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300};
-		int[] numberOfAgents = {0, 10, 20};
+		int[] numberOfAgents = {40, 50, 60, 70, 80, 90, 100, 150, 200};
 		ArrayList<Integer> k = new ArrayList<Integer>();
 		for(int na:numberOfAgents) {
 			Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, na, fixedLatency, nSTOrdersPerRound);

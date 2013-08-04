@@ -1,11 +1,11 @@
 package log;
 
+import Experiments.Experiment;
 import environment.Market;
 import environment.NoOrdersException;
 import environment.Order;
 import environment.Orderbook;
 import environment.Stock;
-import environment.World;
 
 public class StockLogger extends Logger {
 	public enum Type{
@@ -17,8 +17,8 @@ public class StockLogger extends Logger {
 	private Type type;
 //	private boolean logToFile;
 	
-	public StockLogger(String directory, String logType, Stock stock, StockLogger.Type loggerType, Logger.Type type, boolean logToFile, boolean logToConsole) {
-		super(directory, String.format("%s_stock%s", logType, stock.getID()), type, logToFile, logToConsole);
+	public StockLogger(String directory, String logType, Stock stock, StockLogger.Type loggerType, Logger.Type type, boolean logToFile, boolean logToConsole, Experiment experiment) {
+		super(directory, String.format("%s_stock%s", logType, stock.getID()), type, logToFile, logToConsole, experiment);
 		this.stock = stock;
 		this.type = loggerType;
 		if(loggerType == StockLogger.Type.LOG_AFTER_EVERY_ROUND) {
@@ -48,7 +48,7 @@ public class StockLogger extends Logger {
 				sellerID = newOrder.getOwnerID();
 			}
 			
-			String entry = String.format("%s,%s,%s,%s,%s", World.getCurrentRound(), orderbook.getMarket().getID(), tradePrice, buyerID, sellerID);
+			String entry = String.format("%s,%s,%s,%s,%s", this.experiment.getWorld().getCurrentRound(), orderbook.getMarket().getID(), tradePrice, buyerID, sellerID);
 //		String entry = super.getNewEntry() + String.format(", %s, %s", orderbook.getMarket().getID(), tradePrice);
 			if(this.logToFile){
 				super.writeToFile(entry);				
@@ -75,7 +75,7 @@ public class StockLogger extends Logger {
 					super.writeToConsole(header);
 				}
 			} else {
-				World.warningLog.logOnelineWarning("A stock logger called the wrong function.");
+				this.experiment.getWorld().warningLog.logOnelineWarning("A stock logger called the wrong function.");
 			}
 		}
 	}
@@ -118,7 +118,7 @@ public class StockLogger extends Logger {
 				}
 			}
 		} else {
-			World.warningLog.logOnelineWarning(String.format("A stock logger of type %s was asked to record round based information...", this.type));
+			this.experiment.getWorld().warningLog.logOnelineWarning(String.format("A stock logger of type %s was asked to record round based information...", this.type));
 		}
 		
 		

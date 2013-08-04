@@ -26,6 +26,8 @@ public class Logger implements Logging {
 	public boolean logToConsole;
 	public boolean createLogString;
 	
+	public Experiment experiment;
+	
 	public enum Type {
 		TXT, CSV
 	}
@@ -33,9 +35,10 @@ public class Logger implements Logging {
 	// public Logger(File file){
 	// this.file = file;
 	// }
-	public Logger(String rootDirectory, String filename, Type type, Boolean logToFile, Boolean logToConsole) {
+	public Logger(String rootDirectory, String filename, Type type, Boolean logToFile, Boolean logToConsole, Experiment experiment) {
 		this.logToFile = logToFile;
 		this.logToConsole = logToConsole;
+		this.experiment = experiment;
 		this.createLogString = this.logToConsole | this.logToFile;
 		if(logToFile){
 			String directory = this.createFolders(rootDirectory);
@@ -111,20 +114,11 @@ public class Logger implements Logging {
 
 	public void logError(String line, Experiment experiment) {
 		Exception e = new Exception();
-		writeToConsole(Logger.getNewEntry() + "ERROR!;\t" + line + "\t Stack:\t ");
+		writeToConsole(this.getNewEntry() + "ERROR!;\t" + line + "\t Stack:\t ");
 		e.printStackTrace();
 		experiment.closeLogs();
 //		WorldObjectHandler.closeLogs();
 		System.exit(1);
-	}
-
-	// public static void writeToFile(String line, File file){
-	//
-	// System.out.println(line);
-	// }
-
-	public static File getFile(String filepath) {
-		return null;
 	}
 
 	@SuppressWarnings("unused")
@@ -133,9 +127,9 @@ public class Logger implements Logging {
 		this.writeToFile(header);
 	}
 
-	protected static String getNewEntry() {
+	protected String getNewEntry() {
 		Logger.nLogs++;
-		String line = String.valueOf(Logger.nLogs) + "\t" + Logger.getRealTime() + "\t" + World.getCurrentRound() + "\t";
+		String line = String.valueOf(Logger.nLogs) + "\t" + this.getRealTime() + "\t" + this.experiment.getWorld().getCurrentRound() + "\t";
 		return line;
 	}
 
@@ -172,8 +166,8 @@ public class Logger implements Logging {
 	// return
 	// }
 
-	public static long getRealTime() {
-		return (int) (System.currentTimeMillis() - World.creationTime);
+	public long getRealTime() {
+		return (int) (System.currentTimeMillis() - this.experiment.getWorld().creationTime);
 	}
 
 }

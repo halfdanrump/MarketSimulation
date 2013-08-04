@@ -15,7 +15,7 @@ public class NoOrdersException extends Exception{
 		this.time = time;
 		this.orderbook = orderbook;
 		this.buysell = buysell;
-		World.warningLog.logOnelineWarning(String.format("Orderbook %s contained no %s order", orderbook.getIdentifier(), buysell));
+		this.orderbook.getExperiment().getWorld().warningLog.logOnelineWarning(String.format("Orderbook %s contained no %s order", orderbook.getIdentifier(), buysell));
 	}
 	
 	public long getCount() {
