@@ -43,7 +43,7 @@ public class Logger implements Logging {
 			if (type == Type.TXT) {
 				filename += ".txt";
 			} else if (type == Type.CSV) {
-				filename += ".cvs";
+				filename += ".csv";
 			}
 			String filepath = directory + filename;
 			this.file = new File(filepath);

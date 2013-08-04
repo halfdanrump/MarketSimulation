@@ -17,38 +17,27 @@ import environment.*;
 public class Main {
 	
 	public static void main(String[] args){
+		String rootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/";
 		System.out.println("Creating Rengine (with arguments)");
 	    //If not started with --vanilla, funny things may happen in this R shell.
 	    String[] Rargs = {"--vanilla"};
 	    Rengine re = new Rengine(Rargs, false, null);
 		
-//		String logRootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/TwoGroups/";
-//		Experiment e = new TwoGroups(logRootFolder);
-//		e.runExperiment(e);
-		String logRootFolder;
-		String RscriptFilePath;
 		int nAgents;
 		int nSTOrdersPerRound;
 		
 		
-		logRootFolder = String.format("/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalSameLatency/");
-		RscriptFilePath = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/ConstantFundamentalSameLatency.r";
+		
 		int fixedLatency = 1;
 		nSTOrdersPerRound = 20;
 //		int[] numberOfAgents = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300};
-		int[] numberOfAgents = {0};
+		int[] numberOfAgents = {0, 10, 20};
 		ArrayList<Integer> k = new ArrayList<Integer>();
 		for(int na:numberOfAgents) {
-			
-			String logFolder = String.format("%snStylizedOrders=%s/",logRootFolder,nSTOrdersPerRound);
-			System.out.println(logFolder);
-			File f = new File(logFolder);
-			f.mkdir();
-			Experiment e1 = new ConstantFundamentalSameLatency(logFolder, na, fixedLatency, nSTOrdersPerRound);
+			Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, na, fixedLatency, nSTOrdersPerRound);
 			e1.runExperiment(e1);
-//			re.eval(String.format("source('%s')", RscriptFilePath));
+			e1.runRscript(e1, re);
 		}
-
 //		logRootFolder = String.format("/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalRandomLatency/");
 //		nAgents = 150;
 //		int minLatency = 10;
@@ -60,7 +49,7 @@ public class Main {
 		
 	    
 		re.end();
-		System.out.println(String.format("Finished simulation in %s seconds", ((double) World.runTime)/1000f));
+		
 	}
 	
 }

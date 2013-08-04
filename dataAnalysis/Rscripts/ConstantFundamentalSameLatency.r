@@ -13,13 +13,14 @@ experimentName = "ConstantFundamentalSameLatency"
 
 setwd(dir="/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/")
 logDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/", experimentName, "/")
-figuresExportDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/graphs/", experimentName, "/")
+#figuresExportDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/graphs/", experimentName, "/")
 
 loadFiles = function(logDir){
   files = list()
-  files[['stock0transactions']] = read.csv(file=paste0(logDir, "columnLog_transactionBased_stock0.cvs"))
-  files[['stock0roundBased']] = read.csv(file=paste0(logDir, "columnLog_roundBased_stock0.cvs"))
-  files[['configParameters']] = read.csv(file=paste0(logDir, "config.cvs"))
+  files[['stock0transactions']] = read.csv(file=paste0(logDir, "columnLog_transactionBased_stock0.csv"))
+  files[['stock0roundBased']] = read.csv(file=paste0(logDir, "columnLog_roundBased_stock0.csv"))
+  files[['configParameters']] = read.csv(file=paste0(logDir, "config.csv"))
+  files[['meta']] = read.csv(file=paste0(logDir, "meta.csv"))
   n = names(files$configParameters)
   v = unlist(files$configParameters)
   l = length(n)
@@ -53,7 +54,7 @@ makeTransactionPriceScatterPlot = function(files){
   if(length(which(is.nan(meanPrice)))==0){
     if(exportPlotsToFiles){
       setEPS()
-      postscript(file=paste0(figuresExportDir, paste0(files$graphPrefix, "_meanTradePrices.eps")), width=9, height=7, horizontal=FALSE)
+      postscript(file=paste0(files$meta$graphFolder, paste0(files$graphPrefix, "_meanTradePrices.eps")), width=9, height=7, horizontal=FALSE)
     }
     
     makePlot(files, rounds, meanPrice, 1000, length(rounds))

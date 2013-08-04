@@ -87,7 +87,7 @@ public class World implements SimulationSetup {
 
 	public static void executeRound(Experiment experiment) {
 		prepareNewRound();
-		if(currentRound % 500 == 0) {
+		if(currentRound % 1000 == 0) {
 			System.out.println(String.format("Round %s", currentRound));
 		}
 		/*

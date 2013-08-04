@@ -12,22 +12,34 @@ public class ConstantFundamentalSameLatency extends Experiment {
 	 */
 	private int nAgents;
 	private int fixedLatency;
+	  
 	
-	public ConstantFundamentalSameLatency(String logRootFolder, int nAgents, int fixedLatency, int nSlowTraderOrdersPerRound) {
-		super();
+	public ConstantFundamentalSameLatency(String rootFolder, int nAgents, int fixedLatency, int nSlowTraderOrdersPerRound) {
+		super(rootFolder);
 		this.nAgents = nAgents;
 		this.fixedLatency = fixedLatency;
 		this.nSlowTraderOrdersPerRound = nSlowTraderOrdersPerRound;
 		this.overrideExperimentSpecificParameters();
-		super.initializeExperimentWithChangedParameters(logRootFolder, this);
-		// TODO Auto-generated constructor stub
+		super.initializeExperimentWithChangedParameters(this);
+		
+		this.logFolder = String.format("%snStylizedOrders%s/",this.logRootFolder, nSlowTraderOrdersPerRound);
+		this.graphFolder = String.format("%snStylizedOrders%s/",this.graphRootFolder, nSlowTraderOrdersPerRound);
+		this.storeMetaInformation();
 	}
 	
-
+	
+	
 	@Override
 	public void overrideExperimentSpecificParameters() {
 		this.randomWalkFundamental = false;
 		this.nHFTsPerGroup = this.nAgents;
+	}
+	
+	@Override 
+	public void storeMetaInformation() {
+		String header = String.format("experimentName,graphFolder\n");
+		String values = String.format("%s,%s", this.experimentName, this.graphFolder);
+		super.meta.writeToFile(header + values); 
 	}
 	
 	@Override
