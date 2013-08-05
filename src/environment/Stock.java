@@ -197,5 +197,9 @@ public class Stock {
 		return this.globalHighestSell.get(round);
 	}
 	
+	public long getTradedVolume(int round) {
+		return 0;
+	}
+	
 	
 }

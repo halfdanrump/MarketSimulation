@@ -18,6 +18,7 @@ public abstract class Message{
 
 	public Message(int arrivalTime, int dispatchTime, TransmissionType transmissionType, Experiment experiment){
 		this.experiment = experiment;
+		this.transmissionType = transmissionType;
 		if(transmissionType == TransmissionType.INSTANTANEOUS) {
 			this.arrivalTime = this.experiment.getWorld().getCurrentRound();
 			this.dispatchTime = this.experiment.getWorld().getCurrentRound();
@@ -28,7 +29,12 @@ public abstract class Message{
 				this.arrivalTime = arrivalTime;
 				this.dispatchTime = dispatchTime;
 			}
-		} 
+		} else {
+			experiment.getWorld().errorLog.logError(String.format("Received transmission type: %s", transmissionType), experiment);
+		}
+		if(this.arrivalTime == 0) {
+			System.out.println(experiment.getWorld().getCurrentRound());
+		}
 		setMessageCount(getMessageCount() + 1);
 	}
 	

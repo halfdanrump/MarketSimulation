@@ -84,8 +84,9 @@ public class StockLogger extends Logger {
 		if(this.type == Type.LOG_AFTER_EVERY_ROUND) {
 			if(this.createLogString){
 				String bestBuyPrice, bestSellPrice;
-				String entry = String.format("%s,%s,%s,%s,%s,%s,%s",
+				String entry = String.format("%s,%s,%s,%s,%s,%s,%s,%s",
 						round, stock.getFundamentalPrice(round),
+						stock.getTradedVolume(round),
 						stock.getLocalSmallestOrderbookSpread(round),
 						stock.getGlobalLowestBuyPrice(round),
 						stock.getGlobalHighestBuyPrice(round),

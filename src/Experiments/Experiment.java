@@ -25,7 +25,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public int nRounds = 10000;
+	public int nRounds = 30000;
 	public long nSlowTraderOrdersPerRound = 50;
 	public int nHFTsPerGroup = 10;
 	public int nGroups = 1;
@@ -83,7 +83,7 @@ public abstract class Experiment{
 	/*
 	 * Stylized trader parameters
 	 */
-	public int orderLength = 100000;
+	public int orderLength = 1000;
 	public boolean randomOrderVolume = false;
 	public long constantVolume = 10;
 	public double volumeMean = 100d;
@@ -163,15 +163,15 @@ public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 		
 		
 		
-		this.world.warningLog = new WorldLogger(logRootFolder,"lineLog_worldWarnings", false, Logger.Type.TXT, true, false, experiment);
+		this.world.warningLog = new WorldLogger(logRootFolder,"lineLog_worldWarnings", false, Logger.Type.TXT, true, Logging.logWorldWarningsToConsole, experiment);
 		openLogs.add(this.world.warningLog);
-		this.world.errorLog = new WorldLogger(logRootFolder,"lineLog_errors", false, Logger.Type.TXT, true, false, experiment);
+		this.world.errorLog = new WorldLogger(logRootFolder,"lineLog_errors", false, Logger.Type.TXT, true, true, experiment);
 		openLogs.add(this.world.errorLog);
-		this.world.eventLog = new WorldLogger(logRootFolder,"lineLog_worldEvents", false, Logger.Type.TXT, true, false, experiment);
+		this.world.eventLog = new WorldLogger(logRootFolder,"lineLog_worldEvents", false, Logger.Type.TXT, true, Logging.logWorldEventsToConsole, experiment);
 		openLogs.add(this.world.eventLog);
 		this.world.ruleViolationsLog = new WorldLogger(logRootFolder,"lineLog_ruleViolations", false, Logger.Type.TXT, true, false, experiment);
 		openLogs.add(this.world.ruleViolationsLog);
-		this.world.dataLog = new WorldLogger(logRootFolder,"columnLog_worldData", true, Logger.Type.CSV, true, false, experiment);
+		this.world.dataLog = new WorldLogger(logRootFolder,"columnLog_worldData", true, Logger.Type.CSV, Logging.logWorldRoundDataToFile, Logging.logWorldRoundDataToConsole, experiment);
 		openLogs.add(this.world.dataLog);
 		
 		for(Stock stock:this.world.getStocks()){

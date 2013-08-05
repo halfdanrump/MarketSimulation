@@ -19,7 +19,8 @@ public class Main {
 		System.out.println("Creating Rengine (with arguments)");
 	    //If not started with --vanilla, funny things may happen in this R shell.
 	    String[] Rargs = {"--vanilla"};
-	    Rengine re = new Rengine(Rargs, false, null);
+		Rengine re = new Rengine(Rargs, false, null);
+	    
 		
 		int nAgents;
 		int nSTOrdersPerRound;
@@ -29,13 +30,15 @@ public class Main {
 		int fixedLatency = 1;
 		nSTOrdersPerRound = 20;
 //		int[] numberOfAgents = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300};
-		int[] numberOfAgents = {40, 50, 60, 70, 80, 90, 100, 150, 200};
+		int[] numberOfAgents = {500};
 		ArrayList<Integer> k = new ArrayList<Integer>();
 		for(int na:numberOfAgents) {
 			Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, na, fixedLatency, nSTOrdersPerRound);
 			e1.runExperiment(e1);
+			System.gc();
 			e1.runRscript(e1, re);
 		}
+//			re.end();
 //		logRootFolder = String.format("/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/ConstantFundamentalRandomLatency/");
 //		nAgents = 150;
 //		int minLatency = 10;
@@ -46,7 +49,6 @@ public class Main {
 		
 		
 	    
-		re.end();
 		
 	}
 	

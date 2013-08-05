@@ -212,32 +212,7 @@ public class World implements SimulationSetup {
 		updateFundamental();
 	}
 
-	private void dispatchOrderCancellations() {
-		/*
-		 * Transfer order cancellations from in transit to the target orderbook.
-		 */
-		long nArrivingCancellations = 0;
-		while (true) {
-			try {
-				OrderCancellation cancellation = orderCancellationsInTransit
-						.element();
-				if (cancellation.getArrivalTime() == this.getCurrentRound()) {
-					nArrivingCancellations++;
-					orderCancellationsInTransit.remove();
-					Orderbook targetOrderbook = cancellation.getOrder()
-							.getOrderbook();
-					targetOrderbook.receieveOrderCancellation(cancellation);
-				} else {
-					break;
-				}
-			} catch (NoSuchElementException e) {
-				break;
-			}
-		}
-		this.dataLog.setnArrivingOrderCancellations(nArrivingCancellations);
-//		this.eventLog.logOnelineEvent(String.format(
-//				"%s order cancellations reached orderbooks.", nArrivingCancellations));
-	}
+	
 
 	private void allAgentsRequestMarketInformation() {
 		/*
@@ -394,7 +369,7 @@ public class World implements SimulationSetup {
 					ordersInTransit.remove();
 					order.getOrderbook().receiveOrder(order);
 				} else if (order.getArrivalTime() < this.currentRound){
-					this.warningLog.logOnelineWarning(String.format("Current round is %s but order with arrival time %s exist in queue.", currentRound, order.getArrivalTime()));
+					this.errorLog.logError(String.format("Current round is %s but order with arrival time %s exist in queue.", currentRound, order.getArrivalTime()), this.experiment);
 					Exception e = new Exception();
 					e.printStackTrace();
 				} else if(order.getArrivalTime() > this.currentRound) {
@@ -407,28 +382,33 @@ public class World implements SimulationSetup {
 			}
 		}
 		this.dataLog.setnArrivingOrders(nArrivingOrders);
-//		this.eventLog.logOnelineEvent(String.format(
-//				"%s orders arrived to orderbooks.", i));
-
-		//
-		//
-		// if(ordersInTransit.peek() != null){
-		// try{
-		// while(ordersInTransit.peek().getArrivalTime() == currentTime){
-		// Order order = ordersInTransit.remove();
-		// order.getOrderbook().receiveOrder(order);
-		// //
-		// WarningLogger.logWarning("Warning; The order was not cloned, so the orderbook and agent refers to the same Order object"
-		// + Logger.getFormattedStackTrace());
-		// // Order orderClone = Order.getClone(order);
-		// // orderClone.getOrderbook().receiveOrder(orderClone);
-		// }
-		// } catch(NullPointerException e){
-		// this.eventLog.logGeneralEvent("No orders arriving to orderbooks this round.");
-		// }
-		// } else{
-		// this.eventLog.logGeneralEvent("No orders in transit this round.");
-		// }
+	}
+	
+	private void dispatchOrderCancellations() {
+		/*
+		 * Transfer order cancellations from in transit to the target orderbook.
+		 */
+		long nArrivingCancellations = 0;
+		while (true) {
+			try {
+				OrderCancellation cancellation = orderCancellationsInTransit.element();
+				if (cancellation.getArrivalTime() == this.getCurrentRound()) {
+					nArrivingCancellations++;
+					orderCancellationsInTransit.remove();
+					Orderbook targetOrderbook = cancellation.getOrder().getOrderbook();
+					targetOrderbook.receieveOrderCancellation(cancellation);
+				} else if (cancellation.getArrivalTime() < this.currentRound) {
+					this.errorLog.logError(String.format("Current round is %s but cancellation with arrival time %s exist in queue.", currentRound, cancellation.getArrivalTime()), this.experiment);
+				} else if (cancellation.getArrivalTime() > this.currentRound) {
+					this.eventLog.logOnelineEvent(String.format("After dispatching %s cancellations this round there were stil %s cancellations in transit.", nArrivingCancellations, this.orderCancellationsInTransit.size()));
+					break;
+				}
+			} catch (NoSuchElementException e) {
+				this.eventLog.logOnelineEvent(String.format("After dispatching %s cancellations this round there were no more cancellations in transit.", nArrivingCancellations));
+				break;
+			}
+		}
+		this.dataLog.setnArrivingOrderCancellations(nArrivingCancellations);
 	}
 
 	public void dispatchArrivingReceipts() {
@@ -441,10 +421,14 @@ public class World implements SimulationSetup {
 					receiptsInTransit.remove();
 					HFT recipient = receipt.getOwnerOfFilledStandingOrder();
 					recipient.receiveTransactionReceipt(receipt);
-				} else {
+				} else if(receipt.getArrivalTime() < this.currentRound) {
+					this.errorLog.logError(String.format("Current round is %s but receipt with arrival time %s exist in queue.", currentRound, receipt.getArrivalTime()), this.experiment);
+				} else if(receipt.getArrivalTime() > this.currentRound) {
+					this.eventLog.logOnelineEvent(String.format("After dispatching %s receipts this round there were stil %s receipts in transit.", nArrivingReceipts, this.receiptsInTransit.size()));
 					break;
 				}
 			} catch (NoSuchElementException e) {
+				this.eventLog.logOnelineEvent(String.format("After dispatching %s receipts this round there were no more receipts in transit.", nArrivingReceipts));
 				break;
 			}
 		}
@@ -507,6 +491,9 @@ public class World implements SimulationSetup {
 
 	public void executeNRounds(Experiment experiment, long N) {
 		for (long round = 0; round < N; round++) {
+			if(round==5000) {
+				System.out.println("Break time!");
+			}
 			this.executeRound(experiment);
 		}
 	}

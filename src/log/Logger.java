@@ -13,7 +13,6 @@ import Experiments.Experiment;
 import setup.Logging;
 
 import environment.TransactionReceipt;
-import environment.World;
 
 public class Logger implements Logging {
 	public static long nLogs = 0;
