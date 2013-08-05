@@ -494,6 +494,9 @@ public class World implements SimulationSetup {
 			if(round==5000) {
 				System.out.println("Break time!");
 			}
+			if(round==10000) {
+				System.out.println("Break time!");
+			}
 			this.executeRound(experiment);
 		}
 	}

@@ -25,7 +25,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public int nRounds = 30000;
+	public int nRounds = 10000;
 	public long nSlowTraderOrdersPerRound = 50;
 	public int nHFTsPerGroup = 10;
 	public int nGroups = 1;

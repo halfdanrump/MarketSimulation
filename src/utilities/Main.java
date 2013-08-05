@@ -15,7 +15,7 @@ import environment.*;
 public class Main {
 	
 	public static void main(String[] args){
-		String rootFolder = "/Users/halfdan/Dropbox/Waseda/Research/Simulation/";
+		String rootFolder = "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/";
 		System.out.println("Creating Rengine (with arguments)");
 	    //If not started with --vanilla, funny things may happen in this R shell.
 	    String[] Rargs = {"--vanilla"};
@@ -30,7 +30,7 @@ public class Main {
 		int fixedLatency = 1;
 		nSTOrdersPerRound = 20;
 //		int[] numberOfAgents = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300};
-		int[] numberOfAgents = {500};
+		int[] numberOfAgents = {100};
 		ArrayList<Integer> k = new ArrayList<Integer>();
 		for(int na:numberOfAgents) {
 			Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, na, fixedLatency, nSTOrdersPerRound);

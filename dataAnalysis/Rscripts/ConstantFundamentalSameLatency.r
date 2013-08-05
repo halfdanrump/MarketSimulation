@@ -11,8 +11,8 @@ exportPlotsToFiles = TRUE
 
 experimentName = "ConstantFundamentalSameLatency"
 
-setwd(dir="/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/Rscripts/")
-logDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/Simulation/logs/", experimentName, "/")
+setwd(dir="/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/dataAnalysis/Rscripts/")
+logDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/", experimentName, "/")
 #figuresExportDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/Simulation/dataAnalysis/graphs/", experimentName, "/")
 
 loadFiles = function(logDir){
