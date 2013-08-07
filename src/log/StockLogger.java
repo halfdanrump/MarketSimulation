@@ -63,7 +63,7 @@ public class StockLogger extends Logger {
 	public void recordRoundBasedHeader(){
 		if(this.createLogString){
 			if(this.type == Type.LOG_AFTER_EVERY_ROUND) {
-				String header = "round,fundamental,smallestLocalSpread,globalLowestBuyPrice,globalHighestBuyPrice," +
+				String header = "round,fundamental,tradedVolume,smallestLocalSpread,globalLowestBuyPrice,globalHighestBuyPrice," +
 						"globalLowestSellPrice,globalHighestSellPrice";
 				for(Market market:stock.getMarkets()){
 					header += String.format(",bestSellAtMarket%s,bestBuyAtMarket%s, spreadAtMarket%s", market.getID(), market.getID(), market.getID());
@@ -85,7 +85,8 @@ public class StockLogger extends Logger {
 			if(this.createLogString){
 				String bestBuyPrice, bestSellPrice;
 				String entry = String.format("%s,%s,%s,%s,%s,%s,%s,%s",
-						round, stock.getFundamentalPrice(round),
+						round, 
+						stock.getFundamentalPrice(round),
 						stock.getTradedVolume(round),
 						stock.getLocalSmallestOrderbookSpread(round),
 						stock.getGlobalLowestBuyPrice(round),

@@ -25,7 +25,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public int nRounds = 10000;
+	public int nRounds = 11000;
 	public long nSlowTraderOrdersPerRound = 50;
 	public int nHFTsPerGroup = 10;
 	public int nGroups = 1;
@@ -60,6 +60,7 @@ public abstract class Experiment{
 	
 	public long wealthMean = (int) Math.pow(10, 6);
 	public long wealthStd = (int) Math.pow(10, 4);
+	
 	
 //	public int minimumLatency = 10;
 //	public int maximumLatency = 100;
@@ -230,18 +231,18 @@ public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 		
 	}
 	
-	public void runExperiment(Experiment experiment){
-		this.world.executeNRounds(experiment, experiment.nRounds-1);
-		closeLogs();
-		System.out.println(String.format("Finished simulation in %s seconds", ((double) this.world.runTime)/1000f));
+	public static void runExperiment(Experiment experiment){
+		experiment.world.executeNRounds(experiment, experiment.nRounds-1);
+		experiment.closeLogs();
+		System.out.println(String.format("Finished simulation in %s seconds", ((double) experiment.world.runTime)/1000f));
 	}
 	
-	public void runRscript(Experiment experiment, Rengine re) {
+	public static void runRscript(Experiment experiment, Rengine re) {
 		String gf = experiment.graphFolder;
 		new File(experiment.graphFolder).mkdirs();
 		System.out.println("Running R script...");
-		if(new File(this.RscriptFilePath).exists()) {
-			re.eval(String.format("source('%s')", this.RscriptFilePath));
+		if(new File(experiment.RscriptFilePath).exists()) {
+			re.eval(String.format("source('%s')", experiment.RscriptFilePath));
 			System.out.println("Finished running R script...");	
 		} else {
 			System.out.println("R script not found. Aborting!");

@@ -160,13 +160,13 @@ public class AgentLogger extends Logger {
 		System.out.println("");
 	}
 
-	public void printOrderHistoryIdString() {
-		ArrayList<Order> orderHistory = this.agent.getOrderHistory();
-		String IDs = "";
-		for (Order order : orderHistory) {
-			IDs += String.format("%s, ", order.getID());
-		}
-		System.out.println(IDs);
-	}
+//	public void printOrderHistoryIdString() {
+//		ArrayList<Order> orderHistory = this.agent.getOrderHistory();
+//		String IDs = "";
+//		for (Order order : orderHistory) {
+//			IDs += String.format("%s, ", order.getID());
+//		}
+//		System.out.println(IDs);
+//	}
 
 }
