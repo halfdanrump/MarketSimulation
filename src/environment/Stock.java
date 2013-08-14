@@ -9,7 +9,6 @@ import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 import umontreal.iro.lecuyer.rng.MRG32k3a;
 import utilities.MarketIdComparator;
 import log.StockLogger;
-import environment.World;
 
 public class Stock { 
 //	private World world;
@@ -27,27 +26,14 @@ public class Stock {
 	
 	private ArrayList<Market> bestMarketInRound;
 	private GeometricBrownianMotion gbm;
-	private static long nStocks = 0;
-//	private TreeSet<Orderbook> tradedOn;
 	private TreeSet<Market> markets;
 	public StockLogger roundBasedDatalog;
 	public StockLogger transactionBasedDataLog;
 	private long globalLastTradedMarketOrderBuyPrice;
 	private long globalLastTradedMarketOrderSellPrice;
-//	private int[] fundamentalPrice;
-//	private int[] bestNBBOBID;
-//	private int[] bestNBBOASK;
-//	private ArrayList<Orderbook> tradedOn = new ArrayList<Orderbook>();
-//	private Hashtable<String, Orderbook[]> orderbooksByStockID = new Hashtable<String, Orderbook[]>();
-	
-	
-//	public Stock(long initialFundamentalPrice, double fundamentalBrownianMean, double fundamentalBrownianVariance){
-//		initialize();
-//		this.fundamentalPrice.add(initialFundamentalPrice);
-//		this.gbm = new GeometricBrownianMotion(initialFundamentalPrice, fundamentalBrownianMean, fundamentalBrownianVariance, new MRG32k3a());
-//		gbm.setObservationTimes(1, Global.nRounds);
-//	}
-	
+	private ArrayList<Long> tradedPerRoundVolume;
+	private static long nStocks = 0;
+
 	public Stock(Experiment experiment){
 		this.experiment = experiment;
 		initialize();
@@ -59,7 +45,7 @@ public class Stock {
 		nStocks++;
 		this.markets = new TreeSet<Market>(new MarketIdComparator());
 		this.fundamentalPrice = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
-		
+		this.tradedPerRoundVolume = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
 		this.globalLowestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
 		this.globalHighestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
 		this.globalLowestSell = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
@@ -197,8 +183,16 @@ public class Stock {
 		return this.globalHighestSell.get(round);
 	}
 	
-	public long getTradedVolume(int round) {
-		return 0;
+	public void incrementTradedVolume(long volumeChange, int round) {
+		if(volumeChange < 0) {
+			this.experiment.getWorld().errorLog.logError(String.format("volumeChange must be positive, but was %s",volumeChange), experiment);
+		} else {
+			this.tradedPerRoundVolume.set(round, this.tradedPerRoundVolume.get(round) + volumeChange);
+		}
+	}
+	
+	public long getTotalTradedVolume(int round) {
+		return this.tradedPerRoundVolume.get(round);
 	}
 	
 	

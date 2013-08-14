@@ -236,6 +236,7 @@ public class Orderbook {
 		 */
 		TransactionReceipt receipt;
 		long tradeVolume = Math.min(matchingOrder.getCurrentMarketSideVolume(), newOrder.getCurrentMarketSideVolume());
+		
 		long tradePrice = this.determineTransactionPrice(matchingOrder, newOrder);
 		long tradeTotal = 0l;
 		if(tradeVolume * tradePrice > Long.MAX_VALUE) {
@@ -290,6 +291,7 @@ public class Orderbook {
 //				if(matchingOrder.getOwner() != null)
 //					System.out.println("hum");
 //			}
+			stock.incrementTradedVolume(tradeVolume, this.experiment.getCurrentRound());
 			stock.transactionBasedDataLog.recordStockInformationAfterTransaction(tradePrice, this, newOrder, matchingOrder);
 		} else {
 			this.experiment.getWorld().errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()), this.experiment);

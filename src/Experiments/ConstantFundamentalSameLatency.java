@@ -1,6 +1,5 @@
 package Experiments;
 
-import utilities.Utils;
 import agent.SingleStockMarketMaker;
 import environment.Market;
 import environment.Stock;

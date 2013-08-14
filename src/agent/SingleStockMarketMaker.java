@@ -11,7 +11,6 @@ import environment.Order;
 import environment.OrderCancellation;
 import environment.Orderbook;
 import environment.Stock;
-import environment.World;
 
 public class SingleStockMarketMaker extends HFT {
 	private long minimumSpread;

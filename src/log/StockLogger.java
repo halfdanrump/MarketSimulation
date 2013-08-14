@@ -87,7 +87,7 @@ public class StockLogger extends Logger {
 				String entry = String.format("%s,%s,%s,%s,%s,%s,%s,%s",
 						round, 
 						stock.getFundamentalPrice(round),
-						stock.getTradedVolume(round),
+						stock.getTotalTradedVolume(round),
 						stock.getLocalSmallestOrderbookSpread(round),
 						stock.getGlobalLowestBuyPrice(round),
 						stock.getGlobalHighestBuyPrice(round),

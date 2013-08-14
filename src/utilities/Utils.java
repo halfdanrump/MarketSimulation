@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import setup.SimulationSetup;
-import environment.*;
-
-import java.util.HashMap;
 public class Utils {
 
 	

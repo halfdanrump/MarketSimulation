@@ -481,36 +481,28 @@ public abstract class HFT implements Logging {
 	}
 
 	private void dealWithOrderForRemovedOrder(TransactionReceipt receipt) {
-		if (this.orderHistory.contains(receipt.getFilledOrder())) {
-			/*
-			 * The agent did submit the order at some point, but now it is no
-			 * longer in his standing order list. A likely explanation (the only
-			 * one that I've come up with so far) is that the order was filled
-			 * after the agent issued a cancellation.
-			 */
-			if (this.experiment.agentPaysWhenOrderIsFilledAfterSendingCancellation) {
-				this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList++;
-				this.eventlog
-						.logAgentAction(String
-								.format("Agent %s had to fullfill an already cancelled order (id: %s)",
-										receipt.getOwnerOfFilledStandingOrder()
-												.getID(), receipt
-												.getFilledOrder().getID()));
-			} else {
+		/*
+		 * The agent did submit the order at some point, but now it is no
+		 * longer in his standing order list. A likely explanation (the only
+		 * one that I've come up with so far) is that the order was filled
+		 * after the agent issued a cancellation.
+		 */
+		if(this.experiment.keepOrderHistory) {
+			if(!this.orderHistory.contains(receipt.getFilledOrder())) {
 				this.experiment.getWorld().errorLog
-						.logError(
-								String.format(
-										"Agent %s received a transaction receipt for an order that he cancelled (id: %s), but market side handling of this situation has not been implemented yet",
-										this.getID(), receipt.getFilledOrder()
-												.getID()), this.experiment);
+				.logError(String.format("Agent %s received a transaction receipt for an order that he didn't submit (id: %s)",
+						this.getID(), receipt.getFilledOrder().getID()), this.experiment);
 			}
+			
+		}
+		if (this.experiment.agentPaysWhenOrderIsFilledAfterSendingCancellation) {
+			this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList++;
+			this.eventlog.logAgentAction(String.format("Agent %s had to fullfill an already cancelled order (id: %s)",
+					receipt.getOwnerOfFilledStandingOrder().getID(), receipt.getFilledOrder().getID()));
 		} else {
 			this.experiment.getWorld().errorLog
-					.logError(
-							String.format(
-									"Agent %s received a transaction receipt for an order that he didn't submit (id: %s)",
-									this.getID(), receipt.getFilledOrder()
-											.getID()), this.experiment);
+			.logError(String.format("Agent %s received a transaction receipt for an order that he cancelled (id: %s), but market side handling of this situation has not been implemented yet",
+					this.getID(), receipt.getFilledOrder().getID()), this.experiment);
 		}
 	}
 

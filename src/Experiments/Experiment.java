@@ -254,6 +254,11 @@ public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 	public World getWorld() {
 		return this.world;
 	}
+
+	public int getCurrentRound() {
+		// TODO Auto-generated method stub
+		return this.world.getCurrentRound();
+	}
 }
 
 

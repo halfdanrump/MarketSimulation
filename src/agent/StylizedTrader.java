@@ -12,7 +12,6 @@ import environment.Message;
 import environment.Order;
 import environment.Orderbook;
 import environment.Stock;
-import environment.World;
 
 public class StylizedTrader {
 

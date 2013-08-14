@@ -7,9 +7,9 @@ library(TTR)
 ### Import for postscript()
 library(grDevices)
 
-exportPlotsToFiles = TRUE
+exportPlotsToFiles = FALSE
 
-experimentName = "ConstantFundamentalSameLatency"
+experimentName = "ConstantFundamentalDifferentLatency"
 
 setwd(dir="/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/dataAnalysis/Rscripts/")
 logDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/", experimentName, "/")
@@ -66,14 +66,20 @@ makeTransactionPriceScatterPlot = function(files){
 }
 
 makePlot = function(files, rounds, meanPrice, from, to){
+  par(mfrow=c(2,1))
   maxPrice = max(meanPrice[from:to], files$stock0roundBased$fundamental[from:to])
   minPrice = min(meanPrice[from:to], files$stock0roundBased$fundamental[from:to])
-  plot(rounds[from:to], meanPrice[from:to], pch=19, cex=0.2, main=experimentName, sub=files$graphPrefix, ylim=c(minPrice, maxPrice))
+  par(mai=c(0,1,1,1))
+  plot(rounds[from:to], meanPrice[from:to], pch=19, cex=0.2, main=experimentName, sub=files$graphPrefix, ylim=c(minPrice, maxPrice), xaxt='n')
   lines(rounds[from:to], files$stock0roundBased$fundamental[from:to], col="red", lwd=2)
-  lines(SMA(meanPrice, n=100), col="green")
+  lines(rounds[from:to], SMA(meanPrice[from:to], n=200), col="green", lwd=2)
   #lines(SMA(files$stock0roundBased$fundamental[from:to]), col="green")
   text(x=median(rounds[from:to]), y=(max(meanPrice[from:to]) - min(meanPrice[from:to]))*0.9 + min(meanPrice[from:to]), labels=files$graphPrefix, cex=0.7, col="blue")
+  #plot(SMA(files$stock0roundBased$tradedVolume[from:to],n=100), type="l")
+  par(mai=c(1,1,0,1))
+  plot(rounds[from:to], SMA(files$stock0roundBased$tradedVolume[from:to],n=200), type="l", col="red", lwd=2)
 }
+
 
 main = function(){
   files = loadFiles(logDir)

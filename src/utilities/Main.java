@@ -1,15 +1,10 @@
 package utilities;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
+import Experiments.ConstantFundamentalDifferentLatency;
 import Experiments.ConstantFundamentalSameLatency;
 import Experiments.Experiment;
-import environment.*;
 
 
 public class Main {
@@ -24,12 +19,17 @@ public class Main {
 		int nAgents;
 		int nSTOrdersPerRound;
 		
-		int fixedLatency = 1;
+		int fixedLatency = 15;
 		nSTOrdersPerRound = 20;
-		Runtime runtime = Runtime.getRuntime();
-		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, 30, fixedLatency, nSTOrdersPerRound);
-		Experiment.runExperiment(e1);
-//		Experiment e2 = new ConstantFundamentalSameLatency(rootFolder, 31, fixedLatency, nSTOrdersPerRound);
+//		Runtime runtime = Runtime.getRuntime();
+//		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, 100, fixedLatency, nSTOrdersPerRound);
+//		Experiment.runExperiment(e1);
+		
+		Experiment e2 = new ConstantFundamentalDifferentLatency(rootFolder, 300, 10, 19, nSTOrdersPerRound);
+		Experiment.runExperiment(e2);
+
+		
+		//		Experiment e2 = new ConstantFundamentalSameLatency(rootFolder, 31, fixedLatency, nSTOrdersPerRound);
 //		Experiment.runExperiment(e2);
 //		Experiment e3 = new ConstantFundamentalSameLatency(rootFolder, 32, fixedLatency, nSTOrdersPerRound);
 //		Experiment.runExperiment(e3);

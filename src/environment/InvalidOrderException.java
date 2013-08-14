@@ -1,6 +1,5 @@
 package environment;
 
-import Experiments.Experiment;
 import agent.HFT;
 
 @SuppressWarnings("serial")
