@@ -33,6 +33,7 @@ public class Stock {
 	private long globalLastTradedMarketOrderSellPrice;
 	private ArrayList<Long> tradedPerRoundVolume;
 	private static long nStocks = 0;
+	private ArrayList<Long> fixedFundamental;
 
 	public Stock(Experiment experiment){
 		this.experiment = experiment;
@@ -59,6 +60,7 @@ public class Stock {
 		this.gbm = new GeometricBrownianMotion(this.experiment.initialFundamentalPrice, this.experiment.fundamentalBrownianMean, this.experiment.fundamentalBrownianVariance, new MRG32k3a());
 		gbm.setObservationTimes(1, this.experiment.nRounds+1);
 		this.experiment.getWorld().addStock(this);
+		this.fixedFundamental = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, this.experiment.initialFundamentalPrice));
 	}
 	
 	public void updateFundamentalPrice(){
@@ -69,7 +71,8 @@ public class Stock {
 		if(this.experiment.randomWalkFundamental) {
 			price = Math.round(this.gbm.nextObservation());			
 		} else {
-			price = this.experiment.initialFundamentalPrice;
+//			price = this.experiment.initialFundamentalPrice;
+			price = this.fixedFundamental.get(now);
 		}
 		if(price>Long.MAX_VALUE){
 			this.experiment.getWorld().errorLog.logError("In Stock.updateFundamenralPrice: price exceeded range for integers!", this.experiment);
@@ -83,6 +86,10 @@ public class Stock {
 		
 //		WarningLogger.logWarning("BROWNIAN MOTION NOT IMPLEMENTED YET!!!");
 //		fundamentalPrice[time]++;
+	}
+	
+	public void initializeFixedFundamental(ArrayList<Long> fundamentalPrice) {
+		this.fixedFundamental = fundamentalPrice;
 	}
 	
 	public ArrayList<Long> getFundamentalPriceHistory(){

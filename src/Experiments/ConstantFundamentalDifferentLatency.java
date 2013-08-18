@@ -1,38 +1,25 @@
 package Experiments;
 
-import org.rosuda.JRI.Rengine;
-
+import utilities.Utils;
 import agent.SingleStockMarketMaker;
 import environment.Market;
 import environment.Stock;
 
-public class ConstantFundamentalSameLatency extends Experiment {
+public class ConstantFundamentalDifferentLatency extends Experiment {
 
 	/*
 	 * Override default setup parameters
 	 */
 	private int nAgents;
-	private int fixedLatency;
+	private int minimumLatency;
+	private int maximumLatency;
+	  
 	
-	public static void main(String[] args) {
-		System.out.println("Running experiment");
-		String rootFolder = System.getProperty("rootFolder", "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/");
-		int fixedLatency = Integer.valueOf(System.getProperty("fixedLatency", "1"));
-		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("STOrdersPerRound", "20"));
-		
-		String[] Rargs = {"--vanilla"};
-//		Rengine re = new Rengine(Rargs, false, null);
-		
-		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, 25, fixedLatency, nSTOrdersPerRound);
-		Experiment.runExperiment(e1);
-//		Experiment.runRscript(e1, re);
-		
-	}
-	
-	public ConstantFundamentalSameLatency(String rootFolder, int nAgents, int fixedLatency, int nSlowTraderOrdersPerRound) {
+	public ConstantFundamentalDifferentLatency(String rootFolder, int nAgents, int minimumLatency, int maximumLatency, int nSlowTraderOrdersPerRound) {
 		super(rootFolder);
 		this.nAgents = nAgents;
-		this.fixedLatency = fixedLatency;
+		this.minimumLatency = minimumLatency;
+		this.maximumLatency = maximumLatency;
 		this.nSlowTraderOrdersPerRound = nSlowTraderOrdersPerRound;
 		this.overrideExperimentSpecificParameters();
 		super.initializeExperimentWithChangedParameters(this);
@@ -59,19 +46,20 @@ public class ConstantFundamentalSameLatency extends Experiment {
 	
 	@Override
 	public String getParameterString() {
-		String header = String.format("randomWalkFundamental,nHFTsPerGroup,nSlowTraderOrdersPerRound, fixedLatency");
-		String values = String.format("%s,%s,%s,%s", 0, this.nHFTsPerGroup, this.nSlowTraderOrdersPerRound, this.fixedLatency);
+		String header = String.format("randomWalkFundamental,nHFTsPerGroup,nSlowTraderOrdersPerRound,minLat,maxLat");
+		String values = String.format("%s,%s,%s,%s,%s", 0, this.nHFTsPerGroup, this.nSlowTraderOrdersPerRound, this.minimumLatency, this.maximumLatency);
 		return header + "\n" + values;
 		
 	}
 	
 	@Override
 	public void createAgents(){
-		int[] latencyToMarkets = {this.fixedLatency};
+		int[] latencyToMarkets = new int[1];
 		int group = 0;
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
-		for(int i=0; i<this.nHFTsPerGroup; i++) {
+		for(int agent=0; agent<this.nHFTsPerGroup; agent++) {
+			latencyToMarkets[0] = Utils.getRandomUniformInteger(this.minimumLatency, this.maximumLatency);
 			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.minimumSpread, group, this);
 		}
 	}

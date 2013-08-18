@@ -206,8 +206,7 @@ public abstract class HFT implements Logging {
 		 * (that is, which markets he wants information from).
 		 */
 		// World.registerAgentAsWaiting(this);
-		this.wakeupTime = this.experiment.getWorld().getCurrentRound()
-				+ this.getWaitingTime();
+		this.wakeupTime = this.experiment.getWorld().getCurrentRound() + this.getWaitingTime();
 	}
 
 	public void receiveMarketInformation() throws NoOrdersException {
@@ -494,6 +493,9 @@ public abstract class HFT implements Logging {
 						this.getID(), receipt.getFilledOrder().getID()), this.experiment);
 			}
 			
+		} else {
+			this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList++;
+//			System.out.println(String.format("Agent recieved a receipt for an order which he does not has in his standing order list."));
 		}
 		if (this.experiment.agentPaysWhenOrderIsFilledAfterSendingCancellation) {
 			this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList++;

@@ -25,7 +25,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public int nRounds = 11000;
+	public int nRounds = 10000;
 	public long nSlowTraderOrdersPerRound = 50;
 	public int nHFTsPerGroup = 10;
 	public int nGroups = 1;
@@ -49,7 +49,7 @@ public abstract class Experiment{
 	 * High frequency trader behavior
 	 */
 	
-	public boolean keepOrderHistory = true;
+	public boolean keepOrderHistory = false;
 	
 	public long emptyOrderbookWaitTime = 1;
 	public boolean randomStartStockAmount = false;
@@ -77,7 +77,7 @@ public abstract class Experiment{
 	 * Random walk parameters
 	 */
 	public boolean randomWalkFundamental = false;
-	public final long initialFundamentalPrice = (long) Math.pow(10, 9);
+	public final long initialFundamentalPrice = (long) Math.pow(10, 7);
 	public final double fundamentalBrownianMean = 0;
 	public final double fundamentalBrownianVariance = 0.00001;
 	
