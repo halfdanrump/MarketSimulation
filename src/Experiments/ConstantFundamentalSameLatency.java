@@ -2,6 +2,7 @@ package Experiments;
 
 import org.rosuda.JRI.Rengine;
 
+import agent.GoldenCrossLimitOrderChartist;
 import agent.SingleStockMarketMaker;
 import environment.Market;
 import environment.Stock;
@@ -22,8 +23,8 @@ public class ConstantFundamentalSameLatency extends Experiment {
 		
 		String[] Rargs = {"--vanilla"};
 //		Rengine re = new Rengine(Rargs, false, null);
-		
-		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, 25, fixedLatency, nSTOrdersPerRound);
+		int nAgents = 50;
+		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, nAgents, fixedLatency, nSTOrdersPerRound);
 		Experiment.runExperiment(e1);
 //		Experiment.runRscript(e1, re);
 		
@@ -50,7 +51,7 @@ public class ConstantFundamentalSameLatency extends Experiment {
 		this.nHFTsPerGroup = this.nAgents;
 	}
 	
-	@Override 
+	@Override
 	public void storeMetaInformation() {
 		String header = String.format("experimentName,graphFolder\n");
 		String values = String.format("%s,%s", this.experimentName, this.graphFolder);
@@ -74,6 +75,16 @@ public class ConstantFundamentalSameLatency extends Experiment {
 		for(int i=0; i<this.nHFTsPerGroup; i++) {
 			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.minimumSpread, group, this);
 		}
+		
+//		float aggressiveness = 1;
+//		int longTermMA = 300;
+//		int shortTermMA = 100;
+//		int orderSize = 10;
+//		int initialWaitTime = 1000;
+//		
+//		for(int i=0; i<this.nHFTsPerGroup; i++) {
+//			new GoldenCrossLimitOrderChartist(aggressiveness, longTermMA, shortTermMA, orderSize, initialWaitTime, stockIDs, marketIDs, latencyToMarkets, group, this);
+//		}
 	}
 
 

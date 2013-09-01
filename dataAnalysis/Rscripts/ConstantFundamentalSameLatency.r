@@ -20,6 +20,7 @@ loadFiles = function(logDir){
   files[['stock0transactions']] = read.csv(file=paste0(logDir, "columnLog_transactionBased_stock0.csv"))
   files[['stock0roundBased']] = read.csv(file=paste0(logDir, "columnLog_roundBased_stock0.csv"))
   files[['configParameters']] = read.csv(file=paste0(logDir, "config.csv"))
+  files[['worldRoundBased']] = read.csv(file=paste0(logDir, "columnLog_worldData.csv"))
   files[['meta']] = read.csv(file=paste0(logDir, "meta.csv"))
   n = names(files$configParameters)
   v = unlist(files$configParameters)
@@ -55,7 +56,7 @@ getStats = function(files){
     }
   }
 
-  
+  stdPrice = removeNaIdx(stdPrice)
   return(list('meanPrice'=meanPrice, 'stdPrice'=stdPrice, 'volume'=files$stock0roundBased$tradedVolume))
 }
 
@@ -73,7 +74,7 @@ makePlot = function(files, rounds, meanPrice, stdPrice, from, to, SMAwindows){
   #plot(SMA(files$stock0roundBased$tradedVolume[from:to],n=100), type="l")
   par(mai=c(0,1,0,1))
   plot(rounds[from:to], stdPrice[from:to], pch=19, cex=0.2)
-  lines(rounds[from:to], SMA(stdPrice[from:to], n=SMAwindows), type="l", col="red")
+  lines(SMA(stdPrice, n=SMAwindows), type="l", col="red")
   par(mai=c(1,1,0,1))
   plot(rounds[from:to], SMA(files$stock0roundBased$tradedVolume[from:to],n=SMAwindows), type="l", col="red", lwd=2)
   
@@ -92,13 +93,16 @@ SMAwindows = 200
 
 data = getStats(files)
 
-par(mfrow=c(2,1))
-smoothedMeanPrice = SMA(data$meanPrice[from:to], n=SMAwindows)
-smoothedMeanPrice = removeNaIdx(smoothedMeanPrice)
-plot(smoothedMeanPrice - min(smoothedMeanPrice), type="l")
-difference = diff(x=smoothedMeanPrice, lag=1)
-smoothedDiff = removeNaIdx(SMA(x=difference, n=200))
-plot(smoothedDiff, type="l", col="red")
+makePlot(files, files$rounds, data$meanPrice, data$stdPrice, from, to, SMAwindows)
+  
 
-par(mfrow=c(1,1))
-hist(abs(difference), breaks=1000)
+#par(mfrow=c(2,1))
+#smoothedMeanPrice = SMA(data$meanPrice[from:to], n=SMAwindows)
+#smoothedMeanPrice = removeNaIdx(smoothedMeanPrice)
+#plot(smoothedMeanPrice - min(smoothedMeanPrice), type="l")
+#difference = diff(x=smoothedMeanPrice, lag=1)
+#smoothedDiff = removeNaIdx(SMA(x=difference, n=200))
+#plot(smoothedDiff, type="l", col="red")
+
+#par(mfrow=c(1,1))
+#hist(abs(difference), breaks=1000)

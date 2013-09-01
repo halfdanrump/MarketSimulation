@@ -75,6 +75,7 @@ public class Utils {
 		return number;
 	}
 	
+	
 	public static long getNonNegativeGaussianInteger(double mean, double std){
 		Random random = new Random();
 		return Math.abs((int) (random.nextGaussian() * std + mean));

@@ -56,7 +56,7 @@ public abstract class Experiment{
 	public long startStockAmount = 100;
 	
 	public boolean randomStartWealth = false;
-	public long constantStartWealth = (int) Math.pow(10, 7);
+	public long constantStartWealth = (int) Math.pow(10, 3);
 	
 	public long wealthMean = (int) Math.pow(10, 6);
 	public long wealthStd = (int) Math.pow(10, 4);
@@ -71,26 +71,27 @@ public abstract class Experiment{
 	public long ssmm_tradeVolume = 10;
 	public int ssmm_marketOrderLength = 200;
 	public boolean doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock = true;
-	public long minimumSpread = (long) Math.pow(10,4);
+	public long minimumSpread = 50;
 	
 	/*
 	 * Random walk parameters
 	 */
 	public boolean randomWalkFundamental = false;
-	public final long initialFundamentalPrice = (long) Math.pow(10, 7);
+	public final long initialFundamentalPrice = (long) Math.pow(10, 3);
 	public final double fundamentalBrownianMean = 0;
 	public final double fundamentalBrownianVariance = 0.00001;
 	
 	/*
 	 * Stylized trader parameters
 	 */
+	public int delayInRounds = 1000;
 	public int orderLength = 1000;
 	public boolean randomOrderVolume = false;
 	public long constantVolume = 10;
 	public double volumeMean = 100d;
 	public double volumeStd = 10d;
 	public double addivePriceNoiseMean = 0d;
-	public double additivePriceNoiseStd = Math.pow(10, 5);
+	public double additivePriceNoiseStd = 5;
 	
 	public String experimentName;
 

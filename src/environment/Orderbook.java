@@ -2,9 +2,13 @@ package environment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.TreeMap;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import Experiments.Experiment;
 import agent.StylizedTrader;
@@ -509,6 +513,49 @@ public class Orderbook {
 
 	public void printDetails(String ID) {
 		System.out.println(ID + "; Trades stock " + this.stock.getID() + " on market " + this.market.getID());
+	}
+	
+	public void printOrderbook() {
+		/*
+		 * Make hashmap buyOrders with <price, number of orders>
+		 * Iterate over unfilled buy orders
+		 * 	if price in buyOrders.keys then buyOrders.get(price) =+ 1
+		 */
+		TreeMap<Long, Integer> buyOrders = new TreeMap<Long, Integer>();
+		java.util.Iterator<Order> it = this.unfilledBuyOrders.iterator();
+		while(it.hasNext()) {
+			Order o = it.next();
+			Long price = o.getPrice();
+			if(buyOrders.containsKey(price)) {
+				buyOrders.put(price, buyOrders.get(price) + 1);
+			} else {
+				buyOrders.put(price, 1);
+			}
+		}
+		
+		TreeMap<Long, Integer> sellOrders = new TreeMap<Long, Integer>();
+		it = this.unfilledSellOrders.iterator();
+		while(it.hasNext()) {
+			Order o = it.next();
+			Long price = o.getPrice();
+			if(sellOrders.containsKey(price)) {
+				sellOrders.put(price, sellOrders.get(price) + 1);
+			} else {
+				sellOrders.put(price, 1);
+			}
+		}
+		
+		/*
+		 * Print sell orders in descending price order
+		 */
+		for(Long price:sellOrders.descendingKeySet()) {
+			System.out.println(String.format("%s\t%s", sellOrders.get(price), price));
+		}
+
+		for(Long price:buyOrders.descendingKeySet()) {
+			System.out.println(String.format("\t%s\t%s", price, buyOrders.get(price)));
+		}
+		
 	}
 
 	public void processAllCancellations() {

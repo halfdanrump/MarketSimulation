@@ -15,7 +15,7 @@ public interface Logging {
 	boolean logWorldEventsToFile = true;
 	boolean logWorldEventsToConsole = false;
 	boolean logWorldWarningsToFile = true;
-	boolean logWorldWarningsToConsole = false;
+	boolean logWorldWarningsToConsole = true;
 	
 	boolean logWorldRoundDataToFile = true;
 	boolean logWorldRoundDataToConsole = false;

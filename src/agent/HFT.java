@@ -30,7 +30,9 @@ public abstract class HFT implements Logging {
 	private HashMap<Stock, Long> numberOfStocksInStandingBuyOrders;
 	protected ArrayList<Market> markets;
 	protected ArrayList<Stock> stocks;
+	private long largestLatencyToMarket;
 
+	
 	/*
 	 * For experiments in which the agent is associated with a group
 	 */
@@ -48,7 +50,10 @@ public abstract class HFT implements Logging {
 
 	protected ArrayList<Order> orderHistory;
 
-	protected abstract long getWaitingTime();
+//	protected abstract long getWaitingTime();
+	private long getWaitingTime() {
+		return this.largestLatencyToMarket;
+	}
 
 	public enum agentAction {
 		SUBMIT_ORDER, CANCEL_ORDER, UPDATE_ORDER
@@ -107,7 +112,7 @@ public abstract class HFT implements Logging {
 		this.stocks = new ArrayList<Stock>();
 		this.buildLatencyHashmap(marketIDs, marketLatencies);
 		this.markets.addAll(this.latencyToMarkets.keySet());
-		this.buildOrderbooksHashMap(marketIDs, stockIDs);
+		this.buildOrderbookList(marketIDs, stockIDs);
 		this.buildStocksList(stockIDs);
 		this.initializePortfolio();
 		this.numberOfStocksInStandingSellOrders = new HashMap<Stock, Long>();
@@ -119,7 +124,17 @@ public abstract class HFT implements Logging {
 		if (experiment.keepOrderHistory) {
 			this.orderHistory = new ArrayList<Order>();
 		}
+		this.calculateLargestLatency();
 	}
+	
+	private void calculateLargestLatency() {
+		this.largestLatencyToMarket = 0;
+		for (Market market : markets) {
+			this.largestLatencyToMarket = Math.max(this.largestLatencyToMarket, this.latencyToMarkets.get(market));
+		}
+		
+	}
+	
 
 	private void buildLatencyHashmap(int[] marketIDs, int[] marketLatencies) {
 		/*
@@ -138,11 +153,10 @@ public abstract class HFT implements Logging {
 		}
 	}
 
-	private void buildOrderbooksHashMap(int[] marketIDs, int[] stockIDs) {
+	private void buildOrderbookList(int[] marketIDs, int[] stockIDs) {
 		for (int market : marketIDs) {
 			for (int stock : stockIDs) {
-				this.orderbooks.add(this.experiment.getWorld()
-						.getOrderbookByNumbers(stock, market));
+				this.orderbooks.add(this.experiment.getWorld().getOrderbookByNumbers(stock, market));
 			}
 		}
 	}

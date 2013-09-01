@@ -72,7 +72,7 @@ public class WorldLogger extends Logger {
 	
 	public void recordEntry(){
 		if(this.createLogString){
-			String entry = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+			String entry = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 					this.experiment.getWorld().getCurrentRound(),
 					this.getTotalNStandingOrders(),
 					Order.getOrderCount(),
