@@ -22,7 +22,6 @@ import utilities.OrderPriceComparatorLowFirst;
 
 public class Orderbook {
 	private Experiment experiment;
-	private World world;
 	private Stock stock;
 	private Market market;
 
@@ -62,8 +61,8 @@ public class Orderbook {
 		this.unfilledBuyOrders = new PriorityQueue<Order>(10, Collections.reverseOrder(new orderPriceComparatorAscending()));
 		this.unfilledSellOrders = new PriorityQueue<Order>(10, new OrderPriceComparatorLowFirst());
 		this.marketOrders = new PriorityQueue<Order>(10, new OrderExpirationTimeComparator());
-		this.localBestBuyPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
-		this.localBestSellPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
+		this.localBestBuyPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, 0l));
+		this.localBestSellPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, Long.MAX_VALUE));
 		
 	}
 	
@@ -84,16 +83,38 @@ public class Orderbook {
 				new Order(now, now, 1000, volume, sellPrice, Order.Type.MARKET, Order.BuySell.SELL, null, this, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 //				this.receiveOrder(order);
 				break;
-			}
-			
+			}			
 		}
+		this.printOrderbook();
 		
 		this.localLastTradedMarketOrderBuyPrice = buyOrder.getPrice();
 		this.localLastTradedMarketOrderSellPrice = sellPrice;
-//		this.setlastTradedMarketOrderBuyPrice = buyOrder.getPrice();
-//		this.lastTradedMarketOrderSellPrice = sellPrice;
-//		this.processAllNewOrders();
 		this.experiment.getWorld().dispatchArrivingOrders();
+		
+	}
+	
+	public void fillBookWithRandomOrders() {
+		Random r = new Random();
+		this.localLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - this.experiment.ob_startingSpread/2;
+		this.localLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + this.experiment.ob_startingSpread/2;
+		/*
+		 * Make random market sell orders
+		 */
+		for(int i = 0; i<this.experiment.ob_nStartOrders/2; i++) {
+			long price = (long) (this.experiment.initialFundamentalPrice + this.experiment.ob_startingSpread/2 + Math.abs(r.nextGaussian() * this.experiment.ob_initialOrderStd));
+			long volume = (long) (1 + Math.abs(this.experiment.ob_initialOrderVolumeMean + r.nextGaussian() * this.experiment.ob_initialOrderVolumeStd));
+			new Order(0, 0, this.experiment.ob_orderExpirationTime, volume, price, Order.Type.MARKET, Order.BuySell.SELL, null, this, Message.TransmissionType.INSTANTANEOUS, this.experiment);
+		}
+		/*
+		 * Make random market buy orders
+		 */
+		for(int i = 0; i<this.experiment.ob_nStartOrders/2; i++) {
+			long price = (long) (this.experiment.initialFundamentalPrice - this.experiment.ob_startingSpread/2 - Math.abs(r.nextGaussian() * this.experiment.ob_initialOrderStd));
+			long volume = (long) (1 + Math.abs(this.experiment.ob_initialOrderVolumeMean + r.nextGaussian() * this.experiment.ob_initialOrderVolumeStd));
+			new Order(0, 0, this.experiment.ob_orderExpirationTime, volume, price, Order.Type.MARKET, Order.BuySell.BUY, null, this, Message.TransmissionType.INSTANTANEOUS, this.experiment);
+		}
+		this.experiment.getWorld().dispatchArrivingOrders();
+		this.printOrderbook();
 		
 	}
 	
@@ -109,7 +130,11 @@ public class Orderbook {
 		long nExpiredOrders = 0;
 		try {
 			while (marketOrders.peek().getExpirationTime() == this.experiment.getWorld().getCurrentRound()) {
-				removeOrderFromBook(marketOrders.peek());
+				Order order = marketOrders.peek();
+				removeOrderFromBook(order);
+				if(order.hasOwner()) {
+					order.getOwner().removeOrderWhenExpired(order);
+				}
 				nExpiredOrders++;
 			}
 		} catch (NullPointerException e) {
@@ -127,18 +152,23 @@ public class Orderbook {
 		long price = 0l;
 		int nInsertedOrders = 0;
 		while(true) {
+			/*
+			 * This code is not very good
+			 */
 			Order.BuySell buysell = null;
 			if(this.hasNoBuyOrders() & this.experiment.marketFillsEmptyBook) {
 				buysell = Order.BuySell.BUY;
 				price = this.localLastTradedMarketOrderBuyPrice;
 				new Order(now, now, this.experiment.orderLengthWhenMarketFillsEmptyBook, this.experiment.orderVolumeWhenMarketFillsEmptyBook, price, this.experiment.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS, this.experiment);
 				wasEmpty = true;
+				System.out.println("Market filled empty book!");
 			}
 			if(this.hasNoSellOrders() & this.experiment.marketFillsEmptyBook) {
 				buysell = Order.BuySell.SELL;
 				price = this.localLastTradedMarketOrderSellPrice;
 				new Order(now, now, this.experiment.orderLengthWhenMarketFillsEmptyBook, this.experiment.orderVolumeWhenMarketFillsEmptyBook, price, this.experiment.orderTypeWhenMarketFillsEmptyBook, buysell, null, this, Message.TransmissionType.INSTANTANEOUS, this.experiment);
 				wasEmpty = true;
+				System.out.println("Market filled empty book!");
 			}		
 			if(wasEmpty) {
 				nInsertedOrders++;
@@ -238,6 +268,7 @@ public class Orderbook {
 		 * a new market or limit order (newOrder). Creates receipts for both
 		 * sides of the transaction and pushes to world receipt queue.
 		 */
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		TransactionReceipt receipt;
 		long tradeVolume = Math.min(matchingOrder.getCurrentMarketSideVolume(), newOrder.getCurrentMarketSideVolume());
 		
@@ -300,7 +331,7 @@ public class Orderbook {
 		} else {
 			this.experiment.getWorld().errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()), this.experiment);
 		}
-		
+		this.printOrderbook();
 		return tradePrice;
 	}
 	
@@ -385,6 +416,7 @@ public class Orderbook {
 	}
 
 	private void removeOrderFromBook(Order order) {
+	
 		this.orderflowLog.logEventRemoveOrder(order);
 		if (order.getType() == Order.Type.MARKET) {
 			this.marketOrders.remove(order);
@@ -453,35 +485,44 @@ public class Orderbook {
 		
 	}
 	
-	public Long getLocalBestSellPriceAtEndOfRound(int time) throws NoOrdersException {
-		try {
-			if (this.localBestSellPriceAtEndOfRound.get(time) == Long.MAX_VALUE) {
-				throw new NoOrdersException(time, this, BuySell.SELL);
-			} else {
-				return this.localBestSellPriceAtEndOfRound.get(time);
-			}
-		} catch (IndexOutOfBoundsException e) {
-			this.experiment.getWorld().errorLog.logError(String.format("Cannot return ASK price at time %s. Needs initialization?"), this.experiment);
-			return 0l;
+	public Long getLocalBestSellPriceAtEndOfRound(int time){
+		if (time < 0) {
+			time = 0;
 		}
+		return this.localBestSellPriceAtEndOfRound.get(time);
+//		try {
+//			if (this.localBestSellPriceAtEndOfRound.get(time) == Long.MAX_VALUE) {
+//				throw new NoOrdersException(time, this, BuySell.SELL);
+//			} else {
+//				return this.localBestSellPriceAtEndOfRound.get(time);
+//			}
+//		} catch (IndexOutOfBoundsException e) {
+//			this.experiment.getWorld().errorLog.logError(String.format("Cannot return ASK price at time %s. Needs initialization?"), this.experiment);
+//			return 0l;
+//		}
 	}
 
-	public Long getLocalBestBuyPriceAtEndOfRound(int time) throws NoOrdersException {
-		try {
-			if (this.localBestBuyPriceAtEndOfRound.get(time) == 0) {
-				throw new NoOrdersException(time, this, BuySell.SELL);
-			} else {
-				return this.localBestBuyPriceAtEndOfRound.get(time);
-			}
-		} catch (IndexOutOfBoundsException e) {
-			this.experiment.getWorld().errorLog.logError(String.format("Cannot return BID price at time %s. Needs initialization?"), this.experiment);
-			return 0l;
+	public Long getLocalBestBuyPriceAtEndOfRound(int time){
+		if(time < 0) {
+			time = 0;
 		}
+		return this.localBestBuyPriceAtEndOfRound.get(time);
+		
+//		try {
+//			if (this.localBestBuyPriceAtEndOfRound.get(time) == 0) {
+//				throw new NoOrdersException(time, this, BuySell.SELL);
+//			} else {
+//				return this.localBestBuyPriceAtEndOfRound.get(time);
+//			}
+//		} catch (IndexOutOfBoundsException e) {
+//			this.experiment.getWorld().errorLog.logError(String.format("Cannot return BID price at time %s. Needs initialization?"), this.experiment);
+//			return 0l;
+//		}
 	}
 
-	public World getWorld() {
-		return world;
-	}
+//	public World getWorld() {
+//		return world;
+//	}
 
 	public Stock getStock() {
 		return stock;
@@ -548,6 +589,8 @@ public class Orderbook {
 		/*
 		 * Print sell orders in descending price order
 		 */
+		System.out.println(String.format("Orderbook at round %s", this.experiment.getWorld().getCurrentRound()));
+		
 		for(Long price:sellOrders.descendingKeySet()) {
 			System.out.println(String.format("%s\t%s", sellOrders.get(price), price));
 		}
@@ -555,6 +598,7 @@ public class Orderbook {
 		for(Long price:buyOrders.descendingKeySet()) {
 			System.out.println(String.format("\t%s\t%s", price, buyOrders.get(price)));
 		}
+		System.out.println("");
 		
 	}
 

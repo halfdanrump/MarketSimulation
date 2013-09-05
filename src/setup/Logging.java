@@ -25,10 +25,10 @@ public interface Logging {
 	 */
 
 	boolean logAgentActionsToFile = false;
-	boolean logAgentActionsToConsole = false;
+	boolean logAgentActionsToConsole = true;
 
 	boolean logAgentTradeDataToFile = false;
-	boolean logAgentTradeDataToConsole = false;
+	boolean logAgentTradeDataToConsole = true;
 
 	boolean logAgentRoundDataToFile = false;
 	boolean logAgentRoundDataToConsole = false;
@@ -46,12 +46,12 @@ public interface Logging {
 	 * ORDERBOOK. What kind of orderbook events to log
 	 */
 	final boolean logOrderbookEventsToFile = false;
-	final boolean logOrderbookEventsToConsole = false;
+	final boolean logOrderbookEventsToConsole = true;
 	final boolean logOrderbookOnelineEvents = false;
 	boolean logOrderbookOnelineEventsToConsole = false;
 
 	boolean logOrderbookOrderFlowToFile = false;
-	boolean logOrderbookOrderFlowToConsole = false;
+	boolean logOrderbookOrderFlowToConsole = true;
 
 
 }

@@ -32,9 +32,6 @@ public abstract class Message{
 		} else {
 			experiment.getWorld().errorLog.logError(String.format("Received transmission type: %s", transmissionType), experiment);
 		}
-		if(this.arrivalTime == 0) {
-			System.out.println(experiment.getWorld().getCurrentRound());
-		}
 		setMessageCount(getMessageCount() + 1);
 	}
 	

@@ -126,7 +126,7 @@ public class SingleStockMarketMaker extends HFT {
 				long newBuyPrice = this.getNewBuyPrice(spreadViolation, currentMarketBuyPrice, currentMarketSellPrice);
 				standingBuyOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newBuyPrice, Order.Type.MARKET, Order.BuySell.BUY, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 				this.submitOrder(standingBuyOrder);
-				this.eventlog.logAgentAction(String.format("Agent %s submitted a new BUY order, id: %s.", this.getID(), standingBuyOrder.getID()));
+//				this.eventlog.logAgentAction(String.format("Agent %s submitted a new BUY order, id: %s.", this.getID(), standingBuyOrder.getID()));
 			} else {
 				standingBuyOrder = this.standingBuyOrders.get(orderbook);
 			}
@@ -135,7 +135,7 @@ public class SingleStockMarketMaker extends HFT {
 				long newSellPrice = this.getNewSellPrice(spreadViolation, currentMarketBuyPrice, currentMarketSellPrice);
 				standingSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 				this.submitOrder(standingSellOrder);
-				this.eventlog.logAgentAction(String.format("Agent %s submitted a new SELL order, id: %s", this.getID(), standingSellOrder.getID()));
+//				this.eventlog.logAgentAction(String.format("Agent %s submitted a new SELL order, id: %s", this.getID(), standingSellOrder.getID()));
 			} else {
 				standingSellOrder = this.standingSellOrders.get(orderbook);
 			}
@@ -164,7 +164,7 @@ public class SingleStockMarketMaker extends HFT {
 		}
 		return true;
 	}
-
+	
 	private void updateBothSideOrderPrices(int dispatchTime, int transmissionDelay, long currentMarketSpread, long currentMarketBuyPrice, long currentMarketSellPrice, long buyPriceDiff, long sellPriceDiff, Order standingBuyOrder, Order standingSellOrder, boolean spreadViolation, Orderbook orderbook) {
 
 		this.eventlog.logAgentAction(String.format("Agent %s updated both his standing orders at market %s. Order buy-id: %s, sell-id: %s", this.getID(), orderbook.getMarket().getID(), standingBuyOrder.getID(), standingSellOrder.getID()));
@@ -187,7 +187,7 @@ public class SingleStockMarketMaker extends HFT {
 	private void confirmThatSellOrderIsInAccordanceWithStrategy(int transmissionDelay, int dispatchTime, long newSellPrice, Order.Type orderType, Order.BuySell buysell, Orderbook orderbook, Message.TransmissionType transmissionType) {
 		Stock stock = orderbook.getStock();
 		long numberOfOwnedStockAfterSellingOrderIsFullfilled = this.numberOfStocksInStandingSellOrders.get(stock) - this.fixedOrderVolume;
-		if (numberOfOwnedStockAfterSellingOrderIsFullfilled < 0 & this.experiment.doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
+		if (numberOfOwnedStockAfterSellingOrderIsFullfilled < 0 & this.experiment.ssmm_doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock) {
 			Order newSellOrder = new Order(transmissionDelay, dispatchTime, this.marketOrderLength, this.fixedOrderVolume, newSellPrice, Order.Type.MARKET, Order.BuySell.SELL, this, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 			this.submitOrder(newSellOrder);
 		} else {
@@ -225,7 +225,7 @@ public class SingleStockMarketMaker extends HFT {
 		if (spreadViolation) {
 			newSellPrice = currentMarketBuyPrice + this.minimumSpread/2;
 		} else {
-			newSellPrice = currentMarketSellPrice;
+			newSellPrice = currentMarketSellPrice - 1;
 		}
 		return newSellPrice;
 	}
@@ -238,11 +238,19 @@ public class SingleStockMarketMaker extends HFT {
 				newBuyPrice = 0;
 			}
 		} else {
-			newBuyPrice = currentMarketBuyPrice;
+			newBuyPrice = currentMarketBuyPrice + 1;
 		}
 		return newBuyPrice;
 	}
 
+	public void removeOrderWhenExpired(Order order) {
+		if(order.getBuySell() == Order.BuySell.BUY) {
+			this.standingBuyOrders.remove(order.getOrderbook());
+		} else if(order.getBuySell() == Order.BuySell.SELL){
+			this.standingSellOrders.remove(order.getOrderbook());
+		}
+	}
+	
 	// public long getWaitingTime() {
 	// return this.largestLatencyToMarket;
 	// }

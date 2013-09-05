@@ -20,7 +20,7 @@ public class StylizedTrader {
 		int dispatchTime = experiment.getWorld().getCurrentRound();
 		long volume = getStylizedTraderOrderVolume(experiment);
 		long price = getStylizedTraderEstimatedPrice(orderbook.getStock(), experiment);
-		Order order = new Order(0,dispatchTime, experiment.orderLength, volume, price, type, buysell, null, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, experiment);
+		Order order = new Order(0,dispatchTime, experiment.st_orderLength, volume, price, type, buysell, null, orderbook, Message.TransmissionType.WITH_TRANSMISSION_DELAY, experiment);
 		return order;
 	}
 	
@@ -33,10 +33,10 @@ public class StylizedTrader {
 	
 	public static long getStylizedTraderOrderVolume(Experiment experiment) {
 		long volume;
-		if(experiment.randomOrderVolume){
-			volume = Utils.getNonNegativeGaussianInteger(experiment.volumeStd, experiment.volumeMean);
+		if(experiment.st_randomOrderVolume){
+			volume = Utils.getNonNegativeGaussianInteger(experiment.st_volumeStd, experiment.st_volumeMean);
 		} else{
-			volume = experiment.constantVolume;
+			volume = experiment.st_constantVolume;
 		}
 		return volume;
 	}

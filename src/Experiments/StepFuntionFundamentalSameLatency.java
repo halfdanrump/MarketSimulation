@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import environment.Stock;
 
-public class SetFundamentalSameLatency extends ConstantFundamentalSameLatency {
+public class StepFuntionFundamentalSameLatency extends ConstantFundamentalSameLatency {
 
-	public SetFundamentalSameLatency(String rootFolder, int nAgents, int fixedLatency, int nSlowTraderOrdersPerRound) {
+	public StepFuntionFundamentalSameLatency(String rootFolder, int nAgents, int fixedLatency, int nSlowTraderOrdersPerRound) {
 		super(rootFolder, nAgents, fixedLatency, nSlowTraderOrdersPerRound);
 		// TODO Auto-generated constructor stub
 		
@@ -14,7 +14,7 @@ public class SetFundamentalSameLatency extends ConstantFundamentalSameLatency {
 		for(int i = 0; i<5000; i++) {
 			fixedFundamental.add((long) Math.pow(10,7));
 		}
-		for(int i=5000; i<this.nRounds + 1; i++) {
+		for(int i=5000; i<this.nTotalRounds + 1; i++) {
 			fixedFundamental.add((long) (Math.pow(10, 7) + 5 * Math.pow(10, 4)));
 		}
 		for(Stock stock:this.getWorld().getStocks()) {

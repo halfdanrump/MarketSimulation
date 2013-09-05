@@ -25,11 +25,24 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public int nRounds = 10000;
+	public final int nTotalRounds = 21000;
+	public final int nInitialSlowTraderRounds = 3000;
+	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
+	
 	public long nSlowTraderOrdersPerRound = 50;
 	public int nHFTsPerGroup = 10;
 	public int nGroups = 1;
-
+	
+	/*
+	 * Orderbook settings
+	 */
+	public int ob_nStartOrders = 10;
+	public int ob_initialOrderStd = 5;
+	public int ob_initialOrderVolumeMean = 10;
+	public int ob_initialOrderVolumeStd = 10;
+	public int ob_startingSpread = 20;
+	public int ob_orderExpirationTime = 100000;
+	
 	/*
 	 * Market rules
 	 */
@@ -38,12 +51,9 @@ public abstract class Experiment{
 	public boolean agentMustBuyAllStocksAsSpecifiedInReceipt = true;
 	public boolean agentMustSellAllStocksAsSpecifiedInReceipt = true;
 	public boolean marketFillsEmptyBook = true;
-	public long orderVolumeWhenMarketFillsEmptyBook = 99;
+	public long orderVolumeWhenMarketFillsEmptyBook = 10;
 	public Order.Type orderTypeWhenMarketFillsEmptyBook = Order.Type.MARKET;
 	public int orderLengthWhenMarketFillsEmptyBook = 5;
-	protected Logger config;
-	protected Logger meta;
-	private World world;
 	
 	/*
 	 * High frequency trader behavior
@@ -53,7 +63,7 @@ public abstract class Experiment{
 	
 	public long emptyOrderbookWaitTime = 1;
 	public boolean randomStartStockAmount = false;
-	public long startStockAmount = 100;
+	public long startStockAmount = 10000000;
 	
 	public boolean randomStartWealth = false;
 	public long constantStartWealth = (int) Math.pow(10, 3);
@@ -62,37 +72,44 @@ public abstract class Experiment{
 	public long wealthStd = (int) Math.pow(10, 4);
 	
 	
-//	public int minimumLatency = 10;
-//	public int maximumLatency = 100;
-	
 	/*
 	 * Single stock minimum spread market maker parameters 
 	 */
 	public long ssmm_tradeVolume = 10;
 	public int ssmm_marketOrderLength = 200;
-	public boolean doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock = true;
-	public long minimumSpread = 50;
+	public boolean ssmm_doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock = true;
+	public long ssmm_minimumSpread = 2;
 	
 	/*
 	 * Random walk parameters
 	 */
 	public boolean randomWalkFundamental = false;
-	public final long initialFundamentalPrice = (long) Math.pow(10, 3);
+	public final long initialFundamentalPrice = (long) Math.pow(10, 4);
 	public final double fundamentalBrownianMean = 0;
 	public final double fundamentalBrownianVariance = 0.00001;
 	
 	/*
 	 * Stylized trader parameters
 	 */
-	public int delayInRounds = 1000;
-	public int orderLength = 1000;
-	public boolean randomOrderVolume = false;
-	public long constantVolume = 10;
-	public double volumeMean = 100d;
-	public double volumeStd = 10d;
+	public int st_delayInRounds = 1000;
+	public int st_orderLength = 1000;
+	public double st_noiseStd = 5;
+	public boolean st_randomOrderVolume = false;
+	public long st_constantVolume = 10;
+	public double st_volumeMean = 100d;
+	public double st_volumeStd = 10d;
+
+	
 	public double addivePriceNoiseMean = 0d;
 	public double additivePriceNoiseStd = 5;
 	
+	/*
+	 * Other variables
+	 */
+	protected Logger config;
+	protected Logger meta;
+	
+	private World world;
 	public String experimentName;
 
 	public String rootFolder;
@@ -104,7 +121,7 @@ public abstract class Experiment{
 	
 	public Experiment(String rootFolder){
 		this.rootFolder = rootFolder;
-		this.world = new World();
+		this.world = new World(this);
 	}
 	
 	protected void initializeExperimentWithChangedParameters(Experiment experiment) {
@@ -226,14 +243,16 @@ public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 
 	public void initializeEmptyOrderbooksWithMarketOrders() {
 		for(Orderbook orderbook:this.world.getOrderbooks()) {
-			orderbook.initializeBookWithRandomOrders();
+//			orderbook.initializeBookWithRandomOrders();
+			orderbook.fillBookWithRandomOrders();
 		}
 		this.world.processNewOrdersInAllOrderbooks();
 		
 	}
 	
 	public static void runExperiment(Experiment experiment){
-		experiment.world.executeNRounds(experiment, experiment.nRounds-1);
+		experiment.world.executeInitalRoundsWithSlowTraders();
+		experiment.world.executeHFTRounds();
 		experiment.closeLogs();
 		System.out.println(String.format("Finished simulation in %s seconds", ((double) experiment.world.runTime)/1000f));
 	}

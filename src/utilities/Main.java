@@ -5,7 +5,7 @@ import org.rosuda.JRI.Rengine;
 import Experiments.ConstantFundamentalDifferentLatency;
 import Experiments.ConstantFundamentalSameLatency;
 import Experiments.Experiment;
-import Experiments.SetFundamentalSameLatency;
+import Experiments.StepFuntionFundamentalSameLatency;
 
 
 public class Main {

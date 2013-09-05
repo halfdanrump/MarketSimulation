@@ -118,6 +118,13 @@ public class GoldenCrossLimitOrderChartist extends HFT {
 		}
 		return false;
 	}
+
+
+	@Override
+	public void removeOrderWhenExpired(Order order) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 //	private long calculateAverageOverNPreviousRounds(Orderbook ob, int nRounds) {
 //		int sum = 0;

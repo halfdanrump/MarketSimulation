@@ -49,7 +49,7 @@ public class WorldLogger extends Logger {
 					"nStandingOrders," +
 					"totalSubmittedOrders," +
 					"totalSubmittedCancellatons," +
-					"totalFulfilledOrders," +
+					"totalFulfilledHFTOrders," +
 					"totalHFTWealth," +
 					"arrivedOrdersThisRound," +
 					"arrivedCancellationsThisRound," +

@@ -34,6 +34,8 @@ public class Order extends Message{
 		 * Order submitted by HFTs
 		 */
 		super(experiment.getWorld().getCurrentRound() + transmissionDelay + 1, dispatchTime, transmissionType, experiment);
+		this.id = Order.orderCount;
+		Order.orderCount++;
 		this.experiment = experiment;
 		this.owner = owner;
 //		if(dispatchTime < dispatchTime + transmissionDelay){
@@ -63,8 +65,6 @@ public class Order extends Message{
 		this.type = type;
 		this.buysell = buysell;
 		this.orderbook = orderbook;
-		this.id = Order.orderCount;
-		Order.orderCount++;
 
 		/*
 		 * Dealing with temporal aspects
@@ -208,6 +208,20 @@ public class Order extends Message{
 	
 	public Experiment getExperiment() {
 		return this.experiment;
+	}
+
+	public void printOrderDetails() {
+		System.out.println(String.format("Owner: %s, price: %s, buysell: %s, volume: %s",  this.owner, this.price, this.buysell, this.initialVolume));
+		
+	}
+
+	public boolean hasOwner() {
+		// TODO Auto-generated method stub
+		if (this.owner == null){
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 }

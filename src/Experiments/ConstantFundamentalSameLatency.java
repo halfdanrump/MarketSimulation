@@ -18,14 +18,18 @@ public class ConstantFundamentalSameLatency extends Experiment {
 	public static void main(String[] args) {
 		System.out.println("Running experiment");
 		String rootFolder = System.getProperty("rootFolder", "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/");
-		int fixedLatency = Integer.valueOf(System.getProperty("fixedLatency", "1"));
-		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("STOrdersPerRound", "20"));
+		int fixedLatency = Integer.valueOf(System.getProperty("fixedLatency", "100"));
+		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("STOrdersPerRound", "0"));
 		
-		String[] Rargs = {"--vanilla"};
-//		Rengine re = new Rengine(Rargs, false, null);
-		int nAgents = 50;
+		int nAgents = 1;
 		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, nAgents, fixedLatency, nSTOrdersPerRound);
-		Experiment.runExperiment(e1);
+		
+		
+		try{
+			Experiment.runExperiment(e1);
+		} catch(java.lang.StackOverflowError e) {
+			e1.getWorld().getOrderbookByNumbers(0, 0).printOrderbook();
+		}
 //		Experiment.runRscript(e1, re);
 		
 	}
@@ -73,7 +77,7 @@ public class ConstantFundamentalSameLatency extends Experiment {
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		for(int i=0; i<this.nHFTsPerGroup; i++) {
-			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.minimumSpread, group, this);
+			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.ssmm_minimumSpread, group, this);
 		}
 		
 //		float aggressiveness = 1;

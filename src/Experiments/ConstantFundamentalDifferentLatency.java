@@ -60,7 +60,7 @@ public class ConstantFundamentalDifferentLatency extends Experiment {
 		int[] marketIDs = {0}; 
 		for(int agent=0; agent<this.nHFTsPerGroup; agent++) {
 			latencyToMarkets[0] = Utils.getRandomUniformInteger(this.minimumLatency, this.maximumLatency);
-			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.minimumSpread, group, this);
+			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.ssmm_minimumSpread, group, this);
 		}
 	}
 

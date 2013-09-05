@@ -9,8 +9,8 @@ public class InvalidOrderException extends Exception {
 	HFT owner;
 	Orderbook orderbook;
 	
-	public InvalidOrderException(long initialVolume, long price2, HFT owner, Orderbook orderbook){
-		this.price = price2;
+	public InvalidOrderException(long initialVolume, long price, HFT owner, Orderbook orderbook){
+		this.price = price;
 		this.volume = initialVolume;
 		this.owner = owner;
 		this.orderbook = orderbook;

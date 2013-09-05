@@ -61,8 +61,8 @@ getStats = function(files){
 }
 
 
-makePlot = function(files, rounds, meanPrice, stdPrice, from, to, SMAwindows){
-  par(mfrow=c(3,1))
+makeMeanPricePlot = function(files, rounds, meanPrice, stdPrice, from, to, SMAwindows){
+  par(mfrow=c(2,1))
   maxPrice = max(meanPrice[from:to], files$stock0roundBased$fundamental[from:to])
   minPrice = min(meanPrice[from:to], files$stock0roundBased$fundamental[from:to])
   par(mai=c(0,1,1,1))
@@ -72,11 +72,29 @@ makePlot = function(files, rounds, meanPrice, stdPrice, from, to, SMAwindows){
   #lines(SMA(files$stock0roundBased$fundamental[from:to]), col="green")
   text(x=median(rounds[from:to]), y=(max(meanPrice[from:to]) - min(meanPrice[from:to]))*0.9 + min(meanPrice[from:to]), labels=files$graphPrefix, cex=0.7, col="blue")
   #plot(SMA(files$stock0roundBased$tradedVolume[from:to],n=100), type="l")
-  par(mai=c(0,1,0,1))
-  plot(rounds[from:to], stdPrice[from:to], pch=19, cex=0.2)
-  lines(SMA(stdPrice, n=SMAwindows), type="l", col="red")
+  #par(mai=c(0,1,0,1))
+  #plot(rounds[from:to], stdPrice[from:to], pch=19, cex=0.2)
+  #lines(SMA(stdPrice, n=SMAwindows), type="l", col="red")
   par(mai=c(1,1,0,1))
   plot(rounds[from:to], SMA(files$stock0roundBased$tradedVolume[from:to],n=SMAwindows), type="l", col="red", lwd=2)
+  
+}
+
+makeShortTimeTradePricePlot = function(files){
+  par(mfrow=c(2,1))
+  from = min(files$stock0transactions$round)
+  to = max(files$stock0transactions$round)
+  plot(files$stock0transactions$round[from:to], files$stock0transactions$price[from:to], ylim=c(9990, 10010), type="l")
+  lines(files$stock0roundBased$fundamental, col="red", type="l", lwd=2)
+  plot(files$stock0roundBased$tradedVolume, type="h")
+  #from = min(which(files$stock0transactions$round == 12000))
+  #to = max(which(files$stock0transactions$round == 15500))
+  #plot(files$stock0transactions$round[from:to], files$stock0transactions$price[from:to], ylim=c(9990, 10010), type="l")
+  #lines(files$stock0roundBased$fundamental, col="red", type="l", lwd=2)
+  #from = min(which(files$stock0transactions$round == 15000))
+  #to = max(which(files$stock0transactions$round == 15100))
+  #plot(files$stock0transactions$round[from:to], files$stock0transactions$price[from:to], ylim=c(9990, 10010), type="l")
+  #lines(files$stock0roundBased$fundamental, col="red", type="l", lwd=2)
   
 }
 
@@ -91,10 +109,9 @@ from = 1000
 to = length(files$rounds)
 SMAwindows = 200
 
-data = getStats(files)
-
-makePlot(files, files$rounds, data$meanPrice, data$stdPrice, from, to, SMAwindows)
-  
+#dataStats = getStats(files)
+#makeMeanPricePlot(files, files$rounds, dataStats$meanPrice, data$stdPrice, from, to, SMAwindows)
+makeShortTimeTradePricePlot(files=files)
 
 #par(mfrow=c(2,1))
 #smoothedMeanPrice = SMA(data$meanPrice[from:to], n=SMAwindows)

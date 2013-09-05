@@ -70,6 +70,7 @@ public class OrderbookLogger extends Logger implements Logging{
 	public void logEventRemoveOrder(Order order) {
 		if (this.createLogString) {
 			String line = super.getNewEntry() + "Remove\t" + order.toStringForOrderbookLog();
+			line += String.format("\t%s", order.getOwnerID());
 			if(this.logToFile){
 				super.writeToFile(line);
 			}
@@ -83,6 +84,7 @@ public class OrderbookLogger extends Logger implements Logging{
 	public void logEventUpdateOrderVolume(Order order, long tradeVolume) {
 		if (this.createLogString) {
 			String line = super.getNewEntry() + "UpdVol\t" + order.getID() + "\t\t\t\t" + -tradeVolume;
+			line += String.format("\t%s", order.getOwnerID());
 			if(this.logToFile){
 				super.writeToFile(line);
 			}
@@ -95,6 +97,7 @@ public class OrderbookLogger extends Logger implements Logging{
 	public void logEventProcessNewOrder(Order order) {
 		if (this.createLogString) {
 			String line = super.getNewEntry() + "Process\t" + order.toStringForOrderbookLog();
+			line += String.format("\t%s", order.getOwnerID());
 			if(this.logToFile){
 				super.writeToFile(line);
 			}

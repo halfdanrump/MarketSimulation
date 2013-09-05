@@ -13,20 +13,17 @@ import utilities.StockMarketPair;
 import Experiments.Experiment;
 import agent.HFT;
 import agent.StylizedTrader;
+import agent.ToriumiSensei;
 
 //import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 
 public class World implements SimulationSetup {
 	private Experiment experiment;
-	
-	private enum roundPhases{
-		MESSAGES_ARRIVE,
-		STYLIZED_TRADING,
-		HFT_TRADING,
-		UPDATE_ORDERBOOKS,
-		LOGGING;
+
+	private enum roundPhases {
+		MESSAGES_ARRIVE, STYLIZED_TRADING, HFT_TRADING, UPDATE_ORDERBOOKS, LOGGING;
 	}
-	
+
 	/*
 	 * References to stocks, markets and agents (indexed by IDs)
 	 */
@@ -52,7 +49,7 @@ public class World implements SimulationSetup {
 	private PriorityQueue<HFT> waitingAgents;
 	private PriorityQueue<HFT> thinkingAgents;
 	private ArrayList<HFT> freeAgents;
-	
+
 	/*
 	 * Loggers
 	 */
@@ -69,51 +66,49 @@ public class World implements SimulationSetup {
 	public long runTime;
 	private int currentRound;
 	private roundPhases roundPhase;
-	
-	public World() {
+
+	public World(Experiment experiment) {
 		this.creationTime = System.currentTimeMillis();
 		this.runTime = 0;
 		this.currentRound = 0;
-		
-		this.agentsByID =  new HashMap<String, HFT>();
-		this.orderbooksByPair =  new HashMap<StockMarketPair, Orderbook>();
-		this.stocks =  new ArrayList<Stock>();
-		this.agents =  new ArrayList<HFT>();
-		this.markets =  new ArrayList<Market>();
-		this.orderbooks =  new ArrayList<Orderbook>();
+		this.experiment = experiment;
+
+		this.agentsByID = new HashMap<String, HFT>();
+		this.orderbooksByPair = new HashMap<StockMarketPair, Orderbook>();
+		this.stocks = new ArrayList<Stock>();
+		this.agents = new ArrayList<HFT>();
+		this.markets = new ArrayList<Market>();
+		this.orderbooks = new ArrayList<Orderbook>();
 		this.messageArrivalTimeComparator = new MessageArrivalTimeComparator();
-		this.ordersInTransit =  new PriorityQueue<Order>(100, messageArrivalTimeComparator);
-		this.receiptsInTransit =  new PriorityQueue<TransactionReceipt>(100, messageArrivalTimeComparator);
-		this.orderCancellationsInTransit =  new PriorityQueue<OrderCancellation>(100, messageArrivalTimeComparator);
+		this.ordersInTransit = new PriorityQueue<Order>(100, messageArrivalTimeComparator);
+		this.receiptsInTransit = new PriorityQueue<TransactionReceipt>(100, messageArrivalTimeComparator);
+		this.orderCancellationsInTransit = new PriorityQueue<OrderCancellation>(100, messageArrivalTimeComparator);
 		this.agentWakeupComparator = new AgentWakeupComparator();
-		this.waitingAgents =  new PriorityQueue<HFT>(10, agentWakeupComparator);
-		this.thinkingAgents =  new PriorityQueue<HFT>(10, agentWakeupComparator);
-		this.freeAgents =  new ArrayList<HFT>();
+		this.waitingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
+		this.thinkingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
+		this.freeAgents = new ArrayList<HFT>();
+		
+	
 	}
 
-	public void executeInitalRounds(long nRounds, Experiment experiment) {
-		for (long round = 0; round < nRounds; round++) {
+	public void executeInitalRoundsWithSlowTraders() {
+		for (int round = 0; round < this.experiment.nInitialSlowTraderRounds; round++) {
 			expireOrdersInAllOrderbooks();
 			prepareNewRound();
 			dispatchArrivingReceipts();
 			dispatchOrderCancellations();
 			processOrderCancellationsInAllOrderbooks();
-			createSlowTraderOrders(experiment);
+			createSlowTraderOrders(this.experiment);
 			dispatchArrivingOrders();
 			processNewOrdersInAllOrderbooks();
 			logRoundBasedData();
 		}
 	}
+	
+	
 
 	public void executeRound(Experiment experiment) {
 		prepareNewRound();
-		if(currentRound % 1000 == 0) {
-			System.out.println(String.format("Round %s", currentRound));
-		}
-		/*
-		 * Increment time variable Update fundamental prices for each stock.
-		 */
-		
 		/*
 		 * Receipts from the previous rounds are dispatched. The order does not
 		 * matter, so there's no need to randomize it.
@@ -148,40 +143,41 @@ public class World implements SimulationSetup {
 		processNewOrdersInAllOrderbooks();
 
 		updateGlobalKnowledge();
-		
+
 		logRoundBasedData();
 	}
 
 	private void updateGlobalKnowledge() {
 		/*
-		 * This function contains calls that must be executed after all trading activity has ended for the round,
-		 * but before round based logging is done.
+		 * This function contains calls that must be executed after all trading
+		 * activity has ended for the round, but before round based logging is
+		 * done.
 		 * 
-		 * Later, this method will contains calls for confirming the validity of trades, and other things.
-		 * 
+		 * Later, this method will contains calls for confirming the validity of
+		 * trades, and other things.
 		 */
 		this.runTime = System.currentTimeMillis() - this.creationTime;
 
-		for(Stock stock:stocks) {
+		for (Stock stock : stocks) {
 			stock.collectGlobalBestPricesAtEndOfRound();
 		}
-		
+
 	}
 
 	private void logRoundBasedData() {
 		this.logStockPrices();
 		this.logAgentData();
 		this.dataLog.recordEntry();
-		
+
 	}
 
 	private void logAgentData() {
 		// TODO Auto-generated method stub
-		for(HFT agent:this.agents){
-			try{
+		for (HFT agent : this.agents) {
+			try {
 				agent.roundDatalog.recordDataEntryAtEndOfRound();
-			} catch(NullPointerException e){
-				
+			} catch (NullPointerException e) {
+
 			}
 		}
 	}
@@ -194,9 +190,10 @@ public class World implements SimulationSetup {
 
 	private void createSlowTraderOrders(Experiment experiment) {
 		for (long i = 0; i < experiment.nSlowTraderOrdersPerRound; i++) {
-			StylizedTrader.submitRandomOrder(experiment);
+//			StylizedTrader.submitRandomOrder(experiment);
+			ToriumiSensei.submitRandomOrder(experiment);
 		}
-//		System.out.println("k");
+		// System.out.println("k");
 	}
 
 	private void updateFundamental() {
@@ -205,14 +202,10 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	
-
 	public void prepareNewRound() {
 		currentRound++;
 		updateFundamental();
 	}
-
-	
 
 	private void allAgentsRequestMarketInformation() {
 		/*
@@ -229,8 +222,8 @@ public class World implements SimulationSetup {
 			nInformationRequests++;
 		}
 		this.dataLog.setNInformationRequests(nInformationRequests);
-//		this.eventLog.logOnelineEvent(String.format(
-//				"%s agents requested market information", nInformationRequests));
+		// this.eventLog.logOnelineEvent(String.format(
+		// "%s agents requested market information", nInformationRequests));
 		// try{
 		//
 		// for(HFT agent:freeAgents){
@@ -289,7 +282,7 @@ public class World implements SimulationSetup {
 				if (agent.getWakeupTime() == this.getCurrentRound()) {
 					nReceivedMarketInformation++;
 					boolean reRequest = agentReceiveMarketInformation(agent);
-					if(reRequest) {
+					if (reRequest) {
 						nReRequest++;
 					}
 				} else {
@@ -301,8 +294,9 @@ public class World implements SimulationSetup {
 		}
 		this.dataLog.setnReceiveMarketInformation(nReceivedMarketInformation);
 		this.dataLog.setnReRequestionMarketInformation(nReRequest);
-//		this.eventLog.logOnelineEvent(String.format(
-//				"%s agents received market information.", nReceivedMarketInformation));
+		// this.eventLog.logOnelineEvent(String.format(
+		// "%s agents received market information.",
+		// nReceivedMarketInformation));
 	}
 
 	private boolean agentReceiveMarketInformation(HFT agent) {
@@ -312,10 +306,10 @@ public class World implements SimulationSetup {
 			return true;
 		} catch (NoOrdersException e) {
 			return false;
-//			this.eventLog
-//					.logOnelineEvent(String
-//							.format("Agent %s did not evaluate strategy, but requested new market information",
-//									agent.getID()));
+			// this.eventLog
+			// .logOnelineEvent(String
+			// .format("Agent %s did not evaluate strategy, but requested new market information",
+			// agent.getID()));
 		}
 	}
 
@@ -339,8 +333,8 @@ public class World implements SimulationSetup {
 			}
 		}
 		this.dataLog.setnFinishedEvaluatingStrategy(nFinishedEvaluating);
-//		this.eventLog.logOnelineEvent(String.format(
-//				"%s agents finished evaluating their strategy.", i));
+		// this.eventLog.logOnelineEvent(String.format(
+		// "%s agents finished evaluating their strategy.", i));
 	}
 
 	private void agentEvaluateMarketInformation(HFT agent) {
@@ -368,11 +362,11 @@ public class World implements SimulationSetup {
 					nArrivingOrders++;
 					ordersInTransit.remove();
 					order.getOrderbook().receiveOrder(order);
-				} else if (order.getArrivalTime() < this.currentRound){
+				} else if (order.getArrivalTime() < this.currentRound) {
 					this.errorLog.logError(String.format("Current round is %s but order with arrival time %s exist in queue.", currentRound, order.getArrivalTime()), this.experiment);
 					Exception e = new Exception();
 					e.printStackTrace();
-				} else if(order.getArrivalTime() > this.currentRound) {
+				} else if (order.getArrivalTime() > this.currentRound) {
 					this.eventLog.logOnelineEvent(String.format("After dispatching %s orders this round there were %s order still transit.", nArrivingOrders, ordersInTransit.size()));
 					break;
 				}
@@ -383,7 +377,7 @@ public class World implements SimulationSetup {
 		}
 		this.dataLog.setnArrivingOrders(nArrivingOrders);
 	}
-	
+
 	private void dispatchOrderCancellations() {
 		/*
 		 * Transfer order cancellations from in transit to the target orderbook.
@@ -421,9 +415,9 @@ public class World implements SimulationSetup {
 					receiptsInTransit.remove();
 					HFT recipient = receipt.getOwnerOfFilledStandingOrder();
 					recipient.receiveTransactionReceipt(receipt);
-				} else if(receipt.getArrivalTime() < this.currentRound) {
+				} else if (receipt.getArrivalTime() < this.currentRound) {
 					this.errorLog.logError(String.format("Current round is %s but receipt with arrival time %s exist in queue.", currentRound, receipt.getArrivalTime()), this.experiment);
-				} else if(receipt.getArrivalTime() > this.currentRound) {
+				} else if (receipt.getArrivalTime() > this.currentRound) {
 					this.eventLog.logOnelineEvent(String.format("After dispatching %s receipts this round there were stil %s receipts in transit.", nArrivingReceipts, this.receiptsInTransit.size()));
 					break;
 				}
@@ -441,7 +435,7 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	public  void expireOrdersInAllOrderbooks() {
+	public void expireOrdersInAllOrderbooks() {
 		long totalExpiredOrders = 0;
 		for (Orderbook orderbook : orderbooks) {
 			totalExpiredOrders += orderbook.expireOrders();
@@ -473,7 +467,7 @@ public class World implements SimulationSetup {
 	}
 
 	public void addNewOrder(Order order) {
-//		Order orderOrderbookSide = orderAgentSide.getCopy();
+		// Order orderOrderbookSide = orderAgentSide.getCopy();
 		ordersInTransit.add(order);
 	}
 
@@ -489,15 +483,18 @@ public class World implements SimulationSetup {
 		currentRound = time;
 	}
 
-	public void executeNRounds(Experiment experiment, long N) {
-		for (long round = 0; round < N; round++) {
-			if(round==5000) {
-				System.out.println("Break time!");
-				for(Orderbook o:this.orderbooks) {
-					o.printOrderbook();
-				}
+	public void executeHFTRounds() {
+		for (long round = 0; round < this.experiment.nHFTRounds; round++) {
+			if (currentRound % 1000 == 0) {
+				System.out.println(String.format("Round %s", currentRound));
 			}
-			this.executeRound(experiment);
+//			if (round == 0 | round == 5000 | round == 10000 | round == 15000) {
+//				System.out.println("Break time!");
+//				for (Orderbook o : this.orderbooks) {
+//					o.printOrderbook();
+//				}
+//			}
+			this.executeRound(this.experiment);
 		}
 	}
 
@@ -507,22 +504,20 @@ public class World implements SimulationSetup {
 			stock = stocks.get(index);
 		} catch (IndexOutOfBoundsException e) {
 			// e.printStackTrace();
-			this.errorLog.logError(String.format(
-					"Stock number %d has not been created.", index), null);
+			this.errorLog.logError(String.format("Stock number %d has not been created.", index), null);
 			System.exit(1);
 		}
 		return stock;
 
 		// return stocksByID;
 	}
-	
+
 	public Market getMarketByNumber(int index) {
 		Market market = null;
 		try {
 			market = markets.get(index);
 		} catch (IndexOutOfBoundsException e) {
-			this.errorLog.logError(String.format(
-					"Market number %d has not been created.", index), null);
+			this.errorLog.logError(String.format("Market number %d has not been created.", index), null);
 		}
 		return market;
 	}
@@ -540,10 +535,7 @@ public class World implements SimulationSetup {
 		if (orderbooksByPair.containsKey(pair)) {
 			return orderbooksByPair.get(pair);
 		} else {
-			this.errorLog
-					.logError(String
-							.format("Orderbook for stock %d and market %d has not been created yet!",
-									stock, market), null);
+			this.errorLog.logError(String.format("Orderbook for stock %d and market %d has not been created yet!", stock, market), null);
 			// System.exit(1);
 			return null;
 		}
@@ -554,10 +546,7 @@ public class World implements SimulationSetup {
 		if (orderbooksByPair.containsKey(pair)) {
 			return orderbooksByPair.get(pair);
 		} else {
-			this.errorLog
-					.logError(String
-							.format("Orderbook for stock %d and market %d has not been created yet!",
-									stockID, marketID), null);
+			this.errorLog.logError(String.format("Orderbook for stock %d and market %d has not been created yet!", stockID, marketID), null);
 			// System.exit(1);
 			return null;
 		}
@@ -600,5 +589,7 @@ public class World implements SimulationSetup {
 	public HashMap<StockMarketPair, Orderbook> getOrderbooksByPair() {
 		return orderbooksByPair;
 	}
+
+	
 
 }

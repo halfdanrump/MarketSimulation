@@ -29,8 +29,8 @@ public class Stock {
 	private TreeSet<Market> markets;
 	public StockLogger roundBasedDatalog;
 	public StockLogger transactionBasedDataLog;
-	private long globalLastTradedMarketOrderBuyPrice;
-	private long globalLastTradedMarketOrderSellPrice;
+//	private long globalLastTradedMarketOrderBuyPrice;
+//	private long globalLastTradedMarketOrderSellPrice;
 	private ArrayList<Long> tradedPerRoundVolume;
 	private static long nStocks = 0;
 	private ArrayList<Long> fixedFundamental;
@@ -45,22 +45,22 @@ public class Stock {
 		this.id = nStocks;
 		nStocks++;
 		this.markets = new TreeSet<Market>(new MarketIdComparator());
-		this.fundamentalPrice = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
-		this.tradedPerRoundVolume = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
-		this.globalLowestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
-		this.globalHighestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, 0l));
-		this.globalLowestSell = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
-		this.globalHighestSell = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
+		this.fundamentalPrice = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, 0l));
+		this.tradedPerRoundVolume = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, 0l));
+		this.globalLowestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, 0l));
+		this.globalHighestBuy = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, 0l));
+		this.globalLowestSell = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, Long.MAX_VALUE));
+		this.globalHighestSell = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, Long.MAX_VALUE));
 		
 		this.bestMarketInRound = new ArrayList<Market>();
-		this.localSmallestOrderbookSpread = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, Long.MAX_VALUE));
+		this.localSmallestOrderbookSpread = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, Long.MAX_VALUE));
 		this.fundamentalPrice.set(0,this.experiment.initialFundamentalPrice);
-		this.globalLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - 10*(long) this.experiment.additivePriceNoiseStd;
-		this.globalLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + 10*(long) this.experiment.additivePriceNoiseStd;
+//		this.globalLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - 10*(long) this.experiment.additivePriceNoiseStd;
+//		this.globalLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + 10*(long) this.experiment.additivePriceNoiseStd;
 		this.gbm = new GeometricBrownianMotion(this.experiment.initialFundamentalPrice, this.experiment.fundamentalBrownianMean, this.experiment.fundamentalBrownianVariance, new MRG32k3a());
-		gbm.setObservationTimes(1, this.experiment.nRounds+1);
+		gbm.setObservationTimes(1, this.experiment.nTotalRounds+1);
 		this.experiment.getWorld().addStock(this);
-		this.fixedFundamental = new ArrayList<Long>(Collections.nCopies(this.experiment.nRounds, this.experiment.initialFundamentalPrice));
+		this.fixedFundamental = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, this.experiment.initialFundamentalPrice));
 	}
 	
 	public void updateFundamentalPrice(){
@@ -109,7 +109,12 @@ public class Stock {
 	}
 	
 	public long getFundamentalPrice(int time){
-		return this.fundamentalPrice.get(time);
+		if(time < 0) {
+			return this.fundamentalPrice.get(0);
+		}
+		else{
+			return this.fundamentalPrice.get(time);
+		}
 	}
 	
 	public TreeSet<Market> getMarkets(){
@@ -118,13 +123,13 @@ public class Stock {
 	
 	
 
-	public long getGlobalLastTradedMarketOrderBuyPrice() {
-		return globalLastTradedMarketOrderBuyPrice;
-	}
-
-	public long getGlobalLastTradedMarketOrderSellPrice() {
-		return globalLastTradedMarketOrderSellPrice;
-	}
+//	public long getGlobalLastTradedMarketOrderBuyPrice() {
+//		return globalLastTradedMarketOrderBuyPrice;
+//	}
+//
+//	public long getGlobalLastTradedMarketOrderSellPrice() {
+//		return globalLastTradedMarketOrderSellPrice;
+//	}
 	
 	public void collectGlobalBestPricesAtEndOfRound() {
 		/*
