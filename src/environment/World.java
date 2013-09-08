@@ -11,6 +11,7 @@ import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
 import utilities.StockMarketPair;
 import Experiments.Experiment;
+import agent.FundamentalTrader;
 import agent.HFT;
 import agent.StylizedTrader;
 import agent.ToriumiSensei;
@@ -102,6 +103,7 @@ public class World implements SimulationSetup {
 			dispatchArrivingOrders();
 			processNewOrdersInAllOrderbooks();
 			logRoundBasedData();
+			resetRoundBasedVariables();
 		}
 	}
 	
@@ -145,6 +147,7 @@ public class World implements SimulationSetup {
 		updateGlobalKnowledge();
 
 		logRoundBasedData();
+		resetRoundBasedVariables();
 	}
 
 	private void updateGlobalKnowledge() {
@@ -163,12 +166,25 @@ public class World implements SimulationSetup {
 		}
 
 	}
+	
+	private void resetRoundBasedVariables() {
+		for(Orderbook o:orderbooks) {
+			o.setnTradesThisRound(0);
+		}
+	}
 
 	private void logRoundBasedData() {
 		this.logStockPrices();
 		this.logAgentData();
+		this.logOrderbookRoundbasedData();
 		this.dataLog.recordEntry();
 
+	}
+	
+	private void logOrderbookRoundbasedData() {
+		for(Orderbook o:orderbooks) {
+			o.roundBasedLog.logRoundBasedData();
+		}
 	}
 
 	private void logAgentData() {
@@ -191,7 +207,8 @@ public class World implements SimulationSetup {
 	private void createSlowTraderOrders(Experiment experiment) {
 		for (long i = 0; i < experiment.nSlowTraderOrdersPerRound; i++) {
 //			StylizedTrader.submitRandomOrder(experiment);
-			ToriumiSensei.submitRandomOrder(experiment);
+//			ToriumiSensei.submitRandomOrder(experiment);
+			FundamentalTrader.sumbitOrderAtRandomOrderbook(experiment);
 		}
 		// System.out.println("k");
 	}
@@ -487,13 +504,11 @@ public class World implements SimulationSetup {
 		for (long round = 0; round < this.experiment.nHFTRounds; round++) {
 			if (currentRound % 1000 == 0) {
 				System.out.println(String.format("Round %s", currentRound));
+				for (Orderbook o : this.orderbooks) {
+					o.printOrderbook();
+				}
 			}
-//			if (round == 0 | round == 5000 | round == 10000 | round == 15000) {
-//				System.out.println("Break time!");
-//				for (Orderbook o : this.orderbooks) {
-//					o.printOrderbook();
-//				}
-//			}
+
 			this.executeRound(this.experiment);
 		}
 	}

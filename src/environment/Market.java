@@ -30,22 +30,13 @@ public class Market{
 	
 	public long getDelayedBestSellPriceAtEndOfRound(HFT agent, Stock stock) throws NoOrdersException{
 		int time = this.experiment.getWorld().getCurrentRound() - agent.getLatency(this);
-		try {
-			Orderbook orderbook = this.orderbooksByStock.get(stock);
-			return orderbook.getLocalBestSellPriceAtEndOfRound(time);		
-		} catch (NoOrdersException e) {
-			// TODO Auto-generated catch block
-			throw e;
-		}
+		Orderbook orderbook = this.orderbooksByStock.get(stock);
+		return orderbook.getLocalBestSellPriceAtEndOfRound(time);		
 	}
 	
 	public long getDelayedBestBuyPriceAtEndOfRound(HFT agent, Stock stock) throws NoOrdersException{
 		int time = this.experiment.getWorld().getCurrentRound() - agent.getLatency(this);
-		try{
-			return this.orderbooksByStock.get(stock).getLocalBestBuyPriceAtEndOfRound(time);
-		} catch(NoOrdersException e){
-			throw e;
-		}
+		return this.orderbooksByStock.get(stock).getLocalBestBuyPriceAtEndOfRound(time);
 	}
 	
 	public Orderbook getOrderbook(Stock stock){

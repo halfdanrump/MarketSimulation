@@ -25,8 +25,8 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public final int nTotalRounds = 21000;
-	public final int nInitialSlowTraderRounds = 3000;
+	public final int nTotalRounds = 10000;
+	public final int nInitialSlowTraderRounds = 2000;
 	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
 	
 	public long nSlowTraderOrdersPerRound = 50;
@@ -36,52 +36,58 @@ public abstract class Experiment{
 	/*
 	 * Orderbook settings
 	 */
-	public int ob_nStartOrders = 10;
+	public int ob_nStartOrders = 0;
 	public int ob_initialOrderStd = 5;
 	public int ob_initialOrderVolumeMean = 10;
 	public int ob_initialOrderVolumeStd = 10;
-	public int ob_startingSpread = 20;
+	public int ob_startingSpread = 2;
 	public int ob_orderExpirationTime = 100000;
 	
 	/*
 	 * Market rules
 	 */
-	public boolean allowsShortSelling = true;
-	public boolean agentPaysWhenOrderIsFilledAfterSendingCancellation = true;
-	public boolean agentMustBuyAllStocksAsSpecifiedInReceipt = true;
-	public boolean agentMustSellAllStocksAsSpecifiedInReceipt = true;
-	public boolean marketFillsEmptyBook = true;
-	public long orderVolumeWhenMarketFillsEmptyBook = 10;
-	public Order.Type orderTypeWhenMarketFillsEmptyBook = Order.Type.MARKET;
-	public int orderLengthWhenMarketFillsEmptyBook = 5;
+	public final boolean allowsShortSelling = true;
+	public final boolean agentPaysWhenOrderIsFilledAfterSendingCancellation = true;
+	public final boolean agentMustBuyAllStocksAsSpecifiedInReceipt = true;
+	public final boolean agentMustSellAllStocksAsSpecifiedInReceipt = true;
+	
+	public final boolean marketFillsEmptyBook = false;
+	public final long orderVolumeWhenMarketFillsEmptyBook = 10;
+	public final Order.Type orderTypeWhenMarketFillsEmptyBook = Order.Type.MARKET;
+	public final int orderLengthWhenMarketFillsEmptyBook = 5;
 	
 	/*
 	 * High frequency trader behavior
 	 */
 	
-	public boolean keepOrderHistory = false;
+	public final boolean hft_keepOrderHistory = false;
 	
-	public long emptyOrderbookWaitTime = 1;
-	public boolean randomStartStockAmount = false;
-	public long startStockAmount = 10000000;
+	public final long hft_emptyOrderbookWaitTime = 0;
+	public final boolean hft_randomStartStockAmount = false;
+	public final long hft_startStockAmount = 10000000;
 	
-	public boolean randomStartWealth = false;
-	public long constantStartWealth = (int) Math.pow(10, 3);
+	public final boolean hft_randomStartWealth = false;
+	public final long hft_constantStartWealth = (int) Math.pow(10, 3);
 	
-	public long wealthMean = (int) Math.pow(10, 6);
-	public long wealthStd = (int) Math.pow(10, 4);
+	public final long hft_wealthMean = (int) Math.pow(10, 6);
+	public final long hft_wealthStd = (int) Math.pow(10, 4);
 	
+	public final int hft_minimumThinkingTime = 1;
+	public final int hft_maximumThinkingTime = 100;
+	
+	public final int hft_minimumLatency = 1;
+	public final int hft_maximumLatency = 100;
 	
 	/*
 	 * Single stock minimum spread market maker parameters 
 	 */
-	public long ssmm_tradeVolume = 10;
-	public int ssmm_marketOrderLength = 200;
-	public boolean ssmm_doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock = true;
-	public long ssmm_minimumSpread = 2;
+	public final long ssmm_tradeVolume = 10;
+	public final int ssmm_marketOrderLength = 200;
+	public final boolean ssmm_doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock = true;
+	public final long ssmm_minimumSpread = 4;
 	
 	/*
-	 * Random walk parameters
+	 * Fundamental random walk parameters
 	 */
 	public boolean randomWalkFundamental = false;
 	public final long initialFundamentalPrice = (long) Math.pow(10, 4);
@@ -92,16 +98,24 @@ public abstract class Experiment{
 	 * Stylized trader parameters
 	 */
 	public int st_delayInRounds = 1000;
-	public int st_orderLength = 1000;
-	public double st_noiseStd = 5;
+	public int st_orderLength = 100000;
+	public double st_noiseStd = 10;
+	
+	/*
+	 * Slow trader volume parameters
+	 */
 	public boolean st_randomOrderVolume = false;
 	public long st_constantVolume = 10;
 	public double st_volumeMean = 100d;
 	public double st_volumeStd = 10d;
-
 	
-	public double addivePriceNoiseMean = 0d;
-	public double additivePriceNoiseStd = 5;
+	/*
+	 * Slow trader fundamentalist parameters
+	 */
+	public double st_fund_additivePriceNoiseStd = 5;
+	public long  st_fund_tickChange = 1;
+	public long st_fund_orderVolume = 10;
+	
 	
 	/*
 	 * Other variables
@@ -213,6 +227,11 @@ public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 			orderbook.eventLog = new OrderbookLogger(logRootFolder, "lineLog_events_", orderbook, OrderbookLogger.Type.EVENT_LOG, Logger.Type.TXT, Logging.logOrderbookEventsToFile, Logging.logOrderbookEventsToConsole, experiment);
 			if(Logging.logOrderbookEventsToFile){
 				openLogs.add(orderbook.eventLog);
+			}
+			
+			orderbook.roundBasedLog = new OrderbookLogger(logRootFolder, "columnLog_roundBased", orderbook, OrderbookLogger.Type.ORDERBOOK_ROUND_BASED_DATA, Logger.Type.CSV, Logging.logOrderbookRoundBasedDataToFile, Logging.logOrderbookRoundBasedDataToConsole, experiment);
+			if(Logging.logOrderbookRoundBasedDataToFile) {
+				openLogs.add(orderbook.roundBasedLog);
 			}
 		}
 		

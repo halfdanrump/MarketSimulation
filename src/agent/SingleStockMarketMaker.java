@@ -35,8 +35,8 @@ public class SingleStockMarketMaker extends HFT {
 	 * his ask to the new price. -
 	 */
 
-	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, int group, Experiment experiment) {
-		super(stocks, markets, latencies, group, experiment);
+	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, int group, Experiment experiment, int thinkingTime) {
+		super(stocks, markets, latencies, group, experiment, thinkingTime);
 		this.experiment = experiment;
 		if (stocks.length > 1) {
 			this.experiment.getWorld().errorLog.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...", this.experiment);
@@ -249,6 +249,7 @@ public class SingleStockMarketMaker extends HFT {
 		} else if(order.getBuySell() == Order.BuySell.SELL){
 			this.standingSellOrders.remove(order.getOrderbook());
 		}
+		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.ORDER_EXPIRED);
 	}
 	
 	// public long getWaitingTime() {

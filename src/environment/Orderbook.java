@@ -2,18 +2,15 @@ package environment;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.TreeMap;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 import Experiments.Experiment;
 import agent.StylizedTrader;
 
-import environment.Order.BuySell;
 
 import log.OrderbookLogger;
 import utilities.OrderExpirationTimeComparator;
@@ -41,10 +38,15 @@ public class Orderbook {
 
 	public OrderbookLogger orderflowLog;
 	public OrderbookLogger eventLog;
+	public OrderbookLogger roundBasedLog;
+	
+	private int nTradesThisRound = 0;
 
 	// public Orderbook(){
 	// initialize();
 	// }
+
+
 
 	public Orderbook(Experiment experiment, Stock stock, Market market) {
 		this.experiment = experiment;
@@ -52,6 +54,8 @@ public class Orderbook {
 		this.stock = stock;
 		this.market = market;
 		stock.registerWithMarket(market);
+		this.localLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - Math.round(this.experiment.ob_startingSpread/2);
+		this.localLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + Math.round(this.experiment.ob_startingSpread/2);
 //		this.initializeBookWithRandomOrders();
 	}
 
@@ -268,7 +272,6 @@ public class Orderbook {
 		 * a new market or limit order (newOrder). Creates receipts for both
 		 * sides of the transaction and pushes to world receipt queue.
 		 */
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		TransactionReceipt receipt;
 		long tradeVolume = Math.min(matchingOrder.getCurrentMarketSideVolume(), newOrder.getCurrentMarketSideVolume());
 		
@@ -331,7 +334,8 @@ public class Orderbook {
 		} else {
 			this.experiment.getWorld().errorLog.logError(String.format("Orders for different stocks were matching. Standing order stock: %s, new order stock: %s", matchingOrder.getStock().getID(), newOrder.getStock().getID()), this.experiment);
 		}
-		this.printOrderbook();
+		this.nTradesThisRound++;
+//		this.printOrderbook();
 		return tradePrice;
 	}
 	
@@ -472,6 +476,7 @@ public class Orderbook {
 			if(spread <= 0) {
 				Exception e = new Exception();
 				e.printStackTrace();
+				this.printOrderbook();
 				this.experiment.getWorld().errorLog.logError(String.format("Spread at orderbook %s was %s", this.getIdentifier(), spread), this.experiment);
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {
@@ -562,6 +567,7 @@ public class Orderbook {
 		 * Iterate over unfilled buy orders
 		 * 	if price in buyOrders.keys then buyOrders.get(price) =+ 1
 		 */
+		System.out.println(String.format("Orderbook in round %s", this.experiment.getWorld().getCurrentRound()));
 		TreeMap<Long, Integer> buyOrders = new TreeMap<Long, Integer>();
 		java.util.Iterator<Order> it = this.unfilledBuyOrders.iterator();
 		while(it.hasNext()) {
@@ -589,8 +595,6 @@ public class Orderbook {
 		/*
 		 * Print sell orders in descending price order
 		 */
-		System.out.println(String.format("Orderbook at round %s", this.experiment.getWorld().getCurrentRound()));
-		
 		for(Long price:sellOrders.descendingKeySet()) {
 			System.out.println(String.format("%s\t%s", sellOrders.get(price), price));
 		}
@@ -613,17 +617,9 @@ public class Orderbook {
 		}
 	}
 
-	@SuppressWarnings("finally")
 	public String getSpreadForBestPricesAtEndOfRound(int round) {
-		String spread = null;
-		try {
-			long s = this.getLocalBestSellPriceAtEndOfRound(round) - this.getLocalBestBuyPriceAtEndOfRound(round);
-			spread = String.valueOf(s);
-		} catch (NoOrdersException e) {
-			spread = "NaN";
-		} finally {
-			return spread;
-		}
+		long spread = this.getLocalBestSellPriceAtEndOfRound(round) - this.getLocalBestBuyPriceAtEndOfRound(round);
+		return String.valueOf(spread); 
 	}
 
 	public boolean hasNoSellOrders() {
@@ -676,6 +672,12 @@ public class Orderbook {
 //	}
 	
 	
-	
+	public int getnTradesThisRound() {
+		return nTradesThisRound;
+	}
+
+	public void setnTradesThisRound(int nTradesThisRound) {
+		this.nTradesThisRound = nTradesThisRound;
+	}
 
 }

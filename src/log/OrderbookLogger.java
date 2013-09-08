@@ -1,7 +1,10 @@
 package log;
 
+import java.util.ArrayList;
+
 import Experiments.Experiment;
 import setup.Logging;
+import utilities.Utils;
 import environment.Order;
 import environment.Orderbook;
 import environment.TransactionReceipt;
@@ -26,9 +29,37 @@ public class OrderbookLogger extends Logger implements Logging{
 								"**********************************************\n\n");
 		}
 		else {
-			super.experiment.getWorld().errorLog.logError("Other types that ORDER_FLOW_LOG has not yet been implemented", orderbook.getExperiment());
+			String line = "round,nTradedsInRound,nUnfilledBuyOrders,nUnfilledSellOrders,bestStandingBuyPrice,bestStandingSellPrice";
+			if(this.logToFile) {
+				super.writeToFile(line);
+			}
+			if(this.logToConsole) {
+				this.writeToConsole(line);
+			}
 		}
 		this.orderbook = orderbook;
+	}
+	
+	public void logRoundBasedData() {
+		int now = this.orderbook.getExperiment().getWorld().getCurrentRound();
+		ArrayList<String> entry = new ArrayList<String>();
+		Utils.initializeStringArrayWithEmptyStrings(entry, 6, "");
+		entry.set(0, String.valueOf(this.orderbook.getExperiment().getWorld().getCurrentRound()));
+		entry.set(1, String.valueOf(this.orderbook.getnTradesThisRound()));
+		entry.set(2, String.valueOf(this.orderbook.getUnfilledBuyOrders().size()));
+		entry.set(3, String.valueOf(this.orderbook.getUnfilledSellOrders().size()));
+		entry.set(4, String.valueOf(this.orderbook.getLocalBestBuyPriceAtEndOfRound(now)));
+		entry.set(4, String.valueOf(this.orderbook.getLocalBestSellPriceAtEndOfRound(now)));
+//		entry.set(4, String.valueOf(this.orderbook.getUnfilledBuyOrders().peek().getPrice()));
+//		entry.set(5, String.valueOf(this.orderbook.getUnfilledSellOrders().peek().getPrice()));
+		
+		String line = Utils.convertArrayListToString(entry); 			
+		if(this.logToFile) {
+			super.writeToFile(line);
+		}
+		if(this.logToConsole) {
+			this.writeToConsole(line);
+		}
 	}
 	
 	private void recordOrderFlowHeader()	{

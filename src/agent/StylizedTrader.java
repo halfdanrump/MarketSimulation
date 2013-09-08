@@ -26,7 +26,8 @@ public class StylizedTrader {
 	
 	public static long getStylizedTraderEstimatedPrice(Stock stock, Experiment experiment) {
 		long currentFundamental = stock.getFundamentalPrice(experiment.getWorld().getCurrentRound());
-		long additivePriceNoise = Utils.getGaussianInteger(experiment.addivePriceNoiseMean, experiment.additivePriceNoiseStd); 
+		long additivePriceNoise = 0;//Utils.getGaussianInteger(experiment.addivePriceNoiseMean, experiment.additivePriceNoiseStd);
+		experiment.getWorld().errorLog.logError("This function is deprecated and should not be called!", experiment);
 		long price = currentFundamental + additivePriceNoise;
 		return price;
 	}

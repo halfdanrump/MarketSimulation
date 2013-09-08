@@ -2,6 +2,8 @@ package Experiments;
 
 import org.rosuda.JRI.Rengine;
 
+import utilities.Utils;
+
 import agent.GoldenCrossLimitOrderChartist;
 import agent.SingleStockMarketMaker;
 import environment.Market;
@@ -18,10 +20,10 @@ public class ConstantFundamentalSameLatency extends Experiment {
 	public static void main(String[] args) {
 		System.out.println("Running experiment");
 		String rootFolder = System.getProperty("rootFolder", "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/");
-		int fixedLatency = Integer.valueOf(System.getProperty("fixedLatency", "100"));
-		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("STOrdersPerRound", "0"));
+		int fixedLatency = Integer.valueOf(System.getProperty("fixedLatency", "1"));
+		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("STOrdersPerRound", "1"));
 		
-		int nAgents = 1;
+		int nAgents = 0;
 		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, nAgents, fixedLatency, nSTOrdersPerRound);
 		
 		
@@ -77,7 +79,8 @@ public class ConstantFundamentalSameLatency extends Experiment {
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		for(int i=0; i<this.nHFTsPerGroup; i++) {
-			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.ssmm_minimumSpread, group, this);
+			int thinkingTime = Utils.getRandomUniformInteger(this.hft_minimumThinkingTime, this.hft_maximumThinkingTime);
+			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.ssmm_minimumSpread, group, this, thinkingTime);
 		}
 		
 //		float aggressiveness = 1;

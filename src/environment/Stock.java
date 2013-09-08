@@ -150,22 +150,18 @@ public class Stock {
 		Market bestMarket = null;
 		for(Market market:this.markets) {
 			Orderbook orderbook = market.getOrderbook(this);
-			try {
-				localBestBuyPrice = orderbook.getLocalBestBuyPriceAtEndOfRound(now);
-				localBestSellPrice = orderbook.getLocalBestSellPriceAtEndOfRound(now);
-				spread = localBestSellPrice - localBestBuyPrice;
-			} catch(NoOrdersException e) {
-				this.experiment.getWorld().warningLog.logOnelineWarning(String.format("In round %s, Could not collect bestPrices for stock %s at market %s", now, this.id, market.getID()));
-			} finally {
-				globalLowestBuyPrice = (localBestBuyPrice < globalLowestBuyPrice) ? localBestBuyPrice : globalLowestBuyPrice;
-				globalHighestBuyPrice = (localBestBuyPrice > globalHighestBuyPrice) ? localBestBuyPrice : globalHighestBuyPrice;
-				globalHighestSellPrice = (localBestSellPrice > globalHighestSellPrice) ? localBestSellPrice : globalHighestSellPrice;
-				globalLowestSellPrice = (localBestSellPrice < globalLowestSellPrice) ? localBestSellPrice : globalLowestSellPrice;
-				if (spread < bestSpread) {
-					bestSpread = spread;
-					bestMarket = market;
-				}
+			localBestBuyPrice = orderbook.getLocalBestBuyPriceAtEndOfRound(now);
+			localBestSellPrice = orderbook.getLocalBestSellPriceAtEndOfRound(now);
+			spread = localBestSellPrice - localBestBuyPrice;
+			globalLowestBuyPrice = (localBestBuyPrice < globalLowestBuyPrice) ? localBestBuyPrice : globalLowestBuyPrice;
+			globalHighestBuyPrice = (localBestBuyPrice > globalHighestBuyPrice) ? localBestBuyPrice : globalHighestBuyPrice;
+			globalHighestSellPrice = (localBestSellPrice > globalHighestSellPrice) ? localBestSellPrice : globalHighestSellPrice;
+			globalLowestSellPrice = (localBestSellPrice < globalLowestSellPrice) ? localBestSellPrice : globalLowestSellPrice;
+			if (spread < bestSpread) {
+				bestSpread = spread;
+				bestMarket = market;
 			}
+
 		}
 		this.globalLowestBuy.set(now, globalLowestBuyPrice);
 		this.globalHighestBuy.set(now, globalHighestBuyPrice);

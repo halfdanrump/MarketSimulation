@@ -58,7 +58,8 @@ public abstract class HFT implements Logging {
 		SUBMIT_ORDER, 
 		CANCEL_ORDER, 
 		UPDATE_ORDER,
-		ORDER_EXPIRED
+		ORDER_EXPIRED,
+		RECEIVED_TRANSACTION
 	}
 
 	public abstract void storeMarketInformation() throws NoOrdersException;
@@ -69,13 +70,14 @@ public abstract class HFT implements Logging {
 	public AgentLogger roundDatalog;
 	public AgentLogger tradeLog;
 
-	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment) {
+	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment, int thinkingTime) {
 		this.experiment = experiment;
+		this.thinkingTime = thinkingTime;
 		this.group = group;
-		if (experiment.randomStartWealth) {
+		if (experiment.hft_randomStartWealth) {
 			this.cash = getRandomInitialTraderWealth();
 		} else {
-			this.cash = experiment.constantStartWealth;
+			this.cash = experiment.hft_constantStartWealth;
 		}
 		this.wakeupTime = this.experiment.getWorld().getCurrentRound();
 		this.initialize(stockIDs, marketIDs, latencies);
@@ -121,7 +123,7 @@ public abstract class HFT implements Logging {
 			this.numberOfStocksInStandingBuyOrders.put(stock, 0l);
 			this.numberOfStocksInStandingSellOrders.put(stock, 0l);
 		}
-		if (experiment.keepOrderHistory) {
+		if (experiment.hft_keepOrderHistory) {
 			this.orderHistory = new ArrayList<Order>();
 		}
 		this.calculateLargestLatency();
@@ -173,10 +175,10 @@ public abstract class HFT implements Logging {
 		 * the interface.
 		 */
 		for (Stock stock : this.stocks) {
-			if (experiment.randomStartStockAmount) {
+			if (experiment.hft_randomStartStockAmount) {
 				this.experiment.getWorld().errorLog.logError("Random start stock amount not implemented yet!", this.experiment);
 			} else {
-				this.ownedStocks.put(stock, experiment.startStockAmount);
+				this.ownedStocks.put(stock, experiment.hft_startStockAmount);
 			}
 		}
 	}
@@ -252,7 +254,7 @@ public abstract class HFT implements Logging {
 	}
 
 	public void receiveTransactionReceipt(TransactionReceipt receipt) {
-		this.eventlog.logAgentAction(String.format("Agent %s received a receipt for a %s order, id: %s", this.id, receipt.getBuySell(), receipt.getFilledOrder().getID()));
+		this.eventlog.logAgentAction(String.format("Agent %s received a receipt for a %s order at price %s (id: %s)", this.id, receipt.getBuySell(), receipt.getFilledOrder().getPrice(),receipt.getFilledOrder().getID()));
 
 		Stock stock = receipt.getStock();
 		BuySell buysell = receipt.getFilledOrder().getBuySell();
@@ -405,7 +407,7 @@ public abstract class HFT implements Logging {
 		 * I've come up with so far) is that the order was filled after the
 		 * agent issued a cancellation.
 		 */
-		if (this.experiment.keepOrderHistory) {
+		if (this.experiment.hft_keepOrderHistory) {
 			if (!this.orderHistory.contains(receipt.getFilledOrder())) {
 				this.experiment.getWorld().errorLog.logError(String.format("Agent %s received a transaction receipt for an order that he didn't submit (id: %s)", this.getID(), receipt.getFilledOrder().getID()), this.experiment);
 			}
@@ -552,13 +554,13 @@ public abstract class HFT implements Logging {
 		Random r = new Random();
 		long w = 0;
 		while (w <= 0) {
-			w = (int) Math.rint(r.nextGaussian() * this.experiment.wealthStd + this.experiment.wealthMean);
+			w = (int) Math.rint(r.nextGaussian() * this.experiment.hft_wealthStd + this.experiment.hft_wealthMean);
 		}
 		return w;
 	}
 
 	public void hibernate() {
-		this.wakeupTime = this.experiment.getWorld().getCurrentRound() + this.experiment.emptyOrderbookWaitTime;
+		this.wakeupTime = this.experiment.getWorld().getCurrentRound() + this.experiment.hft_emptyOrderbookWaitTime;
 	}
 
 	protected void updateNumberOfStocksInStandingOrders(Stock stock, Order.BuySell buysell, long volume, HFT.agentAction action) {
@@ -578,6 +580,8 @@ public abstract class HFT implements Logging {
 		} else if (action == HFT.agentAction.SUBMIT_ORDER) {
 			volume = Math.abs(volume);
 		} else if(action == HFT.agentAction.ORDER_EXPIRED) {
+			volume = -Math.abs(volume);
+		} else if(action == HFT.agentAction.RECEIVED_TRANSACTION) {
 			volume = -Math.abs(volume);
 		}
 
@@ -602,7 +606,7 @@ public abstract class HFT implements Logging {
 	}
 
 	protected void submitOrder(Order order) {
-		this.eventlog.logAgentAction(String.format("Agent %s submitted %s order, id: %s.", this.getID(), order.getBuySell(), order.getID()));
+		this.eventlog.logAgentAction(String.format("Agent %s submitted a %s order at price %s (id %s)", this.getID(), order.getBuySell(), order.getPrice(), order.getID()));
 		if (order.getBuySell() == Order.BuySell.BUY) {
 			this.standingBuyOrders.put(order.getOrderbook(), order);
 			// Stock stock = order.getStock();
@@ -621,7 +625,7 @@ public abstract class HFT implements Logging {
 			// newOwnedAmount);
 			this.nSubmittedSellOrders += 1;
 		}
-		if (this.experiment.keepOrderHistory) {
+		if (this.experiment.hft_keepOrderHistory) {
 			this.orderHistory.add(order);
 		}
 		/*
@@ -658,7 +662,7 @@ public abstract class HFT implements Logging {
 		// this.numberOfStocksInStandingSellOrders.put(order.getStock(),
 		// nCurrentStocksInSellOrders);
 		// }
-		this.eventlog.logAgentAction(String.format("Agent %s cancelled %s-order, id: %s.", this.getID(), cancellation.getOrder().getBuySell(), cancellation.getOrder().getID()));
+		this.eventlog.logAgentAction(String.format("Agent %s cancelled a %s order at price %s. (id %s)", this.getID(), cancellation.getOrder().getBuySell(), cancellation.getOrder().getPrice(), cancellation.getOrder().getID()));
 		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.CANCEL_ORDER);
 		this.nSubmittedCancellations += 1;
 	}

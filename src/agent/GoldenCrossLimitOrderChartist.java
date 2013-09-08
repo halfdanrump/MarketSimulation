@@ -26,8 +26,8 @@ public class GoldenCrossLimitOrderChartist extends HFT {
 	
 	
 	public GoldenCrossLimitOrderChartist(float aggressiveness, int longTermMALength, int shortTermMALength, int orderSize, int initialWaitTime,  
-			int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment) {
-		super(stockIDs, marketIDs, latencies, group, experiment);
+			int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment, int thinkingTime) {
+		super(stockIDs, marketIDs, latencies, group, experiment, thinkingTime);
 		this.longTermMALength = longTermMALength;
 		this.shortTermMALength = shortTermMALength;
 		this.orderSize = orderSize;
