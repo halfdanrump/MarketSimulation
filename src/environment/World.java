@@ -11,10 +11,13 @@ import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
 import utilities.StockMarketPair;
 import Experiments.Experiment;
-import agent.FundamentalTrader;
+import agent.NoisyFundamentalNoisyPriceTrader;
+import agent.NoisyFundamentalTrader;
 import agent.HFT;
 import agent.StylizedTrader;
 import agent.ToriumiSensei;
+import umontreal.iro.lecuyer.randvar.PoissonGen;
+import umontreal.iro.lecuyer.rng.MRG32k3a;
 
 //import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 
@@ -24,6 +27,7 @@ public class World implements SimulationSetup {
 	private enum roundPhases {
 		MESSAGES_ARRIVE, STYLIZED_TRADING, HFT_TRADING, UPDATE_ORDERBOOKS, LOGGING;
 	}
+	
 
 	/*
 	 * References to stocks, markets and agents (indexed by IDs)
@@ -67,6 +71,9 @@ public class World implements SimulationSetup {
 	public long runTime;
 	private int currentRound;
 	private roundPhases roundPhase;
+	
+	PoissonGen poissonProcess;
+	MRG32k3a randomGenerator;
 
 	public World(Experiment experiment) {
 		this.creationTime = System.currentTimeMillis();
@@ -88,6 +95,8 @@ public class World implements SimulationSetup {
 		this.waitingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
 		this.thinkingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
 		this.freeAgents = new ArrayList<HFT>();
+		MRG32k3a randomGenerator = new MRG32k3a();
+		this.poissonProcess = new PoissonGen(randomGenerator, experiment.slowTraderOrdersPerRoundAverage);
 		
 	
 	}
@@ -99,7 +108,7 @@ public class World implements SimulationSetup {
 			dispatchArrivingReceipts();
 			dispatchOrderCancellations();
 			processOrderCancellationsInAllOrderbooks();
-			createSlowTraderOrders(this.experiment);
+			createSlowTraderOrders();
 			dispatchArrivingOrders();
 			processNewOrdersInAllOrderbooks();
 			logRoundBasedData();
@@ -125,7 +134,7 @@ public class World implements SimulationSetup {
 		/*
 		 * The new cancellations are processed in random order.
 		 */
-		createSlowTraderOrders(experiment);
+		createSlowTraderOrders();
 		/*
 		 * HFT trade part.
 		 */
@@ -204,11 +213,18 @@ public class World implements SimulationSetup {
 		}
 	}
 
-	private void createSlowTraderOrders(Experiment experiment) {
-		for (long i = 0; i < experiment.nSlowTraderOrdersPerRound; i++) {
+	private void createSlowTraderOrders() {
+		long n;
+		if(this.experiment.constantNumberOfSlowtraderOrdersPerRound) {
+			n = this.experiment.nSlowTraderOrdersPerRound;
+		} else {
+			n = Math.round(this.poissonProcess.nextDouble());
+		}
+		for (long i = 0; i < n; i++) {
 //			StylizedTrader.submitRandomOrder(experiment);
 //			ToriumiSensei.submitRandomOrder(experiment);
-			FundamentalTrader.sumbitOrderAtRandomOrderbook(experiment);
+			NoisyFundamentalTrader.sumbitOrderAtRandomOrderbook(this.experiment);
+//			NoisyFundamentalNoisyPriceTrader.sumbitOrderAtRandomOrderbook(experiment);
 		}
 		// System.out.println("k");
 	}

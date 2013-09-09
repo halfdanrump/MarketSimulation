@@ -35,9 +35,9 @@ public class StylizedTrader {
 	public static long getStylizedTraderOrderVolume(Experiment experiment) {
 		long volume;
 		if(experiment.st_randomOrderVolume){
-			volume = Utils.getNonNegativeGaussianInteger(experiment.st_volumeStd, experiment.st_volumeMean);
+			volume = Utils.getNonNegativeGaussianInteger(experiment.st_volumeNoiseStd, experiment.st_minimumVolume);
 		} else{
-			volume = experiment.st_constantVolume;
+			volume = experiment.st_minimumVolume;
 		}
 		return volume;
 	}

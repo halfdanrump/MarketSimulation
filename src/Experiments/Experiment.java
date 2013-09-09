@@ -26,22 +26,25 @@ public abstract class Experiment{
 	 * General setup
 	 */
 	public final int nTotalRounds = 10000;
-	public final int nInitialSlowTraderRounds = 2000;
+	public final int nInitialSlowTraderRounds = 0;
 	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
 	
-	public long nSlowTraderOrdersPerRound = 50;
+	public final boolean constantNumberOfSlowtraderOrdersPerRound = false;
+	public long nSlowTraderOrdersPerRound = 1;	
+	public double slowTraderOrdersPerRoundAverage = 1;
+	
 	public int nHFTsPerGroup = 10;
 	public int nGroups = 1;
 	
 	/*
 	 * Orderbook settings
 	 */
-	public int ob_nStartOrders = 0;
-	public int ob_initialOrderStd = 5;
+	public int ob_nStartOrders = 1000;
+	public int ob_initialOrderStd = 10;
 	public int ob_initialOrderVolumeMean = 10;
 	public int ob_initialOrderVolumeStd = 10;
 	public int ob_startingSpread = 2;
-	public int ob_orderExpirationTime = 100000;
+	public int ob_orderExpirationTime = 1000000;
 	
 	/*
 	 * Market rules
@@ -97,7 +100,9 @@ public abstract class Experiment{
 	/*
 	 * Stylized trader parameters
 	 */
-	public int st_delayInRounds = 1000;
+	public final int st_minimumDelay = 600;
+	public final double st_delayStd = 500;
+	
 	public int st_orderLength = 100000;
 	public double st_noiseStd = 10;
 	
@@ -105,17 +110,16 @@ public abstract class Experiment{
 	 * Slow trader volume parameters
 	 */
 	public boolean st_randomOrderVolume = false;
-	public long st_constantVolume = 10;
-	public double st_volumeMean = 100d;
-	public double st_volumeStd = 10d;
+	public long st_minimumVolume = 10;
+	public double st_volumeNoiseStd = 10;
 	
 	/*
 	 * Slow trader fundamentalist parameters
 	 */
-	public double st_fund_additivePriceNoiseStd = 5;
+	public double st_fund_additivePriceNoiseStd = 2;
 	public long  st_fund_tickChange = 1;
 	public long st_fund_orderVolume = 10;
-	
+	public double st_fund_priceNoiseStd = 1;
 	
 	/*
 	 * Other variables

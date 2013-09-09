@@ -62,9 +62,10 @@ public abstract class HFT implements Logging {
 		RECEIVED_TRANSACTION
 	}
 
-	public abstract void storeMarketInformation() throws NoOrdersException;
-	public abstract void removeOrderWhenExpired(Order order);
+	public abstract void collectMarketInformation() throws NoOrdersException;
 	public abstract boolean executeStrategyAndSubmit();
+	
+	
 
 	public AgentLogger eventlog;
 	public AgentLogger roundDatalog;
@@ -221,8 +222,11 @@ public abstract class HFT implements Logging {
 		this.experiment.getWorld().agentRequestMarketInformation(this);
 		this.wakeupTime += this.thinkingTime;
 		try {
-			this.storeMarketInformation();
+			this.collectMarketInformation();
 		} catch (NoOrdersException e) {
+			this.hibernate();
+			this.requestMarketInformation();
+			this.eventlog.logAgentAction(String.format("Agent %s hibernated because it could not obtain requested market information. Wakes up in round %s", this.getID(), this.wakeupTime));
 			throw e;
 		}
 	}
@@ -633,6 +637,15 @@ public abstract class HFT implements Logging {
 		 */
 		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.SUBMIT_ORDER);
 	}
+	
+	public void removeOrderWhenExpired(Order order) {
+		if(order.getBuySell() == Order.BuySell.BUY) {
+			this.standingBuyOrders.remove(order.getOrderbook());
+		} else if(order.getBuySell() == Order.BuySell.SELL){
+			this.standingSellOrders.remove(order.getOrderbook());
+		}
+		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.ORDER_EXPIRED);
+	}
 
 	// public HashMap<Market, Integer> getRandomLatencyHashMap(Market[] markets)
 	// {
@@ -736,6 +749,10 @@ public abstract class HFT implements Logging {
 
 	public Experiment getExperiment() {
 		return this.experiment;
+	}
+	
+	public int getCurrentRound() {
+		return this.experiment.getWorld().getCurrentRound();
 	}
 
 }

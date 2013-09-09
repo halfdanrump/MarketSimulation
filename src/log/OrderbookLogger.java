@@ -29,7 +29,7 @@ public class OrderbookLogger extends Logger implements Logging{
 								"**********************************************\n\n");
 		}
 		else {
-			String line = "round,nTradedsInRound,nUnfilledBuyOrders,nUnfilledSellOrders,bestStandingBuyPrice,bestStandingSellPrice";
+			String line = "round,nTradedsInRound,nUnfilledBuyOrders,nUnfilledSellOrders,bestStandingBuyPrice,bestStandingSellPrice,nReceivedBuyOrders,nReceivedSellOrders";
 			if(this.logToFile) {
 				super.writeToFile(line);
 			}
@@ -43,13 +43,16 @@ public class OrderbookLogger extends Logger implements Logging{
 	public void logRoundBasedData() {
 		int now = this.orderbook.getExperiment().getWorld().getCurrentRound();
 		ArrayList<String> entry = new ArrayList<String>();
-		Utils.initializeStringArrayWithEmptyStrings(entry, 6, "");
+		Utils.initializeStringArrayWithEmptyStrings(entry, 8, "");
 		entry.set(0, String.valueOf(this.orderbook.getExperiment().getWorld().getCurrentRound()));
 		entry.set(1, String.valueOf(this.orderbook.getnTradesThisRound()));
 		entry.set(2, String.valueOf(this.orderbook.getUnfilledBuyOrders().size()));
 		entry.set(3, String.valueOf(this.orderbook.getUnfilledSellOrders().size()));
 		entry.set(4, String.valueOf(this.orderbook.getLocalBestBuyPriceAtEndOfRound(now)));
-		entry.set(4, String.valueOf(this.orderbook.getLocalBestSellPriceAtEndOfRound(now)));
+		entry.set(5, String.valueOf(this.orderbook.getLocalBestSellPriceAtEndOfRound(now)));
+		entry.set(6, String.valueOf(this.orderbook.getNReceivedBuyOrders()));
+		entry.set(7, String.valueOf(this.orderbook.getNReceivedSellOrders()));
+		
 //		entry.set(4, String.valueOf(this.orderbook.getUnfilledBuyOrders().peek().getPrice()));
 //		entry.set(5, String.valueOf(this.orderbook.getUnfilledSellOrders().peek().getPrice()));
 		

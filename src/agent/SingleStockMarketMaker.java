@@ -55,7 +55,7 @@ public class SingleStockMarketMaker extends HFT {
 	}
 
 	@Override
-	public void storeMarketInformation() throws NoOrdersException {
+	public void collectMarketInformation() throws NoOrdersException {
 		/*
 		 * Method which takes care of putting the market information into the
 		 * agent's internal data structures for storage Returns false if there
@@ -68,18 +68,12 @@ public class SingleStockMarketMaker extends HFT {
 				sellPrice = market.getDelayedBestSellPriceAtEndOfRound(this, this.stock);
 				this.knownMarketAsks.put(market, sellPrice);
 			} catch (NoOrdersException e) {
-				this.hibernate();
-				this.requestMarketInformation();
-				this.eventlog.logAgentAction(String.format("Agent %s requested new market information because there was no sell order at market %s. Wakes up in round %s", this.getID(), market.getID(), this.wakeupTime));
 				throw e;
 			}
 			try {
 				buyPrice = market.getDelayedBestBuyPriceAtEndOfRound(this, this.stock);
 				this.knownMarketBids.put(market, buyPrice);
 			} catch (NoOrdersException e) {
-				this.hibernate();
-				this.requestMarketInformation();
-				this.eventlog.logAgentAction(String.format("Agent %s requested new market information because there was no sell order at market %s. Wakes up in round %s", this.getID(), market.getID(), this.wakeupTime));
 				throw e;
 			}
 
@@ -243,14 +237,7 @@ public class SingleStockMarketMaker extends HFT {
 		return newBuyPrice;
 	}
 
-	public void removeOrderWhenExpired(Order order) {
-		if(order.getBuySell() == Order.BuySell.BUY) {
-			this.standingBuyOrders.remove(order.getOrderbook());
-		} else if(order.getBuySell() == Order.BuySell.SELL){
-			this.standingSellOrders.remove(order.getOrderbook());
-		}
-		this.updateNumberOfStocksInStandingOrders(order.getStock(), order.getBuySell(), order.getCurrentAgentSideVolume(), HFT.agentAction.ORDER_EXPIRED);
-	}
+	
 	
 	// public long getWaitingTime() {
 	// return this.largestLatencyToMarket;

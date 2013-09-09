@@ -9,7 +9,7 @@ library(grDevices)
 
 exportPlotsToFiles = FALSE
 
-#experimentName = "StepFunctionFundamentalSameLatency"
+#experimentName = "StepFunctionFundamentalDifferentLatency"
 
 experimentName = "ConstantFundamentalSameLatency"
 
@@ -97,8 +97,9 @@ makeShortTimeTradePricePlot = function(files){
   lines(files$orderbook0RoundBased$nUnfilledSellOrders, type="l", col="green")
   ymax = max(files$orderbook0RoundBased$bestStandingBuyPrice, files$orderbook0RoundBased$bestStandingSellPrice)
   ymin = min(files$orderbook0RoundBased$bestStandingBuyPrice, files$orderbook0RoundBased$bestStandingSellPrice)
-  plot(files$orderbook0RoundBased$bestStandingBuyPrice, type="l", col="red", ylim=c(ymin,ymax), main="beet buy/sell prices")
-  lines(files$orderbook0RoundBased$bestStandingSellPrice, type="l", col="green")
+  plot(files$orderbook0RoundBased$bestStandingBuyPrice, col="red", 
+       ylim=c(ymin,ymax), main="beet buy/sell prices", pch=19, cex=0.1)
+  points(files$orderbook0RoundBased$bestStandingSellPrice, col="green", pch=18, cex=0.2)
   
   #from = min(which(files$stock0transactions$round == 12000))
   #to = max(which(files$stock0transactions$round == 15500))

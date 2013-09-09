@@ -25,7 +25,7 @@ public interface Logging {
 	 */
 
 	boolean logAgentActionsToFile = false;
-	boolean logAgentActionsToConsole = true;
+	boolean logAgentActionsToConsole = false;
 
 	boolean logAgentTradeDataToFile = false;
 	boolean logAgentTradeDataToConsole = false;

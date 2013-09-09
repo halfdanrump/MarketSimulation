@@ -46,7 +46,7 @@ public class GoldenCrossLimitOrderChartist extends HFT {
 
 
 	@Override
-	public void storeMarketInformation() throws NoOrdersException {
+	public void collectMarketInformation() throws NoOrdersException {
 		if(this.world.getCurrentRound() > this.initialWaitTime) {
 			for(Orderbook ob:this.orderbooks) {
 				try{

@@ -41,6 +41,8 @@ public class Orderbook {
 	public OrderbookLogger roundBasedLog;
 	
 	private int nTradesThisRound = 0;
+	private long nBuyOrdersReceived;
+	private long nSellOrdersReceived;
 
 	// public Orderbook(){
 	// initialize();
@@ -54,9 +56,9 @@ public class Orderbook {
 		this.stock = stock;
 		this.market = market;
 		stock.registerWithMarket(market);
-		this.localLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - Math.round(this.experiment.ob_startingSpread/2);
-		this.localLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + Math.round(this.experiment.ob_startingSpread/2);
 //		this.initializeBookWithRandomOrders();
+		this.nBuyOrdersReceived = 0;
+		this.nSellOrdersReceived = 0;
 	}
 
 	private void initializeDataStructures() {
@@ -65,37 +67,39 @@ public class Orderbook {
 		this.unfilledBuyOrders = new PriorityQueue<Order>(10, Collections.reverseOrder(new orderPriceComparatorAscending()));
 		this.unfilledSellOrders = new PriorityQueue<Order>(10, new OrderPriceComparatorLowFirst());
 		this.marketOrders = new PriorityQueue<Order>(10, new OrderExpirationTimeComparator());
-		this.localBestBuyPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, 0l));
-		this.localBestSellPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, Long.MAX_VALUE));
-		
+		this.localLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - Math.round(this.experiment.ob_startingSpread/2);
+		this.localLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + Math.round(this.experiment.ob_startingSpread/2);
+		this.localBestBuyPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, this.localLastTradedMarketOrderBuyPrice));
+		this.localBestSellPriceAtEndOfRound = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, this.localLastTradedMarketOrderSellPrice));
 	}
 	
-	public void initializeBookWithRandomOrders() {
-		/*
-		 * Must be called AFTER the stocks and markets have been created.
-		 * Must be called AFTER the orderbook logger has been created.
-		 * Therefore the call to this function is placed in World.initializeEnvironment()
-		 */
-		long sellPrice;
-		Order buyOrder = StylizedTrader.submitRandomMarketBuyOrder(this, this.experiment);
-//		this.receiveOrder(buyOrder);
-		while(true) {
-			sellPrice = StylizedTrader.getStylizedTraderEstimatedPrice(this.getStock(), this.experiment);
-			if(sellPrice > buyOrder.getPrice()) {
-				long volume = StylizedTrader.getStylizedTraderOrderVolume(this.experiment);
-				int now = this.experiment.getWorld().getCurrentRound();
-				new Order(now, now, 1000, volume, sellPrice, Order.Type.MARKET, Order.BuySell.SELL, null, this, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
-//				this.receiveOrder(order);
-				break;
-			}			
-		}
-		this.printOrderbook();
-		
-		this.localLastTradedMarketOrderBuyPrice = buyOrder.getPrice();
-		this.localLastTradedMarketOrderSellPrice = sellPrice;
-		this.experiment.getWorld().dispatchArrivingOrders();
-		
-	}
+//	public void initializeBookWithRandomOrders() {
+//		/*
+//		 * Must be called AFTER the stocks and markets have been created.
+//		 * Must be called AFTER the orderbook logger has been created.
+//		 * Therefore the call to this function is placed in World.initializeEnvironment()
+//		 */
+//		long sellPrice;
+//		Order buyOrder = StylizedTrader.submitRandomMarketBuyOrder(this, this.experiment);
+////		this.receiveOrder(buyOrder);
+//		while(true) {
+//			sellPrice = StylizedTrader.getStylizedTraderEstimatedPrice(this.getStock(), this.experiment);
+//			if(sellPrice > buyOrder.getPrice()) {
+//				long volume = StylizedTrader.getStylizedTraderOrderVolume(this.experiment);
+//				int now = this.experiment.getWorld().getCurrentRound();
+//				new Order(now, now, 1000, volume, sellPrice, Order.Type.MARKET, Order.BuySell.SELL, null, this, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
+////				this.receiveOrder(order);
+//				break;
+//			}			
+//		}
+//		this.updateLocalBestPricesAtTheEndOfEachRound();
+//		this.printOrderbook();
+//		
+//		this.localLastTradedMarketOrderBuyPrice = buyOrder.getPrice();
+//		this.localLastTradedMarketOrderSellPrice = sellPrice;
+//		this.experiment.getWorld().dispatchArrivingOrders();
+//		
+//	}
 	
 	public void fillBookWithRandomOrders() {
 		Random r = new Random();
@@ -118,6 +122,7 @@ public class Orderbook {
 			new Order(0, 0, this.experiment.ob_orderExpirationTime, volume, price, Order.Type.MARKET, Order.BuySell.BUY, null, this, Message.TransmissionType.INSTANTANEOUS, this.experiment);
 		}
 		this.experiment.getWorld().dispatchArrivingOrders();
+		this.updateLocalBestPricesAtTheEndOfEachRound();
 		this.printOrderbook();
 		
 	}
@@ -238,6 +243,11 @@ public class Orderbook {
 		 * it is removed
 		 */
 		Order matchingOrder;
+		if(newlyArrivedOrder.getBuySell() == Order.BuySell.BUY) {
+			this.nBuyOrdersReceived++;
+		}else {
+			this.nSellOrdersReceived++;
+		}
 
 		this.orderflowLog.logEventProcessNewOrder(newlyArrivedOrder);
 		while (true) {
@@ -456,19 +466,25 @@ public class Orderbook {
 		 */
 		int now = this.experiment.getWorld().getCurrentRound();
 		try {
-			if(this.unfilledBuyOrders.isEmpty()) {
-				this.localBestBuyPriceAtEndOfRound.set(now, this.localLastTradedMarketOrderBuyPrice);
-//				System.out.println(String.format("Used last best buy: %s", this.lastTradedMarketOrderBuyPrice));
-			} else {
+			if(!this.unfilledBuyOrders.isEmpty()) {
 				this.localBestBuyPriceAtEndOfRound.set(now, this.unfilledBuyOrders.element().getPrice());
-//				System.out.println(String.format("Used current best buy: %s", this.unfilledBuyOrders.element().getPrice()));
+			} else {
+				this.localBestBuyPriceAtEndOfRound.set(now, this.getLocalBestBuyPriceAtEndOfRound(now - 1));
 			}
 			
-			if(this.unfilledSellOrders.isEmpty()) {
-				this.localBestSellPriceAtEndOfRound.set(now, this.localLastTradedMarketOrderSellPrice);
-//				System.out.println(String.format("Used last best sell: %s", this.lastTradedMarketOrderSellPrice));
-			} else {
+			
+//			if(this.unfilledBuyOrders.isEmpty() | this.nTradesThisRound == 0) {
+//				
+////				System.out.println(String.format("Used last best buy: %s", this.lastTradedMarketOrderBuyPrice));
+//			} else {
+//				this.localBestBuyPriceAtEndOfRound.set(now, this.unfilledBuyOrders.element().getPrice());
+////				System.out.println(String.format("Used current best buy: %s", this.unfilledBuyOrders.element().getPrice()));
+//			}
+			
+			if(!this.unfilledSellOrders.isEmpty()) {
 				this.localBestSellPriceAtEndOfRound.set(now, this.unfilledSellOrders.element().getPrice());
+			} else {
+				this.localBestSellPriceAtEndOfRound.set(now, this.getLocalBestSellPriceAtEndOfRound(now - 1));
 //				System.out.println(String.format("Used current best sell: %s", this.unfilledSellOrders.element().getPrice()));
 			}
 			
@@ -678,6 +694,14 @@ public class Orderbook {
 
 	public void setnTradesThisRound(int nTradesThisRound) {
 		this.nTradesThisRound = nTradesThisRound;
+	}
+	
+	public long getNReceivedBuyOrders() {
+		return this.nBuyOrdersReceived;
+	}
+	
+	public long getNReceivedSellOrders() {
+		return this.nSellOrdersReceived;
 	}
 
 }
