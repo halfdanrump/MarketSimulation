@@ -25,7 +25,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public final int nTotalRounds = 10000;
+	public final int nTotalRounds = 50000;
 	public final int nInitialSlowTraderRounds = 0;
 	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
 	
@@ -100,8 +100,8 @@ public abstract class Experiment{
 	/*
 	 * Stylized trader parameters
 	 */
-	public final int st_minimumDelay = 600;
-	public final double st_delayStd = 500;
+	public final int st_minimumDelay = 1000;
+	public final double st_delayStd = 1000;
 	
 	public int st_orderLength = 100000;
 	public double st_noiseStd = 10;
@@ -116,10 +116,12 @@ public abstract class Experiment{
 	/*
 	 * Slow trader fundamentalist parameters
 	 */
-	public double st_fund_additivePriceNoiseStd = 2;
+	public double st_fund_additivePriceNoiseStd = 0;
+	
+	public final double st_fund_fundamentalNoiseStd = 5;
 	public long  st_fund_tickChange = 1;
 	public long st_fund_orderVolume = 10;
-	public double st_fund_priceNoiseStd = 1;
+	public double st_fund_priceNoiseStd = 0;
 	
 	/*
 	 * Other variables

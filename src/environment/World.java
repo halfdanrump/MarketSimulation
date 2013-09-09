@@ -11,11 +11,8 @@ import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
 import utilities.StockMarketPair;
 import Experiments.Experiment;
-import agent.NoisyFundamentalNoisyPriceTrader;
 import agent.NoisyFundamentalTrader;
 import agent.HFT;
-import agent.StylizedTrader;
-import agent.ToriumiSensei;
 import umontreal.iro.lecuyer.randvar.PoissonGen;
 import umontreal.iro.lecuyer.rng.MRG32k3a;
 

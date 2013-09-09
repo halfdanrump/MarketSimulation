@@ -10,8 +10,9 @@ library(grDevices)
 exportPlotsToFiles = FALSE
 
 #experimentName = "StepFunctionFundamentalDifferentLatency"
+experimentName = "StepFunctionFundamentalSameLatency"
 
-experimentName = "ConstantFundamentalSameLatency"
+#experimentName = "ConstantFundamentalSameLatency"
 
 setwd(dir="/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/dataAnalysis/Rscripts/")
 logDir = paste0("/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/", experimentName, "/")

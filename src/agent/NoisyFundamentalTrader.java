@@ -21,7 +21,7 @@ public class NoisyFundamentalTrader {
 		int laggedTime = getLaggedTime(experiment, now); 
 		long laggedFundamentalPrice = orderbook.getStock().getFundamentalPrice(laggedTime);
 		
-		long additiveNoiseToFundamentalEstimate = Math.round(random.nextGaussian() * experiment.st_fund_additivePriceNoiseStd);
+		long additiveNoiseToFundamentalEstimate = Math.round(random.nextGaussian() * experiment.st_fund_fundamentalNoiseStd);
 		long estimatedFundamentalPrice = laggedFundamentalPrice + additiveNoiseToFundamentalEstimate;
 
 		long laggedBestBuyPrice = orderbook.getLocalBestBuyPriceAtEndOfRound(laggedTime);

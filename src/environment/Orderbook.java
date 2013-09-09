@@ -6,12 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.TreeMap;
-
-
 import Experiments.Experiment;
-import agent.StylizedTrader;
-
-
 import log.OrderbookLogger;
 import utilities.OrderExpirationTimeComparator;
 import utilities.orderPriceComparatorAscending;
