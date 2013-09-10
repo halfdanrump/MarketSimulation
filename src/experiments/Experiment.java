@@ -1,4 +1,4 @@
-package Experiments;
+package experiments;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,26 +25,24 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public final int nTotalRounds = 50000;
-	public final int nInitialSlowTraderRounds = 0;
+	public final int nTotalRounds = 100000;
+	public final int nInitialSlowTraderRounds = 5000;
 	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
 	
 	public final boolean constantNumberOfSlowtraderOrdersPerRound = false;
 	public long nSlowTraderOrdersPerRound = 1;	
-	public double slowTraderOrdersPerRoundAverage = 1;
+	public final double slowTraderOrdersPerRoundAverage = 1;
 	
-	public int nHFTsPerGroup = 10;
-	public int nGroups = 1;
 	
 	/*
 	 * Orderbook settings
 	 */
-	public int ob_nStartOrders = 1000;
-	public int ob_initialOrderStd = 10;
-	public int ob_initialOrderVolumeMean = 10;
-	public int ob_initialOrderVolumeStd = 10;
-	public int ob_startingSpread = 2;
-	public int ob_orderExpirationTime = 1000000;
+	public final int ob_nStartOrders = 10000;
+	public final int ob_initialOrderStd = 100;
+	public final int ob_initialOrderVolumeMean = 10;
+	public final int ob_initialOrderVolumeStd = 10;
+	public final int ob_startingSpread = 2;
+	public final int ob_orderExpirationTime = 1000000;
 	
 	/*
 	 * Market rules
@@ -55,7 +53,7 @@ public abstract class Experiment{
 	public final boolean agentMustSellAllStocksAsSpecifiedInReceipt = true;
 	
 	public final boolean marketFillsEmptyBook = false;
-	public final long orderVolumeWhenMarketFillsEmptyBook = 10;
+	public final long orderVolumeWhenMarketFillsEmptyBook = 1;
 	public final Order.Type orderTypeWhenMarketFillsEmptyBook = Order.Type.MARKET;
 	public final int orderLengthWhenMarketFillsEmptyBook = 5;
 	
@@ -75,11 +73,11 @@ public abstract class Experiment{
 	public final long hft_wealthMean = (int) Math.pow(10, 6);
 	public final long hft_wealthStd = (int) Math.pow(10, 4);
 	
-	public final int hft_minimumThinkingTime = 1;
-	public final int hft_maximumThinkingTime = 100;
+//	public final int hft_minimumThinkingTime = 1;
+//	public final int hft_maximumThinkingTime = 100;
 	
-	public final int hft_minimumLatency = 1;
-	public final int hft_maximumLatency = 100;
+//	public final int hft_minimumLatency = 1;
+//	public final int hft_maximumLatency = 100;
 	
 	/*
 	 * Single stock minimum spread market maker parameters 
@@ -90,9 +88,22 @@ public abstract class Experiment{
 	public final long ssmm_minimumSpread = 4;
 	
 	/*
+	 * HFT simple chartist settings
+	 */
+	
+	public final int nRoundsBetweenSamples = 10;
+//	public final int sc_nLags = 500;
+//	public final int sc_largestLag = 1000;
+//	public final long sc_requiredPriceDifferenceBeforeOrdering = 3;
+//	public final long sc_priceTickSize = 1;
+//	public final int sc_waitTimeBetweenTrading = 10;
+
+	
+	
+	/*
 	 * Fundamental random walk parameters
 	 */
-	public boolean randomWalkFundamental = false;
+//	public boolean randomWalkFundamental = false;
 	public final long initialFundamentalPrice = (long) Math.pow(10, 4);
 	public final double fundamentalBrownianMean = 0;
 	public final double fundamentalBrownianVariance = 0.00001;
@@ -103,25 +114,25 @@ public abstract class Experiment{
 	public final int st_minimumDelay = 1000;
 	public final double st_delayStd = 1000;
 	
-	public int st_orderLength = 100000;
-	public double st_noiseStd = 10;
+	public final int st_orderLength = 1000000;
+//	public final double st_noiseStd = 10;
 	
 	/*
 	 * Slow trader volume parameters
 	 */
-	public boolean st_randomOrderVolume = false;
-	public long st_minimumVolume = 10;
-	public double st_volumeNoiseStd = 10;
+	public final boolean st_randomOrderVolume = false;
+	public final long st_minimumVolume = 10;
+	public final double st_volumeNoiseStd = 10;
 	
 	/*
 	 * Slow trader fundamentalist parameters
 	 */
-	public double st_fund_additivePriceNoiseStd = 0;
+	public final double st_fund_additivePriceNoiseStd = 0;
 	
 	public final double st_fund_fundamentalNoiseStd = 5;
-	public long  st_fund_tickChange = 1;
-	public long st_fund_orderVolume = 10;
-	public double st_fund_priceNoiseStd = 0;
+	public final long  st_fund_tickChange = 1;
+//	public final long st_fund_orderVolume = 10;
+	public final double st_fund_priceNoiseStd = 0;
 	
 	/*
 	 * Other variables
@@ -139,27 +150,25 @@ public abstract class Experiment{
 	public String graphRootFolder;
 	public String graphFolder;
 	
-	public Experiment(String rootFolder){
+	public Experiment(String rootFolder, String experimentName){
 		this.rootFolder = rootFolder;
+		this.setExperimentSpecificFolders(experimentName);
 		this.world = new World(this);
+		this.createStocks();
+		this.createMarkets();
+		this.createOrderbooks();
+		this.createAgents();
+		this.createObjectLoggers(this.logRootFolder);
+		this.initializeEmptyOrderbooksWithMarketOrders();
+		this.config = new Logger(this.logRootFolder, "config", Logger.Type.CSV, true, true, this);
+		this.meta = new Logger(this.logRootFolder, "meta", Logger.Type.CSV, true, true, this);
 	}
 	
 	protected void initializeExperimentWithChangedParameters(Experiment experiment) {
-		this.setExperimentSpecificFolders(experiment.getClass().getSimpleName());
-		
-		this.config = new Logger(this.logRootFolder, "config", Logger.Type.CSV, true, true, experiment);
-		this.meta = new Logger(this.logRootFolder, "meta", Logger.Type.CSV, true, true, experiment);
 		
 		this.overrideExperimentSpecificParameters();
 		String parameters = this.getParameterString();
-		this.config.writeToFile(parameters);
-		this.config.writeToConsole(parameters);
-		this.createStocks();
-		this.createMarkets();
-		this.createOrderbooks(experiment);
-		this.createAgents();
-		this.createObjectLoggers(this.logRootFolder, experiment);
-		this.initializeEmptyOrderbooksWithMarketOrders();
+
 	}
 	
 	public abstract void createAgents();
@@ -179,7 +188,7 @@ public abstract class Experiment{
 	}
 	
 	
-	public void createOrderbooks(Experiment experiment) {
+	public void createOrderbooks() {
 		/*
 		 * Should be executed whenever one (or several) new stock or market is
 		 * created.
@@ -188,7 +197,7 @@ public abstract class Experiment{
 			for (Market market : this.world.getMarkets()) {
 				StockMarketPair p = new StockMarketPair(stock, market);
 				if (!this.world.getOrderbooksByPair().containsKey(p)) {
-					Orderbook ob = new Orderbook(experiment, stock, market);
+					Orderbook ob = new Orderbook(this, stock, market);
 					this.world.getOrderbooksByPair().put(p, ob);
 					market.addOrderbook(ob);
 				}
@@ -198,60 +207,60 @@ public abstract class Experiment{
 		this.world.getOrderbooks().addAll(this.world.getOrderbooksByPair().values());
 	}
 	
-public void createObjectLoggers(String logRootFolder, Experiment experiment) {
+public void createObjectLoggers(String logRootFolder) {
 		
 		
 		
-		this.world.warningLog = new WorldLogger(logRootFolder,"lineLog_worldWarnings", false, Logger.Type.TXT, true, Logging.logWorldWarningsToConsole, experiment);
+		this.world.warningLog = new WorldLogger(logRootFolder,"lineLog_worldWarnings", false, Logger.Type.TXT, true, Logging.logWorldWarningsToConsole, this);
 		openLogs.add(this.world.warningLog);
-		this.world.errorLog = new WorldLogger(logRootFolder,"lineLog_errors", false, Logger.Type.TXT, true, true, experiment);
+		this.world.errorLog = new WorldLogger(logRootFolder,"lineLog_errors", false, Logger.Type.TXT, true, true, this);
 		openLogs.add(this.world.errorLog);
-		this.world.eventLog = new WorldLogger(logRootFolder,"lineLog_worldEvents", false, Logger.Type.TXT, true, Logging.logWorldEventsToConsole, experiment);
+		this.world.eventLog = new WorldLogger(logRootFolder,"lineLog_worldEvents", false, Logger.Type.TXT, true, Logging.logWorldEventsToConsole, this);
 		openLogs.add(this.world.eventLog);
-		this.world.ruleViolationsLog = new WorldLogger(logRootFolder,"lineLog_ruleViolations", false, Logger.Type.TXT, true, false, experiment);
+		this.world.ruleViolationsLog = new WorldLogger(logRootFolder,"lineLog_ruleViolations", false, Logger.Type.TXT, true, false, this);
 		openLogs.add(this.world.ruleViolationsLog);
-		this.world.dataLog = new WorldLogger(logRootFolder,"columnLog_worldData", true, Logger.Type.CSV, Logging.logWorldRoundDataToFile, Logging.logWorldRoundDataToConsole, experiment);
+		this.world.dataLog = new WorldLogger(logRootFolder,"columnLog_worldData", true, Logger.Type.CSV, Logging.logWorldRoundDataToFile, Logging.logWorldRoundDataToConsole, this);
 		openLogs.add(this.world.dataLog);
 		
 		for(Stock stock:this.world.getStocks()){
-			stock.roundBasedDatalog = new StockLogger(logRootFolder, "columnLog_roundBased", stock, StockLogger.Type.LOG_AFTER_EVERY_ROUND, Logger.Type.CSV, Logging.logStockRoundDataToFile, Logging.logStockRoundDataToConsole, experiment);
+			stock.roundBasedDatalog = new StockLogger(logRootFolder, "columnLog_roundBased", stock, StockLogger.Type.LOG_AFTER_EVERY_ROUND, Logger.Type.CSV, Logging.logStockRoundDataToFile, Logging.logStockRoundDataToConsole, this);
 			if(Logging.logStockRoundDataToFile){
 				openLogs.add(stock.roundBasedDatalog);				
 			}
 			
-			stock.transactionBasedDataLog = new StockLogger(logRootFolder, "columnLog_transactionBased", stock, StockLogger.Type.LOG_AFTER_EVERY_TRANSACTION, Logger.Type.CSV, Logging.logStockTransactionDataToFile, Logging.logStockTransactionDataToConsole, experiment);
+			stock.transactionBasedDataLog = new StockLogger(logRootFolder, "columnLog_transactionBased", stock, StockLogger.Type.LOG_AFTER_EVERY_TRANSACTION, Logger.Type.CSV, Logging.logStockTransactionDataToFile, Logging.logStockTransactionDataToConsole, this);
 			if(Logging.logStockTransactionDataToFile){
 				openLogs.add(stock.transactionBasedDataLog);
 			}
 		}
 		
 		for(Orderbook orderbook:this.world.getOrderbooks()){
-			orderbook.orderflowLog = new OrderbookLogger(logRootFolder, "lineLog_orderFlow_", orderbook, OrderbookLogger.Type.ORDER_FLOW_LOG, Logger.Type.TXT, Logging.logOrderbookOrderFlowToFile, Logging.logOrderbookOrderFlowToConsole, experiment);
+			orderbook.orderflowLog = new OrderbookLogger(logRootFolder, "lineLog_orderFlow_", orderbook, OrderbookLogger.Type.ORDER_FLOW_LOG, Logger.Type.TXT, Logging.logOrderbookOrderFlowToFile, Logging.logOrderbookOrderFlowToConsole, this);
 			if(Logging.logOrderbookOrderFlowToFile){
 				openLogs.add(orderbook.orderflowLog);
 			}
-			orderbook.eventLog = new OrderbookLogger(logRootFolder, "lineLog_events_", orderbook, OrderbookLogger.Type.EVENT_LOG, Logger.Type.TXT, Logging.logOrderbookEventsToFile, Logging.logOrderbookEventsToConsole, experiment);
+			orderbook.eventLog = new OrderbookLogger(logRootFolder, "lineLog_events_", orderbook, OrderbookLogger.Type.EVENT_LOG, Logger.Type.TXT, Logging.logOrderbookEventsToFile, Logging.logOrderbookEventsToConsole, this);
 			if(Logging.logOrderbookEventsToFile){
 				openLogs.add(orderbook.eventLog);
 			}
 			
-			orderbook.roundBasedLog = new OrderbookLogger(logRootFolder, "columnLog_roundBased", orderbook, OrderbookLogger.Type.ORDERBOOK_ROUND_BASED_DATA, Logger.Type.CSV, Logging.logOrderbookRoundBasedDataToFile, Logging.logOrderbookRoundBasedDataToConsole, experiment);
+			orderbook.roundBasedLog = new OrderbookLogger(logRootFolder, "columnLog_roundBased", orderbook, OrderbookLogger.Type.ORDERBOOK_ROUND_BASED_DATA, Logger.Type.CSV, Logging.logOrderbookRoundBasedDataToFile, Logging.logOrderbookRoundBasedDataToConsole, this);
 			if(Logging.logOrderbookRoundBasedDataToFile) {
 				openLogs.add(orderbook.roundBasedLog);
 			}
 		}
 		
 		for(HFT agent:this.world.getHFTAgents()){
-			agent.eventlog = new AgentLogger(logRootFolder, "lineLog", agent, Logger.Type.TXT, AgentLogger.headerType.NO_HEADER, Logging.logAgentActionsToFile, Logging.logAgentActionsToConsole, experiment);
+			agent.eventlog = new AgentLogger(logRootFolder, "lineLog", agent, Logger.Type.TXT, AgentLogger.headerType.NO_HEADER, Logging.logAgentActionsToFile, Logging.logAgentActionsToConsole, this);
 			if(Logging.logAgentActionsToFile){
 				openLogs.add(agent.eventlog);
 			}
-			agent.roundDatalog = new AgentLogger(logRootFolder, "columnLog_roundBased", agent, Logger.Type.CSV, AgentLogger.headerType.ROUND_DATA, Logging.logAgentRoundDataToFile, Logging.logAgentRoundDataToConsole, experiment);
+			agent.roundDatalog = new AgentLogger(logRootFolder, "columnLog_roundBased", agent, Logger.Type.CSV, AgentLogger.headerType.ROUND_DATA, Logging.logAgentRoundDataToFile, Logging.logAgentRoundDataToConsole, this);
 			if(Logging.logAgentRoundDataToFile){
 				openLogs.add(agent.roundDatalog);
 			}
 			
-			agent.tradeLog = new AgentLogger(logRootFolder, "columnLog_tradelog", agent, Logger.Type.CSV, AgentLogger.headerType.TRADE_DATA, Logging.logAgentTradeDataToFile, Logging.logAgentTradeDataToConsole, experiment);
+			agent.tradeLog = new AgentLogger(logRootFolder, "columnLog_tradelog", agent, Logger.Type.CSV, AgentLogger.headerType.TRADE_DATA, Logging.logAgentTradeDataToFile, Logging.logAgentTradeDataToConsole, this);
 			if(Logging.logAgentTradeDataToFile){
 				openLogs.add(agent.tradeLog);
 			}
@@ -275,15 +284,15 @@ public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 		
 	}
 	
-	public static void runExperiment(Experiment experiment){
-		experiment.world.executeInitalRoundsWithSlowTraders();
-		experiment.world.executeHFTRounds();
-		experiment.closeLogs();
-		System.out.println(String.format("Finished simulation in %s seconds", ((double) experiment.world.runTime)/1000f));
+	public void runExperiment(){
+		this.world.executeInitalRoundsWithSlowTraders();
+		this.world.executeHFTRounds();
+		this.closeLogs();
+		System.out.println(String.format("Finished simulation in %s seconds", ((double) this.world.runTime)/1000f));
 	}
 	
 	public static void runRscript(Experiment experiment, Rengine re) {
-		String gf = experiment.graphFolder;
+//		String gf = experiment.graphFolder;
 		new File(experiment.graphFolder).mkdirs();
 		System.out.println("Running R script...");
 		if(new File(experiment.RscriptFilePath).exists()) {
@@ -304,6 +313,11 @@ public void createObjectLoggers(String logRootFolder, Experiment experiment) {
 		// TODO Auto-generated method stub
 		return this.world.getCurrentRound();
 	}
+	
+	public WorldLogger getErrorLog() {
+		return this.world.errorLog;
+	}
+	
 }
 
 

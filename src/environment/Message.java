@@ -1,6 +1,6 @@
 package environment;
 
-import Experiments.Experiment;
+import experiments.Experiment;
 
 public abstract class Message{
 	

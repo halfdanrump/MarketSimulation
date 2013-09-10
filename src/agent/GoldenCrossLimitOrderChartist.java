@@ -4,16 +4,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Random;
-
-import utilities.Utils;
-
-import Experiments.Experiment;
-import environment.Market;
 import environment.Message;
 import environment.NoOrdersException;
 import environment.Order;
 import environment.Orderbook;
 import environment.World;
+import experiments.Experiment;
 
 public class GoldenCrossLimitOrderChartist extends HFT {
 	private int longTermMALength;
@@ -27,7 +23,7 @@ public class GoldenCrossLimitOrderChartist extends HFT {
 	
 	public GoldenCrossLimitOrderChartist(float aggressiveness, int longTermMALength, int shortTermMALength, int orderSize, int initialWaitTime,  
 			int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment, int thinkingTime) {
-		super(stockIDs, marketIDs, latencies, group, experiment, thinkingTime);
+		super(stockIDs, marketIDs, latencies, experiment, thinkingTime);
 		this.longTermMALength = longTermMALength;
 		this.shortTermMALength = shortTermMALength;
 		this.orderSize = orderSize;

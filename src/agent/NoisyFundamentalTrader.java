@@ -3,11 +3,11 @@ package agent;
 import java.util.ArrayList;
 import java.util.Random;
 
-import Experiments.Experiment;
 
 import environment.Message;
 import environment.Order;
 import environment.Orderbook;
+import experiments.Experiment;
 
 public class NoisyFundamentalTrader {
 	public static Random random = new Random();
@@ -15,9 +15,6 @@ public class NoisyFundamentalTrader {
 	
 	public static void submitOrder(Experiment experiment, Orderbook orderbook) {
 		int now = experiment.getWorld().getCurrentRound();
-		if(now==9998) {
-			System.out.println("hum");
-		}
 		int laggedTime = getLaggedTime(experiment, now); 
 		long laggedFundamentalPrice = orderbook.getStock().getFundamentalPrice(laggedTime);
 		

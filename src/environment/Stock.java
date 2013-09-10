@@ -3,7 +3,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeSet;
 
-import Experiments.Experiment;
+import experiments.Experiment;
+
 
 import umontreal.iro.lecuyer.stochprocess.GeometricBrownianMotion;
 import umontreal.iro.lecuyer.rng.MRG32k3a;
@@ -34,9 +35,12 @@ public class Stock {
 	private ArrayList<Long> tradedPerRoundVolume;
 	private static long nStocks = 0;
 	private ArrayList<Long> fixedFundamental;
+	
+	private boolean isRandomWalk;
 
-	public Stock(Experiment experiment){
+	public Stock(Experiment experiment, boolean isRandomWalk){
 		this.experiment = experiment;
+		this.isRandomWalk = isRandomWalk;
 		initialize();
 		
 	}
@@ -57,8 +61,10 @@ public class Stock {
 		this.fundamentalPrice.set(0,this.experiment.initialFundamentalPrice);
 //		this.globalLastTradedMarketOrderBuyPrice = this.experiment.initialFundamentalPrice - 10*(long) this.experiment.additivePriceNoiseStd;
 //		this.globalLastTradedMarketOrderSellPrice = this.experiment.initialFundamentalPrice + 10*(long) this.experiment.additivePriceNoiseStd;
-		this.gbm = new GeometricBrownianMotion(this.experiment.initialFundamentalPrice, this.experiment.fundamentalBrownianMean, this.experiment.fundamentalBrownianVariance, new MRG32k3a());
-		gbm.setObservationTimes(1, this.experiment.nTotalRounds+1);
+		if(this.isRandomWalk) {
+			this.gbm = new GeometricBrownianMotion(this.experiment.initialFundamentalPrice, this.experiment.fundamentalBrownianMean, this.experiment.fundamentalBrownianVariance, new MRG32k3a());
+			gbm.setObservationTimes(1, this.experiment.nTotalRounds+1);			
+		}
 		this.experiment.getWorld().addStock(this);
 		this.fixedFundamental = new ArrayList<Long>(Collections.nCopies(this.experiment.nTotalRounds, this.experiment.initialFundamentalPrice));
 	}
@@ -68,7 +74,7 @@ public class Stock {
 		//		Implement Brownian motion
 		int now = this.experiment.getWorld().getCurrentRound();
 		long price;
-		if(this.experiment.randomWalkFundamental) {
+		if(this.isRandomWalk) {
 			price = Math.round(this.gbm.nextObservation());			
 		} else {
 //			price = this.experiment.initialFundamentalPrice;

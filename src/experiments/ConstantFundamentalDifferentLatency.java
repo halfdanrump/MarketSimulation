@@ -1,4 +1,6 @@
-package Experiments;
+package experiments;
+
+import java.util.Random;
 
 import org.rosuda.JRI.Rengine;
 
@@ -9,38 +11,35 @@ import agent.SingleStockMarketMaker;
 import environment.Market;
 import environment.Stock;
 
-public class ConstantFundamentalSameLatency extends Experiment {
+public class ConstantFundamentalDifferentLatency extends Experiment {
 
 	/*
 	 * Override default setup parameters
 	 */
 	private int nAgents;
-	private int fixedLatency;
+	private int minimumLatency;
+	private int maximumLatency;
 	
 	public static void main(String[] args) {
 		System.out.println("Running experiment");
 		String rootFolder = System.getProperty("rootFolder", "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/");
-		int fixedLatency = Integer.valueOf(System.getProperty("fixedLatency", "1"));
-		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("STOrdersPerRound", "1"));
+		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("STOrdersPerRound", "2"));
+		int minimumLatency = Integer.valueOf(System.getProperty("minimumLatency", "2"));
+		int maximumLatency = Integer.valueOf(System.getProperty("maximumLatency", "10"));
 		
 		int nAgents = 0;
-		Experiment e1 = new ConstantFundamentalSameLatency(rootFolder, nAgents, fixedLatency, nSTOrdersPerRound);
+		Experiment e1 = new ConstantFundamentalDifferentLatency(rootFolder, nAgents, nSTOrdersPerRound, minimumLatency, maximumLatency);
+		Experiment.runExperiment(e1);
 		
-		
-		try{
-			Experiment.runExperiment(e1);
-		} catch(java.lang.StackOverflowError e) {
-			e1.getWorld().getOrderbookByNumbers(0, 0).printOrderbook();
-		}
-//		Experiment.runRscript(e1, re);
 		
 	}
 	
-	public ConstantFundamentalSameLatency(String rootFolder, int nAgents, int fixedLatency, int nSlowTraderOrdersPerRound) {
+	public ConstantFundamentalDifferentLatency(String rootFolder, int nAgents, int nSlowTraderOrdersPerRound, int minimumLatency, int maximumLatency) {
 		super(rootFolder);
 		this.nAgents = nAgents;
-		this.fixedLatency = fixedLatency;
 		this.nSlowTraderOrdersPerRound = nSlowTraderOrdersPerRound;
+		this.minimumLatency = minimumLatency;
+		this.maximumLatency = maximumLatency;
 		this.overrideExperimentSpecificParameters();
 		super.initializeExperimentWithChangedParameters(this);
 		
@@ -54,7 +53,7 @@ public class ConstantFundamentalSameLatency extends Experiment {
 	@Override
 	public void overrideExperimentSpecificParameters() {
 		this.randomWalkFundamental = false;
-		this.nHFTsPerGroup = this.nAgents;
+		this.nHFTMarketMakers = this.nAgents;
 	}
 	
 	@Override
@@ -66,21 +65,25 @@ public class ConstantFundamentalSameLatency extends Experiment {
 	
 	@Override
 	public String getParameterString() {
-		String header = String.format("randomWalkFundamental,nHFTsPerGroup,nSlowTraderOrdersPerRound, fixedLatency");
-		String values = String.format("%s,%s,%s,%s", 0, this.nHFTsPerGroup, this.nSlowTraderOrdersPerRound, this.fixedLatency);
+		String header = String.format("randomWalkFundamental,nHFTsPerGroup,nSlowTraderOrdersPerRound,minimumLatency,maximumLatency");
+		String values = String.format("%s,%s,%s,%s", 0, this.nHFTMarketMakers, this.nSlowTraderOrdersPerRound, this.minimumLatency, this.maximumLatency);
 		return header + "\n" + values;
 		
 	}
 	
 	@Override
 	public void createAgents(){
-		int[] latencyToMarkets = {this.fixedLatency};
 		int group = 0;
 		int[] stockIDs = {0}; 
-		int[] marketIDs = {0}; 
-		for(int i=0; i<this.nHFTsPerGroup; i++) {
+		int[] marketIDs = {0};
+		int[] latencyToMarkets = new int[marketIDs.length];
+		Random random = new Random();
+		for(int i=0; i<this.nHFTMarketMakers; i++) {
+			for(int j = 0; j<marketIDs.length; j++) {
+				latencyToMarkets[j] = Utils.getRandomUniformInteger(this.hft_minimumLatency, this.hft_maximumLatency);
+			}
 			int thinkingTime = Utils.getRandomUniformInteger(this.hft_minimumThinkingTime, this.hft_maximumThinkingTime);
-			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.ssmm_minimumSpread, group, this, thinkingTime);
+			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, this.ssmm_minimumSpread, this, thinkingTime);
 		}
 		
 //		float aggressiveness = 1;

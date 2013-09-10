@@ -2,8 +2,9 @@ package environment;
 
 import java.util.HashMap;
 
+import experiments.Experiment;
 
-import Experiments.Experiment;
+
 import agent.HFT;
 
 public class Market{

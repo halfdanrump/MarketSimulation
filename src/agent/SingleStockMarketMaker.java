@@ -2,7 +2,6 @@ package agent;
 
 import java.util.HashMap;
 
-import Experiments.Experiment;
 
 import environment.Market;
 import environment.Message;
@@ -11,6 +10,7 @@ import environment.Order;
 import environment.OrderCancellation;
 import environment.Orderbook;
 import environment.Stock;
+import experiments.Experiment;
 
 public class SingleStockMarketMaker extends HFT {
 	private long minimumSpread;
@@ -35,8 +35,8 @@ public class SingleStockMarketMaker extends HFT {
 	 * his ask to the new price. -
 	 */
 
-	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, int group, Experiment experiment, int thinkingTime) {
-		super(stocks, markets, latencies, group, experiment, thinkingTime);
+	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, Experiment experiment, int thinkingTime) {
+		super(stocks, markets, latencies, experiment, thinkingTime);
 		this.experiment = experiment;
 		if (stocks.length > 1) {
 			this.experiment.getWorld().errorLog.logError("SingleStockMarketMaker should only trade a single stock, but more were specified! Using the first specified stock...", this.experiment);

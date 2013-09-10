@@ -8,7 +8,7 @@ import utilities.Utils;
 import environment.Order;
 import environment.Stock;
 import environment.TransactionReceipt;
-import Experiments.Experiment;
+import experiments.Experiment;
 import agent.HFT;
 
 public class AgentLogger extends Logger {

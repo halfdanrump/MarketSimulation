@@ -2,12 +2,12 @@ package log;
 
 import java.util.ArrayList;
 
-import Experiments.Experiment;
 import setup.Logging;
 import utilities.Utils;
 import environment.Order;
 import environment.Orderbook;
 import environment.TransactionReceipt;
+import experiments.Experiment;
 
 public class OrderbookLogger extends Logger implements Logging{
 	public enum Type{

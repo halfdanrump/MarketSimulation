@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import Experiments.Experiment;
 
 import setup.Logging;
 
 import environment.TransactionReceipt;
+import experiments.Experiment;
 
 public class Logger implements Logging {
 	public static long nLogs = 0;

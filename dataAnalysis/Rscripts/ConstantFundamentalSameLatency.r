@@ -10,7 +10,7 @@ library(grDevices)
 exportPlotsToFiles = FALSE
 
 #experimentName = "StepFunctionFundamentalDifferentLatency"
-experimentName = "StepFunctionFundamentalSameLatency"
+experimentName = "test"
 
 #experimentName = "ConstantFundamentalSameLatency"
 
@@ -22,10 +22,10 @@ loadFiles = function(logDir){
   files = list()
   files[['stock0transactions']] = read.csv(file=paste0(logDir, "columnLog_transactionBased_stock0.csv"))
   files[['stock0roundBased']] = read.csv(file=paste0(logDir, "columnLog_roundBased_stock0.csv"))
-  files[['configParameters']] = read.csv(file=paste0(logDir, "config.csv"))
+  #files[['configParameters']] = read.csv(file=paste0(logDir, "config.csv"))
   files[['worldRoundBased']] = read.csv(file=paste0(logDir, "columnLog_worldData.csv"))
   files[['orderbook0RoundBased']] = read.csv(file=paste0(logDir, "columnLog_roundBased_orderbook(0,0).csv"))
-  files[['meta']] = read.csv(file=paste0(logDir, "meta.csv"))
+  #files[['meta']] = read.csv(file=paste0(logDir, "meta.csv"))
   n = names(files$configParameters)
   v = unlist(files$configParameters)
   l = length(n)
@@ -83,12 +83,13 @@ makeMeanPricePlot = function(files, rounds, meanPrice, stdPrice, from, to, SMAwi
 }
 
 makeShortTimeTradePricePlot = function(files){
+  png(filename= '/Users/halfdan/Desktop/graphsForToriumi2013_09_10/with_150_chartists_35_marketMakers_v2.png',width=1920, height=1200)
   par(mfrow=c(4,1))
   from = min(files$stock0transactions$round)
   to = max(files$stock0transactions$round)
   ymin = min(files$stock0transactions$price, files$stock0roundBased$fundamental)
   ymax = max(files$stock0transactions$price, files$stock0roundBased$fundamental)
-  plot(files$stock0roundBased$fundamental, col='red', type='l', ylim=c(ymin, ymax), main="")
+  plot(files$stock0roundBased$fundamental, col='red', type='l', ylim=c(ymin, ymax), main="executed price")
   points(files$stock0transactions$round, files$stock0transactions$price, pch=19, cex=0.3)
   lines(files$stock0roundBased$fundamental, col="red", type="l", lwd=2)
   plot(files$orderbook0RoundBased$nTradedsInRound[-1], type="h", main="Number of trades")
@@ -99,10 +100,10 @@ makeShortTimeTradePricePlot = function(files){
   ymax = max(files$orderbook0RoundBased$bestStandingBuyPrice, files$orderbook0RoundBased$bestStandingSellPrice)
   ymin = min(files$orderbook0RoundBased$bestStandingBuyPrice, files$orderbook0RoundBased$bestStandingSellPrice)
   plot(files$orderbook0RoundBased$bestStandingBuyPrice, col="red", 
-       ylim=c(ymin,ymax), main="beet buy/sell prices", pch=19, cex=0.1)
+  ylim=c(ymin,ymax), main="beet buy/sell prices", pch=19, cex=0.1)
   points(files$orderbook0RoundBased$bestStandingSellPrice, col="green", pch=18, cex=0.2)
-  
-  #from = min(which(files$stock0transactions$round == 12000))
+  dev.off()
+  #from = min(which(files$stock0transactions$round == 12000))   
   #to = max(which(files$stock0transactions$round == 15500))
   #plot(files$stock0transactions$round[from:to], files$stock0transactions$price[from:to], ylim=c(9990, 10010), type="l")
   #lines(files$stock0roundBased$fundamental, col="red", type="l", lwd=2)

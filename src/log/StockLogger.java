@@ -1,11 +1,10 @@
 package log;
 
-import Experiments.Experiment;
 import environment.Market;
-import environment.NoOrdersException;
 import environment.Order;
 import environment.Orderbook;
 import environment.Stock;
+import experiments.Experiment;
 
 public class StockLogger extends Logger {
 	public enum Type{

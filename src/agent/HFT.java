@@ -2,12 +2,12 @@ package agent;
 
 import environment.*;
 import environment.Order.BuySell;
+import experiments.Experiment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import Experiments.Experiment;
 
 import log.AgentLogger;
 
@@ -71,10 +71,9 @@ public abstract class HFT implements Logging {
 	public AgentLogger roundDatalog;
 	public AgentLogger tradeLog;
 
-	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, int group, Experiment experiment, int thinkingTime) {
+	public HFT(int[] stockIDs, int[] marketIDs, int[] latencies, Experiment experiment, int thinkingTime) {
 		this.experiment = experiment;
 		this.thinkingTime = thinkingTime;
-		this.group = group;
 		if (experiment.hft_randomStartWealth) {
 			this.cash = getRandomInitialTraderWealth();
 		} else {
@@ -565,6 +564,14 @@ public abstract class HFT implements Logging {
 
 	public void hibernate() {
 		this.wakeupTime = this.experiment.getWorld().getCurrentRound() + this.experiment.hft_emptyOrderbookWaitTime;
+	}
+	
+	public void waitForNRounds(int nRounds) {
+		if(nRounds>0) {
+			this.wakeupTime = this.experiment.getWorld().getCurrentRound() + nRounds;
+		} else {
+			this.experiment.getWorld().errorLog.logError("nRounds must be larger than zero", experiment);
+		}
 	}
 
 	protected void updateNumberOfStocksInStandingOrders(Stock stock, Order.BuySell buysell, long volume, HFT.agentAction action) {

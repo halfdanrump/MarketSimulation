@@ -1,8 +1,8 @@
 package environment;
 
-import Experiments.Experiment;
 import agent.HFT;
 import environment.Order.BuySell;
+import experiments.Experiment;
 
 public class TransactionReceipt extends Message{
 	private static long receiptsCount = 0;

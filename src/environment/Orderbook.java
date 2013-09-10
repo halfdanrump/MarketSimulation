@@ -6,7 +6,8 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.TreeMap;
-import Experiments.Experiment;
+
+import experiments.Experiment;
 import log.OrderbookLogger;
 import utilities.OrderExpirationTimeComparator;
 import utilities.orderPriceComparatorAscending;
@@ -485,9 +486,13 @@ public class Orderbook {
 			
 			long spread = this.localBestSellPriceAtEndOfRound.get(now) - this.localBestBuyPriceAtEndOfRound.get(now);
 			if(spread <= 0) {
+				long sell = this.localBestSellPriceAtEndOfRound.get(now);
+				long buy = this.localBestBuyPriceAtEndOfRound.get(now);
 				Exception e = new Exception();
 				e.printStackTrace();
 				this.printOrderbook();
+				System.out.println(String.format("local best sell: %s", this.localBestSellPriceAtEndOfRound.get(now)));
+				System.out.println(String.format("local best buy: %s", this.localBestBuyPriceAtEndOfRound.get(now)));
 				this.experiment.getWorld().errorLog.logError(String.format("Spread at orderbook %s was %s", this.getIdentifier(), spread), this.experiment);
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {

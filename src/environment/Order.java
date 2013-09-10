@@ -1,6 +1,6 @@
 package environment;
 
-import Experiments.Experiment;
+import experiments.Experiment;
 import agent.HFT;
 
 public class Order extends Message{

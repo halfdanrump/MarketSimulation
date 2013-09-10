@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
+
+import experiments.Experiment;
 import log.WorldLogger;
 import setup.SimulationSetup;
 import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
 import utilities.StockMarketPair;
-import Experiments.Experiment;
 import agent.NoisyFundamentalTrader;
 import agent.HFT;
 import umontreal.iro.lecuyer.randvar.PoissonGen;
@@ -21,10 +22,6 @@ import umontreal.iro.lecuyer.rng.MRG32k3a;
 public class World implements SimulationSetup {
 	private Experiment experiment;
 
-	private enum roundPhases {
-		MESSAGES_ARRIVE, STYLIZED_TRADING, HFT_TRADING, UPDATE_ORDERBOOKS, LOGGING;
-	}
-	
 
 	/*
 	 * References to stocks, markets and agents (indexed by IDs)
@@ -67,16 +64,15 @@ public class World implements SimulationSetup {
 	public long creationTime;
 	public long runTime;
 	private int currentRound;
-	private roundPhases roundPhase;
 	
 	PoissonGen poissonProcess;
 	MRG32k3a randomGenerator;
 
 	public World(Experiment experiment) {
+		this.experiment = experiment;
 		this.creationTime = System.currentTimeMillis();
 		this.runTime = 0;
 		this.currentRound = 0;
-		this.experiment = experiment;
 
 		this.agentsByID = new HashMap<String, HFT>();
 		this.orderbooksByPair = new HashMap<StockMarketPair, Orderbook>();
@@ -92,8 +88,10 @@ public class World implements SimulationSetup {
 		this.waitingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
 		this.thinkingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
 		this.freeAgents = new ArrayList<HFT>();
-		MRG32k3a randomGenerator = new MRG32k3a();
-		this.poissonProcess = new PoissonGen(randomGenerator, experiment.slowTraderOrdersPerRoundAverage);
+		if(!this.experiment.constantNumberOfSlowtraderOrdersPerRound) {
+			MRG32k3a randomGenerator = new MRG32k3a();
+			this.poissonProcess = new PoissonGen(randomGenerator, experiment.slowTraderOrdersPerRoundAverage);
+		}
 		
 	
 	}
@@ -517,9 +515,9 @@ public class World implements SimulationSetup {
 		for (long round = 0; round < this.experiment.nHFTRounds; round++) {
 			if (currentRound % 1000 == 0) {
 				System.out.println(String.format("Round %s", currentRound));
-				for (Orderbook o : this.orderbooks) {
-					o.printOrderbook();
-				}
+//				for (Orderbook o : this.orderbooks) {
+//					o.printOrderbook();
+//				}
 			}
 
 			this.executeRound(this.experiment);
