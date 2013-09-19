@@ -3,29 +3,29 @@ package experiments;
 import environment.Market;
 import environment.Stock;
 
-public class NewTypeExperiment extends Experiment {
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-//		String rootFolder = System.getProperty("rootFolder");
-		String rootFolder = "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/";
+public class GenericExperiment extends Experiment {
 
+	
+	public static void main(String[] args) {
+		String rootFolder = System.getProperty("rootFolder");
+		String experimentName = System.getProperty("experimentName");
+		if(rootFolder == null && experimentName == null) {
+			System.out.println("Please specify root folder and experiment name");
+		}
 		
-		System.out.println(rootFolder);
-		Experiment e = new NewTypeExperiment(rootFolder);
+		Experiment e = new GenericExperiment(rootFolder, experimentName);
 		e.runExperiment();
 	}
 
-	public NewTypeExperiment(String rootFolder) {
-		super(rootFolder, "test");
-		// TODO Auto-generated constructor stub
+	public GenericExperiment(String rootFolder, String experimentName) {
+		super(rootFolder, experimentName);
 	}
 
 	@Override
 	public void createAgents() {
-		// TODO Auto-generated method stub
+		 /*
+		  * All this parameter fetching could really be moved to the parent class... this way other experiments wouldn't have to repeat the same code.
+		  */
 		
 		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("nStOrderPerRound", "1"));
 		int minimumLatency = Integer.valueOf(System.getProperty("minimumLatency", "2"));
@@ -57,10 +57,10 @@ public class NewTypeExperiment extends Experiment {
 
 	@Override
 	public void createStocks() {
-		// TODO Auto-generated method stub
 		boolean isRandomWalk = false;
 		Stock stock = new Stock(this, isRandomWalk);
-		ExperimentUtils.setFundamentalToStepFunction(this, stock, -5, 15000);
+		int shockSize = Integer.valueOf(System.getProperty("shockSize", "-5"));;
+		ExperimentUtils.setFundamentalToStepFunction(this, stock, shockSize, 20000);
 
 	}
 
