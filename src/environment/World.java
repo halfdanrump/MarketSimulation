@@ -64,7 +64,7 @@ public class World implements SimulationSetup {
 	public long creationTime;
 	public long runTime;
 	private int currentRound;
-	
+	private long roundBeginTime;
 	PoissonGen poissonProcess;
 	MRG32k3a randomGenerator;
 
@@ -512,9 +512,11 @@ public class World implements SimulationSetup {
 	}
 
 	public void executeHFTRounds() {
+		this.roundBeginTime = System.currentTimeMillis();
 		for (long round = 0; round < this.experiment.nHFTRounds; round++) {
 			if (currentRound % 1000 == 0) {
-				System.out.println(String.format("Round %s", currentRound));
+				System.out.println(String.format("Round %s, time: %s", currentRound, System.currentTimeMillis() - this.roundBeginTime));
+				this.roundBeginTime = System.currentTimeMillis();
 //				for (Orderbook o : this.orderbooks) {
 //					o.printOrderbook();
 //				}

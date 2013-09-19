@@ -119,7 +119,7 @@ public class Orderbook {
 		}
 		this.experiment.getWorld().dispatchArrivingOrders();
 		this.updateLocalBestPricesAtTheEndOfEachRound();
-		this.printOrderbook();
+//		this.printOrderbook();
 		
 	}
 	
@@ -631,6 +631,7 @@ public class Orderbook {
 			cancellation = this.unprocessedOrderCancellations.remove(index);
 			this.removeOrderFromBook(cancellation.getOrder());
 		}
+		this.updateLocalBestPricesAtTheEndOfEachRound();
 	}
 
 	public String getSpreadForBestPricesAtEndOfRound(int round) {

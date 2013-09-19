@@ -25,7 +25,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public final int nTotalRounds = 100000;
+	public final int nTotalRounds = 50000;
 	public final int nInitialSlowTraderRounds = 5000;
 	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
 	
@@ -37,11 +37,11 @@ public abstract class Experiment{
 	/*
 	 * Orderbook settings
 	 */
-	public final int ob_nStartOrders = 10000;
+	public final int ob_nStartOrders = 100000;
 	public final int ob_initialOrderStd = 100;
 	public final int ob_initialOrderVolumeMean = 10;
 	public final int ob_initialOrderVolumeStd = 10;
-	public final int ob_startingSpread = 2;
+	public final int ob_startingSpread = 0;
 	public final int ob_orderExpirationTime = 1000000;
 	
 	/*

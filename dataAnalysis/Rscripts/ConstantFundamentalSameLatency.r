@@ -82,8 +82,19 @@ makeMeanPricePlot = function(files, rounds, meanPrice, stdPrice, from, to, SMAwi
   #lines(SMA(stdPrice, n=SMAwindows), type="l", col="red")
 }
 
+### Histogram over 
+### Longest period with a stable price
+### Largest price difference at any point in time
+
+###### In experiment with flat fundamental
+### Max price movement in x round s: This shows 
+
+###### In experiment with shock to fundamental
+### Time until the first trade is executed at the fundamental price after the shock
+
+
 makeShortTimeTradePricePlot = function(files){
-  png(filename= '/Users/halfdan/Desktop/graphsForToriumi2013_09_10/with_150_chartists_35_marketMakers_v2.png',width=1920, height=1200)
+  #png(filename= '/Users/halfdan/Desktop/graphsForToriumi2013_09_10/flatFundamental_30_marketMakers.png',width=1920, height=1200)
   par(mfrow=c(4,1))
   from = min(files$stock0transactions$round)
   to = max(files$stock0transactions$round)
@@ -99,10 +110,10 @@ makeShortTimeTradePricePlot = function(files){
   lines(files$orderbook0RoundBased$nUnfilledSellOrders, type="l", col="green")
   ymax = max(files$orderbook0RoundBased$bestStandingBuyPrice, files$orderbook0RoundBased$bestStandingSellPrice)
   ymin = min(files$orderbook0RoundBased$bestStandingBuyPrice, files$orderbook0RoundBased$bestStandingSellPrice)
-  plot(files$orderbook0RoundBased$bestStandingBuyPrice, col="red", 
+  plot(files$orderbook0RoundBased$bestStandingBuyPrice[20000:30000], col="red", 
   ylim=c(ymin,ymax), main="beet buy/sell prices", pch=19, cex=0.1)
-  points(files$orderbook0RoundBased$bestStandingSellPrice, col="green", pch=18, cex=0.2)
-  dev.off()
+  points(files$orderbook0RoundBased$bestStandingSellPrice[20000:30000], col="green", pch=18, cex=0.2)
+  #dev.off()
   #from = min(which(files$stock0transactions$round == 12000))   
   #to = max(which(files$stock0transactions$round == 15500))
   #plot(files$stock0transactions$round[from:to], files$stock0transactions$price[from:to], ylim=c(9990, 10010), type="l")

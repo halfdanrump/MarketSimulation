@@ -12,7 +12,7 @@ public interface Logging {
 	 * WORLD. What kind of world events to log. A world event could be the
 	 * cumulative actions of all agents in a round
 	 */
-	boolean logWorldEventsToFile = true;
+	boolean logWorldEventsToFile = false;
 	boolean logWorldEventsToConsole = false;
 	boolean logWorldWarningsToFile = true;
 	boolean logWorldWarningsToConsole = true;
