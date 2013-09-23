@@ -1,9 +1,7 @@
 package experiments;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import org.rosuda.JRI.Rengine;
 
 import setup.Logging;
 import utilities.StockMarketPair;
@@ -25,7 +23,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public final int nTotalRounds = 100000;
+	public final int nTotalRounds = Integer.valueOf(System.getProperty("nRounds", "30000"));
 	public final int nInitialSlowTraderRounds = 5000;
 	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
 	
@@ -143,31 +141,24 @@ public abstract class Experiment{
 	private World world;
 	public String experimentName;
 
-	public String rootFolder;
-	public String logRootFolder;
 	public String logFolder;
-	public String RscriptFilePath;
-	public String graphRootFolder;
-	public String graphFolder;
 	
-	public Experiment(String rootFolder, String experimentName){
-		this.rootFolder = rootFolder;
-		this.setExperimentSpecificFolders(experimentName);
+	public Experiment(String logFolder){
+		this.logFolder = logFolder;
 		this.world = new World(this);
 		this.createStocks();
 		this.createMarkets();
 		this.createOrderbooks();
 		this.createAgents();
-		this.createObjectLoggers(this.logRootFolder);
+		this.createObjectLoggers(this.logFolder);
 		this.initializeEmptyOrderbooksWithMarketOrders();
-		this.config = new Logger(this.logRootFolder, "config", Logger.Type.CSV, true, true, this);
-		this.meta = new Logger(this.logRootFolder, "meta", Logger.Type.CSV, true, true, this);
+		this.config = new Logger(this.logFolder, "config", Logger.Type.CSV, true, true, this);
+		this.meta = new Logger(this.logFolder, "meta", Logger.Type.CSV, true, true, this);
 	}
 	
 	protected void initializeExperimentWithChangedParameters(Experiment experiment) {
 		
 		this.overrideExperimentSpecificParameters();
-		String parameters = this.getParameterString();
 
 	}
 	
@@ -180,12 +171,7 @@ public abstract class Experiment{
 	
 	
 	
-	public void setExperimentSpecificFolders(String experimentName) {
-		this.experimentName = experimentName;
-		this.logRootFolder = String.format("%slogs/%s/", this.rootFolder, this.experimentName);
-		this.RscriptFilePath = String.format("%sdataAnalysis/Rscripts/%s.r", this.rootFolder, this.experimentName);
-		this.graphRootFolder = String.format("%sdataAnalysis/graphs/%s/", this.rootFolder, this.experimentName);
-	}
+	
 	
 	
 	public void createOrderbooks() {
@@ -277,7 +263,6 @@ public void createObjectLoggers(String logRootFolder) {
 
 	public void initializeEmptyOrderbooksWithMarketOrders() {
 		for(Orderbook orderbook:this.world.getOrderbooks()) {
-//			orderbook.initializeBookWithRandomOrders();
 			orderbook.fillBookWithRandomOrders();
 		}
 		this.world.processNewOrdersInAllOrderbooks();
@@ -291,18 +276,6 @@ public void createObjectLoggers(String logRootFolder) {
 		System.out.println(String.format("Finished simulation in %s seconds", ((double) this.world.runTime)/1000f));
 	}
 	
-	public static void runRscript(Experiment experiment, Rengine re) {
-//		String gf = experiment.graphFolder;
-		new File(experiment.graphFolder).mkdirs();
-		System.out.println("Running R script...");
-		if(new File(experiment.RscriptFilePath).exists()) {
-			re.eval(String.format("source('%s')", experiment.RscriptFilePath));
-			System.out.println("Finished running R script...");	
-		} else {
-			System.out.println("R script not found. Aborting!");
-			System.exit(1);
-		}
-	}
 	
 
 	public World getWorld() {

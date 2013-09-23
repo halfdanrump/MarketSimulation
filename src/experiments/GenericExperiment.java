@@ -7,18 +7,18 @@ public class GenericExperiment extends Experiment {
 
 	
 	public static void main(String[] args) {
-		String rootFolder = System.getProperty("rootFolder");
-		String experimentName = System.getProperty("experimentName");
-		if(rootFolder == null && experimentName == null) {
-			System.out.println("Please specify root folder and experiment name");
+		String logFolder = System.getProperty("logFolder", "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/");
+		if(logFolder == null) {
+			System.out.println("Please specify log folder. Aborting...");
+			System.exit(1);
 		}
 		
-		Experiment e = new GenericExperiment(rootFolder, experimentName);
+		Experiment e = new GenericExperiment(logFolder);
 		e.runExperiment();
 	}
 
-	public GenericExperiment(String rootFolder, String experimentName) {
-		super(rootFolder, experimentName);
+	public GenericExperiment(String logFolder) {
+		super(logFolder);
 	}
 
 	@Override
@@ -27,17 +27,13 @@ public class GenericExperiment extends Experiment {
 		  * All this parameter fetching could really be moved to the parent class... this way other experiments wouldn't have to repeat the same code.
 		  */
 		
-		int nSTOrdersPerRound = Integer.valueOf(System.getProperty("nStOrderPerRound", "1"));
-		int minimumLatency = Integer.valueOf(System.getProperty("minimumLatency", "2"));
-		int maximumLatency = Integer.valueOf(System.getProperty("maximumLatency", "10"));
-		
-		int minLat = Integer.valueOf(System.getProperty("minLat", "5"));
+		int minLat = Integer.valueOf(System.getProperty("minLat", "1"));
 		int maxLat = Integer.valueOf(System.getProperty("maxLat", "100"));
 		int minThink = Integer.valueOf(System.getProperty("minThink", "1"));;
 		int maxThink = Integer.valueOf(System.getProperty("maxThink", "1"));
 				
 		
-		int nSSMM = Integer.valueOf(System.getProperty("ssmm_nAgents", "30"));;
+		int nSSMM = Integer.valueOf(System.getProperty("ssmm_nAgents", "0"));;
 		int ssmmMinSpread = Integer.valueOf(System.getProperty("ssmm_MinSpread", "2"));;
 		int ssmmMaxSpread = Integer.valueOf(System.getProperty("ssmm_MaxSpread", "10"));
 		ExperimentUtils.makeHFTSingleStockMarketMakers(this, nSSMM, minLat, maxLat, minThink, maxThink, ssmmMinSpread, ssmmMaxSpread);
@@ -59,8 +55,8 @@ public class GenericExperiment extends Experiment {
 	public void createStocks() {
 		boolean isRandomWalk = false;
 		Stock stock = new Stock(this, isRandomWalk);
-		int shockSize = Integer.valueOf(System.getProperty("shockSize", "-5"));;
-		ExperimentUtils.setFundamentalToStepFunction(this, stock, shockSize, 20000);
+		int shockSize = Integer.valueOf(System.getProperty("shockSize", "-10"));;
+		ExperimentUtils.setFundamentalToStepFunction(this, stock, shockSize, 10000);
 
 	}
 
@@ -72,9 +68,6 @@ public class GenericExperiment extends Experiment {
 
 	@Override
 	public void overrideExperimentSpecificParameters() {
-		// TODO Auto-generated method stub
-		this.config.writeToFile("hum");
-		this.config.writeToConsole("3");
 
 	}
 
