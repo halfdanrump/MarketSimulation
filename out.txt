@@ -1,0 +1,21 @@
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/lineLog_worldWarnings.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/lineLog_errors.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/lineLog_worldEvents.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/lineLog_ruleViolations.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/columnLog_worldData.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/columnLog_roundBased_stock0.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/columnLog_transactionBased_stock0.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/columnLog_roundBased_orderbook(0,0).csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/lineLog_worldWarnings.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/lineLog_errors.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/lineLog_worldEvents.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/lineLog_ruleViolations.txt
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/columnLog_worldData.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/columnLog_roundBased_stock0.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/columnLog_transactionBased_stock0.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/columnLog_roundBased_orderbook(0,0).csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/config.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/meta.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/config.csv
+Creating file /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/meta.csv
+['/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/0/', '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/240549083/1/']
