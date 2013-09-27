@@ -1,42 +1,144 @@
+import sys
 from subprocess import Popen
 import numpy as np
-import pdb
+#import pdb
 from os import devnull
-if __name__=='__main__':
-    
+from pprint import pprint
+import copy
+from collections import Iterable
 
-    pipe_output = 'output.txt'
-    parameters = dict()
-    jar_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Simulation.jar'
-    log_root_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/'
+
+parameters = dict()
+jar_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Simulation.jar'
+log_root_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/'
+
+# parameters['experimentName'] = 'whatever'
+"""
+parameters['nRounds'] = [200000]
+
+
+parameters['minLat'] = [1]
+parameters['maxLat'] = [100]
+parameters['minThink'] = [1]
+parameters['maxThink'] = [1]
+        
+
+parameters['ssmm_MinSpread'] = [2]
+parameters['ssmm_MaxSpread'] = [10]
+
+parameters['sc_timeHorizonMin'] = [1000]
+parameters['sc_timeHorizonMax'] = [20000]
+parameters['sc_ticksBeforeReactingMin'] = [2]
+parameters['sc_ticksBeforeReactingMax'] = [5]
+parameters['sc_priceTickSizeMin'] = [1]
+parameters['sc_priceTickSizeMax'] = [1]
+parameters['sc_waitTimeBetweenTradingMin'] = [10]
+parameters['sc_waitTimeBetweenTradingMax'] = [100]
+"""
+parameters['ssmm_nAgents'] = xrange(0,5)
+parameters['sc_nAgents'] = xrange(5,10)
+### store all the parameters in the dict
+
+### Create data file
+ssmm_nAgents_range = range(10,500,10)
+sc_nAgents_range = range(0, 40)
+
+parameters_to_sweep = ['ssmm_nAgents', 'sc_nAgents']
+
+#parameters = {'a':range(2), 'b':range(2)}
+
+def check_parameters(parameter_ranges):
+    """ If a parameter is not in the list parameters_to_sweep, the parameter dictionary 
+        should only contain a single number for all other variables. If a range has already been
+        specified for such a parameter, the minimum value in that range is used.
+    """
+    for (par,par_range) in parameter_ranges.items():
+        if not isinstance(par_range, Iterable):
+            print "Parameter %s is not defined as a range. Aborting.."%par
+            sys.exit()
+
+def generate_parameter_combinations(parameter_ranges,  remaining_parameters = [], simulation_parameters = dict(), all_combinations = list()):
     
-    # parameters['experimentName'] = 'whatever'
-    parameters['nRounds'] = 50000
+    if len(remaining_parameters) == 0: remaining_parameters = parameter_ranges.keys()
+
+    current_parameter = remaining_parameters.pop()
+    for par in parameter_ranges[current_parameter]:
+        simulation_parameters[current_parameter] = par
+        if len(remaining_parameters) == 0:
+            yield copy.deepcopy(simulation_parameters)
+        else:
+            for k in generate_parameter_combinations(parameter_ranges=parameter_ranges, remaining_parameters=remaining_parameters, simulation_parameters=simulation_parameters, all_combinations=all_combinations):
+                yield k
+    remaining_parameters.append(current_parameter)
+
+
+def get_log_folder_list(log_root_folder, parameters, reps):
+    return [log_root_folder + str(hash(repr(sorted(parameters.items())))) + '/%s/'%rep for rep in reps]
+
+
+def run_simulation(parameter_ranges, reps):
+    check_parameters(parameter_ranges)    
+    if not isinstance(reps, Iterable): 
+        print "Please specify an iterable for reps"
+        sys.exit()
+
     
-    parameters['minLat'] = 1
-    parameters['maxLat'] = 100
-    parameters['minThink'] = 1
-    parameters['maxThink'] = 1
+    for parameters in generate_parameter_combinations(parameter_ranges):
+        processes = list()
+        log_folders = get_log_folder_list(log_root_folder, parameters, reps)
+        for rep in reps:
+                par_string = ''
+                for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
+                vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[rep]
+                command = vm_args + par_string + '-jar %s'%jar_path
+                processes.append(Popen(command.split(' '), stdout=open(devnull, 'w')))
             
-    
-    parameters['ssmm_MinSpread'] = 2
-    parameters['ssmm_MaxSpread'] = 10
-    
-    parameters['sc_timeHorizonMin'] = 1000
-    parameters['sc_timeHorizonMax'] = 20000
-    parameters['sc_ticksBeforeReactingMin'] = 2
-    parameters['sc_ticksBeforeReactingMax'] = 5
-    parameters['sc_priceTickSizeMin'] = 1
-    parameters['sc_priceTickSizeMax'] = 1
-    parameters['sc_waitTimeBetweenTradingMin'] = 10
-    parameters['sc_waitTimeBetweenTradingMax'] = 100
-    ### store all the parameters in the dict
-    
-    ### Create data file
-    ssmm_nAgents_range = range(0,30)
-    sc_nAgents_range = range(0, 1000,10)
-    
-    n_reps = 1
+        for p in processes:
+            p.wait()
+
+    #recursive_sweep_parameters(parameter_ranges, parameter_ranges.keys())
+
+
+
+        ### run simulation with parameter dict, where one parameter is changed
+run_simulation(parameter_ranges=parameters)
+
+#recursive_sweep_parameters(parameter_ranges, simulation_parameters=dict(), remaining_parameters=parameters.keys(), all_combinations=all_combinations)
+
+def runSimulation(parameters, jar_path, log_root_folder, reps = xrange(10)):
+    if not (jar_path or log_root_folder):
+        print "Please specify absolute jar_path and log_root_folder"
+    else:
+        print "Jar path: %s"%jar_path
+        print "Log root folder: %s"%log_root_folder
+        print "Reps: %s"%[r for r in reps]
+
+    for sc_nAgents in ssmm_nAgents_range:
+        for ssmm_nAgents in sc_nAgents_range:
+            print "\nsc_nAgents: %s, ssmm_nAgents: %s\n"%(sc_nAgents, ssmm_nAgents)
+            parameters['ssmm_nAgents'] = ssmm_nAgents
+            parameters['sc_nAgents'] = sc_nAgents
+           
+            processes = list()
+            
+            log_folders = get_log_folder_list(log_root_folder, parameters, reps)
+           
+            for rep in reps:
+                par_string = ''
+                for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
+                vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[rep]
+                command = vm_args + par_string + '-jar %s'%jar_path
+                #print command 
+           
+                processes.append(Popen(command.split(' '), stdout=open(devnull, 'w')))
+            
+            for p in processes:    
+                p.wait()
+
+def get_calculated_parameters():
+    pass
+
+def calculateData(log_root_folder, reps):
 
     n_data_rows = len(ssmm_nAgents_range) * len(sc_nAgents_range)
 
@@ -52,38 +154,21 @@ if __name__=='__main__':
                         ]
 
     parameters_to_store = [('ssmm_nAgents', int), ('sc_nAgents', int)]
-    ### Create empty matrix where the left columns are the parameters, and the right columns are the collected data values
+
+    rep_data = np.zeros(shape=len(reps), dtype = data_to_calculate) 
     all_data = np.zeros(shape=(n_data_rows), dtype=parameters_to_store + data_to_calculate)
     
     counter = 0
 
+    print "Reading files"
     for ssmm_nAgents in ssmm_nAgents_range:
         for sc_nAgents in sc_nAgents_range:
-            parameters['ssmm_nAgents'] = ssmm_nAgents
-            parameters['sc_nAgents'] = sc_nAgents
-           
-            rep_data = np.zeros(shape=(n_reps), dtype = data_to_calculate) 
-            processes = list()
             
-            log_folders = [log_root_folder + str(hash(repr(sorted(parameters.items())))) + '/%s/'%rep for rep in xrange(n_reps)]
-            print log_folders    
-            for rep in xrange(n_reps):
-                
-                par_string = ''
-                for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
-                vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[rep]
-                command = vm_args + par_string + '-jar %s'%jar_path
-                print command 
-                ### Run simulation
-                #processes.append(Popen(command.split(' '), stdout = open(devnull, 'w')))
-                processes.append(Popen(command.split(' ')))
-            
-            for p in processes:    
-                p.wait()
-            """        
-            print "Reading files"
+            for rep in reps:
+                parameters['ssmm_nAgents'] = ssmm_nAgents
+                parameters['sc_nAgents'] = sc_nAgents
 
-            for rep in xrange(n_reps):                       
+                log_folders = get_log_folder_list(log_root_folder, parameters, reps)
                 ### Read files        
                 ob_round_based = np.genfromtxt(log_folders[rep] + 'columnLog_roundBased_orderbook(0,0).csv', names=True, dtype=int, delimiter=',', usecols=(4,5))
                 stock_round_based = np.genfromtxt(log_folders[rep] + 'columnLog_roundBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
@@ -115,21 +200,15 @@ if __name__=='__main__':
                         rep_data['traded_price_std_after_sellbuy_reach_new_fundamental'][rep] = np.std(trades['price'][trade_index::])
                         rep_data['traded_price_mean_after_sellbuy_reach_new_fundamental'][rep] = np.mean(trades['price'][trade_index::])
                         print rep_data
-                        pdb.set_trace()
+                        
                     except ValueError:
                         rep_data['traded_price_std_after_sellbuy_reach_new_fundamental'][rep] = None
                         rep_data['traded_price_mean_after_sellbuy_reach_new_fundamental'][rep] = None
-
                 
                 i = np.min(np.where(trades['round'] > fundamental_step_round))
                 rep_data['max_traded_price'][rep] = np.max(trades['price'][i::])
                 rep_data['min_traded_price'][rep] = np.min(trades['price'][i::])
-               """ 
 
-                
-                
-
-            """
             print rep_data
             mean_data = [np.mean(rep_data[d]) for d in rep_data.dtype.names]
             param_data = [eval(p[0]) for p in parameters_to_store]
@@ -138,6 +217,7 @@ if __name__=='__main__':
             print all_data
             counter += 1
             np.save('data', all_data)
-            """
 
-#Make graph of time to catch up as a function of number of market makers
+
+
+    #Make graph of time to catch up as a function of number of market makers
