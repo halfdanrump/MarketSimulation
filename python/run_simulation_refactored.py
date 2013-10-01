@@ -121,6 +121,8 @@ def make_plot(all_data, x_axis_name = "", y_axis_name = "", all_parameters = {})
     plt.plot(all_data[x_axis_name],all_data[y_axis_name])
     graph_filename = graph_root_folder + "%s_vs_%s.pdf"%(x_axis_name, y_axis_name)
     caption = repr([(k,all_parameters[k]) for k in sorted(all_parameters)])
+    print caption
+    #plt.text(caption)
     plt.savefig(graph_filename)
 
 def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range = list(), all_parameters = dict(), reps = list()):
@@ -265,6 +267,7 @@ def get_finished_simulation_folders(parameter_ranges, log_root_folder, reps):
 def check_simulation_complete(full_simulation_log_path):
     try:
         with open(full_simulation_log_path + 'finished.txt'): 
+            print "Found completed data"
             return True
     except IOError:
         return False
@@ -305,7 +308,7 @@ def get_parameter_ranges_for_simulation():
 def get_default_parameters():
     parameter_ranges = dict()
 
-    parameter_ranges['nRounds'] = 50000
+    parameter_ranges['nRounds'] = 100000
 
 
     parameter_ranges['minLat'] = 1
@@ -337,7 +340,24 @@ def get_default_parameters():
 if __name__ == "__main__":
     parameters = get_default_parameters()
     parameter_to_sweep = 'ssmm_nAgents'
-    parameter_range = range(0,40,10)
-    reps = range(2)
+    for 
+    parameters['sc_nAgents'] = sc_nAgents
+    parameter_range = range(0,40,1)
+    reps = range(10)
     data = get_data_for_single_parameter_sweep(parameter_to_sweep, parameter_range, parameters, reps)
-    make_plot(data, parameter_to_sweep, 'buy_catchup_round')
+    make_plot(data, parameter_to_sweep, 'buy_catchup_round', parameters)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

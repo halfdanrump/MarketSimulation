@@ -1,5 +1,9 @@
 package experiments;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import environment.Market;
 import environment.Stock;
 
@@ -7,7 +11,7 @@ public class GenericExperiment extends Experiment {
 
 	
 	public static void main(String[] args) {
-		String logFolder = System.getProperty("logFolder");
+		String logFolder = System.getProperty("logFolder", "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/");
 		if(logFolder == null) {
 			System.out.println("Please specify log folder. Aborting...");
 			System.exit(1);
@@ -15,6 +19,18 @@ public class GenericExperiment extends Experiment {
 		
 		Experiment e = new GenericExperiment(logFolder);
 		e.runExperiment();
+		BufferedWriter out;
+		
+		/*
+		 * Write dummy file that tells the Python script that the simulation finished without problems
+		 */
+		try {
+			out = new BufferedWriter(new FileWriter(logFolder + "finished.txt"));
+			out.write("Simulation finished!");
+	        out.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public GenericExperiment(String logFolder) {
@@ -28,6 +44,7 @@ public class GenericExperiment extends Experiment {
 		  */
 		try {
 			int minLat = Integer.valueOf(System.getProperty("minLat"));
+			
 			int maxLat = Integer.valueOf(System.getProperty("maxLat"));
 			int minThink = Integer.valueOf(System.getProperty("minThink"));;
 			int maxThink = Integer.valueOf(System.getProperty("maxThink"));
