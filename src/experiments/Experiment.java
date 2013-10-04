@@ -80,8 +80,8 @@ public abstract class Experiment{
 	/*
 	 * Single stock minimum spread market maker parameters 
 	 */
-	public final long ssmm_tradeVolume = 10;
-	public final int ssmm_marketOrderLength = 200;
+
+	
 	public final boolean ssmm_doesNotPlaceSellOrderWhenHoldingNegativeAmountOfStock = true;
 	public final long ssmm_minimumSpread = 4;
 	
@@ -274,6 +274,10 @@ public void createObjectLoggers(String logRootFolder) {
 		this.world.executeHFTRounds();
 		this.closeLogs();
 		System.out.println(String.format("Finished simulation in %s seconds", ((double) this.world.runTime)/1000f));
+	}
+	
+	protected void receiveParameter() {
+		
 	}
 	
 	

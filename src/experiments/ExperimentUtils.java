@@ -2,8 +2,9 @@ package experiments;
 
 import java.util.ArrayList;
 
+import utilities.Parameter;
 import utilities.Utils;
-import agent.SimpleChartist;
+import agent.FastMovingAverageChartist;
 import agent.SingleStockMarketMaker;
 
 import environment.Stock;
@@ -25,28 +26,67 @@ public class ExperimentUtils {
 		stock.initializeFixedFundamental(fixedFundamental);
 	}
 	
-	public static void makeHFTSingleStockMarketMakers(Experiment e, int nAgents, int minimumLatency, int maximumLatency, int minimumThinkingTime, int maximumThinkingTime, int minSpreadMin, int minSpreadMax) {
+	public static void makeHFTSingleStockMarketMakers(Experiment e) {
+		int minimumLatency = Parameter.getAsInt("minLat");
+		int maximumLatency = Parameter.getAsInt("maxLat");
+		
+
+		int minimumThinkingTime = Parameter.getAsInt("minThink");
+		int maximumThinkingTime = Parameter.getAsInt("maxThink");
+		
+		
+		int nAgents = Parameter.getAsInt("ssmm_nAgents");
+		int minSpreadMin = Parameter.getAsInt("ssmm_MinSpread");
+		int minSpreadMax = Parameter.getAsInt("ssmm_MaxSpread");
+		long orderVolMin = Parameter.getAsLong("ssmm_orderVolMin");
+		long orderVolMax = Parameter.getAsLong("ssmm_orderVolMin");
+		
+		int orderLengthMin = Parameter.getAsInt("ssmm_orderVolMax");
+		int orderLengthMax = Parameter.getAsInt("ssmm_orderVolMax");
+		
 		int[] latencyToMarkets = {Utils.getRandomUniformInteger(minimumLatency, maximumLatency)};
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		for(int i=0; i<nAgents; i++) {
 			int thinkingTime = Utils.getRandomUniformInteger(minimumThinkingTime, maximumThinkingTime);
 			int minSpread = Utils.getRandomUniformInteger(minSpreadMin, minSpreadMax);
-			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, minSpread, e, thinkingTime);
+			long orderVol = Utils.getRandomUniformLong(orderVolMin, orderVolMax);
+			int orderLength = Utils.getRandomUniformInteger(orderLengthMin, orderLengthMax);
+			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, minSpread, e, thinkingTime, orderVol, orderLength);
 		}
 	}
 	
-	public static void makeHFTSimpleChartists(Experiment e, int nAgents, int minimumLatency, int maximumLatency, int minimumThinkingTime, int maximumThinkingTime, int timeHorizonMin, int timeHorizonMax, long ticksBeforeReactingMin, long ticksBeforeReactingMax, long priceTickSizeMin, long priceTickSizeMax, int waitTimeBetweenTradingMin, int waitTimeBetweenTradingMax) {
+	
+	public static void makeHFTFastMovingAverageChartists(Experiment e) {
+		int minimumLatency = Parameter.getAsInt("minLat");
+		int maximumLatency = Parameter.getAsInt("maxLat");
+
+		int minimumThinkingTime = Parameter.getAsInt("minThink");
+		int maximumThinkingTime = Parameter.getAsInt("maxThink");
+		int nAgents = Parameter.getAsInt("sc_nAgents");
+		int timeHorizonMin = Parameter.getAsInt("sc_timeHorizonMin");
+		int timeHorizonMax = Parameter.getAsInt("sc_timeHorizonMax");
+		long ticksBeforeReactingMin = Parameter.getAsLong("sc_ticksBeforeReactingMin");
+		long ticksBeforeReactingMax = Parameter.getAsLong("sc_ticksBeforeReactingMax");
+		long priceTickSizeMin = Parameter.getAsLong("sc_priceTickSizeMin");
+		long priceTickSizeMax = Parameter.getAsLong("sc_priceTickSizeMax");
+		int waitTimeBetweenTradingMin = Parameter.getAsInt("sc_waitTimeBetweenTradingMin");
+		int waitTimeBetweenTradingMax = Parameter.getAsInt("sc_waitTimeBetweenTradingMax");
+		int orderVolMin = Parameter.getAsInt("sc_orderVolMin");
+		int orderVolMax = Parameter.getAsInt("sc_orderVolMax");
+		
 		int[] latencyToMarkets = {Utils.getRandomUniformInteger(minimumLatency, maximumLatency)};
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		for(int i=0; i<nAgents; i++) {
 			int thinkingTime = Utils.getRandomUniformInteger(minimumThinkingTime, maximumThinkingTime);
-			int nLags = Utils.getRandomUniformInteger(timeHorizonMin, timeHorizonMax);
-			long ticksBeforeReacting = Utils.getRandomUniformLong(ticksBeforeReactingMin, ticksBeforeReactingMin);
-			long priceTickSize = Utils.getRandomUniformLong(priceTickSizeMin, priceTickSizeMax);
+			int timeHorizon = Utils.getRandomUniformInteger(timeHorizonMin, timeHorizonMax);
+			long ticksBeforeReacting = Utils.getRandomUniformLong(ticksBeforeReactingMin, ticksBeforeReactingMax);
+			long aggressiveness = Utils.getRandomUniformLong(priceTickSizeMin, priceTickSizeMax);
 			int waitTimeBetweenTrades = Utils.getRandomUniformInteger(waitTimeBetweenTradingMin, waitTimeBetweenTradingMax);
-			new SimpleChartist(stockIDs, marketIDs, latencyToMarkets, e, thinkingTime, nLags, ticksBeforeReacting, priceTickSize, waitTimeBetweenTrades);
+			long orderVol = Utils.getRandomUniformLong(orderVolMin, orderVolMax);
+			new FastMovingAverageChartist(stockIDs, marketIDs, latencyToMarkets, e, thinkingTime, timeHorizon, ticksBeforeReacting, aggressiveness, waitTimeBetweenTrades, orderVol);
+//			new FastMovingAverageChartist(stockIDs, marketIDs, latencyToMarkets, e, thinkingTime, ticksBeforeReacting, priceTickSize, waitTimeBetweenTrades);
 		}
 	}
 }

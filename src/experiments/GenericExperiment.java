@@ -7,11 +7,13 @@ import java.io.IOException;
 import environment.Market;
 import environment.Stock;
 
+import utilities.Parameter;
+
 public class GenericExperiment extends Experiment {
 
 	
 	public static void main(String[] args) {
-		String logFolder = System.getProperty("logFolder", "/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/");
+		String logFolder = Parameter.getAsString("logFolder");
 		if(logFolder == null) {
 			System.out.println("Please specify log folder. Aborting...");
 			System.exit(1);
@@ -42,38 +44,36 @@ public class GenericExperiment extends Experiment {
 		 /*
 		  * All this parameter fetching could really be moved to the parent class... this way other experiments wouldn't have to repeat the same code.
 		  */
-		try {
-			int minLat = Integer.valueOf(System.getProperty("minLat"));
-			
-			int maxLat = Integer.valueOf(System.getProperty("maxLat"));
-			int minThink = Integer.valueOf(System.getProperty("minThink"));;
-			int maxThink = Integer.valueOf(System.getProperty("maxThink"));
-			
-			
-			int nSSMM = Integer.valueOf(System.getProperty("ssmm_nAgents"));;
-			int ssmmMinSpread = Integer.valueOf(System.getProperty("ssmm_MinSpread"));;
-			int ssmmMaxSpread = Integer.valueOf(System.getProperty("ssmm_MaxSpread"));
-			ExperimentUtils.makeHFTSingleStockMarketMakers(this, nSSMM, minLat, maxLat, minThink, maxThink, ssmmMinSpread, ssmmMaxSpread);
-			
-			int nSC = Integer.valueOf(System.getProperty("sc_nAgents"));;
-			int timeHorizonMin = Integer.valueOf(System.getProperty("sc_timeHorizonMin"));
-			int timeHorizonMax = Integer.valueOf(System.getProperty("sc_timeHorizonMax"));
-			long ticksBeforeReactingMin = Integer.valueOf(System.getProperty("sc_ticksBeforeReactingMin"));
-			long ticksBeforeReactingMax = Integer.valueOf(System.getProperty("sc_ticksBeforeReactingMax"));
-			long priceTickSizeMin = Integer.valueOf(System.getProperty("sc_priceTickSizeMin"));
-			long priceTickSizeMax = Integer.valueOf(System.getProperty("sc_priceTickSizeMax"));
-			int waitTimeBetweenTradingMin = Integer.valueOf(System.getProperty("sc_waitTimeBetweenTradingMin"));
-			int waitTimeBetweenTradingMax = Integer.valueOf(System.getProperty("sc_waitTimeBetweenTradingMax"));
-			ExperimentUtils.makeHFTSimpleChartists(this, nSC, minLat, maxLat, minThink, maxThink, timeHorizonMin, timeHorizonMax, ticksBeforeReactingMin, ticksBeforeReactingMax, priceTickSizeMin, priceTickSizeMax, waitTimeBetweenTradingMin, waitTimeBetweenTradingMax);
-		}
-		catch(NumberFormatException e) {
-			System.out.println(e.getStackTrace());
-		} finally {
-//			this.closeLogs();
-		}
+//		int minLat = Parameter.getAsInt("minLat");
+//		int maxLat = Parameter.getAsInt("maxLat");
+//		
+//
+//		int minThink = Parameter.getAsInt("minThink");
+//		int maxThink = Parameter.getAsInt("maxThink");
 		
 		
-
+//		int nSSMM = Parameter.getAsInt("ssmm_nAgents");
+//		int ssmmMinSpread = Parameter.getAsInt("ssmm_MinSpread");
+//		int ssmmMaxSpread = Parameter.getAsInt("ssmm_MaxSpread");
+//		int ssmmOrderVolMin = Parameter.getAsInt("ssmm_orderVolMin");
+//		int ssmmOrderVolMax = Parameter.getAsInt("ssmm_orderVolMax");
+		ExperimentUtils.makeHFTSingleStockMarketMakers(this);
+		
+//		int nSC = Parameter.getAsInt("sc_nAgents");
+//		int timeHorizonMin = Parameter.getAsInt("sc_timeHorizonMin");
+//		int timeHorizonMax = Parameter.getAsInt("sc_timeHorizonMax");
+//		long ticksBeforeReactingMin = Parameter.getAsLong("sc_ticksBeforeReactingMin");
+//		long ticksBeforeReactingMax = Parameter.getAsLong("sc_ticksBeforeReactingMax");
+//		long priceTickSizeMin = Parameter.getAsLong("sc_priceTickSizeMin");
+//		long priceTickSizeMax = Parameter.getAsLong("sc_priceTickSizeMax");
+//		int waitTimeBetweenTradingMin = Parameter.getAsInt("sc_waitTimeBetweenTradingMin");
+//		int waitTimeBetweenTradingMax = Parameter.getAsInt("sc_waitTimeBetweenTradingMax");
+//		int scOrderVolMin = Parameter.getAsInt("sc_orderVolMin");
+//		int scOrderVolMax = Parameter.getAsInt("sc_orderVolMax");
+//		//ExperimentUtils.makeHFTMovingAverageChartists(this, nSC, minLat, maxLat, minThink, maxThink, timeHorizonMin, timeHorizonMax, ticksBeforeReactingMin, ticksBeforeReactingMax, priceTickSizeMin, priceTickSizeMax, waitTimeBetweenTradingMin, waitTimeBetweenTradingMax, scOrderVolMin, scOrderVolMax);
+		
+		ExperimentUtils.makeHFTFastMovingAverageChartists(this);
+		 
 	}
 	
 	
