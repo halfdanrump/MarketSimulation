@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import environment.Market;
 import environment.Message;
-import environment.NoOrdersException;
 import environment.Order;
 import environment.OrderCancellation;
 import environment.Orderbook;
@@ -35,7 +34,7 @@ public class SingleStockMarketMaker extends HFT {
 	 * his ask to the new price. -
 	 */
 
-	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, Experiment experiment, int thinkingTime) {
+	public SingleStockMarketMaker(int[] stocks, int[] markets, int[] latencies, long minimumSpread, Experiment experiment, int thinkingTime, long orderVol, int orderLength) {
 		super(stocks, markets, latencies, experiment, thinkingTime);
 		this.experiment = experiment;
 		if (stocks.length > 1) {
@@ -43,8 +42,8 @@ public class SingleStockMarketMaker extends HFT {
 		}
 		this.stock = this.experiment.getWorld().getStockByNumber(stocks[0]);
 		this.minimumSpread = minimumSpread;
-		this.fixedOrderVolume = this.experiment.ssmm_tradeVolume;
-		this.marketOrderLength = this.experiment.ssmm_marketOrderLength;
+		this.fixedOrderVolume = orderVol;
+		this.marketOrderLength = orderLength;
 		this.initialize();
 	}
 
@@ -55,7 +54,7 @@ public class SingleStockMarketMaker extends HFT {
 	}
 
 	@Override
-	public void collectMarketInformation() throws NoOrdersException {
+	public void collectMarketInformation(){
 		/*
 		 * Method which takes care of putting the market information into the
 		 * agent's internal data structures for storage Returns false if there
@@ -64,19 +63,10 @@ public class SingleStockMarketMaker extends HFT {
 		 */
 		long sellPrice, buyPrice;
 		for (Market market : this.markets) {
-			try {
-				sellPrice = market.getDelayedBestSellPriceAtEndOfRound(this, this.stock);
-				this.knownMarketAsks.put(market, sellPrice);
-			} catch (NoOrdersException e) {
-				throw e;
-			}
-			try {
-				buyPrice = market.getDelayedBestBuyPriceAtEndOfRound(this, this.stock);
-				this.knownMarketBids.put(market, buyPrice);
-			} catch (NoOrdersException e) {
-				throw e;
-			}
-
+			sellPrice = market.getDelayedBestSellPriceAtEndOfRound(this, this.stock);
+			this.knownMarketAsks.put(market, sellPrice);
+			buyPrice = market.getDelayedBestBuyPriceAtEndOfRound(this, this.stock);
+			this.knownMarketBids.put(market, buyPrice);
 		}
 	}
 

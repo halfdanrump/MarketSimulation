@@ -486,8 +486,6 @@ public class Orderbook {
 			
 			long spread = this.localBestSellPriceAtEndOfRound.get(now) - this.localBestBuyPriceAtEndOfRound.get(now);
 			if(spread <= 0) {
-				long sell = this.localBestSellPriceAtEndOfRound.get(now);
-				long buy = this.localBestBuyPriceAtEndOfRound.get(now);
 				Exception e = new Exception();
 				e.printStackTrace();
 				this.printOrderbook();

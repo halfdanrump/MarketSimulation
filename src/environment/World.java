@@ -9,6 +9,7 @@ import java.util.PriorityQueue;
 import experiments.Experiment;
 import log.WorldLogger;
 import setup.SimulationSetup;
+import utilities.AgentThinktimeComparator;
 import utilities.AgentWakeupComparator;
 import utilities.MessageArrivalTimeComparator;
 import utilities.StockMarketPair;
@@ -45,6 +46,7 @@ public class World implements SimulationSetup {
 	 * Data structures for managing agents
 	 */
 	private AgentWakeupComparator agentWakeupComparator;
+	private AgentThinktimeComparator agentThinktimeComparator;
 	private PriorityQueue<HFT> waitingAgents;
 	private PriorityQueue<HFT> thinkingAgents;
 	private ArrayList<HFT> freeAgents;
@@ -85,8 +87,9 @@ public class World implements SimulationSetup {
 		this.receiptsInTransit = new PriorityQueue<TransactionReceipt>(100, messageArrivalTimeComparator);
 		this.orderCancellationsInTransit = new PriorityQueue<OrderCancellation>(100, messageArrivalTimeComparator);
 		this.agentWakeupComparator = new AgentWakeupComparator();
-		this.waitingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
-		this.thinkingAgents = new PriorityQueue<HFT>(10, agentWakeupComparator);
+		this.agentThinktimeComparator = new AgentThinktimeComparator();
+		this.waitingAgents = new PriorityQueue<HFT>(10, this.agentWakeupComparator);
+		this.thinkingAgents = new PriorityQueue<HFT>(10, this.agentThinktimeComparator);
 		this.freeAgents = new ArrayList<HFT>();
 		if(!this.experiment.constantNumberOfSlowtraderOrdersPerRound) {
 			MRG32k3a randomGenerator = new MRG32k3a();
@@ -247,7 +250,7 @@ public class World implements SimulationSetup {
 			HFT agent = iterator.next();
 			iterator.remove();
 			agentRequestMarketInformation(agent);
-			nInformationRequests++;
+			nInformationRequests++;				
 		}
 		this.dataLog.setNInformationRequests(nInformationRequests);
 		// this.eventLog.logOnelineEvent(String.format(
@@ -350,7 +353,7 @@ public class World implements SimulationSetup {
 		while (true) {
 			try {
 				HFT agent = thinkingAgents.element();
-				if (agent.getWakeupTime() == this.getCurrentRound()) {
+				if (agent.getFinishedThinkingTime() == this.getCurrentRound()) {
 					nFinishedEvaluating++;
 					agentEvaluateMarketInformation(agent);
 				} else {

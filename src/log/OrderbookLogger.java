@@ -28,8 +28,8 @@ public class OrderbookLogger extends Logger implements Logging{
 								"Misc events that happened in the orderbook\n" +
 								"**********************************************\n\n");
 		}
-		else {
-			String line = "round,nTradedsInRound,nUnfilledBuyOrders,nUnfilledSellOrders,bestStandingBuyPrice,bestStandingSellPrice,nReceivedBuyOrders,nReceivedSellOrders";
+		else if (logType == Type.ORDERBOOK_ROUND_BASED_DATA){
+			String line = "round, bestStandingBuyPrice,bestStandingSellPrice";
 			if(this.logToFile) {
 				super.writeToFile(line);
 			}
@@ -40,18 +40,34 @@ public class OrderbookLogger extends Logger implements Logging{
 		this.orderbook = orderbook;
 	}
 	
+//	public OrderbookLogger(String directory, String logName, Orderbook orderbook, Type logType, Logger.Type type, boolean logToFile, boolean logToConsole, Experiment experiment) {
+//		super(directory, String.format("%s_orderbook%s", logName, orderbook.getIdentifier()), type, logToFile, logToConsole, experiment);
+//		if(logType == Type.ORDER_FLOW_LOG) {
+//			this.recordOrderFlowHeader();
+//		} else if(logType == Type.EVENT_LOG) {
+//			super.writeToFile(	"**********************************************\n" +
+//								"Misc events that happened in the orderbook\n" +
+//								"**********************************************\n\n");
+//		}
+//		else if (logType == Type.ORDERBOOK_ROUND_BASED_DATA){
+//			String line = "round,nTradedsInRound,nUnfilledBuyOrders,nUnfilledSellOrders,bestStandingBuyPrice,bestStandingSellPrice,nReceivedBuyOrders,nReceivedSellOrders";
+//			if(this.logToFile) {
+//				super.writeToFile(line);
+//			}
+//			if(this.logToConsole) {
+//				this.writeToConsole(line);
+//			}
+//		}
+//		this.orderbook = orderbook;
+//	}
+	
 	public void logRoundBasedData() {
 		int now = this.orderbook.getExperiment().getWorld().getCurrentRound();
 		ArrayList<String> entry = new ArrayList<String>();
-		Utils.initializeStringArrayWithEmptyStrings(entry, 8, "");
+		Utils.initializeStringArrayWithEmptyStrings(entry, 3, "");
 		entry.set(0, String.valueOf(this.orderbook.getExperiment().getWorld().getCurrentRound()));
-		entry.set(1, String.valueOf(this.orderbook.getnTradesThisRound()));
-		entry.set(2, String.valueOf(this.orderbook.getUnfilledBuyOrders().size()));
-		entry.set(3, String.valueOf(this.orderbook.getUnfilledSellOrders().size()));
-		entry.set(4, String.valueOf(this.orderbook.getLocalBestBuyPriceAtEndOfRound(now)));
-		entry.set(5, String.valueOf(this.orderbook.getLocalBestSellPriceAtEndOfRound(now)));
-		entry.set(6, String.valueOf(this.orderbook.getNReceivedBuyOrders()));
-		entry.set(7, String.valueOf(this.orderbook.getNReceivedSellOrders()));
+		entry.set(1, String.valueOf(this.orderbook.getLocalBestBuyPriceAtEndOfRound(now)));
+		entry.set(2, String.valueOf(this.orderbook.getLocalBestSellPriceAtEndOfRound(now)));
 		
 //		entry.set(4, String.valueOf(this.orderbook.getUnfilledBuyOrders().peek().getPrice()));
 //		entry.set(5, String.valueOf(this.orderbook.getUnfilledSellOrders().peek().getPrice()));
@@ -64,6 +80,31 @@ public class OrderbookLogger extends Logger implements Logging{
 			this.writeToConsole(line);
 		}
 	}
+	
+//	public void logRoundBasedData() {
+//		int now = this.orderbook.getExperiment().getWorld().getCurrentRound();
+//		ArrayList<String> entry = new ArrayList<String>();
+//		Utils.initializeStringArrayWithEmptyStrings(entry, 8, "");
+//		entry.set(0, String.valueOf(this.orderbook.getExperiment().getWorld().getCurrentRound()));
+//		entry.set(1, String.valueOf(this.orderbook.getnTradesThisRound()));
+//		entry.set(2, String.valueOf(this.orderbook.getUnfilledBuyOrders().size()));
+//		entry.set(3, String.valueOf(this.orderbook.getUnfilledSellOrders().size()));
+//		entry.set(4, String.valueOf(this.orderbook.getLocalBestBuyPriceAtEndOfRound(now)));
+//		entry.set(5, String.valueOf(this.orderbook.getLocalBestSellPriceAtEndOfRound(now)));
+//		entry.set(6, String.valueOf(this.orderbook.getNReceivedBuyOrders()));
+//		entry.set(7, String.valueOf(this.orderbook.getNReceivedSellOrders()));
+//		
+////		entry.set(4, String.valueOf(this.orderbook.getUnfilledBuyOrders().peek().getPrice()));
+////		entry.set(5, String.valueOf(this.orderbook.getUnfilledSellOrders().peek().getPrice()));
+//		
+//		String line = Utils.convertArrayListToString(entry); 			
+//		if(this.logToFile) {
+//			super.writeToFile(line);
+//		}
+//		if(this.logToConsole) {
+//			this.writeToConsole(line);
+//		}
+//	}
 	
 	private void recordOrderFlowHeader()	{
 		String header =

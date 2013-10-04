@@ -18,8 +18,9 @@ public abstract class HFT implements Logging {
 	public static long nHFTs = 0;
 	protected long id;
 	protected long cash;
-	protected long wakeupTime;
-	protected long thinkingTime;
+	protected int wakeupTime;
+	protected int finishedThinkingRound;
+	protected int thinkingTime;
 	protected HashMap<Orderbook, Order> standingBuyOrders;
 	protected HashMap<Orderbook, Order> standingSellOrders;
 	protected ArrayList<Orderbook> orderbooks;
@@ -30,7 +31,7 @@ public abstract class HFT implements Logging {
 	private HashMap<Stock, Long> numberOfStocksInStandingBuyOrders;
 	protected ArrayList<Market> markets;
 	protected ArrayList<Stock> stocks;
-	private long largestLatencyToMarket;
+	private int largestLatencyToMarket;
 
 	/*
 	 * For experiments in which the agent is associated with a group
@@ -50,9 +51,6 @@ public abstract class HFT implements Logging {
 	protected ArrayList<Order> orderHistory;
 
 	// protected abstract long getWaitingTime();
-	private long getWaitingTime() {
-		return this.largestLatencyToMarket;
-	}
 
 	public enum agentAction {
 		SUBMIT_ORDER, 
@@ -62,10 +60,8 @@ public abstract class HFT implements Logging {
 		RECEIVED_TRANSACTION
 	}
 
-	public abstract void collectMarketInformation() throws NoOrdersException;
+	public abstract void collectMarketInformation();
 	public abstract boolean executeStrategyAndSubmit();
-	
-	
 
 	public AgentLogger eventlog;
 	public AgentLogger roundDatalog;
@@ -99,7 +95,7 @@ public abstract class HFT implements Logging {
 		this.nTimesAgentGotReceiptForOrderWhichIsNotInHisStandingOrderList = 0;
 		this.nTimesAgentDidShortSelling = 0;
 		this.receipts = new ArrayList<TransactionReceipt>();
-
+		this.finishedThinkingRound = 0;
 		/*
 		 * At present, each agent can only maintain a single order on each side
 		 * of the book
@@ -209,7 +205,9 @@ public abstract class HFT implements Logging {
 		 * (that is, which markets he wants information from).
 		 */
 		// World.registerAgentAsWaiting(this);
-		this.wakeupTime = this.experiment.getWorld().getCurrentRound() + this.getWaitingTime();
+		int currentRound = this.experiment.getWorld().getCurrentRound();
+		int waitingTime = this.getWaitingTime();
+		this.wakeupTime =  currentRound + waitingTime;
 	}
 
 	public void receiveMarketInformation() throws NoOrdersException {
@@ -218,16 +216,10 @@ public abstract class HFT implements Logging {
 		 * thinking time. -Read the received information and update internal
 		 * data structures
 		 */
-		this.experiment.getWorld().agentRequestMarketInformation(this);
-		this.wakeupTime += this.thinkingTime;
-		try {
-			this.collectMarketInformation();
-		} catch (NoOrdersException e) {
-			this.hibernate();
-			this.requestMarketInformation();
-			this.eventlog.logAgentAction(String.format("Agent %s hibernated because it could not obtain requested market information. Wakes up in round %s", this.getID(), this.wakeupTime));
-			throw e;
-		}
+//		this.experiment.getWorld().agentRequestMarketInformation(this);
+		this.finishedThinkingRound = this.getCurrentRound() + this.thinkingTime;
+//		this.wakeupTime += this.thinkingTime;
+		this.collectMarketInformation();
 	}
 
 
@@ -562,17 +554,17 @@ public abstract class HFT implements Logging {
 		return w;
 	}
 
-	public void hibernate() {
-		this.wakeupTime = this.experiment.getWorld().getCurrentRound() + this.experiment.hft_emptyOrderbookWaitTime;
-	}
+//	public void hibernate() {
+//		this.wakeupTime = this.experiment.getWorld().getCurrentRound() + this.experiment.hft_emptyOrderbookWaitTime;
+//	}
 	
-	public void waitForNRounds(int nRounds) {
-		if(nRounds>0) {
-			this.wakeupTime = this.experiment.getWorld().getCurrentRound() + nRounds;
-		} else {
-			this.experiment.getWorld().errorLog.logError("nRounds must be larger than zero", experiment);
-		}
-	}
+//	public void waitForNRounds(int nRounds) {
+//		if(nRounds>0) {
+//			this.wakeupTime = this.experiment.getWorld().getCurrentRound() + nRounds;
+//		} else {
+//			this.experiment.getWorld().errorLog.logError("nRounds must be larger than zero", experiment);
+//		}
+//	}
 
 	protected void updateNumberOfStocksInStandingOrders(Stock stock, Order.BuySell buysell, long volume, HFT.agentAction action) {
 		/*
@@ -760,6 +752,14 @@ public abstract class HFT implements Logging {
 	
 	public int getCurrentRound() {
 		return this.experiment.getWorld().getCurrentRound();
+	}
+	
+	private int getWaitingTime() {
+		return this.largestLatencyToMarket;
+	}
+
+	public int getFinishedThinkingTime() {
+		return this.finishedThinkingRound;
 	}
 
 }

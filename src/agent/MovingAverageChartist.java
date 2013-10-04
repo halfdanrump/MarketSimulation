@@ -10,7 +10,7 @@ import environment.Order.BuySell;
 import environment.Orderbook;
 import experiments.Experiment;
 
-public class SimpleChartist extends HFT {
+public class MovingAverageChartist extends HFT {
 	private HashMap<Orderbook, ArrayList<Long>> knownLaggedBestBuyPrices;
 	private HashMap<Orderbook, ArrayList<Long>> knownLaggedBestSellPrices;
 	private HashMap<Orderbook, Long> mostRecentBuyOrderPrice;
@@ -20,10 +20,11 @@ public class SimpleChartist extends HFT {
 	private long priceTickSize;
 	private int waitTimeBetweenTrading;
 	private int nLags;
+	private long orderVol;
 	
 	
 	
-	public SimpleChartist(int[] stockIDs, int[] marketIDs, int[] latencies, Experiment experiment, int thinkingTime, int timeHorizon, long ticksBeforeReacting, long priceTickSize, int waitTimeBetweenTrading) {
+	public MovingAverageChartist(int[] stockIDs, int[] marketIDs, int[] latencies, Experiment experiment, int thinkingTime, int timeHorizon, long ticksBeforeReacting, long priceTickSize, int waitTimeBetweenTrading, long orderVol) {
 		super(stockIDs, marketIDs, latencies, experiment, thinkingTime);
 		this.timeHorizon = timeHorizon;
 		this.ticksBeforeReacting = ticksBeforeReacting;
@@ -34,7 +35,7 @@ public class SimpleChartist extends HFT {
 
 
 	@Override
-	public void collectMarketInformation() throws NoOrdersException {
+	public void collectMarketInformation(){
 		this.knownLaggedBestBuyPrices = new HashMap<Orderbook, ArrayList<Long>>();
 		this.knownLaggedBestSellPrices = new HashMap<Orderbook, ArrayList<Long>>();
 		this.mostRecentBuyOrderPrice = new HashMap<Orderbook, Long>();
@@ -81,7 +82,6 @@ public class SimpleChartist extends HFT {
 			
 			int now = this.getCurrentRound();
 			int tDelay = super.getTransmissionDelayToMarket(o.getMarket());
-			long volume = 10;
 			
 			
 			
@@ -91,12 +91,12 @@ public class SimpleChartist extends HFT {
 				 */
 				buysell = BuySell.BUY;
 				price = this.mostRecentBuyOrderPrice.get(o) + this.priceTickSize;
-				new Order(tDelay, now,0 ,volume, price, Order.Type.LIMIT, buysell, this, o, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
+				new Order(tDelay, now,0 , this.orderVol, price, Order.Type.LIMIT, buysell, this, o, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 				this.waitForNRounds(this.waitTimeBetweenTrading);
 			} else if(mostRecentMidPrice < avrMidPrice - this.ticksBeforeReacting) {
 				buysell = BuySell.SELL;
 				price = this.mostRecentSellOrderPrice.get(o) - this.priceTickSize;
-				new Order(tDelay, now, 0, volume, price, Order.Type.LIMIT, buysell, this, o, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
+				new Order(tDelay, now, 0, this.orderVol, price, Order.Type.LIMIT, buysell, this, o, Message.TransmissionType.WITH_TRANSMISSION_DELAY, this.experiment);
 				this.waitForNRounds(this.waitTimeBetweenTrading);
 			}
 		}
