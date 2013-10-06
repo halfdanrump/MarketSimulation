@@ -39,9 +39,9 @@ public class ExperimentUtils {
 		int minSpreadMin = Parameter.getAsInt("ssmm_MinSpread");
 		int minSpreadMax = Parameter.getAsInt("ssmm_MaxSpread");
 		long orderVolMin = Parameter.getAsLong("ssmm_orderVolMin");
-		long orderVolMax = Parameter.getAsLong("ssmm_orderVolMin");
+		long orderVolMax = Parameter.getAsLong("ssmm_orderVolMax");
 		
-		int orderLengthMin = Parameter.getAsInt("ssmm_orderVolMax");
+		int orderLengthMin = Parameter.getAsInt("ssmm_orderVolMin");
 		int orderLengthMax = Parameter.getAsInt("ssmm_orderVolMax");
 		
 		int[] latencyToMarkets = {Utils.getRandomUniformInteger(minimumLatency, maximumLatency)};

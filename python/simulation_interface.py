@@ -11,16 +11,6 @@ import simulationSetup
 import settings
 
 
-def check_parameters(parameter_ranges):
-    """ If a parameter is not in the list parameters_to_sweep, the parameter dictionary 
-        should only contain a single number for all other variables. If a range has already been
-        specified for such a parameter, the minimum value in that range is used.
-    """
-    for (par,par_range) in parameter_ranges.items(): assert isinstance(par_range, Iterable), "Parameter %s is not defined as a range. Aborting.."%par
-    for (par, par_range) in parameter_ranges.items(): assert len(par_range) != 0, "Parameter %s has zero range. Aborting.."%par
-
-
-
 def generate_parameter_combinations(parameter_ranges,  remaining_parameters = [], simulation_parameters = dict(), all_combinations = list()):
     if not remaining_parameters: remaining_parameters = parameter_ranges.keys()
     current_parameter = remaining_parameters.pop()
@@ -45,12 +35,15 @@ def get_log_folder_list(log_root_folder, parameters, reps):
 def run_simulation_for_all_parameter_combinations(parameter_ranges, reps):
     assert isinstance(reps, Iterable), "Please specify an iterable for reps"
     for parameters in generate_parameter_combinations(parameter_ranges):
-        run_simulation_for_single_parameter_combination(parameters, reps)
+        run_simulation(parameters, reps)
 
 
-def run_simulation_for_single_parameter_combination(parameter_combination, reps):
+
+def run_simulation(parameters, reps):
+    assert check_parameters(parameters), "Invalid simulation parameters!"
+
     processes = list()
-    log_folders = get_log_folder_list(settings.log_root_folder, parameter_combination, reps)
+    log_folders = get_log_folder_list(settings.log_root_folder, parameters, reps)
 
     for rep in reps:
             ### Remove old simulation data calculated with the same parameters
@@ -58,7 +51,7 @@ def run_simulation_for_single_parameter_combination(parameter_combination, reps)
             
             ### Build parameter string for java program
             par_string = ''
-            for (par, val) in parameter_combination.items(): par_string += '-D%s=%s '%(par,val)
+            for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
             vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[rep]
             command = vm_args + par_string + '-jar %s'%settings.jar_path
             print "Running simulation with command: %s\n"%command
@@ -68,7 +61,8 @@ def run_simulation_for_single_parameter_combination(parameter_combination, reps)
         p.wait()
 
 
-
+def check_parameters():
+    return False
 
 def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range = list(), all_parameters = dict(), reps = list()):
     try:
@@ -80,7 +74,7 @@ def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range
         assert not isinstance(r, Iterable), "Please specify a single value for all parameters except the parameter to sweep: %s"%par
 
     #parameters_to_store = [parameter_to_sweep]
-    data_type = [(parameter_to_sweep, int)] + [(d, float) for d in data_to_calculate]
+    #data_type = [(parameter_to_sweep, int)] + [(d, float) for d in data_to_calculate]
     
     all_data = np.zeros(shape=(len(parameter_range)), dtype = data_type)
 

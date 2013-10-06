@@ -1,5 +1,7 @@
-import matplotlib.pyplot as plt
+import settings
 import numpy as np
+from matplotlib.pyplot import plt
+import textwrap
 
 def how_to_make_plot():
 
@@ -31,3 +33,25 @@ def how_to_make_plot():
 
 
     plt.savefig("test.png")
+
+def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):
+    assert x_axis_name in all_data.dtype.names, "x axis parameter not found"
+    for y_name in y_axis_name: assert y_name in all_data.dtype.names, "y axis parameter not found"
+    assert all_parameters
+
+    fig = plt.figure(figsize=(10, 8), dpi=100)
+    ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
+    ax.set_xlabel(x_axis_name)
+    ax.set_ylabel(repr(y_axis_name))
+    
+    for i, y_name in enumerate(y_axis_name):
+        plt.plot(all_data[x_axis_name],all_data[y_name], lw=2)
+        plt.legend(y_axis_name)
+    
+    
+    caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in sorted(all_parameters)]), 100))
+    fig.text(0.1,0.1, caption)
+    #plt.text(caption)
+    
+    graph_filename = "%s_vs_%s.pdf"%(x_axis_name, repr(y_axis_name))
+    plt.savefig(settings.graph_root_folder + prefix + graph_filename)
