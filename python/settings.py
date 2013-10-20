@@ -47,14 +47,9 @@ data_to_calculate = {
 
 
 fitness_weights = {
-                    'buy_catchup_round' : 2,
-                    'sell_catchup_round' : 2,
-                    'max_traded_price_after_step' : 0,
-                    'min_traded_price_after_step' : 0,
-                    'traded_price_std_after_sellbuy_reach_new_fundamental' : 1,
-                    'traded_price_mean_after_sellbuy_reach_new_fundamental' : 0,
-                    'traded_price_median_after_sellbuy_reach_new_fundamental' : 0,
-                    'tp_stable_round' : 2
+                    'buy_catchup_round' : -1,
+                    'sell_catchup_round' : -1,
+                    'tp_stable_round' : -1
                     }
 
 

@@ -1,4 +1,5 @@
 import settings
+from collections import Iterable
 
 def check_simulation_complete(full_simulation_log_path):
     try:
@@ -9,7 +10,8 @@ def check_simulation_complete(full_simulation_log_path):
         return False
 
 
-def get_logfolder(parameters = {}, rep = ""):
+def get_logfolders(parameters = {}, rep = []):
 	assert parameters, "Please specify parameters"
 	assert rep, "Please specify repetition"
- 	return settings.log_root_folder + str(hash(repr(sorted(parameters.items())))) + '/%s/'%rep
+	assert isinstance(rep, Iterable), "rep must be an iterable"
+ 	return [settings.log_root_folder + str(hash(repr(sorted(parameters.items())))) + '/%s/'%r for r in rep]
