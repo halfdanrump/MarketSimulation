@@ -27,64 +27,64 @@ public class ExperimentUtils {
 	}
 	
 	public static void makeHFTSingleStockMarketMakers(Experiment e) {
-		int minimumLatency = Parameter.getAsInt("minLat");
-		int maximumLatency = Parameter.getAsInt("maxLat");
-		
-
-		int minimumThinkingTime = Parameter.getAsInt("minThink");
-		int maximumThinkingTime = Parameter.getAsInt("maxThink");
+		float hft_latency_mu = Parameter.getAsFloat("hft_latency_mu");
+		float hft_latency_s = Parameter.getAsFloat("hft_latency_s");
+		float hft_think_mu = Parameter.getAsFloat("hft_think_mu");
+		float hft_think_s = Parameter.getAsFloat("hft_think_s");
 		
 		
 		int nAgents = Parameter.getAsInt("ssmm_nAgents");
-		int minSpreadMin = Parameter.getAsInt("ssmm_MinSpread");
-		int minSpreadMax = Parameter.getAsInt("ssmm_MaxSpread");
-		long orderVolMin = Parameter.getAsLong("ssmm_orderVolMin");
-		long orderVolMax = Parameter.getAsLong("ssmm_orderVolMax");
+		float ssmm_spread_mu = Parameter.getAsFloat("ssmm_spread_mu");
+		float ssmm_spread_s = Parameter.getAsFloat("ssmm_spread_s");
+		float ssmm_ordervol_mu = Parameter.getAsFloat("ssmm_ordervol_mu");
+		float ssmm_ordervol_s = Parameter.getAsFloat("ssmm_ordervol_s");
 		
-		int orderLengthMin = Parameter.getAsInt("ssmm_orderVolMin");
-		int orderLengthMax = Parameter.getAsInt("ssmm_orderVolMax");
+		float ssmm_orderlength_mu = Parameter.getAsFloat("ssmm_orderlength_mu");
+		float ssmm_orderlength_s = Parameter.getAsFloat("ssmm_orderlength_mu");
 		
-		int[] latencyToMarkets = {Utils.getRandomUniformInteger(minimumLatency, maximumLatency)};
+		int[] latencyToMarkets = {Utils.getNonNegativeGaussianInteger(hft_latency_mu, hft_latency_s)};
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		for(int i=0; i<nAgents; i++) {
-			int thinkingTime = Utils.getRandomUniformInteger(minimumThinkingTime, maximumThinkingTime);
-			int minSpread = Utils.getRandomUniformInteger(minSpreadMin, minSpreadMax);
-			long orderVol = Utils.getRandomUniformLong(orderVolMin, orderVolMax);
-			int orderLength = Utils.getRandomUniformInteger(orderLengthMin, orderLengthMax);
+			int thinkingTime = Utils.getNonNegativeGaussianInteger(hft_think_mu, hft_think_s);
+			int minSpread = Utils.getNonNegativeGaussianInteger(ssmm_spread_mu, ssmm_spread_s);
+			long orderVol = Utils.getNonNegativeGaussianLong(ssmm_ordervol_mu, ssmm_ordervol_s);
+			int orderLength = Utils.getNonNegativeGaussianInteger(ssmm_orderlength_mu, ssmm_orderlength_s);
 			new SingleStockMarketMaker(stockIDs, marketIDs, latencyToMarkets, minSpread, e, thinkingTime, orderVol, orderLength);
 		}
 	}
 	
 	
 	public static void makeHFTFastMovingAverageChartists(Experiment e) {
-		int minimumLatency = Parameter.getAsInt("minLat");
-		int maximumLatency = Parameter.getAsInt("maxLat");
-
-		int minimumThinkingTime = Parameter.getAsInt("minThink");
-		int maximumThinkingTime = Parameter.getAsInt("maxThink");
 		int nAgents = Parameter.getAsInt("sc_nAgents");
-		int timeHorizonMin = Parameter.getAsInt("sc_timeHorizonMin");
-		int timeHorizonMax = Parameter.getAsInt("sc_timeHorizonMax");
-		long ticksBeforeReactingMin = Parameter.getAsLong("sc_ticksBeforeReactingMin");
-		long ticksBeforeReactingMax = Parameter.getAsLong("sc_ticksBeforeReactingMax");
-		long priceTickSizeMin = Parameter.getAsLong("sc_priceTickSizeMin");
-		long priceTickSizeMax = Parameter.getAsLong("sc_priceTickSizeMax");
-		int waitTimeBetweenTradingMin = Parameter.getAsInt("sc_waitTimeBetweenTradingMin");
-		int waitTimeBetweenTradingMax = Parameter.getAsInt("sc_waitTimeBetweenTradingMax");
-		int orderVolMin = Parameter.getAsInt("sc_orderVolMin");
-		int orderVolMax = Parameter.getAsInt("sc_orderVolMax");
 		
-		int[] latencyToMarkets = {Utils.getRandomUniformInteger(minimumLatency, maximumLatency)};
+		float hft_latency_mu = Parameter.getAsFloat("hft_latency_mu");
+		float hft_latency_s = Parameter.getAsFloat("hft_latency_s");
+		float hft_think_mu = Parameter.getAsFloat("hft_think_mu");
+		float hft_think_s = Parameter.getAsFloat("hft_think_s");
+		
+		float sc_timehorizon_mu = Parameter.getAsFloat("sc_timehorizon_mu");
+		float sc_timehorizon_s = Parameter.getAsFloat("sc_timehorizon_s");
+		float sc_ticksBeforeReacting_mu = Parameter.getAsFloat("sc_ticksBeforeReacting_mu");
+		float sc_ticksBeforeReacting_s = Parameter.getAsFloat("sc_ticksBeforeReacting_s");
+		float sc_priceTickSize_mu= Parameter.getAsFloat("sc_priceTickSize_mu");
+		float sc_priceTickSize_s = Parameter.getAsFloat("sc_priceTickSize_s");
+		float sc_waitTimeBetweenTrading_mu= Parameter.getAsFloat("sc_waitTimeBetweenTrading_mu");
+		float sc_waitTimeBetweenTrading_s = Parameter.getAsFloat("sc_waitTimeBetweenTrading_s");
+		float sc_ordervol_mu = Parameter.getAsFloat("sc_ordervol_mu");
+		float sc_ordervol_s = Parameter.getAsFloat("sc_ordervol_s");
+		
+		int[] latencyToMarkets = {Utils.getNonNegativeGaussianInteger(hft_latency_mu, hft_latency_s)};
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
+		
 		for(int i=0; i<nAgents; i++) {
-			int thinkingTime = Utils.getRandomUniformInteger(minimumThinkingTime, maximumThinkingTime);
-			int timeHorizon = Utils.getRandomUniformInteger(timeHorizonMin, timeHorizonMax);
-			long ticksBeforeReacting = Utils.getRandomUniformLong(ticksBeforeReactingMin, ticksBeforeReactingMax);
-			long aggressiveness = Utils.getRandomUniformLong(priceTickSizeMin, priceTickSizeMax);
-			int waitTimeBetweenTrades = Utils.getRandomUniformInteger(waitTimeBetweenTradingMin, waitTimeBetweenTradingMax);
-			long orderVol = Utils.getRandomUniformLong(orderVolMin, orderVolMax);
+			int thinkingTime = Utils.getNonNegativeGaussianInteger(hft_think_mu, hft_think_s);
+			int timeHorizon = Utils.getNonNegativeGaussianInteger(sc_timehorizon_mu, sc_timehorizon_s);
+			long ticksBeforeReacting = Utils.getNonNegativeGaussianLong(sc_ticksBeforeReacting_mu, sc_ticksBeforeReacting_s);
+			long aggressiveness = Utils.getNonNegativeGaussianLong(sc_priceTickSize_mu, sc_priceTickSize_s);
+			int waitTimeBetweenTrades = Utils.getNonNegativeGaussianInteger(sc_waitTimeBetweenTrading_mu, sc_waitTimeBetweenTrading_s);
+			long orderVol = Utils.getNonNegativeGaussianLong(sc_ordervol_mu, sc_ordervol_s);
 			new FastMovingAverageChartist(stockIDs, marketIDs, latencyToMarkets, e, thinkingTime, timeHorizon, ticksBeforeReacting, aggressiveness, waitTimeBetweenTrades, orderVol);
 //			new FastMovingAverageChartist(stockIDs, marketIDs, latencyToMarkets, e, thinkingTime, ticksBeforeReacting, priceTickSize, waitTimeBetweenTrades);
 		}

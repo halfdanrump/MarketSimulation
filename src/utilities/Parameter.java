@@ -29,6 +29,11 @@ public class Parameter {
 		return Long.valueOf(parVal);
 	}
 	
+	public static float getAsFloat(String parName) {
+		String parVal =  getPar(parName);
+		return Float.valueOf(parVal);
+	}
+	
 	public static String getAsString(String parName) {
 		return getPar(parName);
 	}

@@ -1,9 +1,17 @@
 package utilities;
+import utilities.P;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class Utils {
+	public static void main(String[] args) {
+		for(int i=0; i<100; i++) {
+			P.p(String.valueOf(Utils.getNonNegativeGaussianLong(50, 20)));
+		}	
+	}
+
 	private static Random random = new Random();
 	
 	public static int getRandomUniformInteger(int minimum, int maximum){
@@ -34,5 +42,12 @@ public class Utils {
 		return arrayList.toString().replace("[", "").replace("]", "").replace(" ", "");
 	}
 	
+	public static int getNonNegativeGaussianInteger(float mean, float std) {
+		return (int) Math.max(1, Math.abs(Math.round(random.nextGaussian()*std + mean)));
+	}
+	
+	public static long getNonNegativeGaussianLong(float mean, float std) {
+		return Math.max(1, Math.abs(Math.round(random.nextGaussian()*std + mean)));
+	}
 
 }
