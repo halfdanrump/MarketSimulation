@@ -20,7 +20,7 @@ stability_margin = 3
 #########################################################################
 deadborn_gene_fitness = 1000000000000000000
 population_size = 10
-n_generations = 100
+n_generations = 1
 mutation_prob = 0.2
 crossover_prob = 0.4
 

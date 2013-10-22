@@ -12,7 +12,7 @@ def check_simulation_complete(full_simulation_log_path):
         return False
 
 def delete_simulation_data(log_folder):
-	pass#rmtree(log_folder)
+	rmtree(log_folder)
 
 def get_logfolders(parameters = {}, rep = [], random_path = ""):
 	assert parameters, "Please specify parameters"

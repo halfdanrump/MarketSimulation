@@ -1,0 +1,88 @@
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 80, hft_latency_s: 7, hft_think_mu: 26, hft_think_s: 4, sc_nAgents: 0,
+    sc_ordervol_mu: 9, sc_ordervol_s: 2, sc_priceTickSize_mu: 2, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 1, sc_ticksBeforeReacting_s: 2, sc_timehorizon_mu: 2737,
+    sc_timehorizon_s: 1284, sc_waitTimeBetweenTrading_mu: 23, sc_waitTimeBetweenTrading_s: 1,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 372, ssmm_orderlength_s: 2, ssmm_ordervol_mu: 43,
+    ssmm_ordervol_s: 15, ssmm_spread_mu: 1, ssmm_spread_s: 1}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 88, hft_latency_s: 32, hft_think_mu: 23, hft_think_s: 7, sc_nAgents: 0,
+    sc_ordervol_mu: 3, sc_ordervol_s: 2, sc_priceTickSize_mu: 0, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 0, sc_ticksBeforeReacting_s: 4, sc_timehorizon_mu: 4223,
+    sc_timehorizon_s: 1268, sc_waitTimeBetweenTrading_mu: 22, sc_waitTimeBetweenTrading_s: 2,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 126, ssmm_orderlength_s: 2, ssmm_ordervol_mu: 25,
+    ssmm_ordervol_s: 2, ssmm_spread_mu: 0, ssmm_spread_s: 0}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 94, hft_latency_s: 48, hft_think_mu: 98, hft_think_s: 15, sc_nAgents: 0,
+    sc_ordervol_mu: 9, sc_ordervol_s: 2, sc_priceTickSize_mu: 2, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 1, sc_ticksBeforeReacting_s: 0, sc_timehorizon_mu: 2970,
+    sc_timehorizon_s: 1980, sc_waitTimeBetweenTrading_mu: 15, sc_waitTimeBetweenTrading_s: 10,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 121, ssmm_orderlength_s: 107, ssmm_ordervol_mu: 23,
+    ssmm_ordervol_s: 8, ssmm_spread_mu: 0, ssmm_spread_s: 1}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 95, hft_latency_s: 2, hft_think_mu: 78, hft_think_s: 11, sc_nAgents: 0,
+    sc_ordervol_mu: 5, sc_ordervol_s: 1, sc_priceTickSize_mu: 0, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 1, sc_ticksBeforeReacting_s: 3, sc_timehorizon_mu: 1861,
+    sc_timehorizon_s: 370, sc_waitTimeBetweenTrading_mu: 47, sc_waitTimeBetweenTrading_s: 11,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 441, ssmm_orderlength_s: 154, ssmm_ordervol_mu: 38,
+    ssmm_ordervol_s: 51, ssmm_spread_mu: 3, ssmm_spread_s: 1}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 80, hft_latency_s: 41, hft_think_mu: 31, hft_think_s: 40, sc_nAgents: 0,
+    sc_ordervol_mu: 0, sc_ordervol_s: 2, sc_priceTickSize_mu: 0, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 1, sc_ticksBeforeReacting_s: 1, sc_timehorizon_mu: 2252,
+    sc_timehorizon_s: 62, sc_waitTimeBetweenTrading_mu: 1, sc_waitTimeBetweenTrading_s: 16,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 347, ssmm_orderlength_s: 122, ssmm_ordervol_mu: 47,
+    ssmm_ordervol_s: 4, ssmm_spread_mu: 2, ssmm_spread_s: 1}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 88, hft_latency_s: 32, hft_think_mu: 23, hft_think_s: 7, sc_nAgents: 0,
+    sc_ordervol_mu: 3, sc_ordervol_s: 2, sc_priceTickSize_mu: 0, sc_priceTickSize_s: 0,
+    sc_ticksBeforeReacting_mu: 0, sc_ticksBeforeReacting_s: 4, sc_timehorizon_mu: 4223,
+    sc_timehorizon_s: 1268, sc_waitTimeBetweenTrading_mu: 22, sc_waitTimeBetweenTrading_s: 2,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 126, ssmm_orderlength_s: 63, ssmm_ordervol_mu: 25,
+    ssmm_ordervol_s: 2, ssmm_spread_mu: 0, ssmm_spread_s: 0}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 15, hft_latency_s: 34, hft_think_mu: 24, hft_think_s: 39, sc_nAgents: 0,
+    sc_ordervol_mu: 7, sc_ordervol_s: 2, sc_priceTickSize_mu: 1, sc_priceTickSize_s: 0,
+    sc_ticksBeforeReacting_mu: 0, sc_ticksBeforeReacting_s: 4, sc_timehorizon_mu: 3907,
+    sc_timehorizon_s: 1422, sc_waitTimeBetweenTrading_mu: 25, sc_waitTimeBetweenTrading_s: 5,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 225, ssmm_orderlength_s: 185, ssmm_ordervol_mu: 22,
+    ssmm_ordervol_s: 7, ssmm_spread_mu: 2, ssmm_spread_s: 0}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 80, hft_latency_s: 41, hft_think_mu: 31, hft_think_s: 40, sc_nAgents: 0,
+    sc_ordervol_mu: 0, sc_ordervol_s: 2, sc_priceTickSize_mu: 0, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 1, sc_ticksBeforeReacting_s: 1, sc_timehorizon_mu: 2252,
+    sc_timehorizon_s: 62, sc_waitTimeBetweenTrading_mu: 1, sc_waitTimeBetweenTrading_s: 16,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 347, ssmm_orderlength_s: 122, ssmm_ordervol_mu: 47,
+    ssmm_ordervol_s: 4, ssmm_spread_mu: 2, ssmm_spread_s: 1}
+- ? !!python/tuple [1.0e+18, 1.0e+18, 1.0e+18]
+  : {hft_latency_mu: 88, hft_latency_s: 32, hft_think_mu: 23, hft_think_s: 7, sc_nAgents: 0,
+    sc_ordervol_mu: 3, sc_ordervol_s: 2, sc_priceTickSize_mu: 0, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 0, sc_ticksBeforeReacting_s: 4, sc_timehorizon_mu: 4223,
+    sc_timehorizon_s: 1268, sc_waitTimeBetweenTrading_mu: 22, sc_waitTimeBetweenTrading_s: 2,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 126, ssmm_orderlength_s: 2, ssmm_ordervol_mu: 25,
+    ssmm_ordervol_s: 2, ssmm_spread_mu: 0, ssmm_spread_s: 0}
+- ? !!python/tuple
+  - !!python/object/apply:numpy.core.multiarray.scalar
+    - !!python/object/apply:numpy.dtype
+      args: [f8, 0, 1]
+      state: !!python/tuple [3, <, null, null, null, -1, -1, 0]
+    - !!binary |
+      AAAAAICELkE=
+  - !!python/object/apply:numpy.core.multiarray.scalar
+    - !!python/object/apply:numpy.dtype
+      args: [f8, 0, 1]
+      state: !!python/tuple [3, <, null, null, null, -1, -1, 0]
+    - !!binary |
+      AAAAAACIg0A=
+  - !!python/object/apply:numpy.core.multiarray.scalar
+    - !!python/object/apply:numpy.dtype
+      args: [f8, 0, 1]
+      state: !!python/tuple [3, <, null, null, null, -1, -1, 0]
+    - !!binary |
+      AAAAAACt20A=
+  : {hft_latency_mu: 95, hft_latency_s: 2, hft_think_mu: 78, hft_think_s: 11, sc_nAgents: 0,
+    sc_ordervol_mu: 5, sc_ordervol_s: 1, sc_priceTickSize_mu: 0, sc_priceTickSize_s: 1,
+    sc_ticksBeforeReacting_mu: 1, sc_ticksBeforeReacting_s: 3, sc_timehorizon_mu: 2599,
+    sc_timehorizon_s: 370, sc_waitTimeBetweenTrading_mu: 47, sc_waitTimeBetweenTrading_s: 11,
+    ssmm_nAgents: 0, ssmm_orderlength_mu: 441, ssmm_orderlength_s: 154, ssmm_ordervol_mu: 38,
+    ssmm_ordervol_s: 18, ssmm_spread_mu: 3, ssmm_spread_s: 1}

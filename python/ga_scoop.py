@@ -8,6 +8,7 @@ from itertools import imap
 from collections import OrderedDict
 from scoop import futures
 import yaml
+from datetime import datetime
 
 
 def evaluate(individual):
@@ -105,11 +106,9 @@ if __name__ == "__main__":
 		pop[:] = offspring
 		toolbox.update_hall_of_fame(pop)
 
-	individuals = list()
-	for individual in hall.items:
-		individuals.append(scale_genes_to_parameters(individual))
+	individuals = map(lambda k, v: {k:v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items))
 
-	f = open('genes.yaml', 'w')
+	f = open('../data/gene_data/genes_%s.yaml'%datetime.now().isoformat(), 'w')
 	yaml.dump(individuals, f)
 	f.close()		
 		#print zip(settings.parameter_scaling.keys(), parameters)
