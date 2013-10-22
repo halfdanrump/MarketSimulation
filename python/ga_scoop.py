@@ -7,6 +7,7 @@ import dataAnalysis
 from itertools import imap
 from collections import OrderedDict
 from scoop import futures
+import yaml
 
 
 def evaluate(individual):
@@ -57,6 +58,9 @@ toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.1)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("evaluate", evaluate)
 
+hall = tools.HallOfFame(1000)
+toolbox.register("update_hall_of_fame", hall.update)
+
 
 if __name__ == "__main__":
 
@@ -99,5 +103,15 @@ if __name__ == "__main__":
 
 		# The population is entirely replaced by the offspring
 		pop[:] = offspring
+		toolbox.update_hall_of_fame(pop)
+
+	individuals = list()
+	for individual in hall.items:
+		individuals.append(scale_genes_to_parameters(individual))
+
+	f = open('genes.yaml', 'w')
+	yaml.dump(individuals, f)
+	f.close()		
+		#print zip(settings.parameter_scaling.keys(), parameters)
 	#algorithms.eaSimple(toolbox.population(10), toolbox, cxpb=0.5, mutpb=0.2, ngen=500)
 
