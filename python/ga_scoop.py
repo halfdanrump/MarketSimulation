@@ -7,7 +7,7 @@ import dataAnalysis
 from itertools import imap
 from collections import OrderedDict
 from scoop import futures
-import multiprocessing
+
 
 def evaluate(individual):
 	parameters = scale_genes_to_parameters(individual=individual)
@@ -39,30 +39,27 @@ def scale_genes_to_parameters(individual):
 		parameters.update(subdict)
 	return parameters
 
-def setup_toolbox():
 
-### Create FitnessMin class with the fitness weights
-	creator.create("FitnessMulti", base.Fitness, weights = settings.fitness_weights.values())
-	### Create individual with FitenessMin class
-	creator.create("Individual", list, fitness = creator.FitnessMulti)
 
-	toolbox = base.Toolbox()
+creator.create("FitnessMulti", base.Fitness, weights = settings.fitness_weights.values())
+### Create individual with FitenessMin class
+creator.create("Individual", list, fitness = creator.FitnessMulti)
 
-	toolbox.register("attribute", random.random)
-	toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, n=len(settings.parameter_scaling))
+toolbox = base.Toolbox()
 
-	toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+toolbox.register("attribute", random.random)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, n=len(settings.parameter_scaling))
 
-	toolbox.register("mate", tools.cxTwoPoints)
-	toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.1)
-	toolbox.register("select", tools.selTournament, tournsize=3)
-	toolbox.register("evaluate", evaluate)
-	return toolbox
+toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
-	
+toolbox.register("mate", tools.cxTwoPoints)
+toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.1)
+toolbox.register("select", tools.selTournament, tournsize=3)
+toolbox.register("evaluate", evaluate)
+
 
 if __name__ == "__main__":
-	toolbox = setup_toolbox()
+
 	#pool = multiprocessing.Pool(processes=10)
 	toolbox.register("map", futures.map)
 
