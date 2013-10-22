@@ -1,3 +1,5 @@
-/bin
-/logs
-/simulation_graphs
+data/
+JRI/
+logs/
+bin/
+simulation_graphs/

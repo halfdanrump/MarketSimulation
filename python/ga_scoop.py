@@ -16,6 +16,7 @@ def evaluate(individual):
 	
 	if verify_simulation_parameters(parameters):
 		data = dataAnalysis.evaluate_simulation_results(parameters, settings.reps, autorun=True)
+		print data
 		stats = dataAnalysis.get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
 	else:
@@ -41,6 +42,15 @@ def scale_genes_to_parameters(individual):
 		parameters.update(subdict)
 	return parameters
 
+def create_healthy_population():
+	population = list()
+	for i in range(settings.population_size):
+		while True:
+			individual = toolbox.individual()
+			if verify_simulation_parameters(scale_genes_to_parameters(individual)):
+				population.append(individual)
+				break
+	return population
 
 
 creator.create("FitnessMulti", base.Fitness, weights = settings.fitness_weights.values())
@@ -68,7 +78,7 @@ if __name__ == "__main__":
 	#pool = multiprocessing.Pool(processes=10)
 	toolbox.register("map", futures.map)
 
-	pop = toolbox.population(settings.population_size)
+	pop = create_healthy_population()
 	for g in range(settings.n_generations):
 		print "********************************** GENERATION %s **********************************"%g
 		# Select the next generation individuals
@@ -78,6 +88,7 @@ if __name__ == "__main__":
 		offspring = map(toolbox.clone, offspring)
 
 		# Apply crossover on the offspring
+		
 		for child1, child2 in zip(offspring[::2], offspring[1::2]):
 		    if random.random() < settings.crossover_prob:
 		        toolbox.mate(child1, child2)
@@ -85,6 +96,7 @@ if __name__ == "__main__":
 		        del child2.fitness.values
 
 		# Apply mutation on the offspring
+		
 		for mutant in offspring:
 		    if random.random() < settings.mutation_prob:
 		        toolbox.mutate(mutant)
@@ -92,7 +104,7 @@ if __name__ == "__main__":
 
 		# Evaluate the individuals with an invalid fitness
 		invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-		#print invalid_ind
+		print "Evaluating the fitness of %s individuals"%len(invalid_ind)
 
 		fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
 		for ind, fit in zip(invalid_ind, fitnesses):
@@ -106,11 +118,12 @@ if __name__ == "__main__":
 		pop[:] = offspring
 		toolbox.update_hall_of_fame(pop)
 
-	individuals = map(lambda k, v: {k:v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items))
+		individuals = map(lambda k, v: {k:v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items))
 
-	f = open('../data/gene_data/genes_%s.yaml'%datetime.now().isoformat(), 'w')
-	yaml.dump(individuals, f)
-	f.close()		
+		f = open('../data/gene_data/genes_%s.yaml'%datetime.now().isoformat(), 'w')
+		yaml.dump(individuals, f)
+		f.close()
+		print "Saved hall of fame after generation %s to %s"%(g, f.name)
 		#print zip(settings.parameter_scaling.keys(), parameters)
 	#algorithms.eaSimple(toolbox.population(10), toolbox, cxpb=0.5, mutpb=0.2, ngen=500)
 

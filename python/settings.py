@@ -19,8 +19,8 @@ stability_margin = 3
 ### GA SETTINGS
 #########################################################################
 deadborn_gene_fitness = 1000000000000000000
-population_size = 10
-n_generations = 1
+population_size = 200
+n_generations = 1000
 mutation_prob = 0.2
 crossover_prob = 0.4
 
@@ -55,8 +55,8 @@ simulation_parameters = {
 }
 
 parameter_scaling = OrderedDict({
-    'ssmm_nAgents' : 0,
-    'sc_nAgents' : 0,
+    'ssmm_nAgents' : 50,
+    'sc_nAgents' : 500,
 
     'hft_latency_mu' : 100,
     'hft_latency_s' : 50,
@@ -114,11 +114,11 @@ parameter_minvals = OrderedDict({
 data_to_calculate = {
                     'buy_catchup_round' : int,
                     'sell_catchup_round' : int,
-                    'max_traded_price_after_step' : int,
-                    'min_traded_price_after_step' : int,
-                    'traded_price_std_after_sellbuy_reach_new_fundamental' : float,
-                    'traded_price_mean_after_sellbuy_reach_new_fundamental' : float,
-                    'traded_price_median_after_sellbuy_reach_new_fundamental' : int,
+                    #'max_traded_price_after_step' : int,
+                    #'min_traded_price_after_step' : int,
+                    #'traded_price_std_after_sellbuy_reach_new_fundamental' : float,
+                    #'traded_price_mean_after_sellbuy_reach_new_fundamental' : float,
+                    #'traded_price_median_after_sellbuy_reach_new_fundamental' : int,
                     'tp_stable_round' : int
                     }
 

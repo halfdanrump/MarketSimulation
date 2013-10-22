@@ -56,18 +56,16 @@ def __evaluate_simulation_results(logdata_folder = ""):
 
 	### Collect data
 	try:
-	 buy_catchup_round = np.min(np.where(ob_round_based['bestStandingBuyPrice'] == fundamental_after_step))
-	 data['buy_catchup_round'] = buy_catchup_round
+		data['buy_catchup_round'] = np.min(np.where(ob_round_based['bestStandingBuyPrice'] == fundamental_after_step))
 	except ValueError:
 		data['buy_catchup_round'] = settings.data_for_failed_simulation['buy_catchup_round']
-		buy_catchup_round = False
-
+		
 	try:
-		sell_catchup_round = np.min(np.where(ob_round_based['bestStandingSellPrice'] == fundamental_after_step))
+		data['sell_catchup_round'] = np.min(np.where(ob_round_based['bestStandingSellPrice'] == fundamental_after_step))
 	except ValueError:
 		data['sell_catchup_round'] = settings.data_for_failed_simulation['sell_catchup_round']
-		sell_catchup_round = False
-
+		
+	"""
 	if buy_catchup_round and sell_catchup_round:
 	 	catchup_round = max(buy_catchup_round, sell_catchup_round)
 		try:
@@ -87,7 +85,7 @@ def __evaluate_simulation_results(logdata_folder = ""):
 	except ValueError:
 		data['max_traded_price_after_step'] = settings.data_for_failed_simulation['max_traded_price_after_step']
 		data['min_traded_price_after_step'] = settings.data_for_failed_simulation['min_traded_price_after_step']
-
+	"""
 	try:
 		stable_idx = np.where((trades['price'] > fundamental_after_step - settings.stability_margin) & (trades['price'] < fundamental_after_step + settings.stability_margin))[0]
 		diffs = np.diff(stable_idx)
