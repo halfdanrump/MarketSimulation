@@ -1,40 +1,62 @@
-from deap import base, creator, tools
-from settings import fitness_weights
+from deap import base, creator, tools, algorithms
+from settings import fitness_weights, reps, parameter_scaling, parameter_minvals, deadborn_gene_fitness
 #import numpy as np
 import random
+import dataAnalysis
+from itertools import imap
+from collections import OrderedDict
 
-IND_SIZE = 22 ### Number of parameters in an individual
+IND_SIZE = len(parameter_scaling) ### Number of parameters in an individual
 
-parameter_scaling = {
-    'ssmm_nAgents' : 50,
-    'sc_nAgents' : 500
-}
+def evaluate(individual):
+	parameters = scale_genes_to_parameters(individual=individual)
+	if verify_simulation_parameters(parameters):
+		data = dataAnalysis.evaluate_simulation_results(parameters, reps, autorun=True)
+		stats = dataAnalysis.get_named_stats(data, fitness_weights.keys())
+		stats = tuple(OrderedDict(stats['mean']).values())
+	else:
+		stats = tuple([v * deadborn_gene_fitness * -1 for v in fitness_weights.itervalues()])
+	print stats
+	return stats
 
+def verify_simulation_parameters(parameters):
+	is_valid = True
+	for parameter, minval in parameter_minvals.iteritems():
+		if parameters[parameter] < minval:
+			is_valid = False
+	return is_valid
 
-def get_weights():
-	return tuple([fitness_weights[k] for k in sorted(fitness_weights.keys())])
+def scale_genes_to_parameters(individual):
+	parameters = dict()
+	for subdict in imap(lambda parameter, scaling, gene: {parameter: int(scaling*gene)}, parameter_scaling.iterkeys(), parameter_scaling.itervalues(), individual):
+		parameters.update(subdict)
+	return parameters
 
-def get_random_individual():
-	pass
+def setup_toolbox():
 
-def make_types():
-	### Create FitnessMin class with the fitness weights
-	creator.create("FitnessMulti", base.Fitness, weights = get_weights())
+### Create FitnessMin class with the fitness weights
+	creator.create("FitnessMulti", base.Fitness, weights = fitness_weights.values())
 	### Create individual with FitenessMin class
-	creator.create("Individual", list, fitness = creator.FitenessMulti)
+	creator.create("Individual", list, fitness = creator.FitnessMulti)
 
-	tb = base.Toolbox()
-	#tb.register("attr_minLat", random.randint, 0, 500)
-	#tb.register("attr_latSpan", random.randint, 0, 1000)
-	tb.register("attr_ssmm_nAgents", random.randint, 0, 50)
-	tb.register("attr_sc_nAgents", random.randint, 0, 500)
+	toolbox = base.Toolbox()
+
+	toolbox.register("attribute", random.random)
+	toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, n=IND_SIZE)
+
+	toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+	toolbox.population(n=1000)
+
+	toolbox.register("mate", tools.cxTwoPoints)
+	toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.1)
+	toolbox.register("select", tools.selTournament, tournsize=3)
+	toolbox.register("evaluate", evaluate)
+	return toolbox
+
+def run_ga():
+	toolbox = setup_toolbox()
+	algorithms.eaSimple(toolbox.population(10), toolbox, cxpb=0.5, mutpb=0.2, ngen=500)
 
 
-	tb.register('individual', tools.initCycle, creator.Individual, (tb.attr_ssmm_nAgents, tb.attr_sc_nAgents), n=1)
-	
-	tb.register("population", tools.initRepeat, list, tb.individual)
-	tb.population(n=10)
 
 
-if __name__ == "__main__":
-	pass

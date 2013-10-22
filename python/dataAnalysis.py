@@ -3,10 +3,21 @@ import IO
 from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
 import settings
-from collections import Iterable
+#from collections import Iterable
+
+def get_named_stats(data, attribute_names = list()):
+    mean = dict()
+    for attr in attribute_names:
+        mean.update({attr: np.mean(data[attr])})
+
+    std = dict()
+    for attr in attribute_names:
+        std.update({attr: np.std(data[attr])})    
+
+    return {'mean':mean, 'std':std}
 
 
-def calculate_stats(parameters = {}, reps = [0], autorun = False):
+def evaluate_simulation_results(parameters = {}, reps = [0], autorun = False):
      assert parameters, "Please specify a dictionary with par_name:par_value as key:value sets"
      
      data = empty_data_matrix(len(reps))
@@ -22,11 +33,12 @@ def calculate_stats(parameters = {}, reps = [0], autorun = False):
      if simulation_reps_to_run: run_simulation(parameters, simulation_reps_to_run)
 
      for r in reps:
-          data[r] = __calculate_simulation_stats(log_folders[r])
+          data[r] = __evaluate_simulation_results(log_folders[r])
      return data
 
 
-def __calculate_simulation_stats(logdata_folder = ""):
+
+def __evaluate_simulation_results(logdata_folder = ""):
      assert logdata_folder, "Please specify where the logdata is located"
      
      data = empty_data_matrix(1)
@@ -78,7 +90,7 @@ def __calculate_simulation_stats(logdata_folder = ""):
      data['tp_stable_round'] = get_stable_round(trades['price'], fundamental_after_step, threshold = 3)
 
      return data
-
+"""
 def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range = list(), all_parameters = dict(), reps = list()):
     try:
         del all_parameters[parameter_to_sweep]
@@ -105,7 +117,7 @@ def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range
         all_data[i] = calculate_stats(settings.log_folders, parameters_to_store, reps)        
     
     return all_data
-
+"""
 
 def empty_data_matrix(n_rows = 1):
      return np.zeros(shape = n_rows, dtype = settings.data_to_calculate.items())
@@ -123,6 +135,6 @@ def get_stable_round(traded_prices, fundamental, threshold = 3):
         return None  
 
 if __name__ == "__main__":
-  calculate_stats(settings.simulation_parameters, reps=range(2))
+  evaluate_simulation_results(settings.simulation_parameters, reps=range(2))
 
 
