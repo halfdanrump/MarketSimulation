@@ -465,7 +465,8 @@ public class Orderbook {
 			if(!this.unfilledBuyOrders.isEmpty()) {
 				this.localBestBuyPriceAtEndOfRound.set(now, this.unfilledBuyOrders.element().getPrice());
 			} else {
-				this.localBestBuyPriceAtEndOfRound.set(now, this.getLocalBestBuyPriceAtEndOfRound(now - 1));
+				//this.localBestBuyPriceAtEndOfRound.set(now, this.getLocalBestBuyPriceAtEndOfRound(now - 1));
+				this.localBestBuyPriceAtEndOfRound.set(now, 0L);
 			}
 			
 			
@@ -480,7 +481,8 @@ public class Orderbook {
 			if(!this.unfilledSellOrders.isEmpty()) {
 				this.localBestSellPriceAtEndOfRound.set(now, this.unfilledSellOrders.element().getPrice());
 			} else {
-				this.localBestSellPriceAtEndOfRound.set(now, this.getLocalBestSellPriceAtEndOfRound(now - 1));
+//				this.localBestSellPriceAtEndOfRound.set(now, this.getLocalBestSellPriceAtEndOfRound(now - 1));
+				this.localBestSellPriceAtEndOfRound.set(now, Long.MAX_VALUE);
 //				System.out.println(String.format("Used current best sell: %s", this.unfilledSellOrders.element().getPrice()));
 			}
 			
