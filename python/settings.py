@@ -23,6 +23,7 @@ population_size = 200
 n_generations = 1000
 mutation_prob = 0.2
 crossover_prob = 0.4
+tournament_selection_percentage = 0.25
 
 simulation_parameters = {
     'nRounds' : 100000,

@@ -66,7 +66,7 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("mate", tools.cxTwoPoints)
 toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.1)
-toolbox.register("select", tools.selTournament, tournsize=3)
+toolbox.register("select", tools.selTournament, tournsize=int(settings.population_size * settings.tournament_selection_percentage))
 toolbox.register("evaluate", evaluate)
 
 hall = tools.HallOfFame(1000)
@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
 		individuals = map(lambda k, v: {k:v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items))
 
-		f = open('../data/gene_data/genes_%s.yaml'%datetime.now().isoformat(), 'w')
+		f = open('../data/gene_data/genes_%s.yaml'%datetime.now().d.strftime("%d%b%Y-%H%M%S"), 'w')
 		yaml.dump(individuals, f)
 		f.close()
 		print "Saved hall of fame after generation %s to %s"%(g, f.name)
