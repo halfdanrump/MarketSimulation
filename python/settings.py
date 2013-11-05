@@ -1,7 +1,8 @@
 from collections import OrderedDict
-
+from copy import deepcopy
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
+MAKE_TRADEPRICE_PLOT = True
 
 reps = xrange(1)
 
@@ -18,15 +19,16 @@ stability_margin = 3
 #########################################################################
 ### GA SETTINGS
 #########################################################################
-deadborn_gene_fitness = 1000000000000000000
+deadborn_gene_fitness = 10000000000
 population_size = 100
-n_generations = 1000
+n_generations = 200
 mutation_prob = 0.2
 crossover_prob = 0.4
 tournament_selection_percentage = 0.25
 
 n_simulation_rounds = 100000
-simulation_parameters = {
+
+default_parameters = {
     
     'ssmm_nAgents' : 0,
     'sc_nAgents' : 0,
@@ -55,9 +57,21 @@ simulation_parameters = {
     'sc_waitTimeBetweenTrading_s' : 20
 }
 
+parameters_in_genes = [
+    'ssmm_nAgents',
+    'sc_nAgents' ,
+
+    'hft_latency_mu',
+    'hft_latency_s',
+    'hft_think_mu',
+    'hft_think_s'
+]
+
+
+
 parameter_scaling = OrderedDict({
     'ssmm_nAgents' : 40,
-    'sc_nAgents' : 400,
+    'sc_nAgents' : 250,
 
     'hft_latency_mu' : 100,
     'hft_latency_s' : 50,
@@ -112,16 +126,6 @@ parameter_minvals = OrderedDict({
 })
 
 
-data_to_calculate = {
-                    'buy_catchup_round' : int,
-                    'sell_catchup_round' : int,
-                    #'max_traded_price_after_step' : int,
-                    #'min_traded_price_after_step' : int,
-                    #'traded_price_std_after_sellbuy_reach_new_fundamental' : float,
-                    #'traded_price_mean_after_sellbuy_reach_new_fundamental' : float,
-                    #'traded_price_median_after_sellbuy_reach_new_fundamental' : int,
-                    'tp_stable_round' : int
-                    }
 
 data_for_failed_simulation = {
                     'buy_catchup_round' : 10**6,
@@ -136,9 +140,24 @@ data_for_failed_simulation = {
 
 
 fitness_weights = OrderedDict({
-                    'buy_catchup_round' : -1,
-                    'sell_catchup_round' : -1,
+                    #'buy_catchup_round' : -1,
+                    #'sell_catchup_round' : -1,
                     'tp_stable_round' : -1
                     })
+
+data_types = {
+                    #'buy_catchup_round' : int,
+                    #'sell_catchup_round' : int,
+                    #'max_traded_price_after_step' : int,
+                    #'min_traded_price_after_step' : int,
+                    #'traded_price_std_after_sellbuy_reach_new_fundamental' : float,
+                    #'traded_price_mean_after_sellbuy_reach_new_fundamental' : float,
+                    #'traded_price_median_after_sellbuy_reach_new_fundamental' : int,
+                    'tp_stable_round' : int
+                    }
+
+
+def get_fixed_parameters():
+    return deepcopy(default_parameters)
 
 

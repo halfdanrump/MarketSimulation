@@ -48,15 +48,16 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 
 	data = empty_data_matrix(1)
 
-	ob_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_orderbook(0,0).csv', names=True, dtype=int, delimiter=',', usecols=(1,2))
+	#ob_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_orderbook(0,0).csv', names=True, dtype=int, delimiter=',', usecols=(1,2))
 	stock_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
 	trades = np.genfromtxt(logdata_folder + 'columnLog_transactionBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
 
 	fundamental_step_round = np.where(np.diff(stock_round_based['fundamental'], n=1) != 0)[0]
 	fundamental_after_step = stock_round_based['fundamental'][fundamental_step_round + 1]
+
 	
-	make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder)
 	### Collect data
+	"""
 	try:
 		data['buy_catchup_round'] = np.min(np.where(ob_round_based['bestStandingBuyPrice'] == fundamental_after_step))
 	except ValueError:
@@ -67,6 +68,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 	except ValueError:
 		data['sell_catchup_round'] = settings.data_for_failed_simulation['sell_catchup_round']
 		
+	"""
 	"""
 	if buy_catchup_round and sell_catchup_round:
 	 	catchup_round = max(buy_catchup_round, sell_catchup_round)
@@ -96,7 +98,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 		data['tp_stable_round'] = settings.data_for_failed_simulation['tp_stable_round']
 	
 	if not settings.KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
-
+	if settings.MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data['tp_stable_round'])
 	return data
 """
 def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range = list(), all_parameters = dict(), reps = list()):
@@ -128,7 +130,7 @@ def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range
 """
 
 def empty_data_matrix(n_rows = 1):
-		 return np.zeros(shape = n_rows, dtype = settings.data_to_calculate.items())
+		 return np.zeros(shape = n_rows, dtype = settings.data_types.items())
 
 
 if __name__ == "__main__":

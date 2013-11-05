@@ -4,7 +4,7 @@ import settings
 #import numpy as np
 import random
 import dataAnalysis
-from itertools import imap
+
 from collections import OrderedDict
 from scoop import futures
 import yaml
@@ -13,12 +13,12 @@ from os import makedirs
 
 
 def evaluate(individual):
-	parameters = scale_genes_to_parameters(individual=individual)
+	parameters = scale_genes_to_parameters(individual)
 	if verify_simulation_parameters(parameters):
 		data = dataAnalysis.evaluate_simulation_results(graph_folder, parameters, settings.reps, autorun=True)
 		stats = dataAnalysis.get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
-		print "Stats: %s, parameters: %s"%(stats, scale_genes_to_parameters(individual))
+		#print "Stats: %s, parameters: %s"%(stats, scale_genes_to_parameters(individual))
 	else:
 		print "Generated invalid gene: %s"%scale_genes_to_parameters(individual)
 		stats = get_invalid_gene_fitness()
@@ -36,10 +36,21 @@ def verify_simulation_parameters(parameters):
 			is_valid = False
 	return is_valid
 
-def scale_genes_to_parameters(individual):
-	parameters = dict()
-	for subdict in imap(lambda parameter, scaling, gene: {parameter: int(scaling*gene)}, settings.parameter_scaling.iterkeys(), settings.parameter_scaling.itervalues(), individual):
-		parameters.update(subdict)
+def scale_genes_to_parameters(individual, return_full_parameter_set = True):
+	
+	scaled_parameters = dict()
+	for i, parameter in enumerate(settings.parameters_in_genes):
+		scaling = settings.parameter_scaling[parameter]	
+		scaled_parameters[parameter] = int(scaling * individual[i])
+
+	print "scaled_parameters: %s"%scaled_parameters
+	if return_full_parameter_set:
+		parameters = settings.get_fixed_parameters()
+		parameters.update(scaled_parameters)
+	else:
+		parameters = scaled_parameters
+	#for subdict in imap(lambda parameter, scaling, gene: {parameter: int(scaling*gene)}, settings.parameter_scaling.iterkeys(), settings.parameter_scaling.itervalues(), individual):
+	#	parameters.update(subdict)
 	return parameters
 
 def create_healthy_population():
@@ -60,7 +71,7 @@ creator.create("Individual", list, fitness = creator.FitnessMulti)
 toolbox = base.Toolbox()
 
 toolbox.register("attribute", random.random)
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, n=len(settings.parameter_scaling))
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, n=len(settings.parameters_in_genes))
 
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
@@ -126,10 +137,10 @@ if __name__ == "__main__":
 		pop[:] = offspring
 		toolbox.update_hall_of_fame(pop)
 
-		individuals = map(lambda k, v: {'fit':k, 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items))
-
+		individuals = map(lambda k, v: {'fit':k, 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items, [False for i in range(len(hall.items))]))
+		data_to_save = {'fixed_parameters':settings.default_parameters, 'individuals':individuals}
 		f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
-		yaml.dump(individuals, f)
+		yaml.dump(data_to_save, f)
 		f.close()
 		print "Saved hall of fame after generation %s to %s"%(g, f.name)
 		#print zip(settings.parameter_scaling.keys(), parameters)

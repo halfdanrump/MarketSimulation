@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import textwrap
 from datetime import datetime
-
+import settings
+import gc
 
 def how_to_make_plot():
 
@@ -37,19 +38,25 @@ def get_epoch_time():
     td = datetime.now() - datetime.utcfromtimestamp(0)
     return repr(int(td.total_seconds() * 10**6))
 
-def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder):
+def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitness):
     fig = plt.figure(figsize=(10, 8), dpi=100)
     ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
     ax.set_xlabel("Round")
     ax.set_ylabel("Traded price")
 
-    caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in sorted(all_parameters)]), 100))
+    caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in settings.parameters_in_genes]), 100))
+    caption += '\n %s'%repr(fitness)
     fig.text(0.1,0.1, caption)
     ax.plot(rounds, tradePrice, lw=2)
+
+    ax.hlines([9990 - settings.stability_margin, 9990 + settings.stability_margin], 0, settings.n_simulation_rounds)
     
     graph_name = get_epoch_time() + '.png'
 
     fig.savefig(graph_folder + graph_name)
+
+    plt.close()
+    gc.collect()
 
 
 """
