@@ -1,11 +1,12 @@
-import settings
 import numpy as np
-from matplotlib.pyplot import plot
+import matplotlib.pyplot as plt
 import textwrap
+from datetime import datetime
+
 
 def how_to_make_plot():
 
-    fig = plot.figure()
+    fig = plt.figure()
     fig.subplots_adjust(top=0.9)
     ax1 = fig.add_subplot(211)
     ax1.set_ylabel('volts')
@@ -30,10 +31,28 @@ def how_to_make_plot():
     culpa qui officia deserunt mollit anim id est laborum.'''
 
     fig.text(.1,.1,txt)
+    plt.savefig("test.png")
+
+def get_epoch_time():
+    td = datetime.now() - datetime.utcfromtimestamp(0)
+    return repr(int(td.total_seconds() * 10**6))
+
+def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder):
+    fig = plt.figure(figsize=(10, 8), dpi=100)
+    ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
+    ax.set_xlabel("Round")
+    ax.set_ylabel("Traded price")
+
+    caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in sorted(all_parameters)]), 100))
+    fig.text(0.1,0.1, caption)
+    ax.plot(rounds, tradePrice, lw=2)
+    
+    graph_name = get_epoch_time() + '.png'
+
+    fig.savefig(graph_folder + graph_name)
 
 
-    plot.savefig("test.png")
-
+"""
 def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):
     assert x_axis_name in all_data.dtype.names, "x axis parameter not found"
     for y_name in y_axis_name: assert y_name in all_data.dtype.names, "y axis parameter not found"
@@ -55,3 +74,4 @@ def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_p
     
     graph_filename = "%s_vs_%s.pdf"%(x_axis_name, repr(y_axis_name))
     plot.savefig(settings.graph_root_folder + prefix + graph_filename)
+"""

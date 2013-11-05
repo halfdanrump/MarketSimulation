@@ -8,7 +8,7 @@ reps = xrange(1)
 jar_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Simulation.jar'
 log_root_folder = '/Users/halfdan/simulation_data/'
 data_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/data_folder/'
-graph_root_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/simulation_graphs/'
+#graph_root_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/simulation_graphs/'
 
 #########################################################################
 ### Data analysis settings
@@ -19,14 +19,14 @@ stability_margin = 3
 ### GA SETTINGS
 #########################################################################
 deadborn_gene_fitness = 1000000000000000000
-population_size = 200
+population_size = 100
 n_generations = 1000
 mutation_prob = 0.2
 crossover_prob = 0.4
 tournament_selection_percentage = 0.25
 
+n_simulation_rounds = 100000
 simulation_parameters = {
-    'nRounds' : 100000,
     
     'ssmm_nAgents' : 0,
     'sc_nAgents' : 0,
@@ -56,8 +56,8 @@ simulation_parameters = {
 }
 
 parameter_scaling = OrderedDict({
-    'ssmm_nAgents' : 50,
-    'sc_nAgents' : 500,
+    'ssmm_nAgents' : 40,
+    'sc_nAgents' : 400,
 
     'hft_latency_mu' : 100,
     'hft_latency_s' : 50,

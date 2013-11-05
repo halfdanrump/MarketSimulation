@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 import setup.Logging;
+import utilities.Parameter;
 import utilities.StockMarketPair;
 
 import log.AgentLogger;
@@ -23,7 +24,7 @@ public abstract class Experiment{
 	/*
 	 * General setup
 	 */
-	public final int nTotalRounds = Integer.valueOf(System.getProperty("nRounds", "30000"));
+	public final int nTotalRounds = Parameter.getAsInt("nRounds");
 	public final int nInitialSlowTraderRounds = 5000;
 	public final int nHFTRounds = nTotalRounds - nInitialSlowTraderRounds-1; 
 	

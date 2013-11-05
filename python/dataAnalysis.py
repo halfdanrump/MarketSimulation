@@ -4,6 +4,7 @@ from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
 import settings
 from random import randint
+from plotting import make_tradeprice_plot
 #from collections import Iterable
 
 def get_named_stats(data, attribute_names = list()):
@@ -18,7 +19,7 @@ def get_named_stats(data, attribute_names = list()):
 	return {'mean':mean, 'std':std}
 
 
-def evaluate_simulation_results(parameters = {}, reps = [0], autorun = False):
+def evaluate_simulation_results(graph_folder, parameters = {}, reps = [0], autorun = False):
 	assert parameters, "Please specify a dictionary with par_name:par_value as key:value sets"
 
 	data = empty_data_matrix(len(reps))
@@ -37,12 +38,12 @@ def evaluate_simulation_results(parameters = {}, reps = [0], autorun = False):
 	if simulation_reps_to_run: run_simulation(parameters, simulation_reps_to_run, random_path)
 
 	for r in reps:
-		data[r] = __evaluate_simulation_results(log_folders[r])
+		data[r] = __evaluate_simulation_results(parameters, log_folders[r], graph_folder)
 	return data
 
 
 
-def __evaluate_simulation_results(logdata_folder = ""):
+def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 	assert logdata_folder, "Please specify where the logdata is located"
 
 	data = empty_data_matrix(1)
@@ -53,7 +54,8 @@ def __evaluate_simulation_results(logdata_folder = ""):
 
 	fundamental_step_round = np.where(np.diff(stock_round_based['fundamental'], n=1) != 0)[0]
 	fundamental_after_step = stock_round_based['fundamental'][fundamental_step_round + 1]
-
+	
+	make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder)
 	### Collect data
 	try:
 		data['buy_catchup_round'] = np.min(np.where(ob_round_based['bestStandingBuyPrice'] == fundamental_after_step))
@@ -87,9 +89,9 @@ def __evaluate_simulation_results(logdata_folder = ""):
 		data['min_traded_price_after_step'] = settings.data_for_failed_simulation['min_traded_price_after_step']
 	"""
 	try:
-		stable_idx = np.where((trades['price'] > fundamental_after_step - settings.stability_margin) & (trades['price'] < fundamental_after_step + settings.stability_margin))[0]
+		stable_idx = np.where((trades['price'] >= fundamental_after_step - settings.stability_margin) & (trades['price'] <= fundamental_after_step + settings.stability_margin))[0]
 		diffs = np.diff(stable_idx)
-		data['tp_stable_round'] = np.max(np.where(diffs > 1))
+		data['tp_stable_round'] = trades['round'][stable_idx[np.max(np.where(diffs > 1))]]
 	except ValueError:
 		data['tp_stable_round'] = settings.data_for_failed_simulation['tp_stable_round']
 	

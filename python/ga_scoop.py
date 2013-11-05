@@ -9,21 +9,21 @@ from collections import OrderedDict
 from scoop import futures
 import yaml
 from datetime import datetime
+from os import makedirs
 
 
 def evaluate(individual):
 	parameters = scale_genes_to_parameters(individual=individual)
-	
 	if verify_simulation_parameters(parameters):
-		data = dataAnalysis.evaluate_simulation_results(parameters, settings.reps, autorun=True)
-		print data
+		data = dataAnalysis.evaluate_simulation_results(graph_folder, parameters, settings.reps, autorun=True)
 		stats = dataAnalysis.get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
+		print "Stats: %s, parameters: %s"%(stats, scale_genes_to_parameters(individual))
 	else:
-		print "Generated invalid gene"
+		print "Generated invalid gene: %s"%scale_genes_to_parameters(individual)
 		stats = get_invalid_gene_fitness()
 	return stats
-
+	
 
 
 def get_invalid_gene_fitness():
@@ -65,7 +65,7 @@ toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.att
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("mate", tools.cxTwoPoints)
-toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.1)
+toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.1, indpb=0.1)
 toolbox.register("select", tools.selTournament, tournsize=int(settings.population_size * settings.tournament_selection_percentage))
 toolbox.register("evaluate", evaluate)
 
@@ -73,9 +73,17 @@ hall = tools.HallOfFame(1000)
 toolbox.register("update_hall_of_fame", hall.update)
 
 
+start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+gene_data_folder = '../data/gene_data/%s/'%(start_time)
+graph_folder = '%sgraphs/'%(gene_data_folder)
+
+
 if __name__ == "__main__":
 
 	#pool = multiprocessing.Pool(processes=10)
+	makedirs(gene_data_folder)
+	makedirs(graph_folder)
+	
 	toolbox.register("map", futures.map)
 
 	pop = create_healthy_population()
@@ -118,9 +126,9 @@ if __name__ == "__main__":
 		pop[:] = offspring
 		toolbox.update_hall_of_fame(pop)
 
-		individuals = map(lambda k, v: {k:v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items))
+		individuals = map(lambda k, v: {'fit':k, 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items))
 
-		f = open('../data/gene_data/genes_%s.yaml'%datetime.now().d.strftime("%d%b%Y-%H%M%S"), 'w')
+		f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
 		yaml.dump(individuals, f)
 		f.close()
 		print "Saved hall of fame after generation %s to %s"%(g, f.name)
