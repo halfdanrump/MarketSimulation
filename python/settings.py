@@ -21,13 +21,13 @@ stability_margin = 3
 ### GA SETTINGS
 #########################################################################
 deadborn_gene_fitness = 10000000000
-population_size = 100
+population_size = 4
 n_generations = 200
 mutation_prob = 0.2
 crossover_prob = 0.4
 tournament_selection_percentage = 0.25
 
-n_simulation_rounds = 100000
+n_simulation_rounds = 10000
 
 default_parameters = {
     
@@ -71,8 +71,8 @@ parameters_in_genes = [
 
 
 parameter_scaling = OrderedDict({
-    'ssmm_nAgents' : 40,
-    'sc_nAgents' : 250,
+    'ssmm_nAgents' : 0,
+    'sc_nAgents' : 0,
 
     'hft_latency_mu' : 100,
     'hft_latency_s' : 50,

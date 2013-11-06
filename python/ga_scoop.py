@@ -43,7 +43,7 @@ def scale_genes_to_parameters(individual, return_full_parameter_set = True):
 		scaling = settings.parameter_scaling[parameter]	
 		scaled_parameters[parameter] = int(scaling * individual[i])
 
-	print "scaled_parameters: %s"%scaled_parameters
+	
 	if return_full_parameter_set:
 		parameters = settings.get_fixed_parameters()
 		parameters.update(scaled_parameters)
@@ -51,6 +51,7 @@ def scale_genes_to_parameters(individual, return_full_parameter_set = True):
 		parameters = scaled_parameters
 	#for subdict in imap(lambda parameter, scaling, gene: {parameter: int(scaling*gene)}, settings.parameter_scaling.iterkeys(), settings.parameter_scaling.itervalues(), individual):
 	#	parameters.update(subdict)
+	#print "scaled_parameters: %s"%parameters
 	return parameters
 
 def create_healthy_population():
@@ -99,6 +100,7 @@ if __name__ == "__main__":
 
 	pop = create_healthy_population()
 	for g in range(settings.n_generations):
+
 		print "********************************** GENERATION %s **********************************"%g
 		# Select the next generation individuals
 		offspring = toolbox.select(pop, len(pop))
@@ -126,10 +128,15 @@ if __name__ == "__main__":
 		print "Evaluating the fitness of %s individuals"%len(invalid_ind)
 
 		fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-		for ind, fit in zip(invalid_ind, fitnesses):
-		    print fit
-		    ind.fitness.values = fit
+		
+		new_data = list()
 
+		for ind, fit in zip(invalid_ind, fitnesses):
+		    ind.fitness.values = fit
+		    scaled_ind = scale_genes_to_parameters(ind, False)
+		    new_data.append({'ind': scaled_ind, 'fit': tuple(fit)})
+		
+		print new_data
 		#for ind in offspring:
 		#	print ind.fitness
 
@@ -137,8 +144,8 @@ if __name__ == "__main__":
 		pop[:] = offspring
 		toolbox.update_hall_of_fame(pop)
 
-		individuals = map(lambda k, v: {'fit':tuple(k), 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items, [False for i in range(len(hall.items))]))
-		data_to_save = {'fixed_parameters':settings.default_parameters, 'individuals':individuals}
+		#individuals = map(lambda k, v: {'fit':tuple(k), 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items, [False for i in range(len(hall.items))]))
+		data_to_save = {'fixed_parameters':settings.default_parameters, 'genes':new_data}
 		f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
 		yaml.dump(data_to_save, f)
 		f.close()
