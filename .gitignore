@@ -3,3 +3,4 @@ JRI/
 logs/
 bin/
 simulation_graphs/
+*.pyc
