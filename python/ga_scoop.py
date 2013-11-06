@@ -137,7 +137,7 @@ if __name__ == "__main__":
 		pop[:] = offspring
 		toolbox.update_hall_of_fame(pop)
 
-		individuals = map(lambda k, v: {'fit':k, 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items, [False for i in range(len(hall.items))]))
+		individuals = map(lambda k, v: {'fit':tuple(k), 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items, [False for i in range(len(hall.items))]))
 		data_to_save = {'fixed_parameters':settings.default_parameters, 'individuals':individuals}
 		f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
 		yaml.dump(data_to_save, f)
