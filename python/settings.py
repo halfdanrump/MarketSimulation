@@ -27,7 +27,7 @@ deadborn_gene_fitness = 10000000000
 if TEST_MODE:
     population_size = 4
 else:
-    population_size = 100
+    population_size = 500
 
 n_generations = 200
 mutation_prob = 0.2
