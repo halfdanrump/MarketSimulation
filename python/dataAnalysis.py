@@ -2,9 +2,10 @@ import numpy as np
 import IO
 from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
-import settings
+from settings import stability_margin, data_types, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT
 from random import randint
 from plotting import make_tradeprice_plot
+from itertools import groupby
 #from collections import Iterable
 
 def get_named_stats(data, attribute_names = list()):
@@ -90,16 +91,33 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 		data['max_traded_price_after_step'] = settings.data_for_failed_simulation['max_traded_price_after_step']
 		data['min_traded_price_after_step'] = settings.data_for_failed_simulation['min_traded_price_after_step']
 	"""
+	"""
 	try:
-		stable_idx = np.where((trades['price'] >= fundamental_after_step - settings.stability_margin) & (trades['price'] <= fundamental_after_step + settings.stability_margin))[0]
+		within_margin = np.where(
+							(trades['price'] >= fundamental_after_step - settings.stability_margin) & 
+							(trades['price'] <= fundamental_after_step + settings.stability_margin))[0]
+
 		diffs = np.diff(stable_idx)
 		data['tp_stable_round'] = trades['round'][stable_idx[np.max(np.where(diffs > 1))]]
 	except ValueError:
 		data['tp_stable_round'] = settings.data_for_failed_simulation['tp_stable_round']
 	
-	if not settings.KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
-	if settings.MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data['tp_stable_round'])
+	
+
+
+	within_margin = np.where((trades['price'] >= fundamental_after_step - settings.stability_margin)
+							&(trades['price'] <= fundamental_after_step + settings.stability_margin))[0]
+
+	diffs = np.diff(stable_idx)
+	"""
+	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], fundamental_after_step)
+	data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
+	data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
+	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
+	if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data)
 	return data
+
+
 """
 def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range = list(), all_parameters = dict(), reps = list()):
 		try:
@@ -129,11 +147,40 @@ def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range
 		return all_data
 """
 
+
+def get_number_of_stability_margin_crossings():
+	pass
+
+def get_number_of_rounds_within_stability_margin(trade_prices, fundamental_after_step):
+	try:
+		rounds_within_margin = np.where((trade_prices >= fundamental_after_step - stability_margin)
+								&(trade_prices <= fundamental_after_step + stability_margin))[0]
+
+		adjacent_stable_rounds = np.diff(rounds_within_margin)
+		intervals_within_margin = adjacent_stable_rounds[1::] - adjacent_stable_rounds[:-1]
+		stable_periods_lengths = [len([i for i in group]) for value, group in groupby(intervals_within_margin) if value == 0]
+		if len(stable_periods_lengths) == 0:
+			n_intervals = 10**6 ### If the simulation never enters the stable region this is a very bad thing.
+		else:
+			n_intervals = len(stable_periods_lengths)
+		return {'total_number_of_rounds':sum(stable_periods_lengths), 'n_intervals':n_intervals}
+	except ValueError:
+		return {'total_number_of_rounds':0, 'n_intervals':10**6}
+
+def get_first_round_to_enter_stability_margin():
+	pass
+
+def get_first_round_to_leave_stability_margin():
+	pass
+
+def get_maximum_distance_from_new_fundamental():
+	pass
+
 def empty_data_matrix(n_rows = 1):
-		 return np.zeros(shape = n_rows, dtype = settings.data_types.items())
+		 return np.zeros(shape = n_rows, dtype = data_types.items())
 
 
-if __name__ == "__main__":
-	evaluate_simulation_results(settings.simulation_parameters, reps=range(2))
+#if __name__ == "__main__":
+#	evaluate_simulation_results(settings.simulation_parameters, reps=range(2))
 
 
