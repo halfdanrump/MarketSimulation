@@ -1,5 +1,8 @@
 from collections import OrderedDict
 from copy import deepcopy
+
+
+TEST_MODE = False
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
@@ -21,13 +24,20 @@ stability_margin = 3
 ### GA SETTINGS
 #########################################################################
 deadborn_gene_fitness = 10000000000
-population_size = 4
+if TEST_MODE:
+    population_size = 4
+else:
+    population_size = 100
+
 n_generations = 200
 mutation_prob = 0.2
 crossover_prob = 0.4
 tournament_selection_percentage = 0.25
 
-n_simulation_rounds = 10000
+if TEST_MODE:
+    n_simulation_rounds = 10000
+else:
+    n_simulation_rounds = 100000
 
 default_parameters = {
     
@@ -58,6 +68,7 @@ default_parameters = {
     'sc_waitTimeBetweenTrading_s' : 20
 }
 
+
 parameters_in_genes = [
     'ssmm_nAgents',
     'sc_nAgents' ,
@@ -71,8 +82,8 @@ parameters_in_genes = [
 
 
 parameter_scaling = OrderedDict({
-    'ssmm_nAgents' : 0,
-    'sc_nAgents' : 0,
+    'ssmm_nAgents' : 40,
+    'sc_nAgents' : 300,
 
     'hft_latency_mu' : 100,
     'hft_latency_s' : 50,
@@ -97,6 +108,10 @@ parameter_scaling = OrderedDict({
     'sc_waitTimeBetweenTrading_mu' : 50,
     'sc_waitTimeBetweenTrading_s' : 20
 })
+
+if TEST_MODE:
+    parameter_scaling['ssmm_nAgents'] = 0
+    parameter_scaling['sc_nAgents'] = 0
 
 parameter_minvals = OrderedDict({
     'ssmm_nAgents' : 0,
