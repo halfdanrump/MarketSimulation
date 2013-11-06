@@ -110,7 +110,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 
 	diffs = np.diff(stable_idx)
 	"""
-	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], fundamental_after_step)
+	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['rounds'], fundamental_after_step)
 	data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
@@ -151,14 +151,26 @@ def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range
 def get_number_of_stability_margin_crossings():
 	pass
 
-def get_number_of_rounds_within_stability_margin(trade_prices, fundamental_after_step):
+def get_number_of_rounds_within_stability_margin(trade_prices, rounds, fundamental_after_step):
 	try:
-		rounds_within_margin = np.where((trade_prices >= fundamental_after_step - stability_margin)
-								&(trade_prices <= fundamental_after_step + stability_margin))[0]
+		#trades_within_margin = rounds[np.where((trade_prices >= fundamental_after_step - stability_margin)
+		#						&(trade_prices <= fundamental_after_step + stability_margin))[0]]
+		trades_outside_margin = rounds[np.where((trade_prices < fundamental_after_step - stability_margin)
+								| (trade_prices > fundamental_after_step + stability_margin))[0]]
 
-		adjacent_stable_rounds = np.diff(rounds_within_margin)
-		intervals_within_margin = adjacent_stable_rounds[1::] - adjacent_stable_rounds[:-1]
-		stable_periods_lengths = [len([i for i in group]) for value, group in groupby(intervals_within_margin) if value == 0]
+		#print list(trades_within_margin)
+		#trades_within_margin = list(set(trades_within_margin))
+		rounds_outside_margin = set(trades_outside_margin)
+		rounds_inside_margin = [i for i in range(max(rounds)) if not i in rounds_outside_margin]
+		#	print rounds_inside_margin
+		#for i in range(min(trades_within_margin), max(rounds):
+
+		#print min(trades_within_margin)
+		#rounds_within_margin = [value for value, group in groupby(trades_within_margin)]
+		distance_between_rounds = np.diff(rounds_inside_margin)
+		
+		stable_periods_lengths = [len([i for i in group]) for value, group in groupby(distance_between_rounds) if value == 1]
+		#print stable_periods_lengths
 		if len(stable_periods_lengths) == 0:
 			n_intervals = 10**6 ### If the simulation never enters the stable region this is a very bad thing.
 		else:

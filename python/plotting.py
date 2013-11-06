@@ -61,6 +61,11 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     plt.close()
     gc.collect()
 
+def get_tradeprice_data(filename):
+    d = np.load(filename).items()[0][1].item()
+    rounds = d['rounds']
+    prices = d['tradePrice']
+    return rounds, prices
 
 """
 def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):
