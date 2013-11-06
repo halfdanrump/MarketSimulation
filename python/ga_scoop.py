@@ -81,10 +81,6 @@ toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.1, indpb=0.1)
 toolbox.register("select", tools.selTournament, tournsize=int(settings.population_size * settings.tournament_selection_percentage))
 toolbox.register("evaluate", evaluate)
 
-hall = tools.HallOfFame(1000)
-toolbox.register("update_hall_of_fame", hall.update)
-
-
 start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
 gene_data_folder = '../data/gene_data/%s/'%(start_time)
 graph_folder = '%sgraphs/'%(gene_data_folder)
@@ -137,14 +133,11 @@ if __name__ == "__main__":
 		    new_data.append({'ind': scaled_ind, 'fit': tuple(fit)})
 		
 		print new_data
-		#for ind in offspring:
-		#	print ind.fitness
+		
 
 		# The population is entirely replaced by the offspring
 		pop[:] = offspring
-		toolbox.update_hall_of_fame(pop)
 
-		#individuals = map(lambda k, v: {'fit':tuple(k), 'gene':v}, [v.getValues() for v in hall.keys], map(scale_genes_to_parameters, hall.items, [False for i in range(len(hall.items))]))
 		data_to_save = {'fixed_parameters':settings.default_parameters, 'genes':new_data}
 		f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
 		yaml.dump(data_to_save, f)
