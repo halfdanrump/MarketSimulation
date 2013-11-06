@@ -4,3 +4,5 @@ logs/
 bin/
 simulation_graphs/
 *.pyc
+*.npz
+*.yaml
