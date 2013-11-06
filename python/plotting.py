@@ -45,15 +45,18 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     ax.set_ylabel("Traded price")
 
     caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in settings.parameters_in_genes]), 100))
-    caption += '\n %s'%repr(fitness)
+    caption += '\nFitness: %s'%str(fitness)
     fig.text(0.1,0.1, caption)
     ax.plot(rounds, tradePrice, lw=2)
 
     ax.hlines([9990 - settings.stability_margin, 9990 + settings.stability_margin], 0, settings.n_simulation_rounds)
-    
-    graph_name = get_epoch_time() + '.png'
-
+    time = get_epoch_time()
+    graph_name = time + '.png'
     fig.savefig(graph_folder + graph_name)
+
+    if settings.SAVE_DATA_USED_FOR_PLOTTING:     
+        data = {'rounds':rounds, 'tradePrice':tradePrice}
+        np.savez_compressed(graph_folder + time, data)
 
     plt.close()
     gc.collect()
