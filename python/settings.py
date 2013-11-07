@@ -35,7 +35,7 @@ crossover_prob = 0.4
 tournament_selection_percentage = 0.25
 
 if TEST_MODE:
-    n_simulation_rounds = 10000
+    n_simulation_rounds = 30000
 else:
     n_simulation_rounds = 100000
 

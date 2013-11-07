@@ -110,7 +110,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 
 	diffs = np.diff(stable_idx)
 	"""
-	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['rounds'], fundamental_after_step)
+	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['round'], fundamental_after_step)
 	data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
