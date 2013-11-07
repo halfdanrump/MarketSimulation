@@ -103,7 +103,7 @@ public abstract class Experiment{
 	 * Fundamental random walk parameters
 	 */
 //	public boolean randomWalkFundamental = false;
-	public final long initialFundamentalPrice = (long) Math.pow(10, 4);
+	public final long initialFundamentalPrice = Parameter.getAsLong("fundamental_initial_value");
 	public final double fundamentalBrownianMean = 0;
 	public final double fundamentalBrownianVariance = 0.00001;
 	

@@ -54,8 +54,9 @@ public class GenericExperiment extends Experiment {
 	public void createStocks() {
 		boolean isRandomWalk = false;
 		Stock stock = new Stock(this, isRandomWalk);
-		int shockSize = Integer.valueOf(System.getProperty("shockSize", "-10"));;
-		ExperimentUtils.setFundamentalToStepFunction(this, stock, shockSize, 10000);
+		int shockSize = Parameter.getAsInt("fundamental_shock_size");
+		int shockRound = Parameter.getAsInt("fundamental_shock_round");
+		ExperimentUtils.setFundamentalToStepFunction(this, stock, shockSize, shockRound);
 
 	}
 
