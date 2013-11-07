@@ -4,6 +4,7 @@ import textwrap
 from datetime import datetime
 import settings
 import gc
+from utils import get_fundamental_after_shock
 
 def how_to_make_plot():
 
@@ -49,7 +50,8 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     fig.text(0.1,0.1, caption)
     ax.plot(rounds, tradePrice, lw=2)
 
-    ax.hlines([9990 - settings.stability_margin, 9990 + settings.stability_margin], 0, settings.n_simulation_rounds)
+    fas = get_fundamental_after_shock()
+    ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
     time = get_epoch_time()
     graph_name = time + '.png'
     fig.savefig(graph_folder + graph_name)
@@ -62,6 +64,9 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     gc.collect()
 
 def get_tradeprice_data(filename):
+    """
+    Loads the data (stored as .npz) used to generate the tradePrice plots
+    """
     d = np.load(filename).items()[0][1].item()
     rounds = d['rounds']
     prices = d['tradePrice']

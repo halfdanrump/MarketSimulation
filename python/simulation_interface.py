@@ -49,7 +49,7 @@ def run_simulation(parameters, reps, random_path):
         for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
         vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[i]
         command = vm_args + par_string + '-jar %s'%settings.jar_path
-        #print "Running simulation with command: %s\n"%command
+        print "Running simulation with command: %s\n"%command
         if settings.WITH_SIMULATION_OUTPUT:
             processes.append(Popen(command.split(' ')))            
         else:

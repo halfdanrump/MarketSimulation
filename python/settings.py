@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = False
+TEST_MODE = True
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
@@ -40,7 +40,10 @@ else:
     n_simulation_rounds = 100000
 
 default_parameters = {
-    
+    'fundamental_initial_value' : 10000,
+    'fundamental_shock_size' : -100,
+    'fundamental_shock_round' : 10000,
+
     'ssmm_nAgents' : 0,
     'sc_nAgents' : 0,
 

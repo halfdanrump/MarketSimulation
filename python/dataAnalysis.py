@@ -6,6 +6,7 @@ from settings import stability_margin, data_types, KEEP_SIMULATION_DATA, MAKE_TR
 from random import randint
 from plotting import make_tradeprice_plot
 from itertools import groupby
+from utils import get_fundamental_after_shock
 #from collections import Iterable
 
 def get_named_stats(data, attribute_names = list()):
@@ -50,11 +51,10 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 	data = empty_data_matrix(1)
 
 	#ob_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_orderbook(0,0).csv', names=True, dtype=int, delimiter=',', usecols=(1,2))
-	stock_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
+	#stock_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
 	trades = np.genfromtxt(logdata_folder + 'columnLog_transactionBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
 
-	fundamental_step_round = np.where(np.diff(stock_round_based['fundamental'], n=1) != 0)[0]
-	fundamental_after_step = stock_round_based['fundamental'][fundamental_step_round + 1]
+	
 
 	
 	### Collect data
@@ -110,7 +110,8 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 
 	diffs = np.diff(stable_idx)
 	"""
-	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['round'], fundamental_after_step)
+	fas = get_fundamental_after_shock()
+	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['round'], fas)
 	data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
@@ -151,17 +152,17 @@ def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range
 def get_number_of_stability_margin_crossings():
 	pass
 
-def get_number_of_rounds_within_stability_margin(trade_prices, rounds, fundamental_after_step):
+def get_number_of_rounds_within_stability_margin(trade_prices, trade_rounds, fundamental_after_step):
 	try:
 		#trades_within_margin = rounds[np.where((trade_prices >= fundamental_after_step - stability_margin)
 		#						&(trade_prices <= fundamental_after_step + stability_margin))[0]]
-		trades_outside_margin = rounds[np.where((trade_prices < fundamental_after_step - stability_margin)
+		trades_outside_margin = trade_rounds[np.where((trade_prices < fundamental_after_step - stability_margin)
 								| (trade_prices > fundamental_after_step + stability_margin))[0]]
 
 		#print list(trades_within_margin)
 		#trades_within_margin = list(set(trades_within_margin))
 		rounds_outside_margin = set(trades_outside_margin)
-		rounds_inside_margin = [i for i in range(max(rounds)) if not i in rounds_outside_margin]
+		rounds_inside_margin = [i for i in range(max(trade_rounds)) if not i in rounds_outside_margin]
 		#	print rounds_inside_margin
 		#for i in range(min(trades_within_margin), max(rounds):
 
@@ -179,8 +180,9 @@ def get_number_of_rounds_within_stability_margin(trade_prices, rounds, fundament
 	except ValueError:
 		return {'total_number_of_rounds':0, 'n_intervals':10**6}
 
-def get_first_round_to_enter_stability_margin():
-	pass
+def get_first_round_to_enter_stability_margin(trade_prices, trade_rounds):
+	trade_prices = np.array(trade_prices)
+	return np.min(np.where(trade_prices == fundamental_after_step))
 
 def get_first_round_to_leave_stability_margin():
 	pass
