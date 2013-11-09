@@ -2,11 +2,11 @@ import numpy as np
 import IO
 from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
-from settings import stability_margin, data_types, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT
+from settings import stability_margin, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT
 from random import randint
 from plotting import make_tradeprice_plot
 from itertools import groupby
-from utils import get_fundamental_after_shock
+from utils import get_fundamental_after_shock, empty_data_matrix
 #from collections import Iterable
 
 def get_named_stats(data, attribute_names = list()):
@@ -154,24 +154,16 @@ def get_number_of_stability_margin_crossings():
 
 def get_number_of_rounds_within_stability_margin(trade_prices, trade_rounds, fundamental_after_step):
 	try:
-		#trades_within_margin = rounds[np.where((trade_prices >= fundamental_after_step - stability_margin)
-		#						&(trade_prices <= fundamental_after_step + stability_margin))[0]]
 		trades_outside_margin = trade_rounds[np.where((trade_prices < fundamental_after_step - stability_margin)
 								| (trade_prices > fundamental_after_step + stability_margin))[0]]
 
-		#print list(trades_within_margin)
-		#trades_within_margin = list(set(trades_within_margin))
 		rounds_outside_margin = set(trades_outside_margin)
 		rounds_inside_margin = [i for i in range(max(trade_rounds)) if not i in rounds_outside_margin]
-		#	print rounds_inside_margin
-		#for i in range(min(trades_within_margin), max(rounds):
 
-		#print min(trades_within_margin)
-		#rounds_within_margin = [value for value, group in groupby(trades_within_margin)]
 		distance_between_rounds = np.diff(rounds_inside_margin)
 		
 		stable_periods_lengths = [len([i for i in group]) for value, group in groupby(distance_between_rounds) if value == 1]
-		#print stable_periods_lengths
+
 		if len(stable_periods_lengths) == 0:
 			n_intervals = 10**6 ### If the simulation never enters the stable region this is a very bad thing.
 		else:
@@ -182,19 +174,18 @@ def get_number_of_rounds_within_stability_margin(trade_prices, trade_rounds, fun
 
 def get_first_round_to_enter_stability_margin(trade_prices, trade_rounds):
 	trade_prices = np.array(trade_prices)
-	return np.min(np.where(trade_prices == fundamental_after_step))
+	fas = get_fundamental_after_shock()
+	return np.min(np.where(trade_prices == fas))
+
+def get_tp_std_after_entering_margin():
+	pass
 
 def get_first_round_to_leave_stability_margin():
 	pass
 
-def get_maximum_distance_from_new_fundamental():
+def get_maximum_distance_from_new_fundamental_after_entering_margin():
 	pass
 
-def empty_data_matrix(n_rows = 1):
-		 return np.zeros(shape = n_rows, dtype = data_types.items())
 
 
-#if __name__ == "__main__":
-#	evaluate_simulation_results(settings.simulation_parameters, reps=range(2))
-
-
+	
