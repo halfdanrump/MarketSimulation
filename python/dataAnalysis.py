@@ -21,7 +21,7 @@ def get_named_stats(data, attribute_names = list()):
 	return {'mean':mean, 'std':std}
 
 
-def evaluate_simulation_results(graph_folder, parameters = {}, reps = [0], autorun = False):
+def evaluate_simulation_results(graph_folder, generation_number, parameters = {}, reps = [0], autorun = False):
 	assert parameters, "Please specify a dictionary with par_name:par_value as key:value sets"
 
 	data = empty_data_matrix(len(reps))
@@ -40,12 +40,12 @@ def evaluate_simulation_results(graph_folder, parameters = {}, reps = [0], autor
 	if simulation_reps_to_run: run_simulation(parameters, simulation_reps_to_run, random_path)
 
 	for r in reps:
-		data[r] = __evaluate_simulation_results(parameters, log_folders[r], graph_folder)
+		data[r] = __evaluate_simulation_results(parameters, log_folders[r], graph_folder, generation_number)
 	return data
 
 
 
-def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
+def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, generation_number):
 	assert logdata_folder, "Please specify where the logdata is located"
 
 	data = empty_data_matrix(1)
@@ -114,8 +114,9 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder):
 	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['round'], fas)
 	data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
+	data['longest_interval_within_margin'] = within_margin['longest_interval']
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
-	if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data)
+	if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
 	return data
 
 
@@ -163,12 +164,12 @@ def get_number_of_rounds_within_stability_margin(trade_prices, trade_rounds, fun
 		distance_between_rounds = np.diff(rounds_inside_margin)
 		
 		stable_periods_lengths = [len([i for i in group]) for value, group in groupby(distance_between_rounds) if value == 1]
-
+	
 		if len(stable_periods_lengths) == 0:
 			n_intervals = 10**6 ### If the simulation never enters the stable region this is a very bad thing.
 		else:
 			n_intervals = len(stable_periods_lengths)
-		return {'total_number_of_rounds':sum(stable_periods_lengths), 'n_intervals':n_intervals}
+		return {'total_number_of_rounds':sum(stable_periods_lengths), 'n_intervals':n_intervals, 'longest_interval': max(stable_periods_lengths)}
 	except ValueError:
 		return {'total_number_of_rounds':0, 'n_intervals':10**6}
 
@@ -177,7 +178,8 @@ def get_first_round_to_enter_stability_margin(trade_prices, trade_rounds):
 	fas = get_fundamental_after_shock()
 	return np.min(np.where(trade_prices == fas))
 
-def get_tp_std_after_entering_margin():
+def get_tp_std_after_entering_margin(trade_prices):
+
 	pass
 
 def get_first_round_to_leave_stability_margin():

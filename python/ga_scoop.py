@@ -10,12 +10,15 @@ from scoop import futures
 import yaml
 from datetime import datetime
 from os import makedirs
+from utils import store_generation_as_data_matrix
+import numpy as np
 
 
-def evaluate(individual):
+def evaluate(individual, generation, num):
+	print 'Evaluating individual %s from generation %s'%(num, generation)
 	parameters = scale_genes_to_parameters(individual)
 	if verify_simulation_parameters(parameters):
-		data = dataAnalysis.evaluate_simulation_results(graph_folder, parameters, settings.reps, autorun=True)
+		data = dataAnalysis.evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
 		stats = dataAnalysis.get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
 		#print "Stats: %s, parameters: %s"%(stats, scale_genes_to_parameters(individual))
@@ -77,13 +80,13 @@ toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.att
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("mate", tools.cxTwoPoints)
-toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.1, indpb=0.1)
+toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.2, indpb=0.2)
 toolbox.register("select", tools.selTournament, tournsize=int(settings.population_size * settings.tournament_selection_percentage))
 toolbox.register("evaluate", evaluate)
 
 start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
-gene_data_folder = '../data/gene_data/%s/'%(start_time)
-graph_folder = '%sgraphs/'%(gene_data_folder)
+gene_data_folder = '../data/gene_data/%s/generations/'%(start_time)
+graph_folder = '../data/gene_data/%s/graphs/'%(start_time)
 
 
 if __name__ == "__main__":
@@ -123,7 +126,7 @@ if __name__ == "__main__":
 		invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 		print "Evaluating the fitness of %s individuals"%len(invalid_ind)
 
-		fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+		fitnesses = toolbox.map(toolbox.evaluate, invalid_ind, np.repeat(g, len(invalid_ind)), range(len(invalid_ind)))
 		
 		new_data = list()
 
@@ -138,11 +141,12 @@ if __name__ == "__main__":
 		# The population is entirely replaced by the offspring
 		pop[:] = offspring
 
-		data_to_save = {'fixed_parameters':settings.default_parameters, 'genes':new_data}
-		f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
-		yaml.dump(data_to_save, f)
-		f.close()
-		print "Saved hall of fame after generation %s to %s"%(g, f.name)
+		store_generation_as_data_matrix(new_data, g, gene_data_folder)
+		#data_to_save = {'fixed_parameters':settings.default_parameters, 'genes':new_data}
+		#f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
+		#yaml.dump(data_to_save, f)
+		#f.close()
+		#print "Saved hall of fame after generation %s to %s"%(g, f.name)
 		#print zip(settings.parameter_scaling.keys(), parameters)
 	#algorithms.eaSimple(toolbox.population(10), toolbox, cxpb=0.5, mutpb=0.2, ngen=500)
 

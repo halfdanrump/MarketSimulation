@@ -39,13 +39,14 @@ def get_epoch_time():
     td = datetime.now() - datetime.utcfromtimestamp(0)
     return repr(int(td.total_seconds() * 10**6))
 
-def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitness):
+def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitness, generation_number):
     fig = plt.figure(figsize=(10, 8), dpi=100)
     ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
     ax.set_xlabel("Round")
     ax.set_ylabel("Traded price")
 
     caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in settings.parameters_in_genes]), 100))
+    caption += '\nFitness: %s'%str(settings.fitness_weights.keys())
     caption += '\nFitness: %s'%str(fitness)
     fig.text(0.1,0.1, caption)
     ax.plot(rounds, tradePrice, lw=2)
@@ -53,24 +54,18 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     fas = get_fundamental_after_shock()
     ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
     time = get_epoch_time()
-    graph_name = time + '.png'
-    fig.savefig(graph_folder + graph_name)
+    identifier = graph_folder + 'gen%s_'%generation_number + time
+    graph_name = identifier + '.png'
+    fig.savefig(graph_name)
 
     if settings.SAVE_DATA_USED_FOR_PLOTTING:     
         data = {'rounds':rounds, 'tradePrice':tradePrice}
-        np.savez_compressed(graph_folder + time, data)
+        np.savez_compressed(identifier, data)
 
     plt.close()
     gc.collect()
 
-def get_tradeprice_data(filename):
-    """
-    Loads the data (stored as .npz) used to generate the tradePrice plots
-    """
-    d = np.load(filename).items()[0][1].item()
-    rounds = d['rounds']
-    prices = d['tradePrice']
-    return rounds, prices
+
 
 """
 def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):
