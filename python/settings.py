@@ -2,11 +2,11 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = False
+TEST_MODE = True
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
-MAKE_TRADEPRICE_PLOT = False
-SAVE_DATA_USED_FOR_PLOTTING = False
+MAKE_TRADEPRICE_PLOT = True
+SAVE_DATA_USED_FOR_PLOTTING = True
 
 reps = xrange(1)
 
