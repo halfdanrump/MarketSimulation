@@ -52,7 +52,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 
 	#ob_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_orderbook(0,0).csv', names=True, dtype=int, delimiter=',', usecols=(1,2))
 	#stock_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
-	trades = np.genfromtxt(logdata_folder + 'columnLog_transactionBased_stock0.csv', names=True, dtype=int, delimiter=',', usecols=(0,1))
+	trades = IO.load_trade_log_data(logdata_folder)
 
 	
 
@@ -115,6 +115,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	#data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	#data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	data['longest_interval_within_margin'] = within_margin['longest_interval']
+	data['std']
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 	if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
 	return data
@@ -178,9 +179,9 @@ def get_first_round_to_enter_stability_margin(trade_prices, trade_rounds):
 	fas = get_fundamental_after_shock()
 	return np.min(np.where(trade_prices == fas))
 
-def get_tp_std_after_entering_margin(trade_prices):
-
-	pass
+def get_tp_std_after_entering_margin(trade_prices, trade_round):
+	first = get_first_round_to_enter_stability_margin(trade_prices, trade_rounds)
+	return None
 
 def get_first_round_to_leave_stability_margin():
 	pass

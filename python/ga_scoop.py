@@ -9,7 +9,7 @@ from collections import OrderedDict
 from scoop import futures
 from datetime import datetime
 from os import makedirs
-from utils import store_generation_as_data_matrix
+from IO import store_generation_as_data_matrix
 import numpy as np
 
 

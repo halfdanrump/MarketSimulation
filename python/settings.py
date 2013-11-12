@@ -157,7 +157,8 @@ data_for_failed_simulation = {
                     #'tp_stable_round' : 10*6,
                     #'n_simulation_rounds_within_stability_margin' : 0,
                     #'n_seperate_intervals_within_stability_margin' : 10**6,
-                    'longest_interval_within_margin' : 0
+                    'longest_interval_within_margin' : 0,
+                    'std' : 0
                     }
 
 
@@ -167,10 +168,11 @@ fitness_weights = OrderedDict({
                     #'tp_stable_round' : -1
                     #'n_simulation_rounds_within_stability_margin' : 1,
                     #'n_seperate_intervals_within_stability_margin' : -1,
-                    'longest_interval_within_margin' : 1
+                    'longest_interval_within_margin' : 1,
+                    'std' : -1
                     })
 
-data_types = {
+fitness_types = {
                     #'buy_catchup_round' : int,
                     #'sell_catchup_round' : int,
                     #'max_traded_price_after_step' : int,
@@ -181,7 +183,8 @@ data_types = {
                     #'tp_stable_round' : int
                     #'n_simulation_rounds_within_stability_margin' : int,
                     #'n_seperate_intervals_within_stability_margin' : int,
-                    'longest_interval_within_margin' : int
+                    'longest_interval_within_margin' : int,
+                    'std' : float
                     }
 
 
