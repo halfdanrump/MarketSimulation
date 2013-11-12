@@ -6,3 +6,4 @@ simulation_graphs/
 *.pyc
 *.npz
 *.yaml
+/tex/referencedPapers

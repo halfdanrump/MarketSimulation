@@ -112,8 +112,8 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	"""
 	fas = get_fundamental_after_shock()
 	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['round'], fas)
-	data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
-	data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
+	#data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
+	#data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	data['longest_interval_within_margin'] = within_margin['longest_interval']
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 	if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)

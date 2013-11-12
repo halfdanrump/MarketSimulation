@@ -5,8 +5,8 @@ from copy import deepcopy
 TEST_MODE = False
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
-MAKE_TRADEPRICE_PLOT = True
-SAVE_DATA_USED_FOR_PLOTTING = True
+MAKE_TRADEPRICE_PLOT = False
+SAVE_DATA_USED_FOR_PLOTTING = False
 
 reps = xrange(1)
 
@@ -155,8 +155,8 @@ data_for_failed_simulation = {
                     #'traded_price_mean_after_sellbuy_reach_new_fundamental' : -1,
                     #'traded_price_median_after_sellbuy_reach_new_fundamental' : -1,
                     #'tp_stable_round' : 10*6,
-                    'n_simulation_rounds_within_stability_margin' : 0,
-                    'n_seperate_intervals_within_stability_margin' : 10**6,
+                    #'n_simulation_rounds_within_stability_margin' : 0,
+                    #'n_seperate_intervals_within_stability_margin' : 10**6,
                     'longest_interval_within_margin' : 0
                     }
 
@@ -165,8 +165,8 @@ fitness_weights = OrderedDict({
                     #'buy_catchup_round' : -1,
                     #'sell_catchup_round' : -1,
                     #'tp_stable_round' : -1
-                    'n_simulation_rounds_within_stability_margin' : 1,
-                    'n_seperate_intervals_within_stability_margin' : -1,
+                    #'n_simulation_rounds_within_stability_margin' : 1,
+                    #'n_seperate_intervals_within_stability_margin' : -1,
                     'longest_interval_within_margin' : 1
                     })
 
@@ -179,8 +179,8 @@ data_types = {
                     #'traded_price_mean_after_sellbuy_reach_new_fundamental' : float,
                     #'traded_price_median_after_sellbuy_reach_new_fundamental' : int,
                     #'tp_stable_round' : int
-                    'n_simulation_rounds_within_stability_margin' : int,
-                    'n_seperate_intervals_within_stability_margin' : int,
+                    #'n_simulation_rounds_within_stability_margin' : int,
+                    #'n_seperate_intervals_within_stability_margin' : int,
                     'longest_interval_within_margin' : int
                     }
 

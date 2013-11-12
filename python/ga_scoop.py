@@ -7,7 +7,6 @@ import dataAnalysis
 
 from collections import OrderedDict
 from scoop import futures
-import yaml
 from datetime import datetime
 from os import makedirs
 from utils import store_generation_as_data_matrix
@@ -15,8 +14,9 @@ import numpy as np
 
 
 def evaluate(individual, generation, num):
-	print 'Evaluating individual %s from generation %s'%(num, generation)
+	print 'Gen %s: %s'%(generation, scale_genes_to_parameters(individual, False))
 	parameters = scale_genes_to_parameters(individual)
+
 	if verify_simulation_parameters(parameters):
 		data = dataAnalysis.evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
 		stats = dataAnalysis.get_named_stats(data, settings.fitness_weights.keys())
@@ -81,7 +81,7 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("mate", tools.cxTwoPoints)
 toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.2, indpb=0.2)
-toolbox.register("select", tools.selTournament, tournsize=int(settings.population_size * settings.tournament_selection_percentage))
+toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("evaluate", evaluate)
 
 start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -96,6 +96,7 @@ if __name__ == "__main__":
 	makedirs(graph_folder)
 	
 	toolbox.register("map", futures.map)
+
 
 	pop = create_healthy_population()
 	for g in range(settings.n_generations):
@@ -135,7 +136,7 @@ if __name__ == "__main__":
 		    scaled_ind = scale_genes_to_parameters(ind, False)
 		    new_data.append({'ind': scaled_ind, 'fit': tuple(fit)})
 		
-		print new_data
+		#print new_data
 		
 
 		# The population is entirely replaced by the offspring

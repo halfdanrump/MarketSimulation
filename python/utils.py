@@ -81,13 +81,26 @@ def store_generation_as_data_matrix(generation_data, generation_number, path):
 
 def load_all_generations_as_DataFrame(folder_name):
 	#gen_par = dict()
+	all_par = DataFrame()
+	all_fit = DataFrame()
 	gen_pars_files = [f for f in listdir(folder_name) if re.match('gen_\d+_pars\.npz', f)]
 	gen_fit_files = [f for f in listdir(folder_name) if re.match('gen_\d+_fit\.npz', f)]
-	print gen_pars_files, gen_fit_files
-	for f in gen_pars_files:
-		print 'Loading %s'%f
-		d = np.load(folder_name + f)
-		print d.items()[0][1]
+	
+	for p,f in zip(gen_pars_files, gen_fit_files):
+		print p, f
+		dp = np.load(folder_name + p)
+		df = np.load(folder_name + f)
+		all_par = all_par.append(DataFrame(dp.items()[0][1]))
+		all_fit = all_fit.append(DataFrame(df.items()[0][1]))
+	### Remove invalid genes
+	all_par = all_par.reset_index()
+	all_fit = all_fit.reset_index()
+	i, = np.where(all_fit['longest_interval_within_margin'] < 0)
+	all_par = all_par.drop(i)
+	all_fit = all_fit.drop(i)
+	all_par = all_par.reset_index()
+	all_fit = all_fit.reset_index()
+	return all_par, all_fit
 		#d.items()[0]['arr_0']
 		#print d
 		#generations.update({int(re.findall('\d+', f)[0]): yaml.load(open(folder_name + f))})
