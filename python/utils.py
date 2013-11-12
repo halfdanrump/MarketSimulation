@@ -91,15 +91,17 @@ def load_all_generations_as_DataFrame(folder_name):
 		df = np.load(folder_name + f)
 		all_par = all_par.append(DataFrame(dp.items()[0][1]))
 		all_fit = all_fit.append(DataFrame(df.items()[0][1]))
+		dp.close()
+		dp.close()
 	
 	### Remove invalid genes
-	all_par = all_par.reset_index()
-	all_fit = all_fit.reset_index()
+	all_par = all_par.reset_index(drop=True)
+	all_fit = all_fit.reset_index(drop=True)
 	i, = np.where(all_fit['longest_interval_within_margin'] < 0)
 	all_par = all_par.drop(i)
 	all_fit = all_fit.drop(i)
-	all_par = all_par.reset_index()
-	all_fit = all_fit.reset_index()
+	all_par = all_par.reset_index(drop=True)
+	all_fit = all_fit.reset_index(drop=True)
 	return all_par, all_fit
 
 
