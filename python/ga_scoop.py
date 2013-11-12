@@ -3,7 +3,7 @@ from deap import base, creator, tools
 import settings
 #import numpy as np
 import random
-import dataAnalysis
+from fitness import evaluate_simulation_results, get_named_stats
 
 from collections import OrderedDict
 from scoop import futures
@@ -18,8 +18,8 @@ def evaluate(individual, generation, num):
 	parameters = scale_genes_to_parameters(individual)
 
 	if verify_simulation_parameters(parameters):
-		data = dataAnalysis.evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
-		stats = dataAnalysis.get_named_stats(data, settings.fitness_weights.keys())
+		data = evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
+		stats = get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
 		#print "Stats: %s, parameters: %s"%(stats, scale_genes_to_parameters(individual))
 	else:
