@@ -2,7 +2,7 @@ import numpy as np
 import IO
 from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
-from settings import stability_margin, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT
+from settings import stability_margin, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT, PLOT_SAVE_PROB
 from random import randint
 from plotting import make_tradeprice_plot
 from itertools import groupby
@@ -116,8 +116,9 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	#data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	data['longest_interval_within_margin'] = within_margin['longest_interval']
 	data['std']
-	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
-	if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
+	if np.random.random() <= PLOT_SAVE_PROB:
+		if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
+		if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
 	return data
 
 
