@@ -76,3 +76,12 @@ def load_all_generations_as_DataFrame(folder_name):
     all_par = all_par.reset_index(drop=True)
     all_fit = all_fit.reset_index(drop=True)
     return all_par, all_fit
+
+def load_tradeprice_data(filename):
+    """
+    Loads the data (stored as .npz) used to generate the tradePrice plots
+    """
+    d = np.load(filename).items()[0][1].item()
+    rounds = d['rounds']
+    prices = d['tradePrice']
+    return rounds, prices

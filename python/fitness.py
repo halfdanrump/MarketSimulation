@@ -115,7 +115,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	#data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	#data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	data['longest_interval_within_margin'] = within_margin['longest_interval']
-	data['std']
+	data['std'] = get_tp_std_after_entering_margin(trades['price'], trades['round'])
 	if np.random.random() <= PLOT_SAVE_PROB:
 		if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 		if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
@@ -178,11 +178,18 @@ def get_number_of_rounds_within_stability_margin(trade_prices, trade_rounds, fun
 def get_first_round_to_enter_stability_margin(trade_prices, trade_rounds):
 	trade_prices = np.array(trade_prices)
 	fas = get_fundamental_after_shock()
-	return np.min(np.where(trade_prices == fas))
+	try:
+		first_round = np.min(np.where(trade_prices == fas))
+	except ValueError:
+		first_round = 10**6
+	return first_round
 
-def get_tp_std_after_entering_margin(trade_prices, trade_round):
-	first = get_first_round_to_enter_stability_margin(trade_prices, trade_rounds)
-	return None
+def get_tp_std_after_entering_margin(trade_prices, trade_rounds):
+	first_round = get_first_round_to_enter_stability_margin(trade_prices, trade_rounds)
+	try:
+		np.std(trade_prices[trade_rounds > first_round])
+	except ValueError:
+		return 10**6
 
 def get_first_round_to_leave_stability_margin():
 	pass

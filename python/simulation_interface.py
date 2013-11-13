@@ -1,5 +1,5 @@
 #import sys
-from subprocess import Popen
+from subprocess import Popen, CalledProcessError
 #import pdb
 from os import devnull
 #from pprint import pprint
@@ -40,23 +40,25 @@ def run_simulation(parameters, reps, random_path):
 
     processes = list()
     log_folders = IO.get_logfolders(parameters, reps, random_path)
-    for i, rep in enumerate(reps):
-        ### Remove old simulation data calculated with the same parameters
-        shutil.rmtree(log_folders[i], ignore_errors=True)
-        parameters.update({'nRounds':settings.n_simulation_rounds})
-        ### Build parameter string for java program
-        par_string = ''
-        for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
-        vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[i]
-        command = vm_args + par_string + '-jar %s'%settings.jar_path
-        #print "Running simulation with command: %s\n"%command
-        if settings.WITH_SIMULATION_OUTPUT:
-            processes.append(Popen(command.split(' ')))            
-        else:
-            processes.append(Popen(command.split(' '), stdout=open(devnull, 'w')))            
-    for p in processes:
-        p.wait()
-
+    try:
+        for i, rep in enumerate(reps):
+            ### Remove old simulation data calculated with the same parameters
+            shutil.rmtree(log_folders[i], ignore_errors=True)
+            parameters.update({'nRounds':settings.n_simulation_rounds})
+            ### Build parameter string for java program
+            par_string = ''
+            for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
+            vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[i]
+            command = vm_args + par_string + '-jar %s'%settings.jar_path
+            #print "Running simulation with command: %s\n"%command
+            if settings.WITH_SIMULATION_OUTPUT:
+                processes.append(Popen(command.split(' ')))            
+            else:
+                processes.append(Popen(command.split(' '), stdout=open(devnull, 'w')))            
+        for p in processes:
+            p.wait()
+    except CalledProcessError, e:
+        e.__str__()
 
 
 

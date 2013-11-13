@@ -2,12 +2,12 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = True
+TEST_MODE = False
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
 SAVE_DATA_USED_FOR_PLOTTING = True
-PLOT_SAVE_PROB = 0.01
+PLOT_SAVE_PROB = 0.02
 
 reps = xrange(1)
 
@@ -86,7 +86,7 @@ parameters_in_genes = [
 
 
 parameter_scaling = OrderedDict({
-    'ssmm_nAgents' : 40,
+    'ssmm_nAgents' : 50,
     'sc_nAgents' : 300,
 
     'hft_latency_mu' : 100,
@@ -159,7 +159,7 @@ data_for_failed_simulation = {
                     #'n_simulation_rounds_within_stability_margin' : 0,
                     #'n_seperate_intervals_within_stability_margin' : 10**6,
                     'longest_interval_within_margin' : 0,
-                    'std' : 0
+                    'std' : 10**6
                     }
 
 
