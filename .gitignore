@@ -7,3 +7,4 @@ simulation_graphs/
 *.npz
 *.yaml
 /tex/referencedPapers
+/tex/Template
