@@ -12,7 +12,7 @@ PLOT_SAVE_PROB = 0.02
 reps = xrange(1)
 
 jar_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Simulation.jar'
-log_root_folder = '/Users/halfdan/simulation_data/'
+log_root_folder = '/Users/halfdan/simulation_data2/'
 data_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/data_folder/'
 #graph_root_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/simulation_graphs/'
 

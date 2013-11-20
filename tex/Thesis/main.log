@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  6 NOV 2013 12:13
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  20 NOV 2013 17:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -465,45 +465,25 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 )))
-(/usr/local/texlive/2012/texmf-dist/tex/latex/subfigure/subfigure.sty
-Package: subfigure 2002/03/15 v2.1.5 subfigure package
-\subfigtopskip=\skip58
-\subfigcapskip=\skip59
-\subfigcaptopadj=\dimen125
-\subfigbottomskip=\skip60
-\subfigcapmargin=\dimen126
-\subfiglabelskip=\skip61
-\c@subfigure=\count104
-\c@lofdepth=\count105
-\c@subtable=\count106
-\c@lotdepth=\count107
-
-****************************************
-* Local config file subfigure.cfg used *
-****************************************
-(/usr/local/texlive/2012/texmf-dist/tex/latex/subfigure/subfigure.cfg)
-\subfig@top=\skip62
-\subfig@bottom=\skip63
-)
 (/usr/local/texlive/2012/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2005/04/14 v1.61803 publication quality tables
-\heavyrulewidth=\dimen127
-\lightrulewidth=\dimen128
-\cmidrulewidth=\dimen129
-\belowrulesep=\dimen130
-\belowbottomsep=\dimen131
-\aboverulesep=\dimen132
-\abovetopsep=\dimen133
-\cmidrulesep=\dimen134
-\cmidrulekern=\dimen135
-\defaultaddspace=\dimen136
-\@cmidla=\count108
-\@cmidlb=\count109
-\@aboverulesep=\dimen137
-\@belowrulesep=\dimen138
-\@thisruleclass=\count110
-\@lastruleclass=\count111
-\@thisrulewidth=\dimen139
+\heavyrulewidth=\dimen125
+\lightrulewidth=\dimen126
+\cmidrulewidth=\dimen127
+\belowrulesep=\dimen128
+\belowbottomsep=\dimen129
+\aboverulesep=\dimen130
+\abovetopsep=\dimen131
+\cmidrulesep=\dimen132
+\cmidrulekern=\dimen133
+\defaultaddspace=\dimen134
+\@cmidla=\count104
+\@cmidlb=\count105
+\@aboverulesep=\dimen135
+\@belowrulesep=\dimen136
+\@thisruleclass=\count106
+\@lastruleclass=\count107
+\@thisrulewidth=\dimen137
 )
 (/usr/local/texlive/2012/texmf-dist/tex/latex/rotating/rotating.sty
 Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
@@ -511,25 +491,25 @@ Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
-\c@r@tfl@t=\count112
-\rotFPtop=\skip64
-\rotFPbot=\skip65
+\c@r@tfl@t=\count108
+\rotFPtop=\skip58
+\rotFPbot=\skip59
 \rot@float@box=\box28
 \rot@mess@toks=\toks29
 )
 (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count113
+\lst@mode=\count109
 \lst@gtempboxa=\box29
 \lst@token=\toks30
-\lst@length=\count114
-\lst@currlwidth=\dimen140
-\lst@column=\count115
-\lst@pos=\count116
-\lst@lostspace=\dimen141
-\lst@width=\dimen142
-\lst@newlines=\count117
-\lst@lineno=\count118
-\lst@maxwidth=\dimen143
+\lst@length=\count110
+\lst@currlwidth=\dimen138
+\lst@column=\count111
+\lst@pos=\count112
+\lst@lostspace=\dimen139
+\lst@width=\dimen140
+\lst@newlines=\count113
+\lst@lineno=\count114
+\lst@maxwidth=\dimen141
 
 (./lstpatch.sty
 
@@ -542,8 +522,8 @@ Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 
 ) (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-\c@lstnumber=\count119
-\lst@skipnumbers=\count120
+\c@lstnumber=\count115
+\lst@skipnumbers=\count116
 \lst@framebox=\box30
 )
 (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.cfg
@@ -600,16 +580,16 @@ Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 (/usr/local/texlive/2012/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
-\@linkdim=\dimen144
-\Hy@linkcounter=\count121
-\Hy@pagecounter=\count122
+\@linkdim=\dimen142
+\Hy@linkcounter=\count117
+\Hy@pagecounter=\count118
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2012/05/13 v6.82q Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
-\Hy@SavedSpaceFactor=\count123
+\Hy@SavedSpaceFactor=\count119
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -635,16 +615,16 @@ Package hyperref Info: Plain pages OFF on input line 4077.
 Package hyperref Info: Backreferencing OFF on input line 4082.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4300.
-\c@Hy@tempcnt=\count124
+\c@Hy@tempcnt=\count120
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4653.
-\Fld@menulength=\count125
-\Field@Width=\dimen145
-\Fld@charsize=\dimen146
+\Fld@menulength=\count121
+\Field@Width=\dimen143
+\Fld@charsize=\dimen144
 Package hyperref Info: Hyper figures OFF on input line 5773.
 Package hyperref Info: Link nesting OFF on input line 5778.
 Package hyperref Info: Hyper index ON on input line 5781.
@@ -654,54 +634,60 @@ Package hyperref Info: Link coloring with OCG OFF on input line 5798.
 Package hyperref Info: PDF/A mode OFF on input line 5803.
 LaTeX Info: Redefining \ref on input line 5843.
 LaTeX Info: Redefining \pageref on input line 5847.
-\Hy@abspage=\count126
-\c@Item=\count127
-\c@Hfootnote=\count128
+\Hy@abspage=\count122
+\c@Item=\count123
+\c@Hfootnote=\count124
 )
 
 Package hyperref Message: Driver (autodetected): hpdftex.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2012/05/13 v6.82q Hyperref driver for pdfTeX
-\Fld@listcount=\count129
-\c@bookmark@seq@number=\count130
+\Fld@listcount=\count125
+\c@bookmark@seq@number=\count126
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 )
-\Hy@SectionHShift=\skip66
+\Hy@SectionHShift=\skip60
 )
-\c@dummy=\count131
+\c@dummy=\count127
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
-\LTleft=\skip67
-\LTright=\skip68
-\LTpre=\skip69
-\LTpost=\skip70
-\LTchunksize=\count132
-\LTcapwidth=\dimen147
+\LTleft=\skip61
+\LTright=\skip62
+\LTpre=\skip63
+\LTpost=\skip64
+\LTchunksize=\count128
+\LTcapwidth=\dimen145
 \LT@head=\box31
 \LT@firsthead=\box32
 \LT@foot=\box33
 \LT@lastfoot=\box34
-\LT@cols=\count133
-\LT@rows=\count134
-\c@LT@tables=\count135
-\c@LT@chunks=\count136
+\LT@cols=\count129
+\LT@rows=\count130
+\c@LT@tables=\count131
+\c@LT@chunks=\count132
 \LT@p@ftn=\toks31
 ))
 (/usr/local/texlive/2012/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip71
-\bibsep=\skip72
+\bibhang=\skip65
+\bibsep=\skip66
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count137
+\c@NAT@ctr=\count133
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2012/01/12 v1.1d Sub-captions (AR)
+\c@subfigure=\count134
+\c@subtable=\count135
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 33.
- (./main.aux)
+
+(./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
@@ -729,24 +715,23 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
 )
 Package caption Info: rotating package is loaded.
-Package caption Info: subfigure package is loaded.
 Package caption Info: End \AtBeginDocument code.
 
 (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count138
-\scratchdimen=\dimen148
+\scratchcounter=\count136
+\scratchdimen=\dimen146
 \scratchbox=\box35
-\nofMPsegments=\count139
-\nofMParguments=\count140
+\nofMPsegments=\count137
+\nofMParguments=\count138
 \everyMPshowfont=\toks32
-\MPscratchCnt=\count141
-\MPscratchDim=\dimen149
-\MPnumerator=\count142
-\makeMPintoPDFobject=\count143
+\MPscratchCnt=\count139
+\MPscratchDim=\dimen147
+\MPnumerator=\count140
+\makeMPintoPDFobject=\count141
 \everyMPtoPDFconversion=\toks33
 )
-\c@lstlisting=\count144
+\c@lstlisting=\count142
 \AtBeginShipoutBox=\box36
  (/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
@@ -764,7 +749,7 @@ Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count145
+\c@section@level=\count143
 )
 LaTeX Info: Redefining \ref on input line 36.
 LaTeX Info: Redefining \pageref on input line 36.
@@ -774,12 +759,12 @@ LaTeX Info: Redefining \nameref on input line 36.
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 76.
+LaTeX Font Info:    Try loading font information for U+msa on input line 82.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 76.
+LaTeX Font Info:    Try loading font information for U+msb on input line 82.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -792,7 +777,7 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
  Declaration of Authorship
 ------------------------------------------------------------------------------
 
-Underfull \hbox (badness 10000) in paragraph at lines 121--121
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
 
  []
 
@@ -817,11 +802,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 121--121
 (./main.toc [5
 
 
-])
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 34.
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 34.
+)
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
- [6]
+
+[6]
 ------------------------------------------------------------------------------
  List of Figures
 ------------------------------------------------------------------------------
@@ -861,7 +854,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 121--121
 
 ]
 ------------------------------------------------------------------------------
- Symbols
+ Physical Constants
 ------------------------------------------------------------------------------
 [11
 
@@ -869,88 +862,87 @@ Underfull \hbox (badness 10000) in paragraph at lines 121--121
 
 ]
 ------------------------------------------------------------------------------
- Dedicatory
+ Symbols
 ------------------------------------------------------------------------------
+
+Overfull \hbox (95.12651pt too wide) in alignment at lines 281--281
+ [] [] [] [] 
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 4 on input line 281.
+
 [12
 
-] (./Chapters/Chapter1.tex
+
+
+]
+------------------------------------------------------------------------------
+ Dedicatory
+------------------------------------------------------------------------------
+[13
+
+] (./Chapters/model.tex
 Chapter 1.
 ------------------------------------------------------------------------------
- 1 Chapter Title Here
+ 1 Model
 ------------------------------------------------------------------------------
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 22.
-(/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 22.
- [1
+[1
 
 
 
-] [2]
-
-LaTeX Warning: Reference `FillingFile' on page 3 undefined on input line 56.
-
-
-LaTeX Warning: Reference `FillingFile' on page 3 undefined on input line 56.
-
-
-LaTeX Warning: Reference `ThesisConventions' on page 3 undefined on input line 
-56.
-
-[3] [4]
-
-LaTeX Warning: Reference `FillingFile' on page 5 undefined on input line 103.
-
-
-LaTeX Warning: Reference `FillingFile' on page 5 undefined on input line 103.
-
-[5]
-LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 135.
- [6] [7] [8]
-
-Package natbib Warning: Citation `Reference3' on page 9 undefined on input line
- 197.
-
-
-Package natbib Warning: Citation `Reference2' on page 9 undefined on input line
- 197.
-
-
-Package natbib Warning: Citation `Reference1' on page 9 undefined on input line
- 197.
-
-
-Package natbib Warning: Citation `Reference2' on page 9 undefined on input line
- 197.
-
-
-Package natbib Warning: Citation `Reference1' on page 9 undefined on input line
- 197.
-
-
-Package natbib Warning: Citation `Reference3' on page 9 undefined on input line
- 197.
-
-[9] <Figures/Electron.pdf, id=207, 398.3386pt x 284.52756pt>
+] [2] <Figures/Electron.pdf, id=304, 398.3386pt x 284.52756pt>
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 219.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 95.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
+ [3] [4 <./Figures/Electron.pdf>]
+File: Figures/Electron.pdf Graphic file (type pdf)
+
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 117.
+(pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
+) (./Chapters/calibration.tex [5] [6]
+Chapter 2.
+------------------------------------------------------------------------------
+ 2 Parameter tuning
+------------------------------------------------------------------------------
+File: Figures/Electron.pdf Graphic file (type pdf)
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 19.
+(pdftex.def)             Requested size: 208.73653pt x 149.097pt.
+
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 19--19
+ [][] 
+ []
+
+File: Figures/Electron.pdf Graphic file (type pdf)
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 21.
+(pdftex.def)             Requested size: 208.73653pt x 149.097pt.
+
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 21--21
+ [][] 
+ []
+
+[7
+
+]
+LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 33.
 
 
-LaTeX Warning: Reference `fig:Electron' on page 10 undefined on input line 227.
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 33.
 
-
-[10 <./Figures/Electron.pdf>] [11]) (./Appendices/AppendixA.tex [12]
+[8]) (./Appendices/AppendixA.tex [9]
 Appendix A.
 ------------------------------------------------------------------------------
  A Appendix Title Here
 ------------------------------------------------------------------------------
-) [13
+) [10
 
 ]
 ------------------------------------------------------------------------------
@@ -958,13 +950,13 @@ Appendix A.
 ------------------------------------------------------------------------------
 No file main.bbl.
 
-Package natbib Warning: There were undefined citations.
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 294.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 294.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 347.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 347.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 294.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 294.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 347.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 347.
 
 
 Package rerunfilecheck Warning: File `main.out' has changed.
@@ -972,46 +964,113 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
-(rerunfilecheck)             After:  A2A0B657D5CFC111F126763151DF1B78;5471.
-
-LaTeX Warning: There were undefined references.
-
+(rerunfilecheck)             Before: 203B4372FA09D093FD318DCD4F7905DF;5121
+(rerunfilecheck)             After:  29245DB30495B2CF42BF42F79DC9C73A;5257.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 294.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 347.
  ) 
 Here is how much of TeX's memory you used:
- 11031 strings out of 493488
- 154290 string characters out of 3141326
- 237958 words of memory out of 3000000
- 14070 multiletter control sequences out of 15000+200000
- 20607 words of font info for 78 fonts, out of 3000000 for 9000
+ 11012 strings out of 493488
+ 154361 string characters out of 3141326
+ 242176 words of memory out of 3000000
+ 14021 multiletter control sequences out of 15000+200000
+ 15627 words of font info for 58 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 49i,11n,45p,776b,423s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
+ 49i,11n,45p,1138b,487s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{figure.caption.42} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.37} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.33} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{appendix.55} has been referenced but does not exist
+, replaced by a fixed one
+
+pdfTeX warning (dest): name{section.54} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.53} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.50} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.46} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{chapter.41} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{section.40} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{section.39} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.36} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.35} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{section.34} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.30} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.29} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.27} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.25} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.24} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.23} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{section.22} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{section.21} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{section.20} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{chapter.19} has been referenced but does not exist,
+ replaced by a fixed one
+
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb>
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
+/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
 usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></
 usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
-sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
-/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
-ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/loca
-l/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/t
-exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texl
-ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texli
-ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
-e/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/
-2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
-012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/20
-12/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/201
-2/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2012
-/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on main.pdf (26 pages, 263254 bytes).
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
+/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
+ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
+texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/t
+exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
+xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/tex
+live/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texl
+ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
+ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive
+/2012/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
+Output written on main.pdf (24 pages, 224221 bytes).
 PDF statistics:
- 362 PDF objects out of 1000 (max. 8388607)
- 303 compressed objects within 4 object streams
- 71 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 505 PDF objects out of 1000 (max. 8388607)
+ 449 compressed objects within 5 object streams
+ 107 named destinations out of 1000 (max. 500000)
+ 286 words of extra memory for PDF output out of 10000 (max. 10000000)
 

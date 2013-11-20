@@ -1,11 +1,171 @@
-% Chapter 1
+% Chapter 2
 
 \chapter{Model} % Main chapter title
 
-\label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1} 
-
-\lhead{Chapter 1. \emph{Model}} % This is for the header on each page - perhaps a shortened title
-
+\label{chapter:model} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+$\frac{}{}$
+\lhead{Chapter 2. \emph{Model}} % This is for the header on each page - perhaps a shortened title
+	
 %----------------------------------------------------------------------------------------
-aasd
-\section{Welcome and Thank You}
+
+\section{Model}
+
+
+
+
+As explained in section \ref{chapter:high_frequency_trading}, perhaps the most distinguishable aspect of high frequency trading is the speed with which agents can react to new market information. 
+
+
+In this work, we have tried emulate the asynchronous nature of a continuous auction by 
+
+
+
+
+The model consists a market and agents. Agents and the market communicate by exchanging messages which all arrive one or several rounds after they were issued. A complete simulation consists of the several consecutive rounds. In each rounds, some agents submit orders, while others wait for new market information. Order messages arrive at the order books, and trades are executed when prices match.  The following sections will describe the model in detail.
+
+\section{Modeling delays}
+
+Although each round corresponds to a period of real-time, it is not particularly important to specify how long that period is. Instead, what matters is that there is a difference in speed between the agents. In other words, the important thing is that some agents are much faster than other agents. If one thinks of each round as a millisecond of real-time, one realizes that an agent simulating a human trader will require several thousands of simulation rounds to react to market news. On the other hand, fast algorithmic traders may only require a few rounds, making them several orders of magnitude faster than the slow traders. 
+
+This focus on the extremely 
+
+Another issue when simulating 
+
+
+
+
+
+\section{Market components}
+Sending/receiving orders, supply liquidity
+\subsection{Regulations}
+
+\subsection{Stocks}
+A stock is an asset which is traded on a market. The price of a stock is a mysterious thing. A stock is only worth as much as people are willing to pay for it, and the price at which is it traded thus goes up and down according to what beliefs people hold. In financial markets, every trader is supposed to have access to the same information. However, two traders might disagree on the meaning of some piece of information. The way in which a trader evaluates market information and reaches a conclusion on how to trade is called a strategy. While any function which takes some information relevant to the market as input and gives a decision of how to trade (or not trade at all) can be termed a strategy, it is useful to divide strategies into two broad categories. In the first category are strategies which are dubbed chartist strategies, which basically tries to extrapolate on the past price movements. In the other category are strategies which are based on some analysis of the true value of the stock, called the fundamental value. Not surprisingly, these are called fundamentalist strategies. 
+
+Whether or not one type of strategy is more accurate than the other, it is a fact that both types are employed by traders. Hence, a model of such an environment needs to simulate both a traded price and a fundamental price. 
+
+\subsubsection{Fundamental price}
+
+A common way to model the development of the fundamental price is to use a stochastic random walk process. The idea is that, assuming that markets are efficient, any available information about the stock is already reflected in the fundamental price. When some news arrive, this will quickly cause the price to change according to the nature of the news, as rational traders act to adapt to the new situation. The justification for modeling this with a random walk is that, since the fundamental price already reflect whatever news is available, it will only change as new information is released. In other words, the fundamental price is independent of past information. Since new information is fundamentally unpredictable, a random walk model seems suitable. 
+
+The idea behind this is that 
+
+
+\subsection{Messages}
+All communication between the market and agents is transmitted in messages. A message sent from agent $i$ to market $j$ (or the other way around) has a transmission time of $\tau_{i,j} = \tau_{j,i}$. The smallest possible transmission time is $\tau_{i,j} = 0$. This means that no information is transmitted instantly between agent and market. $\tau_{i,j}$ is constant through the simulation. Several message types were implemented in order to accommodate the various types of communication.
+
+
+\item Orders, which are sent from an agent to a market when the agent has decided to trade.
+\item Market information requests, which are sent from an agent to a market when the agent wants update its knowledge of the trade prices.
+\item Market information, which are sent from a market to an agent, in response to a market information request.
+\item Transaction receipts, which are sent from a market to an agent when an order is fully or partially filled by a matching order at that market
+\item Order cancellations, which are sent from an agent to a market, when the HFT wants to cancel an order at that 
+
+\subsubsection{Orders}
+An order is a message which is sent from an agent to a market when the agent has decided to trade. An order is an offer to buy or sell a specified number of shares at a certain price at a certain market. Orders can either be limit orders or market orders. A limit order will only result in a trade to be executed if there is a matching order when it arrives to the market. A market order will stay in the order book until a matching order arrives, or until it expires after a number of rounds set by the submitting agent. 
+
+When an agents submits an order, it has to decide on the trade price, the number of shares, limit or market order, and whether to buy or sell. Details on how each type of agent does this can be found in section \ref{section:agents}.
+
+\subsubsection{Market information request}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{When an agent wants to submit an order it has to go through several steps}
+	\label{fig:information_exchange}
+\end{figure}
+
+
+
+
+
+\subsubsection{Transaction receipts}
+When two orders match, a receipt is sent to each of the two agents involved in the trade. The seller receives a receipt specifying the number of shares that it has to deliver, and the buyer gets a receipt for the amount of cash to be paid. Because of the transmission delay, the agents to not update their portfolios when the trade actually happens, but when they receive the receipt. In the case that an agent does not have enough shares or cash in its portfolio, the agent is allowed to borrow the necessary assets, thus bringing its portfolio into negative. An agent cannot submit new sell orders while holding a negative number of shares. Similarly, an agent cannot submit any new buy orders while having a negative amount of cash. In the case that the agent has neither cash nor shares, it simply becomes inactive.
+
+\subsubsection{Order cancellations}
+It can happen that an agent wants to change a previously submitted order, or cancel it entirely. In fact, this is what the market maker agent does frequently, as described in section \ref{section:market_maker}. In this case, the agent issues a message to the market requesting that the order should be removed. Due to the presence of delays, the agent's order might be filled before the cancellation reaches the market, in which case the market will ignore the request to cancel.
+
+\subsection{Order book}
+
+\begin{table}
+\begin{tabular}{ccc}
+
+\end{tabular}
+\caption{TABLE ILLUSTRATING ORDER BOOK}\label{table:example_order_book}
+\end{table}
+
+\subsubsection{Order Books}
+Incoming orders are stored, and then batch processed in random order so that no agent is favored. When there is a match between two orders, a trade is executed. Since the orders are removed when their volume is depleted, it can happen that one or both sides of the order book is empty. This renders the traded asset completely non-liquid, meaning that it cannot be exchanged for cash. In this case, the market has an obligation to supply liquidity by stepping in an supplying orders. Since the market is not supposed to bias the price development, it supplies orders of a fixed volume at the last traded price.
+
+\subsubsection{Trade Execution}
+When a trade is executed between orders $\o_1$ and $o_2$, the traded volume is $\Delta v = \min (v_{o_1}, v_{o_1})$. If $v_{o_1} = v_{o_2}$ the orders are \textit{fully matched}, and both are removed from the order book. In the case of a \textit{partial match}, that is, if the volume of one order is larger than the volume of the other, then the order with the smaller volume is removed, and the volume of the other order is subtracted by $\Delta v$. The price of the transaction is the price of the market order which was already in the book. 
+
+\subsubsection{Partial order match}
+Each agent knows the volume of every order that it submitted, when the order was dispatched. However, when an order is partially filled by a matching but smaller order, the volume of the order at the market changes. Since it takes time for the order to be transmitted for the agent to the market, the agent cannot immediately update its knowledge of the order volume. In this case the order has one volume at the agent side and another in the market side. The momentary disparity of agent market side and agent side volumes can have several consequences, such as agents short-selling without, agents submitting cancellations for orders which have already been filled. Rules that handle these situations are described in section \ref{section_marketRules}. Unlike volumes, the price of a standing market order does not change, and hence the situation of a disparity between market- and agent-side price knowledge does not occur.
+
+
+
+
+The order book is where the stock is traded. The book 
+
+
+
+
+
+
+ One item of a stock is dubbed a share. The model contains a single stock which is traded on a single market. 
+The minimum traded volume is one share. 
+
+
+
+Each order book contains the 
+
+
+ On the other hand, a stock also represent a small fraction of 
+
+ A common way to model such a fickle 
+ 
+ A common model for the price development of the 
+\subsubsection{Short selling}
+Although some market do allow deliberate short selling, this practice is not allowed in the simulation. That is, an agent is not allowed to place a sell order for more stock than it has in its portfolio at the time it places the order. However, due to the presence of delays, it can happen that an agent is required to deliver on a sell order for more stocks than it holds when notified of the order. A sequence of events which causes this to happen is  illustrated on figure \ref{fig:short_selling}. The agent who is short is required to deliver the stocks, and thus goes into negative on its portfolio, and has to buy back the stocks before it can place further sell orders. Although the sequence of events shown in figure \ref{fig:short_selling} may seem unlikely, it did in fact occur frequently, making it necessary to implement handling of this special case. 
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{The HFT agent submits a sell order for 100 stocks, and another agent submits a price-matching buy order which fills the sell order. Before the transaction receipt reaches the seller, the seller decides to cancel the order, and submit another order at a different price. When the transaction receipt reaches the seller, the agent promptly sends out a cancellation of its second sell order, as it knows it cannot fulfill the order. However, before the cancellation reaches the market, a third agent fills the sell order, and a receipt is send to the seller who ends up being short.}
+	\label{fig:short_selling}
+\end{figure}
+
+
+
+
+\section{Agents}\label{section:agents}
+The model contains three types of agents, each employing a different strategy. Since each strategy has several parameters which greatly impact the behavior of the agents, it is more natural to think of thee families of strategies.
+
+
+
+\subsection{Slow traders}\label{section:slow_traders}
+The slow trader emulates human behavior 
+
+
+\subsubsection{Arrival of orders}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption[Slow trader order arrival]{Slow trader order arrive randomly according to a Poisson process. The bars show the volume generated by slow traders. XXXWRITEMORE}
+	\label{fig:poisson_arrival}
+\end{figure}
+
+
+\subsection{Market makers}\label{section:market_maker}
+For the sake of simplicity, each market maker is only allowed to have one order at each side of the order book at the same time. The agent can therefore not stack orders on either side of the order book. 
+
+\section{Simulation rounds}
+
+
+\section{Implementation}
+
+

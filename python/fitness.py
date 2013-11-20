@@ -117,8 +117,8 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	data['longest_interval_within_margin'] = within_margin['longest_interval']
 	data['std'] = get_tp_std_after_entering_margin(trades['price'], trades['round'])
 	if np.random.random() <= PLOT_SAVE_PROB:
-		if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 		if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
+	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 	return data
 
 
@@ -187,7 +187,7 @@ def get_first_round_to_enter_stability_margin(trade_prices, trade_rounds):
 def get_tp_std_after_entering_margin(trade_prices, trade_rounds):
 	first_round = get_first_round_to_enter_stability_margin(trade_prices, trade_rounds)
 	try:
-		np.std(trade_prices[trade_rounds > first_round])
+		return np.std(trade_prices[trade_rounds > first_round])
 	except ValueError:
 		return 10**6
 

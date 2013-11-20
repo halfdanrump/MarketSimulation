@@ -16,8 +16,7 @@
 % License:
 % CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
 %
-% Note:
-% Make sure to edit document variables in the Thesis.cls file
+% Note: % Make sure to edit document variables in the Thesis.cls file
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -27,9 +26,10 @@
 
 \documentclass[11pt, a4paper, oneside]{Thesis} % Paper size, default font size and one-sided paper
 
-\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+\graphicspath{{Figures/}} % Specifies the directory where pictures are stored
 
-\usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' 
+\usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' }
+\usepackage{subcaption}
 \hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
 \title{\ttitle} % Defines the thesis title - don't touch this
 
@@ -47,6 +47,12 @@
 \pagestyle{fancy} % Finally, use the "fancy" page style to implement the FancyHdr headers
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % New command to make the lines in the title page
+
+%----------------------------------------------------------------------------------------
+%	MY OWN COMMANDS
+%----------------------------------------------------------------------------------------
+
+\newcommand{\spa}[2]{$\texttt{#1}_\texttt{#2}$}
 
 % PDF meta-data
 \hypersetup{pdftitle={\ttitle}}
@@ -191,43 +197,90 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \lhead{\emph{Abbreviations}} % Set the left side page header to "Abbreviations"
 \listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
 {
-\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
+\textbf{HFT} & \textbf{H}igh \textbf{F}requency \textbf{T}rader \\
+\textbf{ST} & \textbf{S}low \textbf{T}rader\\
+\textbf{OB} & \textbf{O}rder \textbf{B}ook \\
+\textbf{MM} & \textbf{M}arket \textbf{M}aker \\
 %\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
 }
 
 %----------------------------------------------------------------------------------------
-%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
+%	Glossary
 %----------------------------------------------------------------------------------------
 
 \clearpage % Start a new page
 
-\lhead{\emph{Physical Constants}} % Set the left side page header to "Physical Constants"
+\lhead{\emph{Glossary}} % Set the left side page header to "Physical Constants"
 
-\listofconstants{lrcl} % Include a list of Physical Constants (a four column table)
+\listofconstants{ll} % Include a list of Physical Constants (a four column table)
 {
-Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
-% Constant Name & Symbol & = & Constant Value (with units) \\
+Term & Explanation\\
+ask price & \\
+bid price & \\
+fitness & \\
+fundamental & \\
+limit order &\\
+market order &\\
+liquidity & \\
+order book & \\
+share & A fraction of ownership of an asset, such as a stock \\
+spread & \\
+standing order & A market order registered at an order book and waiting for a matching order \\
+tick & \\
+volatility &\\
 }
 
 %----------------------------------------------------------------------------------------
-%	SYMBOLS
+%	Symbols
 %----------------------------------------------------------------------------------------
 
 \clearpage % Start a new page
 
-\lhead{\emph{Symbols}} % Set the left side page header to "Symbols"
+\lhead{\emph{Symbols}} % Set the left side page header to "Physical Constants"
 
-\listofnomenclature{lll} % Include a list of Symbols (a three column table)
+\listofconstants{ll} % Include a list of Physical Constants (a four column table)
 {
-$a$ & distance & m \\
-$P$ & power & W (Js$^{-1}$) \\
+$\tau_{i,j}$ & Time delay in rounds from agent $i$ to market $j$. Note that $\tau_{i,j} = \tau_{j,i}$.
+}
+
+%----------------------------------------------------------------------------------------
+%	PARAMETERS
+%----------------------------------------------------------------------------------------
+
+\clearpage % Start a new page
+
+\lhead{\emph{Parameters and default values}} % Set the left side page header to "Symbols"
+
+\listofnomenclature{llll} % Include a list of Symbols (a three column table)
+{
+\label{list_of_parameters}
+\textbf{Symbol} & \textbf{Description}& \textbf{Unit}\\
+\spa{n}{rounds} & Number of simulation rounds & rounds\\
+$\lambda$ & Average number of ST orders per round & \\
+
+& Number of initial orders in OB& $10^4$ orders\\
+&&\\
+&&\\
+&&\\
+&&\\
+& Mean and standard deviation of MM spread & ticks\\
+& Mean and standard deviation of MM order volume & stocks\\ 
+& Mean and standard deviation of MM order length & rounds\\
+& Mean and standard deviation of chartist window length & rounds\\
+& Mean and standard deviation of chartist sensitivity & ticks\\
+& Mean and standard deviation of chartist aggressiveness & ticks\\
+& Mean and standard deviation of chartist order volume & stocks\\
+& Mean and standard deviation of chartist trade frequency & rounds\\
+&&\\
+&&\\
+&&\\
+&  Short selling allowed& \texttt{false} \\
 % Symbol & Name & Unit \\
-
-& & \\ % Gap to separate the Roman symbols from the Greek
-
-$\omega$ & angular frequency & rads$^{-1}$ \\
+& \spa{n}{mm} & Number of HFT chartist agents &  \\
+& \spa{n}{c} & Number of HFT chartist agents &  \\
 % Symbol & Name & Unit \\
 }
+asd
 
 %----------------------------------------------------------------------------------------
 %	DEDICATION
@@ -252,7 +305,8 @@ $\omega$ & angular frequency & rads$^{-1}$ \\
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
 
-\input{Chapters/Chapter1}
+\input{Chapters/model}
+\input{Chapters/calibration}
 %\input{Chapters/Chapter2} 
 %\input{Chapters/Chapter3}
 %\input{Chapters/Chapter4} 
