@@ -60,10 +60,16 @@ def load_all_generations_as_DataFrame(folder_name):
     gen_fit_files = [f for f in os.listdir(folder_name) if re.match('gen_\d+_fit\.npz', f)]
     print "Loading data for %s generations..."%len(gen_pars_files)
     for p,f in zip(gen_pars_files, gen_fit_files):
+        gen_num = p.split('_')[1]
         dp = np.load(folder_name + p)
         df = np.load(folder_name + f)
-        all_par = all_par.append(DataFrame(dp.items()[0][1]))
-        all_fit = all_fit.append(DataFrame(df.items()[0][1]))
+        pars = DataFrame(dp.items()[0][1])
+        fit = DataFrame(df.items()[0][1])
+        gen_num = np.repeat(gen_num, len(fit))
+        fit['gen'] = gen_num
+        pars['gen'] = gen_num
+        all_par = all_par.append(DataFrame(pars))
+        all_fit = all_fit.append(DataFrame(fit))
         dp.close()
         dp.close()
     

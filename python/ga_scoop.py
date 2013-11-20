@@ -81,7 +81,7 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("mate", tools.cxTwoPoints)
 toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.2, indpb=0.2)
-toolbox.register("select", tools.selTournament, tournsize=2)
+toolbox.register("select", tools.selTournament, tournsize=settings.tournament_size)
 toolbox.register("evaluate", evaluate)
 
 start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
