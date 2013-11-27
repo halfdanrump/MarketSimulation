@@ -12,31 +12,38 @@
 \contentsline {chapter}{Physical Constants}{xi}{dummy.16}
 \contentsline {chapter}{Symbols}{xii}{dummy.19}
 \vspace {2em}
-\contentsline {chapter}{\numberline {1}Model}{1}{chapter.22}
-\contentsline {section}{\numberline {1.1}Model}{1}{section.23}
-\contentsline {section}{\numberline {1.2}Modeling delays}{1}{section.24}
-\contentsline {section}{\numberline {1.3}Market components}{2}{section.25}
-\contentsline {subsection}{\numberline {1.3.1}Regulations}{2}{subsection.26}
-\contentsline {subsection}{\numberline {1.3.2}Stocks}{2}{subsection.27}
-\contentsline {subsubsection}{\numberline {1.3.2.1}Fundamental price}{2}{subsubsection.28}
-\contentsline {subsection}{\numberline {1.3.3}Messages}{3}{subsection.29}
-\contentsline {subsubsection}{\numberline {1.3.3.1}Orders}{3}{subsubsection.30}
-\contentsline {subsubsection}{\numberline {1.3.3.2}Transaction receipts}{3}{subsubsection.31}
-\contentsline {subsubsection}{\numberline {1.3.3.3}Order cancellations}{3}{subsubsection.32}
-\contentsline {subsection}{\numberline {1.3.4}Order book}{3}{subsection.33}
-\contentsline {subsubsection}{\numberline {1.3.4.1}Short selling}{4}{subsubsection.35}
-\contentsline {section}{\numberline {1.4}Agents}{5}{section.37}
-\contentsline {subsection}{\numberline {1.4.1}Slow traders}{5}{subsection.38}
-\contentsline {subsubsection}{\numberline {1.4.1.1}Arrival of orders}{5}{subsubsection.39}
-\contentsline {subsection}{\numberline {1.4.2}Market makers}{5}{subsection.41}
-\contentsline {section}{\numberline {1.5}Simulation rounds}{6}{section.42}
-\contentsline {section}{\numberline {1.6}Implementation}{6}{section.43}
-\contentsline {chapter}{\numberline {2}Parameter tuning}{7}{chapter.44}
-\contentsline {subsection}{\numberline {2.0.1}\IeC {\textbullet }}{8}{subsection.49}
-\contentsline {subsection}{\numberline {2.0.2}Defining parameter fitness}{9}{subsection.52}
-\contentsline {subsection}{\numberline {2.0.3}Filtering parameters}{9}{subsection.53}
-\contentsline {subsubsection}{\numberline {2.0.3.1}Fixed parameters}{9}{subsubsection.56}
-\contentsline {section}{\numberline {2.1}Optimizing parameters}{9}{section.57}
+\contentsline {chapter}{\numberline {1}Model}{2}{chapter.22}
+\contentsline {section}{\numberline {1.1}Model}{2}{section.23}
+\contentsline {subsection}{\numberline {1.1.1}Asynchronous vs game theoretic model}{2}{subsection.24}
+\contentsline {subsection}{\numberline {1.1.2}Overall architecture}{2}{subsection.25}
+\contentsline {section}{\numberline {1.2}Modeling delays}{3}{section.26}
+\contentsline {section}{\numberline {1.3}Market components}{3}{section.27}
+\contentsline {subsection}{\numberline {1.3.1}Stocks}{3}{subsection.28}
+\contentsline {subsubsection}{\numberline {1.3.1.1}Fundamental price}{4}{subsubsection.29}
+\contentsline {subsection}{\numberline {1.3.2}Messages}{4}{subsection.30}
+\contentsline {subsubsection}{\numberline {1.3.2.1}Market information}{4}{subsubsection.31}
+\contentsline {subsubsection}{\numberline {1.3.2.2}Orders}{5}{subsubsection.33}
+\contentsline {subsubsection}{\numberline {1.3.2.3}Transaction receipts}{6}{subsubsection.34}
+\contentsline {subsubsection}{\numberline {1.3.2.4}Order cancellations}{6}{subsubsection.35}
+\contentsline {subsection}{\numberline {1.3.3}Order book}{6}{subsection.36}
+\contentsline {subsubsection}{\numberline {1.3.3.1}Price updating}{7}{subsubsection.39}
+\contentsline {subsubsection}{\numberline {1.3.3.2}Order matching}{8}{subsubsection.41}
+\contentsline {subsubsection}{\numberline {1.3.3.3}Empty order book}{8}{subsubsection.43}
+\contentsline {subsection}{\numberline {1.3.4}Market}{8}{subsection.44}
+\contentsline {subsubsection}{\numberline {1.3.4.1}Short selling}{8}{subsubsection.45}
+\contentsline {section}{\numberline {1.4}Agents}{9}{section.47}
+\contentsline {subsection}{\numberline {1.4.1}Slow traders}{10}{subsection.48}
+\contentsline {subsubsection}{\numberline {1.4.1.1}Arrival of orders}{11}{subsubsection.50}
+\contentsline {subsection}{\numberline {1.4.2}Market makers}{12}{subsection.52}
+\contentsline {section}{\numberline {1.5}Simulation rounds}{12}{section.53}
+\contentsline {section}{\numberline {1.6}Implementation}{12}{section.54}
+\contentsline {chapter}{\numberline {2}Parameter tuning}{13}{chapter.55}
+\contentsline {subsection}{\numberline {2.0.1}\IeC {\textbullet }}{14}{subsection.60}
+\contentsline {subsection}{\numberline {2.0.2}Defining parameter fitness}{15}{subsection.63}
+\contentsline {subsection}{\numberline {2.0.3}Filtering parameters}{15}{subsection.64}
+\contentsline {subsubsection}{\numberline {2.0.3.1}Fixed parameters}{15}{subsubsection.67}
+\contentsline {section}{\numberline {2.1}Optimizing parameters}{15}{section.68}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{10}{appendix.58}
+\contentsline {chapter}{\numberline {A}Appendix Title Here}{16}{appendix.69}
 \vspace {2em}
+\contentsline {chapter}{Bibliography}{17}{dummy.70}

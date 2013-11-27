@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  20 NOV 2013 17:06
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 NOV 2013 18:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -803,12 +803,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 127--127
 
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 34.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 41.
  (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 34.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 41.
 )
 \tf@toc=\write4
 \openout4 = `main.toc'.
@@ -848,6 +848,11 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 ------------------------------------------------------------------------------
  Physical Constants
 ------------------------------------------------------------------------------
+
+Overfull \hbox (130.54578pt too wide) in alignment at lines 233--233
+ [] [] 
+ []
+
 [10
 
 
@@ -865,13 +870,14 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
  Symbols
 ------------------------------------------------------------------------------
 
-Overfull \hbox (95.12651pt too wide) in alignment at lines 281--281
+Overfull \hbox (95.12651pt too wide) in alignment at lines 303--303
  [] [] [] [] 
  []
 
 
-Package longtable Warning: Column widths have changed
-(longtable)                in table 4 on input line 281.
+Overfull \hbox (95.12651pt too wide) in alignment at lines 303--303
+ [] [] [] [] 
+ []
 
 [12
 
@@ -883,28 +889,48 @@ Package longtable Warning: Column widths have changed
 ------------------------------------------------------------------------------
 [13
 
-] (./Chapters/model.tex
+] (./Chapters/model.tex [1
+
+
+]
 Chapter 1.
 ------------------------------------------------------------------------------
  1 Model
 ------------------------------------------------------------------------------
-[1
+[2
 
-
-
-] [2] <Figures/Electron.pdf, id=304, 398.3386pt x 284.52756pt>
+] [3] <Figures/Electron.pdf, id=349, 398.3386pt x 284.52756pt>
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 95.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 70.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
- [3] [4 <./Figures/Electron.pdf>]
+ [4] [5 <./Figures/Electron.pdf>] [6]
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 117.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 112.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
-) (./Chapters/calibration.tex [5] [6]
+ [7]
+
+LaTeX Warning: Reference `section_marketRules' on page 8 undefined on input lin
+e 131.
+
+File: Figures/Electron.pdf Graphic file (type pdf)
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 144.
+(pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
+ [8]
+
+Package natbib Warning: Citation `Reference1' on page 9 undefined on input line
+ 158.
+
+[9] [10]
+File: Figures/Electron.pdf Graphic file (type pdf)
+ <use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 201.
+(pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
+ [11]) (./Chapters/calibration.tex [12]
 Chapter 2.
 ------------------------------------------------------------------------------
  2 Parameter tuning
@@ -927,7 +953,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 21--21
  [][] 
  []
 
-[7
+[13
 
 ]
 LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <12> not available
@@ -937,12 +963,12 @@ LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <12> not available
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 33.
 
-[8]) (./Appendices/AppendixA.tex [9]
+[14]) (./Appendices/AppendixA.tex [15]
 Appendix A.
 ------------------------------------------------------------------------------
  A Appendix Title Here
 ------------------------------------------------------------------------------
-) [10
+) [16
 
 ]
 ------------------------------------------------------------------------------
@@ -950,13 +976,17 @@ Appendix A.
 ------------------------------------------------------------------------------
 No file main.bbl.
 
-Package longtable Warning: Table widths have changed. Rerun LaTeX.
+Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 347.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 347.
-(./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 347.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 347.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 411.
+[17
+
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 411.
+ (./main.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 411.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 411.
 
 
 Package rerunfilecheck Warning: File `main.out' has changed.
@@ -964,92 +994,59 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 203B4372FA09D093FD318DCD4F7905DF;5121
-(rerunfilecheck)             After:  29245DB30495B2CF42BF42F79DC9C73A;5257.
+(rerunfilecheck)             Before: E200AF967895635EB425B12DC51C9EA2;6565
+(rerunfilecheck)             After:  BD2124ED46650999C2E2F2D094D585DD;6565.
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 347.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 411.
  ) 
 Here is how much of TeX's memory you used:
- 11012 strings out of 493488
- 154361 string characters out of 3141326
- 242176 words of memory out of 3000000
- 14021 multiletter control sequences out of 15000+200000
+ 11086 strings out of 493488
+ 155765 string characters out of 3141326
+ 243176 words of memory out of 3000000
+ 14079 multiletter control sequences out of 15000+200000
  15627 words of font info for 58 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 49i,11n,45p,1138b,487s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{figure.caption.42} has been referenced but does n
+ 49i,12n,45p,1138b,487s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{figure.caption.55} has been referenced but does n
 ot exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{figure.caption.37} has been referenced but does not
+pdfTeX warning (dest): name{figure.caption.50} has been referenced but does not
  exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{figure.caption.33} has been referenced but does not
- exist, replaced by a fixed one
+pdfTeX warning (dest): name{dummy.69} has been referenced but does not exist, r
+eplaced by a fixed one
 
-pdfTeX warning (dest): name{appendix.55} has been referenced but does not exist
+pdfTeX warning (dest): name{appendix.68} has been referenced but does not exist
 , replaced by a fixed one
 
-pdfTeX warning (dest): name{section.54} has been referenced but does not exist,
+pdfTeX warning (dest): name{section.67} has been referenced but does not exist,
  replaced by a fixed one
 
-pdfTeX warning (dest): name{subsubsection.53} has been referenced but does not 
+pdfTeX warning (dest): name{subsubsection.66} has been referenced but does not 
 exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{subsection.50} has been referenced but does not exi
+pdfTeX warning (dest): name{subsection.62} has been referenced but does not exi
 st, replaced by a fixed one
 
-pdfTeX warning (dest): name{subsection.46} has been referenced but does not exi
+pdfTeX warning (dest): name{subsection.59} has been referenced but does not exi
 st, replaced by a fixed one
 
-pdfTeX warning (dest): name{chapter.41} has been referenced but does not exist,
+pdfTeX warning (dest): name{chapter.54} has been referenced but does not exist,
  replaced by a fixed one
 
-pdfTeX warning (dest): name{section.40} has been referenced but does not exist,
+pdfTeX warning (dest): name{section.52} has been referenced but does not exist,
  replaced by a fixed one
 
-pdfTeX warning (dest): name{section.39} has been referenced but does not exist,
- replaced by a fixed one
+pdfTeX warning (dest): name{subsection.51} has been referenced but does not exi
+st, replaced by a fixed one
 
-pdfTeX warning (dest): name{subsubsection.36} has been referenced but does not 
+pdfTeX warning (dest): name{subsubsection.49} has been referenced but does not 
 exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.35} has been referenced but does not exi
-st, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.34} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.30} has been referenced but does not exi
-st, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsubsection.29} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsubsection.27} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsubsection.25} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.24} has been referenced but does not exi
-st, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.23} has been referenced but does not exi
-st, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.22} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{section.21} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{section.20} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{chapter.19} has been referenced but does not exist,
- replaced by a fixed one
 
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb>
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
@@ -1059,18 +1056,19 @@ usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
 sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
 /local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
 ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
-al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
-texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/t
-exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
-xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/tex
-live/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texl
-ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
-ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive
-/2012/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on main.pdf (24 pages, 224221 bytes).
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/
+texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/tex
+live/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texl
+ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
+ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
+e/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive
+/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
+2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/20
+12/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
+Output written on main.pdf (31 pages, 259462 bytes).
 PDF statistics:
- 505 PDF objects out of 1000 (max. 8388607)
- 449 compressed objects within 5 object streams
- 107 named destinations out of 1000 (max. 500000)
- 286 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 598 PDF objects out of 1000 (max. 8388607)
+ 533 compressed objects within 6 object streams
+ 123 named destinations out of 1000 (max. 500000)
+ 350 words of extra memory for PDF output out of 10000 (max. 10000000)
 

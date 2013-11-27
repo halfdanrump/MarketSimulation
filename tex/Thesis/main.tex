@@ -222,13 +222,28 @@ fundamental & \\
 limit order &\\
 market order &\\
 liquidity & \\
+match & When a sell order and a bu order happen to have the same listed price, they are said to match\\
 order book & \\
+partial match & Two orders which match, but have different volumes.\\
 share & A fraction of ownership of an asset, such as a stock \\
 spread & \\
 standing order & A market order registered at an order book and waiting for a matching order \\
 tick & \\
 volatility &\\
 }
+
+
+\newcommand{\round}{t}
+\newcommand{\delay}{$p^m$}
+\newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
+\newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
+\newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
+\newcommand{\pmatch}{$p^m$}
+\newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
+
+
+\newcommand{\ask}{ask}
+\newcommand{\bid}{bid}
 
 %----------------------------------------------------------------------------------------
 %	Symbols
@@ -240,7 +255,13 @@ volatility &\\
 
 \listofconstants{ll} % Include a list of Physical Constants (a four column table)
 {
-$\tau_{i,j}$ & Time delay in rounds from agent $i$ to market $j$. Note that $\tau_{i,j} = \tau_{j,i}$.
+\delay & Time delay in rounds from agent $i$ to market $j$. Note that $\tau_{i,j} = \tau_{j,i}$.\\
+\spread & Spread at the end of round $t$\\
+\pask & The lowest \ask price in the order book at the end of round \round\\
+\pbid & The highest \bid price in the order book at the end of round \round\\
+\pmatch & Match price, i.e., the price at which a trade is executed\\
+\fund & Fundamental price at round \round
+
 }
 
 %----------------------------------------------------------------------------------------
@@ -305,6 +326,9 @@ asd
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
 
+FOREWORD
+As such, this project turned out to be just as much about software engineering as 
+
 \input{Chapters/model}
 \input{Chapters/calibration}
 %\input{Chapters/Chapter2} 
@@ -344,5 +368,44 @@ asd
 \bibliographystyle{unsrtnat} % Use the "unsrtnat" BibTeX style for formatting the Bibliography
 
 \bibliography{Bibliography} % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+\begin{thebibliography}{99}
+
+
+
+\bibitem{chiWang} Chi Wang, Kiyoshi Izumi, Takanobu Mizuta and Shinobu Yoshimura:
+``Investigating the Impact of Trading Frequencies of Market Makers: a Multi-agent Simulation Approach''
+ \textit{SICE Journal of Control Measurement, and System Integration, Vol. 4, No. 1, pp. 001-005, January 2011}.
+
+\bibitem{riseOfComputerizedTrading} Michael J. McGowan:
+``The Rise of Computerized High Frequency Trading: Use and Controversies'',
+\textit{2010 Duke L. \& Tech. Rev., 2010}.
+
+\bibitem{strategicLiquiditySupply} Thomas McInish and James Upson:
+``Strategic Liquidity Supply in a Market with Fast and Slow Traders'',
+\textit{Available at SSRN 1924991 (2012)}.
+
+\bibitem{financialBlackSwans} Niel Johnson, Guannan Zhao, Eric Hunsader, Jing Meng, Amith Ravindar, Spencer Carran and Brian Tivnan: 
+``Financial Black Swans Driven by Ultrafast Machine Ecology'', \textit{Available at SSRN (2012)}.
+
+\bibitem{evaluationOfAutomated}
+Kiyoshii Izumi, Kiyoshi, Fujio Toriumi, and Hiroki Matsui: ``Evaluation of automated-trading strategies using an artificial market'', \textit{Neurocomputing 72.16 (2009): 3469-3476}.
+
+\bibitem{theImpactOfHeterogenous}
+Chiarella, Carl, Giulia Iori, and Josep Perelló:
+``The impact of heterogeneous trading rules on the limit order book and order flows''
+\textit{Journal of Economic Dynamics and Control 33.3 (2009): 525-537}.
+
+\bibitem{highFrequencyTrading}
+Peter Gomber, Björn Arndt, Marco Lutat, Tim Uhle:
+``High-frequency trading.'' 
+\textit{Available at SSRN 1858626 (2011)}.
+
+\bibitem{anEcologicalPerspective}
+J. Doyne Farmer and Spyros Skouras:
+``An ecological perspective on the future of computer trading''
+\textit{Quantitative Finance 13.3 (2013): 325-346.}
+
+\end{thebibliography}
 
 \end{document}  
