@@ -1,8 +1,9 @@
 import numpy as np
+from numpy import *
 import IO
 from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
-from settings import stability_margin, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT, PLOT_SAVE_PROB
+from settings import stability_margin, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT, PLOT_SAVE_PROB, data_for_failed_simulation
 from random import randint
 from plotting import make_tradeprice_plot
 from itertools import groupby
@@ -61,14 +62,41 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['round'], fas)
 	#data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	#data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
-	data['longest_interval_within_margin'] = within_margin['longest_interval']
-	data['stdev'] = get_tp_std_after_entering_margin(trades['price'], trades['round'])
+	if 'longest_interval_within_margin' in data_for_failed_simulation.keys():
+		data['longest_interval_within_margin'] = within_margin['longest_interval']
+	if 'stdev' in data_for_failed_simulation.keys():
+		data['stdev'] = get_tp_std_after_entering_margin(trades['price'], trades['round'])
+	if 'overshoot' in data_for_failed_simulation.keys():
+		data['overshoot'] = calculate_overshoot(fas, trades['price'], trades['round'])
+	if 'time_to_reach_new_fundamental' in data_for_failed_simulation.keys():
+		data['time_to_reach_new_fundamental'] = get_first_round_to_reach_new_fundamental(trades['price'], trades['round'])
+	if 'round_stable' in data_for_failed_simulation.keys():
+		data['round_stable'] = calculate_round_stable(trades['price'], trades['round'], fas)
+
+
 	if np.random.random() <= PLOT_SAVE_PROB:
 		if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 	return data
 
+def calculate_round_stable(prices, rounds, fas):
+	for p, r in zip(prices[::-1], rounds[::-1]):
+		if not (p <= fas + stability_margin and p >= fas - stability_margin):
+			return r
 
+
+def calculate_overshoot(new_fundamental, prices, rounds):
+	when_reach_fund = get_first_round_to_reach_new_fundamental(prices, rounds)
+	
+	idx, = where(rounds > when_reach_fund)
+	
+	try:
+		max_price = max(prices[idx])
+		min_price = min(prices[idx])
+		overshoot = max(abs(new_fundamental - max_price), abs(new_fundamental - min_price))
+	except ValueError:
+		overshoot = data_for_failed_simulation['overshoot']
+	return overshoot
 
 def get_number_of_stability_margin_crossings():
 	pass
@@ -93,17 +121,17 @@ def get_number_of_rounds_within_stability_margin(trade_prices, trade_rounds, fun
 	except ValueError:
 		return {'total_number_of_rounds':0, 'n_intervals':10**6}
 
-def get_first_round_to_enter_stability_margin(trade_prices, trade_rounds):
+def get_first_round_to_reach_new_fundamental(trade_prices, trade_rounds):
 	trade_prices = np.array(trade_prices)
 	fas = get_fundamental_after_shock()
 	try:
-		first_round = np.min(np.where(trade_prices == fas))
+		first_round = np.min(trade_rounds[np.where(trade_prices == fas)])
 	except ValueError:
 		first_round = 10**6
 	return first_round
 
 def get_tp_std_after_entering_margin(trade_prices, trade_rounds):
-	first_round = get_first_round_to_enter_stability_margin(trade_prices, trade_rounds)
+	first_round = get_first_round_to_reach_new_fundamental(trade_prices, trade_rounds)
 	try:
 		return np.std(trade_prices[trade_rounds > first_round])
 	except ValueError:

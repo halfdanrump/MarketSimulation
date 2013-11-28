@@ -7,7 +7,7 @@ WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
 SAVE_DATA_USED_FOR_PLOTTING = True
-PLOT_SAVE_PROB = 0.02
+PLOT_SAVE_PROB = 1
 
 reps = xrange(1)
 
@@ -148,44 +148,28 @@ parameter_minvals = OrderedDict({
 
 
 data_for_failed_simulation = {
-                    #'buy_catchup_round' : 10**6,
-                    #'sell_catchup_round' : 10**6,
-                    #'max_traded_price_after_step' : -1,
-                    #'min_traded_price_after_step' : -1,
-                    #'traded_price_std_after_sellbuy_reach_new_fundamental' : -1,
-                    #'traded_price_mean_after_sellbuy_reach_new_fundamental' : -1,
-                    #'traded_price_median_after_sellbuy_reach_new_fundamental' : -1,
-                    #'tp_stable_round' : 10*6,
-                    #'n_simulation_rounds_within_stability_margin' : 0,
-                    #'n_seperate_intervals_within_stability_margin' : 10**6,
-                    'longest_interval_within_margin' : 0,
-                    'std' : 10**6
+                    #'longest_interval_within_margin' : 0,
+                    'stdev' : 10**6,
+                    'overshoot' : 10**6,
+                    'time_to_reach_new_fundamental' : 10**6,
+                    'round_stable' : 10**6
                     }
 
 
 fitness_weights = OrderedDict({
-                    #'buy_catchup_round' : -1,
-                    #'sell_catchup_round' : -1,
-                    #'tp_stable_round' : -1
-                    #'n_simulation_rounds_within_stability_margin' : 1,
-                    #'n_seperate_intervals_within_stability_margin' : -1,
-                    'longest_interval_within_margin' : 1,
-                    'std' : -1
+                    #'longest_interval_within_margin' : 1,
+                    'stdev' : -1,
+                    'overshoot' : -1,
+                    'time_to_reach_new_fundamental' : -1,
+                    'round_stable' : -1
                     })
 
 fitness_types = {
-                    #'buy_catchup_round' : int,
-                    #'sell_catchup_round' : int,
-                    #'max_traded_price_after_step' : int,
-                    #'min_traded_price_after_step' : int,
-                    #'traded_price_std_after_sellbuy_reach_new_fundamental' : float,
-                    #'traded_price_mean_after_sellbuy_reach_new_fundamental' : float,
-                    #'traded_price_median_after_sellbuy_reach_new_fundamental' : int,
-                    #'tp_stable_round' : int
-                    #'n_simulation_rounds_within_stability_margin' : int,
-                    #'n_seperate_intervals_within_stability_margin' : int,
-                    'longest_interval_within_margin' : int,
-                    'std' : float
+                    #'longest_interval_within_margin' : int,
+                    'stdev' : float,
+                    'overshoot' : int,
+                    'time_to_reach_new_fundamental' : int,
+                    'round_stable' : int
                     }
 
 
