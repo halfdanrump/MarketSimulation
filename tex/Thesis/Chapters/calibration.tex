@@ -44,42 +44,85 @@ The second point is trivial, and merely requires additional computation, but the
 \end{description}
 
 
-\subsection{Defining parameter fitness}\label{section:simulation_fitness}
-Furthermore, I did not have have access to 
-
-\subsection{Filtering parameters}\label{section:filtering_parameters}
-Without available data of the millisecond price movements of a stock in a real market it is difficult to create metrics for measuring the quality of a set of parameters. Instead, we 
 
 
-As mentioned earlier, it is not enough simply to define a fitness function which assigns high values to parameters causing realistic behavior. In addition, we need some way of 
+\subsubsection{Filtering parameters}\label{section:filtering_parameters}
+As mentioned earlier, it is not enough simply to define a fitness function which assigns high values to parameters causing realistic behavior. In addition, it is important to discard parameters which obviously do not correspond to a realistic setting. Imagine that the simulation scores high fitness values when executed without any market makers. Since it is known that real markets do in fact contain market makers, nothing can be inferred from such a result. Indeed this might be a consequence of poorly designed fitness measures, but since it is easier to use domain specific knowledge to filter out the unrealistic parameters
 
-Instead of 
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\nhft = \nsc = 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.}
+	\label{fig:no_marketmakers}
+\end{figure}
 
+		
 
-
-%http://www.nyse.com/pdfs/NYSE_Euronext_Transactions.pdf
-
-\begin{enumerate}
-\item The model must be calibrated such that it mimics the behavior of real markets.
-\item The model 
-\end{enumerate}
-
-it must be calibrated. The calibration serves two  in order to mimic the dynamics of real financial markets. Without calibration, the simulation will still produce an output, but the chances are high that 
-
-
-
-
-
-
-
-An overview of the model parameters is presented in the end of the thesis, 
 
 \subsubsection{Fixed parameters}
-The number of rounds is fixed at $10^5$ for all experiments. The simulation could easily be run for much longer, but due to the increased computational cost 
+Due to the computational cost of running the simulation for a large number of rounds, the the number of rounds is fixed at $10^5$ for all experiments.
+
+
+
+
+\subsection{Model fitness}\label{section:simulation_fitness}
+
+In order to use inverse simulation, it is necessary to decide on how to measure the quality of an instance of the simulation. 
+
+
+
+In this work, the overall goal is to examine which parameter values cause the market to be stable, and which cause it to be unstable. 
+
+
+Another interesting point is the speed with which the market responds to the shock to the fundamental price, and which parameters influence this property. Furthermore, we are interested in investigating whether or not 
+
+\begin{itemize}
+\item 
+\item Are there certain parameter combinations which cause the market to behave in certain ways. S
+\end{itemize}
+\item Which parameters ca
+
+
+
+In particular the parameters controlling various time delays are of interest. 
+
+The search space of the parameters is very large, which makes an exhaustive search impossible.
 
 
 
 
 
+To this end, four fitness measures were defined.
 
-\section{Optimizing parameters}
+The balance between the number 
+Several parameters influence the number of orders submitted by the high frequency traders.
+
+\subsection{Fixed number of agents}
+In the experiments in this subsection, the number of agents are kept fixed. 
+
+\begin{table}
+\begin{tabular}{c|c}
+\textbf{Parameter} & \textbf{Range}\\
+nhftmm & 
+nhftsc & 
+
+\end{tabular}
+\caption{Overview of experiments}
+\end{table}
+
+
+\section{Selecting objective}
+Since each of the four fitness measures described in section \ref{section:simulation_fitness} can be maximized or minimized, there are 16 possible search objectives for the optimization. For instance, maximizing 
+
+
+Inverse simulation is a handy tool, because it becomes possible to find parameters 
+
+\subsection{Optimizing towards }
+
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+
