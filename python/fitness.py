@@ -57,99 +57,17 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	
 
 	
-	### Collect data
-	"""
-	try:
-		data['buy_catchup_round'] = np.min(np.where(ob_round_based['bestStandingBuyPrice'] == fundamental_after_step))
-	except ValueError:
-		data['buy_catchup_round'] = settings.data_for_failed_simulation['buy_catchup_round']
-		
-	try:
-		data['sell_catchup_round'] = np.min(np.where(ob_round_based['bestStandingSellPrice'] == fundamental_after_step))
-	except ValueError:
-		data['sell_catchup_round'] = settings.data_for_failed_simulation['sell_catchup_round']
-		
-	"""
-	"""
-	if buy_catchup_round and sell_catchup_round:
-	 	catchup_round = max(buy_catchup_round, sell_catchup_round)
-		try:
-			trade_index = np.min(np.where(trades['round'] >= catchup_round))
-		 	data['traded_price_std_after_sellbuy_reach_new_fundamental'] = np.std(trades['price'][trade_index::])
-		 	data['traded_price_mean_after_sellbuy_reach_new_fundamental'] = np.mean(trades['price'][trade_index::])
-		 	data['traded_price_median_after_sellbuy_reach_new_fundamental'] = np.median(trades['price'][trade_index::])
-	 	except ValueError:
-			data['traded_price_std_after_sellbuy_reach_new_fundamental'] = settings.data_for_failed_simulation['traded_price_std_after_sellbuy_reach_new_fundamental']
-		 	data['traded_price_mean_after_sellbuy_reach_new_fundamental'] = settings.data_for_failed_simulation['traded_price_mean_after_sellbuy_reach_new_fundamental']
-		 	data['traded_price_median_after_sellbuy_reach_new_fundamental'] = settings.data_for_failed_simulation['traded_price_median_after_sellbuy_reach_new_fundamental']
-
-	try:
-		i = np.min(np.where(trades['round'] > fundamental_step_round))
-		data['max_traded_price_after_step'] = np.max(trades['price'][i::])
-		data['min_traded_price_after_step'] = np.min(trades['price'][i::])
-	except ValueError:
-		data['max_traded_price_after_step'] = settings.data_for_failed_simulation['max_traded_price_after_step']
-		data['min_traded_price_after_step'] = settings.data_for_failed_simulation['min_traded_price_after_step']
-	"""
-	"""
-	try:
-		within_margin = np.where(
-							(trades['price'] >= fundamental_after_step - settings.stability_margin) & 
-							(trades['price'] <= fundamental_after_step + settings.stability_margin))[0]
-
-		diffs = np.diff(stable_idx)
-		data['tp_stable_round'] = trades['round'][stable_idx[np.max(np.where(diffs > 1))]]
-	except ValueError:
-		data['tp_stable_round'] = settings.data_for_failed_simulation['tp_stable_round']
-	
-	
-
-
-	within_margin = np.where((trades['price'] >= fundamental_after_step - settings.stability_margin)
-							&(trades['price'] <= fundamental_after_step + settings.stability_margin))[0]
-
-	diffs = np.diff(stable_idx)
-	"""
 	fas = get_fundamental_after_shock()
 	within_margin = get_number_of_rounds_within_stability_margin(trades['price'], trades['round'], fas)
 	#data['n_simulation_rounds_within_stability_margin'] = within_margin['total_number_of_rounds']
 	#data['n_seperate_intervals_within_stability_margin'] = within_margin['n_intervals']
 	data['longest_interval_within_margin'] = within_margin['longest_interval']
-	data['std'] = get_tp_std_after_entering_margin(trades['price'], trades['round'])
+	data['stdev'] = get_tp_std_after_entering_margin(trades['price'], trades['round'])
 	if np.random.random() <= PLOT_SAVE_PROB:
 		if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 	return data
 
-
-"""
-def get_data_for_single_parameter_sweep(parameter_to_sweep = "", parameter_range = list(), all_parameters = dict(), reps = list()):
-		try:
-				del all_parameters[parameter_to_sweep]
-		except KeyError:
-				pass
-
-		for par, r in all_parameters.items():
-				assert not isinstance(r, Iterable), "Please specify a single value for all parameters except the parameter to sweep: %s"%par
-
-		#parameters_to_store = [parameter_to_sweep]
-		#data_type = [(parameter_to_sweep, int)] + [(d, float) for d in data_to_calculate]
-		
-		all_data = np.zeros(shape=(len(parameter_range)), dtype = settings.data_type)
-
-		for i, parameter in enumerate(parameter_range):
-				parameters_to_store = {parameter_to_sweep:parameter}
-				all_parameters[parameter_to_sweep] = parameter
-				
-				log_folders = settings.get_logfolders(settings.log_root_folder, all_parameters, reps)
-				if not np.all([IO.check_simulation_complete(settings.log_folder) for log_folder in log_folders]):
-						run_simulation(settings.simulation_parameters, reps)
-				
-				print "Calculating data for %s"%log_folder
-				all_data[i] = calculate_stats(settings.log_folders, parameters_to_store, reps)        
-		
-		return all_data
-"""
 
 
 def get_number_of_stability_margin_crossings():
