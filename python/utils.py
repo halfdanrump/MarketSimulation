@@ -13,7 +13,7 @@ def empty_data_matrix(n_rows = 1):
 
 
 
-def load_test_trade_data():
-	return DataFrame(load_trade_log_data('/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/logs/'))
+def load_test_trade_data(type = 'stable'):
+	return DataFrame(load_trade_log_data('/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/data/for_testing/' + type + '/'))
 
 
