@@ -190,6 +190,9 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 %	ABBREVIATIONS
 %----------------------------------------------------------------------------------------
 
+\newcommand{\hft}{\texttt{HFT}}
+\newcommand{\mm}{\texttt{mm}}
+
 \clearpage % Start a new page
 
 \setstretch{1.5} % Set the line spacing to 1.5, this makes the following tables easier to read
@@ -260,13 +263,15 @@ volatility &\\
 \pask & The lowest \ask price in the order book at the end of round \round\\
 \pbid & The highest \bid price in the order book at the end of round \round\\
 \pmatch & Match price, i.e., the price at which a trade is executed\\
-\fund & Fundamental price at round \round
+\fund & Fundamental price at round \round\\
 
 }
 
 %----------------------------------------------------------------------------------------
 %	PARAMETERS
 %----------------------------------------------------------------------------------------
+\newcommand{\nhft}{\texttt{N-HFT}}
+\newcommand{\nsc}{\texttt{N-SC}}
 
 \clearpage % Start a new page
 
@@ -283,7 +288,8 @@ $\lambda$ & Average number of ST orders per round & \\
 &&\\
 &&\\
 &&\\
-&&\\
+\nhft & Number of \hft -\mm agents. &\\
+\nsc & Number of \hft -\sc agents. &\\
 & Mean and standard deviation of MM spread & ticks\\
 & Mean and standard deviation of MM order volume & stocks\\ 
 & Mean and standard deviation of MM order length & rounds\\
@@ -330,7 +336,7 @@ FOREWORD
 As such, this project turned out to be just as much about software engineering as 
 
 \input{Chapters/model}
-\input{Chapters/calibration}
+%\input{Chapters/calibration}
 %\input{Chapters/Chapter2} 
 %\input{Chapters/Chapter3}
 %\input{Chapters/Chapter4} 
