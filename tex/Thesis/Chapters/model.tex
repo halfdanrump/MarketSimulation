@@ -9,25 +9,25 @@ $\frac{}{}$
 %----------------------------------------------------------------------------------------
 
 \section{Model}
-
-
-
-
 As explained in section \ref{chapter:high_frequency_trading}, perhaps the most distinguishable aspect of high frequency trading is the speed with which agents can react to new market information. It is therefore essential that a model should capture this aspect, if it is to be used to draw generalized conclusions about the influence of high frequency trading in the markets.
 
+What are the goals of this model
 
+What are not the goals of this model.
 
 \subsection{Asynchronous vs game theoretic model}
 In this work, we have tried emulate the asynchronous nature of a continuous auction by 
 
 As such, our model bears little resemblance to models derived from a game-theoretic basis, which typically 
 
+This work resembles a real-time simulation.
+
 \subsection{Overall architecture}
 The model consists a market and agents. Agents and the market communicate by exchanging messages which all arrive one or several rounds after they were issued. A complete simulation consists of the several consecutive rounds. In each rounds, some agents submit orders, while others wait for new market information. Order messages arrive at the order books, and trades are executed when prices match.  The following sections will describe the model in detail.
 
 
 
-\section{Modeling delays}
+\subsection{Modeling delays}
 
 Although each round corresponds to a period of real-time, it is not particularly important to specify how long that period is. Instead, what matters is that there is a difference in speed between the agents. In other words, the important thing is that some agents are much faster than other agents. If one thinks of each round as a millisecond of real-time, one realizes that an agent simulating a human trader will require several thousands of simulation rounds to react to market news. On the other hand, fast algorithmic traders may only require a few rounds, making them several orders of magnitude faster than the slow traders. 
 
@@ -53,10 +53,27 @@ A common way to model the development of the fundamental price is to use a stoch
 
 The idea behind this is that 
 
+\begin{figure}
+%issue 11
+\subcaptionbox{\label{subfig:}}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
+\subcaptionbox{\label{subfig:}}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
+\caption{\textbf{:}}\label{fig:}
+\end{figure}
+
 
 \subsection{Messages}
 All communication between the market and agents is transmitted in messages. A message sent from agent $i$ to market $j$ (or the other way around) has a transmission time of $\tau_{i,j} = \tau_{j,i}$. The smallest possible transmission time is $\tau_{i,j} = 0$. This means that no information is transmitted instantly between agent and market. $\tau_{i,j}$ is constant through the simulation. Several message types were implemented in order to accommodate the various types of communication.
 
+\begin{figure}[htbp]
+%issue 14
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{}
+	\label{fig:information_exchange}
+\end{figure}
 
 
 \subsubsection{Market information}
@@ -166,7 +183,7 @@ The purpose of this agent type is to include agents which
 
 The stylized trader model used in this work is inspired by the model used in \cite{chiWang} and \cite{theImpactOfHeterogenous}. However, due to the fundamental differences in the way that the simulation works, the model has been modified significantly. 
 
-Since the stylized trader model is so predominant in the market simulation literature (see \cite{•}, \cite{•} etc.), we feel that we need to justify our choice of not using it. 
+Since the stylized trader model is so predominant in the market simulation literature (see \cite{asd}, \cite{asd} etc.), we feel that we need to justify our choice of not using it. 
 
 The basic idea of the model is that there are basically three basic techniques that any trader mixes draws upon to form his own strategy. 
 \begin{description}
@@ -204,12 +221,6 @@ Secondly, we are not interested in long term market dynamics. The model is limit
 
 
 
-\begin{equation}
-asdas
-\end{equation}
-
-
-
 
 
 The stylized traders play the same role as the slow trades in \cite{strategicLiquiditySupply}
@@ -239,7 +250,7 @@ For the sake of simplicity, each market maker is only allowed to have one order 
 \section{Implementation}
 
 
-\section{Experiments}\\label{section:experiments}
+\section{Experiments}\label{section:experiments}
 WRITE ABOUT KEY POINTS OF INTEREST IN TIME
 
 

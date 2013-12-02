@@ -7,7 +7,7 @@ WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
 SAVE_DATA_USED_FOR_PLOTTING = True
-PLOT_SAVE_PROB = 1
+PLOT_SAVE_PROB = 0.02
 
 reps = xrange(1)
 
@@ -28,10 +28,10 @@ deadborn_gene_fitness = 10000000000
 if TEST_MODE:
     population_size = 4
 else:
-    population_size = 500
+    population_size = 100
 
-n_generations = 200
-mutation_prob = 0.2
+n_generations = 1000
+mutation_prob = 0.1
 crossover_prob = 0.4
 tournament_size = 3
 
@@ -45,8 +45,8 @@ default_parameters = {
     'fundamental_shock_size' : -10,
     'fundamental_shock_round' : 10000,
 
-    'ssmm_nAgents' : 0,
-    'sc_nAgents' : 0,
+    'ssmm_nAgents' : 40,
+    'sc_nAgents' : 300,
 
     'hft_latency_mu' : 1,
     'hft_latency_s' : 0,
@@ -74,13 +74,17 @@ default_parameters = {
 
 
 parameters_in_genes = [
-    'ssmm_nAgents',
-    'sc_nAgents' ,
+    #'ssmm_nAgents',
+    #'sc_nAgents' ,
 
     'hft_latency_mu',
     'hft_latency_s',
     'hft_think_mu',
-    'hft_think_s'
+    'hft_think_s',
+    'sc_timehorizon_mu',
+    'sc_timehorizon_s',
+    'sc_waitTimeBetweenTrading_mu',
+    'sc_waitTimeBetweenTrading_s'
 ]
 
 

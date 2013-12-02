@@ -30,6 +30,7 @@
 
 \usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' }
 \usepackage{subcaption}
+\usepackage{amsmath}
 \hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
 \title{\ttitle} % Defines the thesis title - don't touch this
 
@@ -52,7 +53,25 @@
 %	MY OWN COMMANDS
 %----------------------------------------------------------------------------------------
 
-\newcommand{\spa}[2]{$\texttt{#1}_\texttt{#2}$}
+%%% MODEL PARAMETERS
+\newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
+\newcommand{\nmm}{\spa{n}{mm}}
+\newcommand{\nsc}{\spa{n}{sc}}
+\newcommand{\nrounds}{\spa{n}{rounds}}
+
+%%% SYMBOLS
+\newcommand{\round}{t}
+\newcommand{\delay}{$p^m$}
+\newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
+\newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
+\newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
+\newcommand{\pmatch}{$p^m$}
+\newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
+
+
+%%% OTHER COMMANDS
+\newcommand{\ask}{ask}
+\newcommand{\bid}{bid}
 
 % PDF meta-data
 \hypersetup{pdftitle={\ttitle}}
@@ -190,8 +209,6 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 %	ABBREVIATIONS
 %----------------------------------------------------------------------------------------
 
-\newcommand{\hft}{\texttt{HFT}}
-\newcommand{\mm}{\texttt{mm}}
 
 \clearpage % Start a new page
 
@@ -236,17 +253,7 @@ volatility &\\
 }
 
 
-\newcommand{\round}{t}
-\newcommand{\delay}{$p^m$}
-\newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
-\newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
-\newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
-\newcommand{\pmatch}{$p^m$}
-\newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
 
-
-\newcommand{\ask}{ask}
-\newcommand{\bid}{bid}
 
 %----------------------------------------------------------------------------------------
 %	Symbols
@@ -270,8 +277,6 @@ volatility &\\
 %----------------------------------------------------------------------------------------
 %	PARAMETERS
 %----------------------------------------------------------------------------------------
-\newcommand{\nhft}{\texttt{N-HFT}}
-\newcommand{\nsc}{\texttt{N-SC}}
 
 \clearpage % Start a new page
 
@@ -281,15 +286,15 @@ volatility &\\
 {
 \label{list_of_parameters}
 \textbf{Symbol} & \textbf{Description}& \textbf{Unit}\\
-\spa{n}{rounds} & Number of simulation rounds & rounds\\
+\nrounds & Number of simulation rounds & rounds\\
 $\lambda$ & Average number of ST orders per round & \\
 
 & Number of initial orders in OB& $10^4$ orders\\
 &&\\
 &&\\
 &&\\
-\nhft & Number of \hft -\mm agents. &\\
-\nsc & Number of \hft -\sc agents. &\\
+\nmm & Number of hft market maker agents. &\\
+\nsc & Number of hft simple chartist agents. &\\
 & Mean and standard deviation of MM spread & ticks\\
 & Mean and standard deviation of MM order volume & stocks\\ 
 & Mean and standard deviation of MM order length & rounds\\
@@ -297,17 +302,8 @@ $\lambda$ & Average number of ST orders per round & \\
 & Mean and standard deviation of chartist sensitivity & ticks\\
 & Mean and standard deviation of chartist aggressiveness & ticks\\
 & Mean and standard deviation of chartist order volume & stocks\\
-& Mean and standard deviation of chartist trade frequency & rounds\\
-&&\\
-&&\\
-&&\\
-&  Short selling allowed& \texttt{false} \\
-% Symbol & Name & Unit \\
-& \spa{n}{mm} & Number of HFT chartist agents &  \\
-& \spa{n}{c} & Number of HFT chartist agents &  \\
-% Symbol & Name & Unit \\
+& Mean and standard deviation of chartist trade frequency & rounds
 }
-asd
 
 %----------------------------------------------------------------------------------------
 %	DEDICATION
@@ -336,7 +332,7 @@ FOREWORD
 As such, this project turned out to be just as much about software engineering as 
 
 \input{Chapters/model}
-%\input{Chapters/calibration}
+\input{Chapters/calibration}
 %\input{Chapters/Chapter2} 
 %\input{Chapters/Chapter3}
 %\input{Chapters/Chapter4} 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 NOV 2013 18:59
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  2 DEC 2013 16:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -685,33 +685,42 @@ Package: subcaption 2012/01/12 v1.1d Sub-captions (AR)
 \c@subfigure=\count134
 \c@subtable=\count135
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 33.
+Package hyperref Info: Option `colorlinks' set `true' on input line 34.
 
-(./main.aux)
+(./main.aux
+
+LaTeX Warning: Label `subfig:' multiply defined.
+
+
+LaTeX Warning: Label `sub@subfig:' multiply defined.
+
+
+LaTeX Warning: Label `fig:information_exchange' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
-
-(/usr/local/texlive/2012/texmf-dist/tex/latex/caption/ltcaption.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
 )
 Package caption Info: rotating package is loaded.
@@ -741,7 +750,7 @@ File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 )
-Package hyperref Info: Link coloring ON on input line 36.
+Package hyperref Info: Link coloring ON on input line 37.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -751,20 +760,20 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count143
 )
-LaTeX Info: Redefining \ref on input line 36.
-LaTeX Info: Redefining \pageref on input line 36.
-LaTeX Info: Redefining \nameref on input line 36.
+LaTeX Info: Redefining \ref on input line 37.
+LaTeX Info: Redefining \pageref on input line 37.
+LaTeX Info: Redefining \nameref on input line 37.
 
 (./main.out) (./main.out)
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 82.
+LaTeX Font Info:    Try loading font information for U+msa on input line 101.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 82.
+LaTeX Font Info:    Try loading font information for U+msb on input line 101.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -777,7 +786,7 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
  Declaration of Authorship
 ------------------------------------------------------------------------------
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--127
+Underfull \hbox (badness 10000) in paragraph at lines 146--146
 
  []
 
@@ -802,19 +811,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 127--127
 (./main.toc [5
 
 
-]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 41.
- (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 41.
-)
+])
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
-
-[6]
+ [6]
 ------------------------------------------------------------------------------
  List of Figures
 ------------------------------------------------------------------------------
@@ -849,7 +850,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
  Physical Constants
 ------------------------------------------------------------------------------
 
-Overfull \hbox (130.54578pt too wide) in alignment at lines 233--233
+Overfull \hbox (130.54578pt too wide) in alignment at lines 253--253
  [] [] 
  []
 
@@ -869,16 +870,6 @@ Overfull \hbox (130.54578pt too wide) in alignment at lines 233--233
 ------------------------------------------------------------------------------
  Symbols
 ------------------------------------------------------------------------------
-
-Overfull \hbox (95.12651pt too wide) in alignment at lines 303--303
- [] [] [] [] 
- []
-
-
-Overfull \hbox (95.12651pt too wide) in alignment at lines 303--303
- [] [] [] [] 
- []
-
 [12
 
 
@@ -897,78 +888,128 @@ Chapter 1.
 ------------------------------------------------------------------------------
  1 Model
 ------------------------------------------------------------------------------
+
+LaTeX Warning: Reference `chapter:high_frequency_trading' on page 2 undefined o
+n input line 12.
+
 [2
 
-] [3] <Figures/Electron.pdf, id=349, 398.3386pt x 284.52756pt>
+] [3] <Figures/Electron.pdf, id=386, 398.3386pt x 284.52756pt>
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 70.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 59.
+(pdftex.def)             Requested size: 208.73653pt x 149.097pt.
+
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 59--59
+ [][] 
+ []
+
+File: Figures/Electron.pdf Graphic file (type pdf)
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 61.
+(pdftex.def)             Requested size: 208.73653pt x 149.097pt.
+
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 61--61
+ [][] 
+ []
+
+[4 <./Figures/Electron.pdf>]
+File: Figures/Electron.pdf Graphic file (type pdf)
+ <use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 72.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
- [4] [5 <./Figures/Electron.pdf>] [6]
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 112.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 87.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
- [7]
-
-LaTeX Warning: Reference `section_marketRules' on page 8 undefined on input lin
-e 131.
-
+ [5] [6] [7]
 File: Figures/Electron.pdf Graphic file (type pdf)
-<use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 144.
+ <use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 129.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
  [8]
 
-Package natbib Warning: Citation `Reference1' on page 9 undefined on input line
- 158.
+LaTeX Warning: Reference `section_marketRules' on page 9 undefined on input lin
+e 148.
 
-[9] [10]
+File: Figures/Electron.pdf Graphic file (type pdf)
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 161.
+(pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
+ [9]
+
+Package natbib Warning: Citation `Reference1' on page 10 undefined on input lin
+e 175.
+
+[10]
+
+Package natbib Warning: Citation `asd' on page 11 undefined on input line 186.
+
+
+Package natbib Warning: Citation `asd' on page 11 undefined on input line 186.
+
+[11] [12]
 File: Figures/Electron.pdf Graphic file (type pdf)
  <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 201.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 235.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
- [11]) (./Chapters/calibration.tex [12]
+) (./Chapters/calibration.tex [13] [14]
 Chapter 2.
 ------------------------------------------------------------------------------
  2 Parameter tuning
 ------------------------------------------------------------------------------
 File: Figures/Electron.pdf Graphic file (type pdf)
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 19.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 15.
 (pdftex.def)             Requested size: 208.73653pt x 149.097pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 19--19
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 15--15
  [][] 
  []
 
 File: Figures/Electron.pdf Graphic file (type pdf)
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 21.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 17.
 (pdftex.def)             Requested size: 208.73653pt x 149.097pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 21--21
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 17--17
  [][] 
  []
 
-[13
+[15
 
 ]
-LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 33.
-
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 33.
+(hyperref)                than one, level fixed on input line 31.
 
-[14]) (./Appendices/AppendixA.tex [15]
+[16]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 75.
+
+File: Figures/Electron.pdf Graphic file (type pdf)
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 80.
+(pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
+ [17]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 108.
+
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 108.
+ [18])
+(./Appendices/AppendixA.tex [19]
 Appendix A.
 ------------------------------------------------------------------------------
  A Appendix Title Here
 ------------------------------------------------------------------------------
-) [16
+) [20
 
 ]
 ------------------------------------------------------------------------------
@@ -978,97 +1019,55 @@ No file main.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 411.
-[17
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 413.
+[21
 
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 411.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 413.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 411.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 411.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 413.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 413.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 492E44D42DDA397223551349C6F7D06D;7377.
 
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: E200AF967895635EB425B12DC51C9EA2;6565
-(rerunfilecheck)             After:  BD2124ED46650999C2E2F2D094D585DD;6565.
 
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 411.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 413.
  ) 
 Here is how much of TeX's memory you used:
- 11086 strings out of 493488
- 155765 string characters out of 3141326
- 243176 words of memory out of 3000000
- 14079 multiletter control sequences out of 15000+200000
- 15627 words of font info for 58 fonts, out of 3000000 for 9000
+ 11123 strings out of 493488
+ 156208 string characters out of 3141326
+ 245176 words of memory out of 3000000
+ 14107 multiletter control sequences out of 15000+200000
+ 18475 words of font info for 71 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  49i,12n,45p,1138b,487s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{figure.caption.55} has been referenced but does n
-ot exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{figure.caption.50} has been referenced but does not
- exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{dummy.69} has been referenced but does not exist, r
-eplaced by a fixed one
-
-pdfTeX warning (dest): name{appendix.68} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.67} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{subsubsection.66} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.62} has been referenced but does not exi
-st, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.59} has been referenced but does not exi
-st, replaced by a fixed one
-
-pdfTeX warning (dest): name{chapter.54} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{section.52} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.51} has been referenced but does not exi
-st, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsubsection.49} has been referenced but does not 
-exist, replaced by a fixed one
-
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb>
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
-/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
-usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></
-usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
-sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
-/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
-ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
-al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/
-texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/tex
-live/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texl
-ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
-ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
-e/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive
-/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
-2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/20
-12/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on main.pdf (31 pages, 259462 bytes).
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
+ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/loca
+l/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/t
+exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texl
+ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texli
+ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
+e/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive
+/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/
+2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2
+012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/201
+2/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
+Output written on main.pdf (35 pages, 276108 bytes).
 PDF statistics:
- 598 PDF objects out of 1000 (max. 8388607)
- 533 compressed objects within 6 object streams
- 123 named destinations out of 1000 (max. 500000)
- 350 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 655 PDF objects out of 1000 (max. 8388607)
+ 586 compressed objects within 6 object streams
+ 129 named destinations out of 1000 (max. 500000)
+ 390 words of extra memory for PDF output out of 10000 (max. 10000000)
 
