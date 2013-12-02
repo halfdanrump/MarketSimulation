@@ -27,10 +27,10 @@ public class ExperimentUtils {
 	}
 	
 	public static void makeHFTSingleStockMarketMakers(Experiment e) {
-		float hft_latency_mu = Parameter.getAsFloat("hft_latency_mu");
-		float hft_latency_s = Parameter.getAsFloat("hft_latency_s");
-		float hft_think_mu = Parameter.getAsFloat("hft_think_mu");
-		float hft_think_s = Parameter.getAsFloat("hft_think_s");
+		float ssmm_latency_mu = Parameter.getAsFloat("ssmm_latency_mu");
+		float ssmm_latency_s = Parameter.getAsFloat("ssmm_latency_s");
+		float ssmm_think_mu = Parameter.getAsFloat("ssmm_think_mu");
+		float ssmm_think_s = Parameter.getAsFloat("ssmm_think_s");
 		
 		
 		int nAgents = Parameter.getAsInt("ssmm_nAgents");
@@ -42,11 +42,11 @@ public class ExperimentUtils {
 		float ssmm_orderlength_mu = Parameter.getAsFloat("ssmm_orderlength_mu");
 		float ssmm_orderlength_s = Parameter.getAsFloat("ssmm_orderlength_mu");
 		
-		int[] latencyToMarkets = {Utils.getNonNegativeGaussianInteger(hft_latency_mu, hft_latency_s)};
+		int[] latencyToMarkets = {Utils.getNonNegativeGaussianInteger(ssmm_latency_mu, ssmm_latency_s)};
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		for(int i=0; i<nAgents; i++) {
-			int thinkingTime = Utils.getNonNegativeGaussianInteger(hft_think_mu, hft_think_s);
+			int thinkingTime = Utils.getNonNegativeGaussianInteger(ssmm_think_mu, ssmm_think_s);
 			int minSpread = Utils.getNonNegativeGaussianInteger(ssmm_spread_mu, ssmm_spread_s);
 			long orderVol = Utils.getNonNegativeGaussianLong(ssmm_ordervol_mu, ssmm_ordervol_s);
 			int orderLength = Utils.getNonNegativeGaussianInteger(ssmm_orderlength_mu, ssmm_orderlength_s);
@@ -58,10 +58,10 @@ public class ExperimentUtils {
 	public static void makeHFTFastMovingAverageChartists(Experiment e) {
 		int nAgents = Parameter.getAsInt("sc_nAgents");
 		
-		float hft_latency_mu = Parameter.getAsFloat("hft_latency_mu");
-		float hft_latency_s = Parameter.getAsFloat("hft_latency_s");
-		float hft_think_mu = Parameter.getAsFloat("hft_think_mu");
-		float hft_think_s = Parameter.getAsFloat("hft_think_s");
+		float sc_latency_mu = Parameter.getAsFloat("sc_latency_mu");
+		float sc_latency_s = Parameter.getAsFloat("sc_latency_s");
+		float sc_think_mu = Parameter.getAsFloat("sc_think_mu");
+		float sc_think_s = Parameter.getAsFloat("sc_think_s");
 		
 		float sc_timehorizon_mu = Parameter.getAsFloat("sc_timehorizon_mu");
 		float sc_timehorizon_s = Parameter.getAsFloat("sc_timehorizon_s");
@@ -74,12 +74,12 @@ public class ExperimentUtils {
 		float sc_ordervol_mu = Parameter.getAsFloat("sc_ordervol_mu");
 		float sc_ordervol_s = Parameter.getAsFloat("sc_ordervol_s");
 		
-		int[] latencyToMarkets = {Utils.getNonNegativeGaussianInteger(hft_latency_mu, hft_latency_s)};
+		int[] latencyToMarkets = {Utils.getNonNegativeGaussianInteger(sc_latency_mu, sc_latency_s)};
 		int[] stockIDs = {0}; 
 		int[] marketIDs = {0}; 
 		
 		for(int i=0; i<nAgents; i++) {
-			int thinkingTime = Utils.getNonNegativeGaussianInteger(hft_think_mu, hft_think_s);
+			int thinkingTime = Utils.getNonNegativeGaussianInteger(sc_think_mu, sc_think_s);
 			int timeHorizon = Utils.getNonNegativeGaussianInteger(sc_timehorizon_mu, sc_timehorizon_s);
 			long ticksBeforeReacting = Utils.getNonNegativeGaussianLong(sc_ticksBeforeReacting_mu, sc_ticksBeforeReacting_s);
 			long aggressiveness = Utils.getNonNegativeGaussianLong(sc_priceTickSize_mu, sc_priceTickSize_s);
