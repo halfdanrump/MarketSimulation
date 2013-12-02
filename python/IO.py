@@ -61,6 +61,7 @@ def load_all_generations_as_DataFrame(folder_name):
     print "Loading data for %s generations..."%len(gen_pars_files)
     for p,f in zip(gen_pars_files, gen_fit_files):
         gen_num = p.split('_')[1]
+        print gen_num
         dp = np.load(folder_name + p)
         df = np.load(folder_name + f)
         pars = DataFrame(dp.items()[0][1])
@@ -71,12 +72,12 @@ def load_all_generations_as_DataFrame(folder_name):
         all_par = all_par.append(DataFrame(pars))
         all_fit = all_fit.append(DataFrame(fit))
         dp.close()
-        dp.close()
+        df.close()
     
     ### Remove invalid genes
     all_par = all_par.reset_index(drop=True)
     all_fit = all_fit.reset_index(drop=True)
-    i, = np.where(all_fit['longest_interval_within_margin'] < 0)
+    i, = np.where(all_fit['stdev'] == 10**6)
     all_par = all_par.drop(i)
     all_fit = all_fit.drop(i)
     all_par = all_par.reset_index(drop=True)
