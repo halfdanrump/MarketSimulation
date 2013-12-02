@@ -8,71 +8,35 @@
 
 The model has several parameters which must be selected carefully before the simulation can be used to infer knowledge about market behavior. The parameter tuning has two overall goals, which can be separated as follows. 
 
+\section{Motivation and overall procedure}
 First of all, the model must be calibrated such that it mimics the behavior of real markets. Since virtually every aspect of the simulation behavior depends on the values on the various parameters, these must be chosen carefully in order for the simulation to produce realistic behavior. An example of a simulation untuned parameters causing  unrealistic behavior is given in figure \ref{subfig:unrealistic_behavior}. Selecting realistic parameters is by far a simple task. First of all, it requires a way of quantifying the quality of each simulation. The choice of such a quantification is discussed in section \ref{section:simulation_fitness}. Secondly, there might be several different parameter configurations which produce seemingly realistic behavior, but do not correspond to a realistic market setting. An example for this is given in figure \ref{subfig:unrealistic_parameters}, and section \ref{section:filtering_parameters} briefly discusses this point. 
+
 \begin{figure}
-%issue 15
-\subcaptionbox{Parameters causing unrealistic dynamics\label{subfig:unrealistic_behavior}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\subcaptionbox{Unrealistic parameters causing realistic dynamics\label{subfig:unrealistic_parameters}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\caption{\textbf{Motivatoin for tuning:} the two}\label{fig:tuning_motivation}
+	%issue 15
+	\subcaptionbox{Parameters causing unrealistic dynamics\label{subfig:unrealistic_behavior}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
+	\subcaptionbox{Unrealistic parameters causing realistic dynamics\label{subfig:unrealistic_parameters}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
+	\caption{\textbf{Motivatoin for tuning:} the two}\label{fig:tuning_motivation}
 \end{figure}
 
 The second goal of the parameter tuning is to find parameters which promotes certain desirable behaviors. For instance, we might be interested in determining which parameters causes the traded price to stabilize faster after a shock to the fundamental price. Metrics for doing this is discussed in section \ref{section:simulation_fitness}
 
-The selection of parameters is a fairly complicated process because of the large parameter space, and because it takes a significant time to evaluate the fitness of a given set of parameters\footnote{The calculation time depends largely on the parameters, such as the number of agents and how active these are. Typically one to several minutes are required to evaluate a single set of parameters.}. amount of time to execute a simulation. Because of this, a three-step parameter selection procedure was used.
+The selection of parameters is a fairly complicated process because of the large parameter space, and because it takes a significant time to evaluate the fitness of a given set of parameters\footnote{The calculation time depends largely on the parameters, such as the number of agents and how active these are. Typically one to several minutes are required to evaluate a single set of parameters.}. amount of time to execute a simulation. Because of this, the following three-step parameter selection procedure was used.
 \begin{enumerate}
-\item Fix some of the model parameters in order to reduce the search space for the optimization algorithm. This requires us to consider which parameters can be fixed without losing opportunity to gain insight into market behavior. Essentially this step is a question of prioritizing the optimization of some parameters over the optimization of others. 
-\item Use an optimization algorithm to find sets of parameters which yield realistic model behavior. A genetic algorithm was chosen for this purpose, and the details are explained in section \ref{section:genetic_algorithm}.
-\item From the set of parameter combinations found by the optimization algorithm, remove the parameter combinations which obviously do not correspond to a relistic setting.
+	\item Fix some of the model parameters in order to reduce the search space for the optimization algorithm. This requires us to consider which parameters can be fixed without losing opportunity to gain insight into market behavior. Essentially this step is a question of prioritizing the optimization of some parameters over the optimization of others. 
+	\item Use an optimization algorithm to find sets of parameters which yield realistic model behavior. A genetic algorithm was chosen for this purpose, and the details are explained in section \ref{section:genetic_algorithm}.
+	\item From the set of parameter combinations found by the optimization algorithm, remove the parameter combinations which obviously do not correspond to a realistic setting.
 \end{enumerate}
 
+\subsection{Selecting fixed parameters}
+The main parameters of interest are the ones that control the latency and speed of the agents. The agent strategy parameters are less important, since 
 
-\subsection{asd}
 \begin{description}
-\item[Fixed across all experiments] These are parameters such as market rules, and simulation settings, 
-\item[Fixed for each experiment] These are parameters which 
-\item[Optimized for each experiment] These are the 
+	\item [\nrounds] Due to the computational cost of running the simulation for a large number of rounds, the the number of rounds is fixed at $10^5$ for all experiments.
 \end{description}
 
-
-\section{Genetic algorithm}\label{section:genetic_algorithm}
-A basic type of genetic algorithm was used. The algorithm proceeds as explain below.
-\begin{enumerate}
-\item Generate a population of healthy individuals, e.g., individuals with valid parameters.
-\item Evaluate fitness for every individual in the population.
-\item Repeat $n_\text{gen}$ times 
-\begin{enumerate}
-\item Generate offspring by crossing existing individuals.
-\item Apply mutation to with a certain probability to each individual (parents as well as children)
-\item Evaluate fitness of children and mutated parents.
-\end{enumerate}
-\end{enumerate}
-Table \ref{table:genetic_algorithm_parameters} presents an overview of the parameters used in the genetic algorithm. 
-\begin{table}
-\centering
-\begin{tabular}{l|l}
-Parameter & Assignment\\\hline
-Number of generations & 200 to 1000\\
-Number of individuals & 100 to 1000\\
-Cross-over points & 2\\
-Tournament size & 3\\
-Mutation probability & 0.1\\
-Mutation distribution &  $\mathcal{N}(\mu = 0, \sigma = 0.1)$\\
-\end{tabular}
-\caption{Overview of parameters used in the genetic algorithm}
-\label{table:genetic_algorithm_parameters}
-\end{table}
-A set of parameters is represented by an individual, $i$, consisting of one floating point $g_{i,j}$ number for each parameter, where $j$ denotes the index of the parameter. When the population is initialized, each $g_{i,j}$ is drawn from a uniform distributed in the range $g_j \in [0;1]$:
-\begin{equation}
-g_{i,j} \mathcal{U}(0,1)
-\end{equation}
-Most of the parameters in the model are integers
-
-
-
-
-\subsubsection{Filtering parameters}\label{section:filtering_parameters}
+\subsection{Filtering parameters}\label{section:filtering_parameters}
 As mentioned earlier, it is not enough simply to define a fitness function which assigns high values to parameters causing realistic behavior. In addition, it is important to discard parameters which obviously do not correspond to a realistic setting. Imagine that the simulation scores high fitness values when executed without any market makers. Since it is known that real markets do in fact contain market makers, nothing can be inferred from such a result. Indeed this might be a consequence of poorly designed fitness measures, but since it is easier to use domain specific knowledge to filter out the unrealistic parameters
 
 \begin{figure}[htbp]
@@ -83,11 +47,53 @@ As mentioned earlier, it is not enough simply to define a fitness function which
 	\label{fig:no_marketmakers}
 \end{figure}
 
+
+
+\section{Genetic algorithm}\label{section:genetic_algorithm}
+A basic type of genetic algorithm was used. The algorithm proceeds as explain below.
+\begin{enumerate}
+	\item Generate a population of healthy individuals, e.g., individuals with valid parameters.
+	\item Evaluate fitness for every individual in the population.
+	\item Repeat $n_\text{gen}$ times 
+	\begin{enumerate}
+		\item Generate offspring by crossing existing individuals.
+		\item Apply mutation to with a certain probability to each individual (parents as well as children)
+		\item Evaluate fitness of children and mutated parents.
+	\end{enumerate}
+\end{enumerate}
+Table \ref{table:genetic_algorithm_parameters} presents an overview of the parameters used in the genetic algorithm. 
+
+\begin{table}
+	\centering
+	\begin{tabular}{l|l}
+		Parameter & Assignment\\\hline
+		Number of generations & 200 to 1000\\
+		Number of individuals & 100 to 1000\\
+		Cross-over points & 2\\
+		Tournament size & 3\\
+		Mutation probability & 0.1\\
+		Mutation distribution &  $\mathcal{N}(\mu = 0, \sigma = 0.1)$\\
+	\end{tabular}
+	\caption{Overview of parameters used in the genetic algorithm}
+	\label{table:genetic_algorithm_parameters}
+\end{table}
+
+A set of parameters is represented by an individual, $i$, consisting of one floating point $g_{i,j}$ number for each parameter, where $j$ denotes the index of the parameter. When the population is initialized, each $g_{i,j}$ is drawn from a uniform distributed in the range $g_j \in [0;1]$:
+\begin{equation}
+g_{i,j} \mathcal{U}(0,1)
+\end{equation}
+Most of the parameters in the model are integers
+
+
+
+
+
+
 %		 $\nmm = \nsc = 0$
 
 
 \subsubsection{Fixed parameters}
-Due to the computational cost of running the simulation for a large number of rounds, the the number of rounds is fixed at $10^5$ for all experiments.
+
 
 
 
@@ -95,55 +101,30 @@ Due to the computational cost of running the simulation for a large number of ro
 \subsection{Model fitness}\label{section:simulation_fitness}
 
 In order to use inverse simulation, it is necessary to decide on how to measure the quality of an instance of the simulation. 
-
-
-
 In this work, the overall goal is to examine which parameter values cause the market to be stable, and which cause it to be unstable. 
-
-
 Another interesting point is the speed with which the market responds to the shock to the fundamental price, and which parameters influence this property. Furthermore, we are interested in investigating whether or not 
 
 \begin{itemize}
 \item 
 \item Are there certain parameter combinations which cause the market to behave in certain ways. S
 \end{itemize}
-
-
-
-
 In particular the parameters controlling various time delays are of interest. 
-
 The search space of the parameters is very large, which makes an exhaustive search impossible.
-
-
-
-
-
 To this end, four fitness measures were defined.
-
 The balance between the number 
 Several parameters influence the number of orders submitted by the high frequency traders.
 
-\subsection{Fixed number of agents}
-In the experiments in this subsection, the number of agents are kept fixed. 
-
-\begin{table}
-\begin{tabular}{c|c}
-\textbf{Parameter} & \textbf{Range}\\
-\nmm & \\
-\nsc & 
-\end{tabular}
-\caption{Overview of experiments}
-\end{table}
 
 
 \section{Selecting objective}
 Inverse simulation is a handy tool, because it makes it possible to specify desired behavior, and then search for parameters yielding such behavior. The four fitness measures defined in section \ref{section:simulation_fitness} gives 16 different 
-Since each of the four fitness measures described in section \ref{section:simulation_fitness} can be maximized or minimized, there are 16 possible search objectives for the optimization. For instance, maximizing 
+Since each of the four fitness measures described in section \ref{section:simulation_fitness} can be maximized or minimized, there are 16 possible search objectives for the optimization. Not all of these make sense so, so this section will cover the 
+
+\section{Experiments}
+This section will outline the varioius experiments carried out with the fundamental. 
 
 
 
-\subsection{Optimizing towards }
 
 
 \begin{itemize}
