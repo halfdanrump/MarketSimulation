@@ -33,8 +33,11 @@ The selection of parameters is a fairly complicated process because of the large
 The main parameters of interest are the ones that control the latency and speed of the agents. The agent strategy parameters are less important, since 
 
 \begin{description}
+	%issue 16
 	\item [\nrounds] Due to the computational cost of running the simulation for a large number of rounds, the the number of rounds is fixed at $10^5$ for all experiments.
 \end{description}
+
+The remaining model parameters will either be fixed for each experiment, or varied by the genetic algorithm. 
 
 \subsection{Filtering parameters}\label{section:filtering_parameters}
 As mentioned earlier, it is not enough simply to define a fitness function which assigns high values to parameters causing realistic behavior. In addition, it is important to discard parameters which obviously do not correspond to a realistic setting. Imagine that the simulation scores high fitness values when executed without any market makers. Since it is known that real markets do in fact contain market makers, nothing can be inferred from such a result. Indeed this might be a consequence of poorly designed fitness measures, but since it is easier to use domain specific knowledge to filter out the unrealistic parameters
@@ -49,7 +52,8 @@ As mentioned earlier, it is not enough simply to define a fitness function which
 
 
 
-\section{Genetic algorithm}\label{section:genetic_algorithm}
+\section{Inverse simulation with a genetic algorithm}\label{section:genetic_algorithm}
+%issue 5
 A basic type of genetic algorithm was used. The algorithm proceeds as explain below.
 \begin{enumerate}
 	\item Generate a population of healthy individuals, e.g., individuals with valid parameters.
@@ -78,24 +82,14 @@ Table \ref{table:genetic_algorithm_parameters} presents an overview of the param
 	\label{table:genetic_algorithm_parameters}
 \end{table}
 
+\subsection{Representing parameters as genes}
 A set of parameters is represented by an individual, $i$, consisting of one floating point $g_{i,j}$ number for each parameter, where $j$ denotes the index of the parameter. When the population is initialized, each $g_{i,j}$ is drawn from a uniform distributed in the range $g_j \in [0;1]$:
 \begin{equation}
 g_{i,j} \mathcal{U}(0,1)
 \end{equation}
 Most of the parameters in the model are integers
 
-
-
-
-
-
-%		 $\nmm = \nsc = 0$
-
-
-\subsubsection{Fixed parameters}
-
-
-
+%issue 17
 
 
 \subsection{Model fitness}\label{section:simulation_fitness}
@@ -116,12 +110,33 @@ Several parameters influence the number of orders submitted by the high frequenc
 
 
 
-\section{Selecting objective}
-Inverse simulation is a handy tool, because it makes it possible to specify desired behavior, and then search for parameters yielding such behavior. The four fitness measures defined in section \ref{section:simulation_fitness} gives 16 different 
-Since each of the four fitness measures described in section \ref{section:simulation_fitness} can be maximized or minimized, there are 16 possible search objectives for the optimization. Not all of these make sense so, so this section will cover the 
+\section{Controlling market behavior}
+Inverse simulation is a handy tool, because it makes it possible to specify desired behavior, and then search for parameters yielding such behavior. The four fitness measures defined in section \ref{section:simulation_fitness} gives 16 combinatinos for how to optimize the model. 
+
+First of all, we are interested in establishing which parameters cause the market to return to a stable state after the fundamental price has incurred a shock
+
+\begin{table}
+\begin{tabular}{c|c}
+\textbf{Parameter} & \textbf{Range}\\
+\nmm & \\
+\nsc & 
+\end{tabular}
+\caption{Overview of experiments}
+\label{table:optimization_goals}
+\end{table}
 
 \section{Experiments}
 This section will outline the varioius experiments carried out with the fundamental. 
+
+
+\begin{figure}[htbp]
+%issue 18
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{}
+	\label{fig:}
+\end{figure}
 
 
 

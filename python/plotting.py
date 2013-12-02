@@ -65,6 +65,9 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     plt.close()
     gc.collect()
 
+def plot_issue_():
+    pass
+
 
 
 """

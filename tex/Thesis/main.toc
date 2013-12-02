@@ -40,15 +40,15 @@
 \contentsline {section}{\numberline {1.5}Implementation}{14}{section.57}
 \contentsline {section}{\numberline {1.6}Experiments}{14}{section.58}
 \contentsline {chapter}{\numberline {2}Parameter tuning}{15}{chapter.59}
-\contentsline {subsection}{\numberline {2.0.1}asd}{16}{subsection.65}
-\contentsline {section}{\numberline {2.1}Genetic algorithm}{16}{section.66}
-\contentsline {subsubsection}{\numberline {2.1.0.1}Filtering parameters}{17}{subsubsection.75}
-\contentsline {subsubsection}{\numberline {2.1.0.2}Fixed parameters}{18}{subsubsection.77}
-\contentsline {subsection}{\numberline {2.1.1}Model fitness}{18}{subsection.78}
-\contentsline {subsection}{\numberline {2.1.2}Fixed number of agents}{19}{subsection.79}
-\contentsline {section}{\numberline {2.2}Selecting objective}{19}{section.81}
-\contentsline {subsection}{\numberline {2.2.1}Optimizing towards }{19}{subsection.82}
+\contentsline {section}{\numberline {2.1}Motivation and overall procedure}{15}{section.60}
+\contentsline {subsection}{\numberline {2.1.1}Selecting fixed parameters}{16}{subsection.66}
+\contentsline {subsection}{\numberline {2.1.2}Filtering parameters}{17}{subsection.67}
+\contentsline {section}{\numberline {2.2}Genetic algorithm}{17}{section.69}
+\contentsline {subsubsection}{\numberline {2.2.0.1}Fixed parameters}{18}{subsubsection.78}
+\contentsline {subsection}{\numberline {2.2.1}Model fitness}{18}{subsection.79}
+\contentsline {section}{\numberline {2.3}Selecting objective}{19}{section.80}
+\contentsline {section}{\numberline {2.4}Experiments}{19}{section.81}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{20}{appendix.83}
+\contentsline {chapter}{\numberline {A}Appendix Title Here}{20}{appendix.82}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{21}{dummy.84}
+\contentsline {chapter}{Bibliography}{21}{dummy.83}
