@@ -4,7 +4,7 @@ import settings
 #import numpy as np
 import random
 from fitness import evaluate_simulation_results, get_named_stats
-
+from copy import deepcopy
 from collections import OrderedDict
 from scoop import futures
 from datetime import datetime
@@ -57,14 +57,16 @@ def scale_genes_to_parameters(individual, return_full_parameter_set = True):
 	#print "scaled_parameters: %s"%parameters
 	return parameters
 
+def create_healthy_individual():
+	while True:
+		individual = toolbox.individual()
+		if verify_simulation_parameters(scale_genes_to_parameters(individual)):
+			return individual 
+
 def create_healthy_population():
 	population = list()
 	for i in range(settings.population_size):
-		while True:
-			individual = toolbox.individual()
-			if verify_simulation_parameters(scale_genes_to_parameters(individual)):
-				population.append(individual)
-				break
+		population.append(create_healthy_individual())
 	return population
 
 
@@ -95,7 +97,7 @@ if __name__ == "__main__":
 	makedirs(gene_data_folder)
 	makedirs(graph_folder)
 	
-	toolbox.register("map", futures.map)
+	#toolbox.register("map", futures.map)
 
 
 	pop = create_healthy_population()
@@ -120,7 +122,15 @@ if __name__ == "__main__":
 		
 		for mutant in offspring:
 		    if random.random() < settings.mutation_prob:
-		        toolbox.mutate(mutant)
+		        before_mutation = deepcopy(mutant)
+		        while True:
+		        	toolbox.mutate(mutant)
+			        if verify_simulation_parameters(scale_genes_to_parameters(mutant)):
+			        	break
+			        else:
+			        	print mutant
+			        	print "Invalid mutant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+			        	mutant = before_mutation
 		        del mutant.fitness.values
 
 		# Evaluate the individuals with an invalid fitness

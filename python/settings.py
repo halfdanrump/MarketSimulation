@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = False
+TEST_MODE = True
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
@@ -75,6 +75,10 @@ default_parameters = {
     'sc_waitTimeBetweenTrading_mu' : 50,
     'sc_waitTimeBetweenTrading_s' : 20
 }
+
+if TEST_MODE:
+    default_parameters['ssmm_nAgents'] = 0
+    default_parameters['sc_nAgents'] = 0
 
 
 parameters_in_genes = [

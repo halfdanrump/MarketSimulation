@@ -77,7 +77,7 @@ def load_all_generations_as_DataFrame(folder_name):
     ### Remove invalid genes
     all_par = all_par.reset_index(drop=True)
     all_fit = all_fit.reset_index(drop=True)
-    i, = np.where(all_fit['stdev'] == 10**6)
+    i, = np.where(all_fit['overshoot'] >= 10**6)
     all_par = all_par.drop(i)
     all_fit = all_fit.drop(i)
     all_par = all_par.reset_index(drop=True)
