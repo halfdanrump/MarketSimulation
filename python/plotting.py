@@ -1,11 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 import textwrap
 from datetime import datetime
 import settings
 import gc
 from utils import get_fundamental_after_shock
+import IO
 
+import ppl
+
+import string
+import pandas
+from numpy import log, sqrt
 def how_to_make_plot():
 
     fig = plt.figure()
@@ -65,9 +72,37 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     plt.close()
     gc.collect()
 
-def plot_issue_():
-    pass
 
+def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = True):
+    ### Originally created for issue_21
+    def dummy(a): return a
+    fig, ax = plt.subplots(1)
+    #ax.set_autoscale_on(False)
+    ax.set_xlim([eval(x_function)(min(data_frame[x_name])), eval(x_function)(max(data_frame[x_name]))])
+    ax.set_ylim([eval(y_function)(min(data_frame[y_name])), eval(y_function)(max(data_frame[y_name]))])
+    x_label = x_name.capitalize().replace('_', ' ')
+    if x_function == 'log': x_label += ' (log)'
+    y_label = y_name.capitalize().replace('_', ' ')
+    if y_function == 'log': y_label += ' (log)'
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.xaxis.get_major_formatter().set_powerlimits((0, 1))
+    ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+    # Show the whole color range
+    n_intervals = 4
+    bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
+    data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
+    groups = pandas.cut(data_frame[color_by], bins=bins)
+    print groups.levels
+    for g in range(n_intervals):
+        print g, groups.levels[g]
+        x = eval(x_function)(data_frame[data_frame.groups == g][x_name])
+        y = eval(y_function)(data_frame[data_frame.groups == g][y_name])
+        ppl.scatter(ax, x, y, label=str(groups.levels[g]))
+
+    if legend: ppl.legend(ax)
+    #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
+    fig.savefig(filename)
 
 
 """
