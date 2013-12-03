@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = True
+TEST_MODE = False
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
@@ -28,7 +28,7 @@ deadborn_gene_fitness = 10000000000
 if TEST_MODE:
     population_size = 4
 else:
-    population_size = 100
+    population_size = 200
 
 n_generations = 1000
 mutation_prob = 0.1
@@ -82,8 +82,8 @@ if TEST_MODE:
 
 
 parameters_in_genes = [
-    #'ssmm_nAgents',
-    #'sc_nAgents' ,
+    'ssmm_nAgents',
+    'sc_nAgents' ,
 
     'ssmm_latency_mu',
     'ssmm_latency_s',
@@ -105,10 +105,10 @@ parameter_scaling = OrderedDict({
     'ssmm_nAgents' : 50,
     'sc_nAgents' : 300,
 
-    'ssmm_latency_mu' : 100,
-    'ssmm_latency_s' : 50,
-    'ssmm_think_mu' : 100,
-    'ssmm_think_s' : 50,
+    'ssmm_latency_mu' : 10,
+    'ssmm_latency_s' : 5,
+    'ssmm_think_mu' : 10,
+    'ssmm_think_s' : 5,
     'sc_latency_mu' : 100,
     'sc_latency_s' : 50,
     'sc_think_mu' : 100,

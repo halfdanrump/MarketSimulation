@@ -97,7 +97,7 @@ if __name__ == "__main__":
 	makedirs(gene_data_folder)
 	makedirs(graph_folder)
 	
-	#toolbox.register("map", futures.map)
+	toolbox.register("map", futures.map)
 
 
 	pop = create_healthy_population()
@@ -123,14 +123,18 @@ if __name__ == "__main__":
 		for mutant in offspring:
 		    if random.random() < settings.mutation_prob:
 		        before_mutation = deepcopy(mutant)
+		        times_mutated = 0
 		        while True:
 		        	toolbox.mutate(mutant)
 			        if verify_simulation_parameters(scale_genes_to_parameters(mutant)):
 			        	break
 			        else:
-			        	print mutant
-			        	print "Invalid mutant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+			        	print "Invalid mutant!"
 			        	mutant = before_mutation
+			        times_mutated += 1
+			        if times_mutated == 1000:
+			        	mutant = create_healthy_individual()
+			        	break
 		        del mutant.fitness.values
 
 		# Evaluate the individuals with an invalid fitness
