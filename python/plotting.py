@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import matplotlib as mpl
 import textwrap
 from datetime import datetime
 import settings
 import gc
 from utils import get_fundamental_after_shock
 import IO
-
+import brewer2mpl
 import ppl
 
 import string
@@ -94,6 +94,8 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     #bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
     data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
     groups = pandas.cut(data_frame[color_by], bins=bins)
+    bounds = []
+
     print groups.levels
     for g in range(n_intervals):
         print g, groups.levels[g]
@@ -101,8 +103,19 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
         y = eval(y_function)(data_frame[data_frame.groups == g][y_name])
         ppl.scatter(ax, x, y, label=str(groups.levels[g]))
 
-    if legend: ppl.legend(ax)
+    #if legend: ppl.legend(ax)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
+    
+
+    bounds = bins
+    print bounds
+    cmap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True).mpl_colormap
+    norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+    ax2 = fig.add_axes([0.8, 0.1, 0.03, 0.8])
+    ax2.set_ylabel(color_by.capitalize().replace('_', ' '))
+    cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, spacing='proportional', ticks=bounds, norm=norm, alpha=0.5)
+    cbar.ax.set_yticklabels([np.round(t) for t in bounds])# vertically oriented colorbar
+
     fig.savefig(filename)
 
 
