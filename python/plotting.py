@@ -90,7 +90,8 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     # Show the whole color range
     n_intervals = 4
-    bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
+    bins = np.logspace(np.log(data_frame[color_by].min()), np.log(data_frame[color_by].max()), n_intervals + 1, base = np.e)
+    #bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
     data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
     groups = pandas.cut(data_frame[color_by], bins=bins)
     print groups.levels
