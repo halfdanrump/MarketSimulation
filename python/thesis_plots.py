@@ -42,7 +42,7 @@ def plot_issue_26():
 	"""
 	from sklearn.decomposition import PCA
 	from sklearn.cluster import KMeans
-	from plotting import make_color_grouped_scatter_plot
+	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	datapath = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/d1_sameLatDist_ssmm40_sc100/'
 	#par = pandas.read_pickle(datapath + 'pars.pandas')
 	fit = pandas.read_pickle(datapath + 'fits.pandas')
@@ -57,14 +57,12 @@ def plot_issue_26():
 	filename = figure_save_path + 'issue_26_PCA_a_3components.png'
 	make_color_grouped_scatter_plot(data_frame=df, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
 
-	kmeans = KMeans(n_clusters = 3)
+	n_clusters = 5
+	kmeans = KMeans(n_clusters = n_clusters)
 	kmeans.fit(t)
-	df['labels'] = kmeans.labels_
-	print len(df['d1'])
-	print len(kmeans.labels_)
-	colormap = brewer2mpl.get_map('Set2', 'Qualitative', 3, reverse=True)
+	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
 	filename = figure_save_path + 'issue_26_PCA_b_clusters.png'
-	make_color_grouped_scatter_plot(data_frame=df, x_name='d1', y_name='d2', color_by='labels', filename=filename, colormap = colormap)
+	make_scatter_plot_for_labelled_data(data_frame=df, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 
 def remake_all_plots():
 	plot_issue_21()

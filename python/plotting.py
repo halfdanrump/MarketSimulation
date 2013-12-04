@@ -123,6 +123,40 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     fig.savefig(filename)
 
 
+def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False):
+    ### Originally created for issue_28
+    def dummy(a): return a
+    p = Ppl(colormap, alpha=1)
+
+    fig, ax = plt.subplots(1)
+    #ax.set_autoscale_on(False)
+    ax.set_xlim([eval(x_function)(min(data_frame[x_name])), eval(x_function)(max(data_frame[x_name]))])
+    ax.set_ylim([eval(y_function)(min(data_frame[y_name])), eval(y_function)(max(data_frame[y_name]))])
+    x_label = x_name.capitalize().replace('_', ' ')
+    if x_function == 'log': x_label += ' (log)'
+    y_label = y_name.capitalize().replace('_', ' ')
+    if y_function == 'log': y_label += ' (log)'
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.xaxis.get_major_formatter().set_powerlimits((0, 1))
+    ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+    # Show the whole color range
+    
+    n_labels  = labels.max()
+
+    for g in range(n_labels + 1):
+        print g
+        x = eval(x_function)(data_frame[labels == g][x_name])
+        y = eval(y_function)(data_frame[labels == g][y_name])
+        p.scatter(ax, x, y, label=str(g))
+
+    if legend: p.legend(ax)
+    #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
+    
+
+    fig.savefig(filename)
+
+
 """
 def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):
     assert x_axis_name in all_data.dtype.names, "x axis parameter not found"
