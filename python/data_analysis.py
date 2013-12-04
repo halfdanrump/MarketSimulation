@@ -4,6 +4,11 @@ from IO import load_all_generations_as_DataFrame
 import matplotlib.pyplot as plt
 from pandas import DataFrame
 
+def reduce_npoints_kmeans(fit, n_datapoints = 1000):
+		kmeans = KMeans(n_clusters = n_datapoints, n_jobs=-1, verbose=1)
+		kmeans.fit(fit)
+		return kmeans.cluster_centers_
+
 
 def run_kmeans(gene_folder, n_clusters):
 	pars, fitness = load_all_generations_as_DataFrame(gene_folder)
