@@ -93,6 +93,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     n_intervals = len(colormap.colors)
     if color_function == 'log': bins = np.logspace(np.log10( data_frame[color_by].min()), np.log10(data_frame[color_by].max()), n_intervals + 1, base = 10)
     else: bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
+    print bins
     data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
     groups = pandas.cut(data_frame[color_by], bins=bins)
     bounds = []

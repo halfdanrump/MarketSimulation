@@ -40,7 +40,7 @@ def plot_issue_26():
 	"""
 	PCA and Kmeans for dataset 1
 	"""
-	from sklearn.decomposition import PCA, KernelPCA
+	from sklearn.decomposition import PCA
 	from sklearn.cluster import KMeans
 	from plotting import make_color_grouped_scatter_plot
 	datapath = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/d1_sameLatDist_ssmm40_sc100/'
@@ -52,15 +52,24 @@ def plot_issue_26():
 	t = pca.fit_transform(fit_data.values)
 	columns = ['d1', 'd2', 'd3']
 	df = pandas.DataFrame(t, columns=columns)
+
+	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
 	filename = figure_save_path + 'issue_26_PCA_a_3components.png'
-	make_color_grouped_scatter_plot(data_frame=df, x_name='d1', y_name='d2', color_by='d3', filename=filename)
+	make_color_grouped_scatter_plot(data_frame=df, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
 
 	kmeans = KMeans(n_clusters = 3)
 	kmeans.fit(t)
 	df['labels'] = kmeans.labels_
+	print len(df['d1'])
+	print len(kmeans.labels_)
+	colormap = brewer2mpl.get_map('Set2', 'Qualitative', 3, reverse=True)
 	filename = figure_save_path + 'issue_26_PCA_b_clusters.png'
-	make_color_grouped_scatter_plot(data_frame=df, x_name='d1', y_name='d2', color_by='labels', filename=filename)
+	make_color_grouped_scatter_plot(data_frame=df, x_name='d1', y_name='d2', color_by='labels', filename=filename, colormap = colormap)
+
+def remake_all_plots():
+	plot_issue_21()
+	plot_issue_26()
 
 
 if __name__ == '__main__':
-	plot_issue_21()
+	plot_issue_26()
