@@ -80,7 +80,7 @@ def plot_issue_29():
 	#par = pandas.read_pickle(datapath + 'pars.pandas')
 	fit = pandas.read_pickle(datapath + 'fits.pandas')
 	fit = fit.drop('gen', 1)
-	points = reduce_npoints_kmeans(fit, 1000)
+	points = reduce_npoints_kmeans(fit, n_datapoints=1000, load_from_file=True)
 	pca = PCA(n_components='mle')
 	trans = pca.fit_transform(points)
 	columns = ['d1', 'd2', 'd3']

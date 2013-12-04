@@ -3,12 +3,26 @@ from sklearn.decomposition import PCA
 from IO import load_all_generations_as_DataFrame
 import matplotlib.pyplot as plt
 from pandas import DataFrame
+import cPickle
 
-def reduce_npoints_kmeans(fit, n_datapoints = 1000):
+temp_storage = '/Users/halfdan/temp/'
+
+def reduce_npoints_kmeans(fit, n_datapoints = 1000, load_from_file = False):
+	store_file = temp_storage + 'kmeans.pkl'
+	
+	if load_from_file:
+		print 'Loading kmeans from file...'
+		with open(store_file, 'rb') as fid:
+			kmeans = cPickle.load(fid)
+	else:
+		print 'Calculating k-means with %s cluster centers...'%n_datapoints
 		kmeans = KMeans(n_clusters = n_datapoints, n_jobs=-1, verbose=1)
 		kmeans.fit(fit)
-		return kmeans.cluster_centers_
+		with open(store_file, 'wb') as fid:
+			cPickle.dump(kmeans, fid)    
 
+
+	return kmeans.cluster_centers_
 
 def run_kmeans(gene_folder, n_clusters):
 	pars, fitness = load_all_generations_as_DataFrame(gene_folder)
