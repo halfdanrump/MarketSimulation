@@ -1,9 +1,11 @@
-import ppl
-import matplotlib.pyplot as plt
-import IO
-import numpy as np
-from numpy import log
+#import ppl
+#import matplotlib.pyplot as plt
+#import IO
+#import numpy as np
+#from numpy import log
 import pandas
+#from ppl import Ppl
+import brewer2mpl
 
 figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/Thesis/Figures/'
 
@@ -16,20 +18,22 @@ def plot_issue_21():
 	datapath = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/d1_sameLatDist_ssmm40_sc100/'
 	fit = pandas.read_pickle(datapath + 'fits.pandas')
 	
+	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
+
 	filename = figure_save_path + 'issue_21_a.png'
-	make_color_grouped_scatter_plot(data_frame=fit, x_name='overshoot', y_name='time_to_reach_new_fundamental', color_by='stdev', filename=filename, y_function='log')
+	make_color_grouped_scatter_plot(data_frame=fit, x_name='overshoot', y_name='time_to_reach_new_fundamental', color_by='stdev', filename=filename, colormap = colormap, y_function='log')
 
 	filename = figure_save_path + 'issue_21_b.png'
-	make_color_grouped_scatter_plot(data_frame=fit, x_name='overshoot', y_name='stdev', color_by='time_to_reach_new_fundamental', filename=filename)
+	make_color_grouped_scatter_plot(data_frame=fit, x_name='overshoot', y_name='stdev', color_by='time_to_reach_new_fundamental', filename=filename, colormap = colormap)
 
 	filename = figure_save_path + 'issue_21_c.png'
-	make_color_grouped_scatter_plot(data_frame=fit, x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='stdev', filename=filename, color_function='log')
+	make_color_grouped_scatter_plot(data_frame=fit, x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='stdev', filename=filename, colormap = colormap)
 	
 	filename = figure_save_path + 'issue_21_d.png'
-	make_color_grouped_scatter_plot(data_frame=fit, x_name='stdev', y_name='round_stable', color_by='time_to_reach_new_fundamental', filename=filename, x_function='log', y_function='log')
+	make_color_grouped_scatter_plot(data_frame=fit, x_name='stdev', y_name='round_stable', color_by='time_to_reach_new_fundamental', filename=filename, colormap = colormap, x_function='log', y_function='log')
 
 	filename = figure_save_path + 'issue_21_e.png'
-	make_color_grouped_scatter_plot(data_frame=fit, x_name='stdev', y_name='time_to_reach_new_fundamental', color_by='round_stable', filename=filename, x_function='log', y_function='log')
+	make_color_grouped_scatter_plot(data_frame=fit, x_name='stdev', y_name='time_to_reach_new_fundamental', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log')
 	
 	
 def plot_issue_26():
@@ -59,4 +63,4 @@ def plot_issue_26():
 
 
 if __name__ == '__main__':
-	plot_issue_26()
+	plot_issue_21()

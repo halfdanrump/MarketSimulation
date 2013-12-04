@@ -6,11 +6,10 @@ from datetime import datetime
 import settings
 import gc
 from utils import get_fundamental_after_shock
-import IO
+#import IO
 import brewer2mpl
-import ppl
-
-import string
+from ppl import Ppl
+#import string
 import pandas
 from numpy import log, sqrt
 def how_to_make_plot():
@@ -73,9 +72,11 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     gc.collect()
 
 
-def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
+def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, colormap, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
     ### Originally created for issue_21
     def dummy(a): return a
+    p = Ppl(colormap, alpha=1)
+
     fig, ax = plt.subplots(1)
     #ax.set_autoscale_on(False)
     ax.set_xlim([eval(x_function)(min(data_frame[x_name])), eval(x_function)(max(data_frame[x_name]))])
@@ -89,7 +90,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     ax.xaxis.get_major_formatter().set_powerlimits((0, 1))
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     # Show the whole color range
-    n_intervals = 4
+    n_intervals = len(colormap.colors)
     if color_function == 'log': bins = np.logspace(np.log10( data_frame[color_by].min()), np.log10(data_frame[color_by].max()), n_intervals + 1, base = 10)
     else: bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
     data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
@@ -101,20 +102,21 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
         print g, groups.levels[g]
         x = eval(x_function)(data_frame[data_frame.groups == g][x_name])
         y = eval(y_function)(data_frame[data_frame.groups == g][y_name])
-        ppl.scatter(ax, x, y, label=str(groups.levels[g]))
+        p.scatter(ax, x, y, label=str(groups.levels[g]))
 
-    if legend: ppl.legend(ax)
+    if legend: p.legend(ax)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
     
 
     bounds = bins
     print bounds
     if colorbar:
-        cmap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True).mpl_colormap
+        cmap = p.get_colormap().mpl_colormap
+        print cmap
         norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
         ax2 = fig.add_axes([0.2, 0.94 , 0.7, 0.03])
         ax2.set_ylabel(color_by.capitalize().replace('_', ' '))
-        cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, spacing='proportional', ticks=bounds, norm=norm, alpha=0.5, orientation='horizontal')
+        cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, spacing='proportional', ticks=bounds, norm=norm, alpha=p.get_alpha(), orientation='horizontal')
         cbar.ax.set_xticklabels([str(int(t)) for t in bounds])# vertically oriented colorbar
 
     fig.savefig(filename)
