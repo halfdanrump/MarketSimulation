@@ -20,7 +20,7 @@ def plot_issue_21(dataset = 'd1'):
 	"""
 	from plotting import make_color_grouped_scatter_plot
 	datapath = dataset_paths[dataset]
-	fit = pandas.read_pickle(datapath + 'fits.pandas')
+	fit, gen = IO.load_pickled_generation_dataframe(datapath + 'fits.pandas')
 	
 	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
 	print "Making scatter plots of fitness data for dataset %s"%dataset
@@ -88,8 +88,7 @@ def plot_issue_29(load_clusters_from_file, dataset = 'd1'):
 	Use KMeans to reduce number of datapoints and then use affinity propagation
 	"""
 	datapath = dataset_paths[dataset]
-	fit = pandas.read_pickle(datapath + 'fits.pandas')
-	fit = fit.drop('gen', 1)
+	fit, gen = IO.load_pickled_generation_dataframe(datapath + 'fits.pandas')
 
 	points = reduce_npoints_kmeans(dataset, fit, n_datapoints=1000, load_from_file=load_clusters_from_file)
 	trans, pca, components = calculate_pca(DataFrame(points), n_components=3)
@@ -113,8 +112,7 @@ def plot_issue_32(dataset = 'd1'):
 	from data_analysis import calculate_pca
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	datapath = dataset_paths[dataset]
-	par = pandas.read_pickle(datapath + 'pars.pandas')
-	par_data = par.drop('gen', 1)
+	par_data, gen = IO.load_pickled_generation_dataframe(datapath + 'pars.pandas')
 	
 	par_trans, pca, components = calculate_pca(par_data, n_components=3, whiten = True)
 	
