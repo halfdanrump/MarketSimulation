@@ -33,8 +33,14 @@ def run_kmeans(gene_folder, n_clusters):
 	return kmeans, means, stds
 	
 def calculate_pca(dataframe, n_components, whiten = False, normalize = True):
+	from sklearn.preprocessing import scale
 	pca = PCA(n_components=n_components, whiten=whiten)
-	transformed_data = pca.fit_transform(dataframe.values)
+
+	if normalize:
+		data = scale(dataframe)
+	else:
+		data = dataframe.values
+	transformed_data = pca.fit_transform(data)
 	components = DataFrame(pca.components_, columns = dataframe.columns)	
 	print components
 	return transformed_data, pca, components

@@ -139,9 +139,9 @@ def plot_issue_34(dataset = 'd1'):
 	imshow
 
 def remake_all_plots():
-	#plot_issue_21(dataset='d1')
-	#plot_issue_26(dataset='d1')
-	#plot_issue_29(dataset='d1', load_clusters_from_file=True)
+	plot_issue_21(dataset='d1')
+	plot_issue_26(dataset='d1')
+	plot_issue_29(dataset='d1', load_clusters_from_file=False)
 	plot_issue_32(dataset='d1')
 
 if __name__ == '__main__':
