@@ -89,8 +89,8 @@ def plot_issue_29(load_clusters_from_file, dataset = 'd1'):
 	"""
 	datapath = dataset_paths[dataset]
 	fit, gen = IO.load_pickled_generation_dataframe(datapath + 'fits.pandas')
-
-	points = reduce_npoints_kmeans(dataset, fit, n_datapoints=1000, load_from_file=load_clusters_from_file)
+	trans_full_dataset, pca, components = calculate_pca(fit, n_components=3)
+	points = reduce_npoints_kmeans(dataset, trans_full_dataset, n_datapoints=1000, load_from_file=load_clusters_from_file)
 	trans, pca, components = calculate_pca(DataFrame(points), n_components=3)
 	
 	columns = ['d1', 'd2', 'd3']	
@@ -145,4 +145,4 @@ def remake_all_plots():
 	plot_issue_32(dataset='d1')
 
 if __name__ == '__main__':
-	remake_all_plots()
+	plot_issue_29(dataset='d1', load_clusters_from_file=False)
