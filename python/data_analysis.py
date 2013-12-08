@@ -1,14 +1,14 @@
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from IO import load_all_generations_as_DataFrame
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from pandas import DataFrame
 import cPickle
 
 temp_storage = '/Users/halfdan/temp/'
 
-def reduce_npoints_kmeans(fit, n_datapoints = 1000, load_from_file = False):
-	store_file = temp_storage + 'kmeans.pkl'
+def reduce_npoints_kmeans(dataset, fit, n_datapoints = 1000, load_from_file = False):
+	store_file = temp_storage + dataset + '_kmeans.pkl'
 	
 	if load_from_file:
 		print 'Loading kmeans from file...'
@@ -32,13 +32,9 @@ def run_kmeans(gene_folder, n_clusters):
 	stds = map(lambda c: fitness[kmeans.labels_ == c].std()['longest_interval_within_margin'], range(n_clusters))
 	return kmeans, means, stds
 	
-def visualize_with_PCA(pars = DataFrame(), fit = DataFrame(), gene_folder = None):
-	if gene_folder:
-		print "Loading data from files..."
-		pars, fitness = load_all_generations_as_DataFrame(gene_folder)
-	elif not (pars and fit):
-		assert False, "Please specify either gene_folder or par and fit dataframes."
-	
-	pca = PCA(n_components=2, copy=True, whiten=True)
-	return pca
-
+def calculate_pca(dataframe, n_components, whiten = False, normalize = True):
+	pca = PCA(n_components=n_components, whiten=whiten)
+	transformed_data = pca.fit_transform(dataframe.values)
+	components = DataFrame(pca.components_, columns = dataframe.columns)	
+	print components
+	return transformed_data, pca, components
