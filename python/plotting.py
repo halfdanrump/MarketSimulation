@@ -93,14 +93,13 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     n_intervals = len(colormap.colors)
     if color_function == 'log': bins = np.logspace(np.log10( data_frame[color_by].min()), np.log10(data_frame[color_by].max()), n_intervals + 1, base = 10)
     else: bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
-    print bins
+    
     data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
     groups = pandas.cut(data_frame[color_by], bins=bins)
     bounds = []
 
-    print groups.levels
+    
     for g in range(n_intervals):
-        print g, groups.levels[g]
         x = eval(x_function)(data_frame[data_frame.groups == g][x_name])
         y = eval(y_function)(data_frame[data_frame.groups == g][y_name])
         p.scatter(ax, x, y, label=str(groups.levels[g]))
@@ -108,12 +107,10 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     if legend: p.legend(ax)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
     
-
     bounds = bins
-    print bounds
     if colorbar:
         cmap = p.get_colormap().mpl_colormap
-        print cmap
+        
         norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
         ax2 = fig.add_axes([0.2, 0.94 , 0.7, 0.03])
         ax2.set_ylabel(color_by.capitalize().replace('_', ' '))
@@ -145,7 +142,6 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     n_labels  = labels.max()
 
     for g in range(n_labels + 1):
-        print len(labels[labels == g])
         x = eval(x_function)(data_frame[labels == g][x_name])
         y = eval(y_function)(data_frame[labels == g][y_name])
         p.scatter(ax, x, y, label=str(len(labels[labels == g])))
