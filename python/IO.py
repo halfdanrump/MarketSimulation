@@ -3,7 +3,7 @@ from collections import Iterable
 from shutil import rmtree
 import numpy as np
 from settings import fitness_types, fitness_weights, parameters_in_genes
-from pandas import DataFrame
+from pandas import DataFrame, read_pickle
 import re
 import os
 #from shutils import rmtree
@@ -91,3 +91,9 @@ def load_tradeprice_data(filename):
     rounds = d['rounds']
     prices = d['tradePrice']
     return rounds, prices
+
+def load_pickled_generation_dataframe(dataframe_file):
+    df = read_pickle(dataframe_file)
+    gen = df['gen']
+    df = df.drop('gen', 1)
+    return df, gen
