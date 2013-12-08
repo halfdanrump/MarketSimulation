@@ -8,3 +8,5 @@ simulation_graphs/
 *.yaml
 /tex/referencedPapers
 /tex/Template
+/tex/datasets/raw_data/
+python/shizouka_path.py

@@ -33,7 +33,7 @@ else:
 n_generations = 1000
 mutation_prob = 0.1
 crossover_prob = 0.4
-tournament_size = 3
+tournament_size = 2
 
 if TEST_MODE:
     n_simulation_rounds = 30000

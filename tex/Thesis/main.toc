@@ -43,12 +43,14 @@
 \contentsline {section}{\numberline {2.1}Motivation and overall procedure}{15}{section.60}
 \contentsline {subsection}{\numberline {2.1.1}Selecting fixed parameters}{16}{subsection.66}
 \contentsline {subsection}{\numberline {2.1.2}Filtering parameters}{17}{subsection.67}
-\contentsline {section}{\numberline {2.2}Genetic algorithm}{17}{section.69}
-\contentsline {subsubsection}{\numberline {2.2.0.1}Fixed parameters}{18}{subsubsection.78}
-\contentsline {subsection}{\numberline {2.2.1}Model fitness}{18}{subsection.79}
-\contentsline {section}{\numberline {2.3}Selecting objective}{19}{section.80}
-\contentsline {section}{\numberline {2.4}Experiments}{19}{section.81}
+\contentsline {section}{\numberline {2.2}Inverse simulation with a genetic algorithm}{18}{section.69}
+\contentsline {subsection}{\numberline {2.2.1}Representing parameters as genes}{18}{subsection.77}
+\contentsline {subsection}{\numberline {2.2.2}Model fitness}{18}{subsection.79}
+\contentsline {section}{\numberline {2.3}Controlling market behavior}{19}{section.80}
+\contentsline {section}{\numberline {2.4}Experiments}{19}{section.82}
+\contentsline {chapter}{\numberline {3}Data Analysis}{21}{chapter.84}
+\contentsline {section}{\numberline {3.1}Dataset 1}{21}{section.85}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{20}{appendix.82}
+\contentsline {chapter}{\numberline {A}Appendix Title Here}{23}{appendix.87}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{21}{dummy.83}
+\contentsline {chapter}{Bibliography}{24}{dummy.88}
