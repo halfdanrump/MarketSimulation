@@ -32,7 +32,6 @@ def load_trade_log_data(simulation_log_path):
 def store_generation_as_data_matrix(generation_data, generation_number, path):
     all_genes = list()
     all_fitnesses = list()
-    print generation_data
     for gene in generation_data:
         all_genes.append(gene['ind'])
         all_fitnesses.append(gene['fit'])

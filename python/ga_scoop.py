@@ -14,16 +14,13 @@ import numpy as np
 
 
 def evaluate(individual, generation, num):
-	print 'Gen %s: %s'%(generation, scale_genes_to_parameters(individual, False))
 	parameters = scale_genes_to_parameters(individual)
 
 	if verify_simulation_parameters(parameters):
 		data = evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
 		stats = get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
-		#print "Stats: %s, parameters: %s"%(stats, scale_genes_to_parameters(individual))
 	else:
-		print "Generated invalid gene: %s"%scale_genes_to_parameters(individual)
 		stats = get_invalid_gene_fitness()
 	return stats
 	
@@ -52,9 +49,6 @@ def scale_genes_to_parameters(individual, return_full_parameter_set = True):
 		parameters.update(scaled_parameters)
 	else:
 		parameters = scaled_parameters
-	#for subdict in imap(lambda parameter, scaling, gene: {parameter: int(scaling*gene)}, settings.parameter_scaling.iterkeys(), settings.parameter_scaling.itervalues(), individual):
-	#	parameters.update(subdict)
-	#print "scaled_parameters: %s"%parameters
 	return parameters
 
 def create_healthy_individual():
@@ -82,7 +76,7 @@ toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.att
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("mate", tools.cxTwoPoints)
-toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.2, indpb=0.2)
+toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.1, indpb=0.2)
 toolbox.register("select", tools.selTournament, tournsize=settings.tournament_size)
 toolbox.register("evaluate", evaluate)
 
@@ -124,17 +118,18 @@ if __name__ == "__main__":
 		    if random.random() < settings.mutation_prob:
 		        before_mutation = deepcopy(mutant)
 		        times_mutated = 0
-		        while True:
+		        keep_mutating = True
+		        while keep_mutating:
 		        	toolbox.mutate(mutant)
 			        if verify_simulation_parameters(scale_genes_to_parameters(mutant)):
 			        	break
 			        else:
-			        	print "Invalid mutant!"
 			        	mutant = before_mutation
 			        times_mutated += 1
 			        if times_mutated == 1000:
+			        	print "Created new individual after mutating invalid individual 1000 times..."
 			        	mutant = create_healthy_individual()
-			        	break
+			        	keep_mutating = False
 		        del mutant.fitness.values
 
 		# Evaluate the individuals with an invalid fitness

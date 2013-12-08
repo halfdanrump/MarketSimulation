@@ -15,9 +15,7 @@ import numpy as np
 def generate_parameter_combinations(parameter_ranges,  remaining_parameters = [], simulation_parameters = dict(), all_combinations = list()):
     if not remaining_parameters: remaining_parameters = parameter_ranges.keys()
     current_parameter = remaining_parameters.pop()
-   # print "current_parameter %s, current range %s"%(current_parameter, parameter_ranges[current_parameter])
     for par in parameter_ranges[current_parameter]:
- #       print "current_parameter %s, value %s"%(current_parameter, par)
         simulation_parameters[current_parameter] = par
         if len(remaining_parameters) == 0:
             yield copy.deepcopy(simulation_parameters)
@@ -50,7 +48,6 @@ def run_simulation(parameters, reps, random_path):
             for (par, val) in parameters.items(): par_string += '-D%s=%s '%(par,val)
             vm_args = "java -d64 -Xms512m -Xmx4g -DlogFolder=%s "%log_folders[i]
             command = vm_args + par_string + '-jar %s'%settings.jar_path
-            #print "Running simulation with command: %s\n"%command
             if settings.WITH_SIMULATION_OUTPUT:
                 processes.append(Popen(command.split(' ')))            
             else:
@@ -83,7 +80,6 @@ def calculate_data_for_all_parameter_combinations(log_root_folder, parameter_ran
     for i, parameters in enumerate(generate_parameter_combinations(parameter_ranges)):
         log_folders = get_log_folder_list(log_root_folder, parameters, reps)
         all_data[i] = calculate_data_for_specific_parameter_combination(log_folders, parameters, reps)
-        print all_data
         np.save('data', all_data)
 """
 
@@ -92,14 +88,12 @@ def calculate_data_for_all_parameter_combinations(log_root_folder, parameter_ran
 
 
 
-    #print "parameters_to_store %s"%parameters_to_store
     #param_data = [eval(p[0]) for p in parameters_to_store]
     #return tuple(param_data + mean_data)
 
 """
 def get_graph_folder(log_root_folder, graph_type = 'line_chart'):
     graph_folder = "%s/%s/"%(graph_root_folder, graph_type)
-    print "Graph folder: %s"%graph_folder
     return graph_folder
 """
 """
