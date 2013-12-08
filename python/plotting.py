@@ -145,10 +145,10 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     n_labels  = labels.max()
 
     for g in range(n_labels + 1):
-        print g
+        print len(labels[labels == g])
         x = eval(x_function)(data_frame[labels == g][x_name])
         y = eval(y_function)(data_frame[labels == g][y_name])
-        p.scatter(ax, x, y, label=str(g))
+        p.scatter(ax, x, y, label=str(len(labels[labels == g])))
 
     if legend: p.legend(ax)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
