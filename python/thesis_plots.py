@@ -7,12 +7,10 @@ import pandas
 #from ppl import Ppl
 import brewer2mpl
 import IO
-
+from data_analysis import dataset_paths
 figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/Thesis/Figures/'
 
-dataset_paths = {
-	'd1':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/merged_data/d1_sameLatDist_ssmm40_sc100/'
-}
+
 
 def plot_issue_21(dataset = 'd1'):
 	"""
@@ -89,8 +87,10 @@ def plot_issue_29(load_clusters_from_file, dataset = 'd1'):
 	"""
 	datapath = dataset_paths[dataset]
 	fit, gen = IO.load_pickled_generation_dataframe(datapath + 'fits.pandas')
+	print fit
+	print "FFFFFFFFFFFFFFFFFFFFFFFFFF"
 	trans_full_dataset, pca, components = calculate_pca(fit, n_components=3)
-	points = reduce_npoints_kmeans(dataset, trans_full_dataset, n_datapoints=1000, load_from_file=load_clusters_from_file)
+	points = reduce_npoints_kmeans(data = trans_full_dataset, dataset_name = dataset, n_datapoints = 1000, load_from_file = load_clusters_from_file)
 	trans, pca, components = calculate_pca(DataFrame(points), n_components=3)
 	
 	columns = ['d1', 'd2', 'd3']	
@@ -123,7 +123,7 @@ def plot_issue_32(dataset = 'd1'):
 	print "Making scatter plot of PCA decomposition of parameter data for dataset %s"%dataset
 	make_color_grouped_scatter_plot(df, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
 	
-	kmeans, fit_pca, fit_data = plot_issue_26(make_plots=False)	
+	kmeans, fit_pca, fit_data = plot_issue_26(dataset = dataset, make_plots=False)	
 	
 	filename = figure_save_path + dataset + '_issue_32_pars_labelled.png'
 	print "Making scatter plot of K-means clusters of parameter data for dataset %s"%dataset
@@ -139,10 +139,16 @@ def plot_issue_34(dataset = 'd1'):
 	imshow
 
 def remake_all_plots():
-	plot_issue_21(dataset='d1')
-	plot_issue_26(dataset='d1')
-	plot_issue_29(dataset='d1', load_clusters_from_file=False)
-	plot_issue_32(dataset='d1')
+	#plot_issue_21(dataset='d1')
+	#plot_issue_26(dataset='d1')
+	#plot_issue_29(dataset='d1', load_clusters_from_file=False)
+	#plot_issue_32(dataset='d1')
+
+	plot_issue_21(dataset='d2')
+	plot_issue_26(dataset='d2')
+	plot_issue_29(dataset='d2', load_clusters_from_file=False)
+	plot_issue_32(dataset='d2')
 
 if __name__ == '__main__':
-	plot_issue_29(dataset='d1', load_clusters_from_file=False)
+	remake_all_plots()
+	#plot_issue_29(dataset='d1', load_clusters_from_file=False)
