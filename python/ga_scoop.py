@@ -11,6 +11,7 @@ from datetime import datetime
 from os import makedirs
 from IO import store_generation_as_data_matrix
 import numpy as np
+import shutil
 
 
 def evaluate(individual, generation, num):
@@ -85,12 +86,14 @@ gene_data_folder = '../data/gene_data/%s/generations/'%(start_time)
 graph_folder = '../data/gene_data/%s/graphs/'%(start_time)
 
 
+
 if __name__ == "__main__":
 
 	#pool = multiprocessing.Pool(processes=10)
 	makedirs(gene_data_folder)
 	makedirs(graph_folder)
-	
+	shutil.copyfile('settings.py','../data/gene_data/%s/settings.py'%(start_time))
+
 	toolbox.register("map", futures.map)
 
 
