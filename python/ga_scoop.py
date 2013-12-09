@@ -12,7 +12,7 @@ from os import makedirs
 from IO import store_generation_as_data_matrix
 import numpy as np
 import shutil
-
+from pandas import DataFrame
 
 def evaluate(individual, generation, num):
 	parameters = scale_genes_to_parameters(individual)
@@ -138,28 +138,31 @@ if __name__ == "__main__":
 		# Evaluate the individuals with an invalid fitness
 		invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 		print "Evaluating the fitness of %s individuals"%len(invalid_ind)
-
-		fitnesses = toolbox.map(toolbox.evaluate, invalid_ind, np.repeat(g, len(invalid_ind)), range(len(invalid_ind)))
+		if len(invalid_ind) > 0:
+			rep_data = list()
+			for ind in range(len(invalid_ind)):
+				rep_data.append(np.zeros((len(settings.ga_reps), len(settings.fitness_types.keys()))))
 		
-		new_data = list()
+			new_data = list()
+			for rep in settings.ga_reps:	
+				fitnesses = toolbox.map(toolbox.evaluate, invalid_ind, np.repeat(g, len(invalid_ind)), range(len(invalid_ind)))
+				for i, (ind, fit) in enumerate(zip(invalid_ind, fitnesses)):
+				    rep_data[i][rep] = fit
 
-		for ind, fit in zip(invalid_ind, fitnesses):
-		    ind.fitness.values = fit
-		    scaled_ind = scale_genes_to_parameters(ind, False)
-		    new_data.append({'ind': scaled_ind, 'fit': tuple(fit)})
-		
-		#print new_data
-		
+				    scaled_ind = scale_genes_to_parameters(ind, False)
+				    new_data.append({'ind': scaled_ind, 'fit': tuple(fit)})
 
+			fitnesses_mean = [np.mean(rep_data[i],0) for i in range(len(rep_data))]
+			
+			for ind, fit in zip(invalid_ind, fitnesses_mean):
+			    ind.fitness.values = fit
+		
 		# The population is entirely replaced by the offspring
 		pop[:] = offspring
 
 		store_generation_as_data_matrix(new_data, g, gene_data_folder)
-		#data_to_save = {'fixed_parameters':settings.default_parameters, 'genes':new_data}
-		#f = open('../data/gene_data/%s/gen%s.yaml'%(start_time, g), 'w')
-		#yaml.dump(data_to_save, f)
-		#f.close()
-		#print "Saved hall of fame after generation %s to %s"%(g, f.name)
-		#print zip(settings.parameter_scaling.keys(), parameters)
-	#algorithms.eaSimple(toolbox.population(10), toolbox, cxpb=0.5, mutpb=0.2, ngen=500)
+
+
+
+
 

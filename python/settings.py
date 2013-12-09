@@ -9,7 +9,9 @@ MAKE_TRADEPRICE_PLOT = True
 SAVE_DATA_USED_FOR_PLOTTING = True
 PLOT_SAVE_PROB = 0.02
 
-reps = xrange(1)
+ga_reps = range(2)
+
+reps = xrange(1) ### DEPRECATED!!!!!!!!!!!!!!!!!!!!!
 
 jar_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Simulation.jar'
 log_root_folder = '/Users/halfdan/simulation_data2/'
