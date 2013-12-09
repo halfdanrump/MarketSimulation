@@ -92,6 +92,12 @@ def load_tradeprice_data(filename):
     prices = d['tradePrice']
     return rounds, prices
 
+def pickle_generation_data(dataset_name):
+    dataset_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/'
+    par, fit = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name)
+    par.to_pickle(dataset_path + 'merged_data/%s/pars.pandas'%dataset_name)
+    fit.to_pickle(dataset_path + 'merged_data/%s/fits.pandas'%dataset_name)
+
 def load_pickled_generation_dataframe(dataframe_file):
     df = read_pickle(dataframe_file)
     gen = df['gen']
