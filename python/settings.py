@@ -9,7 +9,7 @@ MAKE_TRADEPRICE_PLOT = True
 SAVE_DATA_USED_FOR_PLOTTING = True
 PLOT_SAVE_PROB = 0.02
 
-ga_reps = range(2)
+ga_reps = range(10)
 
 reps = xrange(1) ### DEPRECATED!!!!!!!!!!!!!!!!!!!!!
 

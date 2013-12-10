@@ -75,6 +75,7 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
 def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, colormap, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
     ### Originally created for issue_21
     def dummy(a): return a
+    data_frame = data_frame.copy()
     p = Ppl(colormap, alpha=1)
 
     fig, ax = plt.subplots(1)
@@ -93,7 +94,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     n_intervals = len(colormap.colors)
     if color_function == 'log': bins = np.logspace(np.log10( data_frame[color_by].min()), np.log10(data_frame[color_by].max()), n_intervals + 1, base = 10)
     else: bins = np.linspace(eval(color_function)(data_frame[color_by].min()), eval(color_function)(data_frame[color_by].max()), n_intervals + 1)
-    
+        
     data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
     groups = pandas.cut(data_frame[color_by], bins=bins)
     bounds = []
