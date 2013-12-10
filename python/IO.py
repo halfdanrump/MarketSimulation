@@ -8,6 +8,11 @@ import re
 import os
 #from shutils import rmtree
 
+dataset_paths = {
+    'd1':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/merged_data/d1_sameLatDist_ssmm40_sc100/',
+    'd2':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/merged_data/d2/'
+}
+
 def check_simulation_complete(full_simulation_log_path):
     try:
         with open(full_simulation_log_path + 'finished.txt'): 
@@ -98,8 +103,12 @@ def pickle_generation_data(dataset_name):
     par.to_pickle(dataset_path + 'merged_data/%s/pars.pandas'%dataset_name)
     fit.to_pickle(dataset_path + 'merged_data/%s/fits.pandas'%dataset_name)
 
-def load_pickled_generation_dataframe(dataframe_file):
-    df = read_pickle(dataframe_file)
-    gen = df['gen']
-    df = df.drop('gen', 1)
-    return df, gen
+def load_pickled_generation_dataframe(dataset_name):
+    datapath = dataset_paths[dataset_name]
+    #par = pandas.read_pickle(datapath + 'pars.pandas')
+    fit_data = read_pickle(datapath + 'fits.pandas')
+    par_data = read_pickle(datapath + 'pars.pandas')
+    gen = fit_data['gen']
+    fit_data = fit_data.drop('gen', 1)
+    par_data = par_data.drop('gen', 1)
+    return fit_data, par_data, gen
