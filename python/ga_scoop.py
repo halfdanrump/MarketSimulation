@@ -91,10 +91,10 @@ toolbox.register("select", tools.selTournament, tournsize=settings.tournament_si
 toolbox.register("evaluate", evaluate)
 
 start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+data_folder = '../data/gene_data/%s/%s/'%(arguments.dataset_name, start_time)
 
-
-gene_data_folder = '../data/gene_data/%s_%s/generations/'%(arguments.dataset_name, start_time)
-graph_folder = '../data/gene_data/%s/graphs/'%(start_time)
+gene_data_folder = '%s/generations/'%(data_folder)
+graph_folder = '%s/graphs/'%(data_folder)
 
 
 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
 	#pool = multiprocessing.Pool(processes=10)
 	makedirs(gene_data_folder)
 	makedirs(graph_folder)
-	shutil.copyfile('settings.py','../data/gene_data/%s/settings.py'%(start_time))
+	shutil.copyfile('settings.py','%s/settings.py'%(data_folder))
 	if not arguments.skip_scoop:
 		toolbox.register("map", futures.map)
 
