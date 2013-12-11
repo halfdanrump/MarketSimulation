@@ -138,7 +138,7 @@ def plot_issue_34(dataset = 'd1'):
 	fit = fit.drop('gen', 1)
 	imshow
 
-def plot_issue_43():
+def plot_issue_43(load_from_file = False):
 	
 	from data_analysis import reduce_npoints_kmeans, calculate_pca, outlier_detection_with_SVM, calculate_cluster_stats, calculate_cluster_stats_for_reduced_dataset
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
@@ -146,7 +146,7 @@ def plot_issue_43():
 	dataset = 'd2'
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
-	reduced_par, labels_all_datapoints = reduce_npoints_kmeans(par_data, 'd2', n_datapoints=1000, load_from_file=False)
+	reduced_par, labels_all_datapoints = reduce_npoints_kmeans(par_data, 'd2', n_datapoints=1000, load_from_file=load_from_file)
 	
 	inliers, outliers, inliers_idx, outliers_idx = outlier_detection_with_SVM(reduced_par, kernel='rbf', gamma=0.1, outlier_percentage=0.01)
 	transformed_data, pca, components = calculate_pca(inliers, n_components = 3, whiten=False, normalize=True)
@@ -184,5 +184,5 @@ def remake_all_plots():
 	plot_issue_43()
 
 if __name__ == '__main__':
-	plot_issue_43()
+	plot_issue_43(False)
 	#plot_issue_29(dataset='d1', load_clusters_from_file=False)

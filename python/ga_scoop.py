@@ -12,7 +12,6 @@ from os import makedirs
 from IO import store_generation_as_data_matrix
 import numpy as np
 import shutil
-from pandas import DataFrame
 
 def evaluate(individual, generation, num):
 	parameters = scale_genes_to_parameters(individual)
@@ -63,6 +62,8 @@ def create_healthy_population():
 	for i in range(settings.population_size):
 		population.append(create_healthy_individual())
 	return population
+
+
 
 
 creator.create("FitnessMulti", base.Fitness, weights = settings.fitness_weights.values())
