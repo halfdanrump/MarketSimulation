@@ -138,38 +138,61 @@ def plot_issue_34(dataset):
 	fit = fit.drop('gen', 1)
 	imshow
 
-def plot_issue_43(dataset, load_from_file = False):
-	
-	from data_analysis import reduce_npoints_kmeans, calculate_pca, outlier_detection_with_SVM, calculate_cluster_stats_for_reduced_dataset
+def plot_issue_43(dataset, n_clusters, load_from_file = False):
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
-	from sklearn.cluster import KMeans
+	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_pca
+	from sklearn import KMeans	
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
-	reduced_par, labels_all_datapoints = reduce_npoints_kmeans(par_data, 'd2', n_datapoints=1000, load_from_file=load_from_file)
+
+	reduced_par, labels_all_datapoints = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)
 	
 	inliers, outliers, inliers_idx, outliers_idx = outlier_detection_with_SVM(reduced_par, kernel='rbf', gamma=0.1, outlier_percentage=0.01)
 	transformed_data, pca, components = calculate_pca(inliers, n_components = 3, whiten=False, normalize=True)
+	
+	kmeans = KMeans(n_clusters = n_clusters)
+	kmeans.fit(transformed_data.values)
 	
 	filename = figure_save_path + dataset + '_issue_43_PCA_after_outlier_detection.png'
 	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
 	make_color_grouped_scatter_plot(transformed_data, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
 
-	
-	n_clusters = 4
-	kmeans = KMeans(n_clusters = n_clusters)
-	kmeans.fit(transformed_data.values)
-	#calculate_cluster_stats(dataframe=fit_data, cluster_labels=kmeans.labels_)
 	print "Making scatter plot of Affinity Propagation clusters of fitness data for dataset %s"%dataset
 	filename = figure_save_path + dataset + '_issue_43_kmeans_after_outlier_and_PCA.png'
 	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
-	make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
-	#return fit_data, labels_all_datapoints, kmeans.labels_, inliers, outliers, inliers_idx, outliers_idx
-	stats, member_labels = calculate_cluster_stats_for_reduced_dataset(dataframe=fit_data, inlier_clusters = inliers_idx, labels_reduced=kmeans.labels_, labels_full=labels_all_datapoints)
-	return stats, pca, kmeans, member_labels
 
-def table_issue_55(dataset):
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)	
+	make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 	
+	
+	stats, member_labels = calculate_cluster_stats_for_reduced_dataset(dataframe=fit_data, inlier_clusters = inliers_idx, labels_reduced=kmeans.labels_, labels_full=labels_all_datapoints)
+
+	#return fit_data, labels_all_datapoints, kmeans.labels_, inliers, outliers, inliers_idx, outliers_idx
+	
+	
+
+def table_issue_55(dataset, n_clusters, load_from_file = False):
+	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_stats_for_dataframe
+	from sklearn.cluster import KMeans
+	from utils import get_labels_r2o
+	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)	
+	par_r, cluster_assignment_o2r = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)
+	
+	inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(par_r, kernel='rbf', gamma=0.1, outlier_percentage=0.01)
+	
+	kmeans = KMeans(n_clusters = n_clusters)
+	kmeans.fit(par_r.iloc[inliers_idx_r, :])
+
+	inliers_idx_o = get_labels_r2o(cluster_assignment_o2r, inliers_idx_r)
+	return inliers_idx_o
+	
+
+	#stats = calculate_stats_for_dataframe(inliers, kmeans.labels_)
+	#return stats, inliers_idx, r_label
+	
+
+
+
+
 
 def run_all_issues():
 	plot_issue_21(dataset='d1')
@@ -181,9 +204,9 @@ def run_all_issues():
 	plot_issue_26(dataset='d2')
 	plot_issue_29(dataset='d2')
 	plot_issue_32(dataset='d2')
-	plot_issue_43()
-	table_issue_55()
+	plot_issue_43(dataset='d2')
+	table_issue_55(dataset='d2', n_clusters=4)
 
 if __name__ == '__main__':
-	plot_issue_43(False)
+	table_issue_55(dataset='d2', n_clusters=4, load_from_file=True)
 	#plot_issue_29(dataset='d1', load_clusters_from_file=False)
