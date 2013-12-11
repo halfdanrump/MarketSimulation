@@ -54,22 +54,34 @@ def calculate_cluster_stats_for_reduced_dataset(dataframe, inlier_clusters, labe
 		merged_labels[labels_reduced[idx]].append(np.ravel(member_points))
 	for k, v in merged_labels.iteritems(): merged_labels[k] = np.concatenate(v)
 	
+	return merged_labels
 	stats_to_calculate = ['count', 'mean', 'std', 'median']
 	stats = dict()
 	for cluster in range(len(merged_labels.values())):
-		index = 'Cluster %s'%cluster
+		index = 'c%s'%cluster
 		stats[index] = DataFrame(columns=stats_to_calculate, index = dataframe.columns)
 		for stat in stats_to_calculate: 
-			print stat, cluster
 			c = getattr(dataframe.iloc[merged_labels[cluster],:], stat)().copy()
+			stats[index][stat] = c
+
+	return concat(stats,axis=1), merged_labels
+
+def calculate_stats_for_labelled_dataframe(dataframe, labels):
+	from pandas import concat
+	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
+	assert dataframe.shape[0] == labels.shape[0], 'Please pass labels np.array or similar with the same length as the number of rows in the dataframe'
+	stats_to_calculate = ['count', 'mean', 'std', 'median']
+	stats = dict()
+	for cluster in set(labels):
+		index = 'c%s'%cluster
+		stats[index] = DataFrame(columns=stats_to_calculate, index = dataframe.columns)
+		for stat in stats_to_calculate: 
+			c = getattr(dataframe.iloc[labels == cluster,:], stat)()
 			stats[index][stat] = c
 
 	return concat(stats,axis=1)
 	
-
-	
 	#stats = DataFrame([[eval(s)(merged_labels.values()[i]) for s in stats_to_calculate] for i in clusters], columns=stats_to_calculate, index=['c%s'%i for i in clusters])
-	return stats
 
 def reduce_npoints_kmeans(dataframe, dataset_name, n_datapoints = 1000, load_from_file = False):
 	import inspect
@@ -83,12 +95,12 @@ def reduce_npoints_kmeans(dataframe, dataset_name, n_datapoints = 1000, load_fro
 			kmeans = cPickle.load(fid)
 	else:
 		print 'Calculating k-means with %s cluster centers...'%n_datapoints
-		kmeans = KMeans(n_clusters = n_datapoints, n_jobs=-1, verbose=1)
+		kmeans = KMeans(n_clusters = n_datapoints, verbose=1)
 		kmeans.fit(dataframe.values)
 		with open(store_file, 'wb') as fid:
 			cPickle.dump(kmeans, fid)
-	print kmeans.cluster_centers_
-	print dataframe.columns
+			print 'Pickling KMeans object to file %s'%store_file
+	
 	clusters = DataFrame(kmeans.cluster_centers_, columns = dataframe.columns)
 	labels = kmeans.labels_
 	return clusters, labels
