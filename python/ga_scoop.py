@@ -12,6 +12,14 @@ from os import makedirs
 from IO import store_generation_as_data_matrix
 import numpy as np
 import shutil
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--skip-scoop', '-ss', action="store_true", default=False)
+parser.add_argument('--dataset-name', '-d')
+arguments = parser.parse_args()
+assert arguments.dataset_name, "Please specify dataset name using the '-d' option. (e.g. '-d d4')"
+print arguments
 
 def evaluate(individual, generation, num):
 	parameters = scale_genes_to_parameters(individual)
@@ -83,7 +91,9 @@ toolbox.register("select", tools.selTournament, tournsize=settings.tournament_si
 toolbox.register("evaluate", evaluate)
 
 start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
-gene_data_folder = '../data/gene_data/%s/generations/'%(start_time)
+
+
+gene_data_folder = '../data/gene_data/%s_%s/generations/'%(arguments.dataset_name, start_time)
 graph_folder = '../data/gene_data/%s/graphs/'%(start_time)
 
 
@@ -94,8 +104,8 @@ if __name__ == "__main__":
 	makedirs(gene_data_folder)
 	makedirs(graph_folder)
 	shutil.copyfile('settings.py','../data/gene_data/%s/settings.py'%(start_time))
-
-	toolbox.register("map", futures.map)
+	if not arguments.skip_scoop:
+		toolbox.register("map", futures.map)
 
 
 	pop = create_healthy_population()
