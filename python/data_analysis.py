@@ -70,16 +70,20 @@ def calculate_stats_for_labelled_dataframe(dataframe, labels):
 	from pandas import concat
 	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
 	assert dataframe.shape[0] == labels.shape[0], 'Please pass labels np.array or similar with the same length as the number of rows in the dataframe'
-	stats_to_calculate = ['count', 'mean', 'std', 'median']
+	stat_functions = ['count', 'mean', 'std', 'median']
 	stats = dict()
-	for cluster in set(labels):
-		index = 'c%s'%cluster
-		stats[index] = DataFrame(columns=stats_to_calculate, index = dataframe.columns)
-		for stat in stats_to_calculate: 
-			c = getattr(dataframe.iloc[labels == cluster,:], stat)()
-			stats[index][stat] = c
+	stat_names = ['Count', 'Mean', 'Std', 'Median']
+	for stat, stat_name in zip(stat_functions, stat_names): 
 
-	return concat(stats,axis=1)
+		stats[stat_name] = DataFrame(columns = ['c' + str(c) for c in set(labels)], index = dataframe.columns)
+
+		for cluster in set(labels):	
+			
+			c = getattr(dataframe.iloc[labels == cluster,:], stat)().copy()
+			print stat, cluster, type(c)
+			stats[stat_name]['c'+str(cluster)] = c
+
+	return concat(stats), stat_names
 	
 	#stats = DataFrame([[eval(s)(merged_labels.values()[i]) for s in stats_to_calculate] for i in clusters], columns=stats_to_calculate, index=['c%s'%i for i in clusters])
 
