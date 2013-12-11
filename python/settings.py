@@ -87,18 +87,18 @@ parameters_in_genes = [
     'ssmm_nAgents',
     'sc_nAgents' ,
 
-    'ssmm_latency_mu',
-    'ssmm_latency_s',
-    'ssmm_think_mu',
-    'ssmm_think_s',
-    'sc_latency_mu',
-    'sc_latency_s',
-    'sc_think_mu',
-    'sc_think_s',
-    'sc_timehorizon_mu',
-    'sc_timehorizon_s',
-    'sc_waitTimeBetweenTrading_mu',
-    'sc_waitTimeBetweenTrading_s'
+    #'ssmm_latency_mu',
+    #'ssmm_latency_s',
+    #'ssmm_think_mu',
+    #'ssmm_think_s',
+    #'sc_latency_mu',
+    #'sc_latency_s',
+    #'sc_think_mu',
+    #'sc_think_s',
+    #'sc_timehorizon_mu',
+    #'sc_timehorizon_s',
+    #'sc_waitTimeBetweenTrading_mu',
+    #'sc_waitTimeBetweenTrading_s'
 ]
 
 
