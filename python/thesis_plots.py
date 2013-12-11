@@ -103,7 +103,7 @@ def plot_issue_29(dataset, load_clusters_from_file = False):
 
 	#dbscan = DBSCAN(min_samples=100)
 
-def plot_issue_32(dataset = 'd1'):
+def plot_issue_32(dataset):
 	from data_analysis import calculate_pca
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	
@@ -129,7 +129,7 @@ def plot_issue_32(dataset = 'd1'):
 	
 	
 
-def plot_issue_34(dataset = 'd1'):
+def plot_issue_34(dataset):
 	from matplotlib.pyplot import imshow
 	datapath = dataset_paths[dataset]
 	par = pandas.read_pickle(datapath + 'pars.pandas')
@@ -138,12 +138,11 @@ def plot_issue_34(dataset = 'd1'):
 	fit = fit.drop('gen', 1)
 	imshow
 
-def plot_issue_43(load_from_file = False):
+def plot_issue_43(dataset, load_from_file = False):
 	
-	from data_analysis import reduce_npoints_kmeans, calculate_pca, outlier_detection_with_SVM, calculate_cluster_stats, calculate_cluster_stats_for_reduced_dataset
+	from data_analysis import reduce_npoints_kmeans, calculate_pca, outlier_detection_with_SVM, calculate_cluster_stats_for_reduced_dataset
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
-	from sklearn.cluster import KMeans, AffinityPropagation
-	dataset = 'd2'
+	from sklearn.cluster import KMeans
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
 	reduced_par, labels_all_datapoints = reduce_npoints_kmeans(par_data, 'd2', n_datapoints=1000, load_from_file=load_from_file)
@@ -165,13 +164,14 @@ def plot_issue_43(load_from_file = False):
 	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
 	make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 	#return fit_data, labels_all_datapoints, kmeans.labels_, inliers, outliers, inliers_idx, outliers_idx
-	stats = calculate_cluster_stats_for_reduced_dataset(dataframe=fit_data, inlier_clusters = inliers_idx, labels_reduced=kmeans.labels_, labels_full=labels_all_datapoints)
-	print stats
+	stats, member_labels = calculate_cluster_stats_for_reduced_dataset(dataframe=fit_data, inlier_clusters = inliers_idx, labels_reduced=kmeans.labels_, labels_full=labels_all_datapoints)
+	return stats, pca, kmeans, member_labels
 
-
+def table_issue_55(dataset):
+	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)	
 	
 
-def remake_all_plots():
+def run_all_issues():
 	plot_issue_21(dataset='d1')
 	plot_issue_26(dataset='d1')
 	plot_issue_29(dataset='d1', load_clusters_from_file=False)
@@ -182,6 +182,7 @@ def remake_all_plots():
 	plot_issue_29(dataset='d2')
 	plot_issue_32(dataset='d2')
 	plot_issue_43()
+	table_issue_55()
 
 if __name__ == '__main__':
 	plot_issue_43(False)
