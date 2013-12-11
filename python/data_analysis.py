@@ -54,7 +54,6 @@ def calculate_cluster_stats_for_reduced_dataset(dataframe, inlier_clusters, labe
 		merged_labels[labels_reduced[idx]].append(np.ravel(member_points))
 	for k, v in merged_labels.iteritems(): merged_labels[k] = np.concatenate(v)
 	
-	return merged_labels
 	stats_to_calculate = ['count', 'mean', 'std', 'median']
 	stats = dict()
 	for cluster in range(len(merged_labels.values())):
@@ -66,7 +65,8 @@ def calculate_cluster_stats_for_reduced_dataset(dataframe, inlier_clusters, labe
 
 	return concat(stats,axis=1), merged_labels
 
-def calculate_stats_for_labelled_dataframe(dataframe, labels):
+
+def calculate_stats_for_dataframe(dataframe, labels):
 	from pandas import concat
 	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
 	assert dataframe.shape[0] == labels.shape[0], 'Please pass labels np.array or similar with the same length as the number of rows in the dataframe'
@@ -150,11 +150,9 @@ def outlier_detection_with_SVM(dataframe, kernel, gamma, outlier_percentage):
 	
 	inliers_idx, dummy = np.where(assignment <= score)
 	outliers_idx, dummy = np.where(assignment > score)
-	inliers = DataFrame(points[inliers_idx,:], columns=dataframe.columns)
-	outliers = DataFrame(points[outliers_idx, :], columns=dataframe.columns)
 	
-	print "%s outlisers and %s inliers"%(len(inliers), len(outliers))
-	return inliers, outliers, inliers_idx, outliers_idx
+	print "%s outlisers and %s inliers"%(len(inliers_idx), len(outliers_idx))
+	return inliers_idx, outliers_idx
 
 if __name__ == "__main__":
 	issue_41(n_clusters=10)
