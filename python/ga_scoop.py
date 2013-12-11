@@ -13,6 +13,7 @@ from IO import store_generation_as_data_matrix
 import numpy as np
 import shutil
 import argparse
+import socket
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--skip-scoop', '-ss', action="store_true", default=False)
@@ -90,7 +91,7 @@ toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.1, indpb=0.2)
 toolbox.register("select", tools.selTournament, tournsize=settings.tournament_size)
 toolbox.register("evaluate", evaluate)
 
-start_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+start_time = socket.gethostname() + '_' + datetime.now().strftime("%Y%m%d-%H%M%S")
 data_folder = '../data/gene_data/%s/%s/'%(arguments.dataset_name, start_time)
 
 gene_data_folder = '%s/generations/'%(data_folder)
