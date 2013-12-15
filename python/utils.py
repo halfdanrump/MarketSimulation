@@ -28,11 +28,12 @@ def get_group_vector_for_reduced_dataset(clusters, cluster_assignment_o2r, clust
 		merged_labels[cluster_assignment_r2g[idx]].append(np.ravel(member_points))
 	for k, v in merged_labels.iteritems(): merged_labels[k] = np.concatenate(v)
 	
-	labels_o = np.zeros(len(cluster_assignment_o2r))
 	indexes_o = np.concatenate(merged_labels.values())
-	for group, indexes in merged_labels.items(): 
-		labels_o[indexes] = group
-	return labels_o, indexes_o
+	labels_o = list()
+	
+	for group, indexes in merged_labels.items(): labels_o.append(np.repeat(group, len(indexes)))
+	labels_o = np.concatenate(labels_o)
+	return indexes_o, labels_o
 
 
 

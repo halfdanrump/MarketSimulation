@@ -41,19 +41,9 @@ def calculate_cluster_stats(dataframe, cluster_labels):
 	print "median with KMmeans\n", group.median()
 	return group.count(), group.mean(), group.std(), group.median()
 
-def calculate_cluster_stats_for_reduced_dataset(dataframe, inlier_clusters, labels_reduced, labels_full):
-	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
+	
 
-	merged_labels = dict()
-	for k in range(max(labels_reduced) + 1): merged_labels[k] = list()
-	
-	labels_full = DataFrame(labels_full, columns=['l'])
-	group_indices = labels_full.groupby('l').indices
-	for idx, cluster in enumerate(inlier_clusters):
-		member_points = group_indices[cluster]
-		merged_labels[labels_reduced[idx]].append(np.ravel(member_points))
-	for k, v in merged_labels.iteritems(): merged_labels[k] = np.concatenate(v)
-	
+	"""
 	stats_to_calculate = ['count', 'mean', 'std', 'median']
 	stats = dict()
 	for cluster in range(len(merged_labels.values())):
@@ -64,8 +54,8 @@ def calculate_cluster_stats_for_reduced_dataset(dataframe, inlier_clusters, labe
 			stats[index][stat] = c
 
 	return concat(stats,axis=1), merged_labels
-
-
+	"""
+	
 def calculate_stats_for_dataframe(dataframe, labels):
 	from pandas import concat
 	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
@@ -83,7 +73,7 @@ def calculate_stats_for_dataframe(dataframe, labels):
 			print stat, cluster, type(c)
 			stats[stat_name]['c'+str(cluster)] = c
 
-	return concat(stats), stat_names
+	return concat(stats)
 	
 	#stats = DataFrame([[eval(s)(merged_labels.values()[i]) for s in stats_to_calculate] for i in clusters], columns=stats_to_calculate, index=['c%s'%i for i in clusters])
 
@@ -107,7 +97,7 @@ def reduce_npoints_kmeans(dataframe, dataset_name, n_datapoints = 1000, load_fro
 	
 	clusters = DataFrame(kmeans.cluster_centers_, columns = dataframe.columns)
 	labels = kmeans.labels_
-	return clusters, labels
+	return clusters, labels, kmeans
 
 def run_kmeans(gene_folder, n_clusters):
 	pars, fitness = load_all_generations_as_DataFrame(gene_folder)
