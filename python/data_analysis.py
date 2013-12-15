@@ -41,35 +41,41 @@ def calculate_cluster_stats(dataframe, cluster_labels):
 	print "median with KMmeans\n", group.median()
 	return group.count(), group.mean(), group.std(), group.median()
 
-def calculate_cluster_stats_for_reduced_dataset(dataframe, inlier_clusters, labels_reduced, labels_full):
-	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
+	
 
-	merged_labels = dict()
-	for k in range(max(labels_reduced) + 1): merged_labels[k] = list()
-	
-	labels_full = DataFrame(labels_full, columns=['l'])
-	group_indices = labels_full.groupby('l').indices
-	for idx, cluster in enumerate(inlier_clusters):
-		member_points = group_indices[cluster]
-		merged_labels[labels_reduced[idx]].append(np.ravel(member_points))
-	for k, v in merged_labels.iteritems(): merged_labels[k] = np.concatenate(v)
-	
+	"""
 	stats_to_calculate = ['count', 'mean', 'std', 'median']
 	stats = dict()
 	for cluster in range(len(merged_labels.values())):
-		index = 'Cluster %s'%cluster
+		index = 'c%s'%cluster
 		stats[index] = DataFrame(columns=stats_to_calculate, index = dataframe.columns)
 		for stat in stats_to_calculate: 
-			print stat, cluster
 			c = getattr(dataframe.iloc[merged_labels[cluster],:], stat)().copy()
 			stats[index][stat] = c
 
-	return concat(stats,axis=1)
+	return concat(stats,axis=1), merged_labels
+	"""
 	
+def calculate_stats_for_dataframe(dataframe, labels):
+	from pandas import concat
+	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
+	assert dataframe.shape[0] == labels.shape[0], 'Please pass labels np.array or similar with the same length as the number of rows in the dataframe'
+	stat_functions = ['count', 'mean', 'std', 'median']
+	stats = dict()
+	stat_names = ['Count', 'Mean', 'Std', 'Median']
+	for stat, stat_name in zip(stat_functions, stat_names): 
 
+		stats[stat_name] = DataFrame(columns = ['c' + str(c) for c in set(labels)], index = dataframe.columns)
+
+		for cluster in set(labels):	
+			
+			c = getattr(dataframe.iloc[labels == cluster,:], stat)().copy()
+			print stat, cluster, type(c)
+			stats[stat_name]['c'+str(cluster)] = c
+
+	return concat(stats)
 	
 	#stats = DataFrame([[eval(s)(merged_labels.values()[i]) for s in stats_to_calculate] for i in clusters], columns=stats_to_calculate, index=['c%s'%i for i in clusters])
-	return stats
 
 def reduce_npoints_kmeans(dataframe, dataset_name, n_datapoints = 1000, load_from_file = False):
 	import inspect
@@ -83,15 +89,15 @@ def reduce_npoints_kmeans(dataframe, dataset_name, n_datapoints = 1000, load_fro
 			kmeans = cPickle.load(fid)
 	else:
 		print 'Calculating k-means with %s cluster centers...'%n_datapoints
-		kmeans = KMeans(n_clusters = n_datapoints, n_jobs=-1, verbose=1)
+		kmeans = KMeans(n_clusters = n_datapoints, verbose=1)
 		kmeans.fit(dataframe.values)
 		with open(store_file, 'wb') as fid:
 			cPickle.dump(kmeans, fid)
-	print kmeans.cluster_centers_
-	print dataframe.columns
+			print 'Pickling KMeans object to file %s'%store_file
+	
 	clusters = DataFrame(kmeans.cluster_centers_, columns = dataframe.columns)
 	labels = kmeans.labels_
-	return clusters, labels
+	return clusters, labels, kmeans
 
 def run_kmeans(gene_folder, n_clusters):
 	pars, fitness = load_all_generations_as_DataFrame(gene_folder)
@@ -134,11 +140,9 @@ def outlier_detection_with_SVM(dataframe, kernel, gamma, outlier_percentage):
 	
 	inliers_idx, dummy = np.where(assignment <= score)
 	outliers_idx, dummy = np.where(assignment > score)
-	inliers = DataFrame(points[inliers_idx,:], columns=dataframe.columns)
-	outliers = DataFrame(points[outliers_idx, :], columns=dataframe.columns)
 	
-	print "%s outlisers and %s inliers"%(len(inliers), len(outliers))
-	return inliers, outliers, inliers_idx, outliers_idx
+	print "%s outlisers and %s inliers"%(len(inliers_idx), len(outliers_idx))
+	return inliers_idx, outliers_idx
 
 if __name__ == "__main__":
 	issue_41(n_clusters=10)

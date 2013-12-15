@@ -9,7 +9,31 @@ def get_fundamental_after_shock():
 def empty_data_matrix(n_rows = 1):
 	return np.zeros(shape = n_rows, dtype = fitness_types.items())
 
+def get_labels_r2o(cluster_assignment_o2r, labels_r):
+	labels_o = list()
+	for c in labels_r: labels_o.append(np.where(cluster_assignment_o2r == c)[0])
+	labels_o = np.concatenate(labels_o)
+	return labels_o
 
+
+def get_group_vector_for_reduced_dataset(clusters, cluster_assignment_o2r, cluster_assignment_r2g):
+	
+	merged_labels = dict()
+	for k in range(max(cluster_assignment_r2g) + 1): merged_labels[k] = list()
+	
+	labels_full = DataFrame(cluster_assignment_o2r, columns=['l'])
+	group_indices = labels_full.groupby('l').indices
+	for idx, cluster in enumerate(clusters):
+		member_points = group_indices[cluster]
+		merged_labels[cluster_assignment_r2g[idx]].append(np.ravel(member_points))
+	for k, v in merged_labels.iteritems(): merged_labels[k] = np.concatenate(v)
+	
+	indexes_o = np.concatenate(merged_labels.values())
+	labels_o = list()
+	
+	for group, indexes in merged_labels.items(): labels_o.append(np.repeat(group, len(indexes)))
+	labels_o = np.concatenate(labels_o)
+	return indexes_o, labels_o
 
 
 
