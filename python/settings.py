@@ -3,6 +3,15 @@ from copy import deepcopy
 
 
 TEST_MODE = False
+
+
+VERBOSE = 0 
+""" Verbosity level. Can be 0, 1, 2 or 3. 
+    0 prints only generation change.
+    1 prints progress within each generation
+    2 prints simulation specific information, such as call parameters, etc.
+    3 print output from simulation itself (currently not implemented)
+"""
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True

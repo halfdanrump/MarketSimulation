@@ -23,8 +23,9 @@ assert arguments.dataset_name, "Please specify dataset name using the '-d' optio
 print arguments
 
 def evaluate(individual, generation, num):
+	if settings.VERBOSE >= 1: print "Evaluating new individual"
 	parameters = scale_genes_to_parameters(individual)
-
+	if settings.VERBOSE >= 2: print parameters
 	if verify_simulation_parameters(parameters):
 		data = evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
 		stats = get_named_stats(data, settings.fitness_weights.keys())
