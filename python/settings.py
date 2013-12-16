@@ -3,6 +3,15 @@ from copy import deepcopy
 
 
 TEST_MODE = False
+
+
+VERBOSE = 0 
+""" Verbosity level. Can be 0, 1, 2 or 3. 
+    0 prints only generation change.
+    1 prints progress within each generation
+    2 prints simulation specific information, such as call parameters, etc.
+    3 print output from simulation itself (currently not implemented)
+"""
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
@@ -47,17 +56,17 @@ default_parameters = {
     'fundamental_shock_size' : -10,
     'fundamental_shock_round' : 10000,
 
-    'ssmm_nAgents' : 40,
+    'ssmm_nAgents' : 50,
     'sc_nAgents' : 300,
 
-    'ssmm_latency_mu' : 1,
-    'ssmm_latency_s' : 0,
-    'ssmm_think_mu' : 1,
-    'ssmm_think_s' : 0,
-    'sc_latency_mu' : 1,
-    'sc_latency_s' : 0,
-    'sc_think_mu' : 1,
-    'sc_think_s' : 0,
+    'ssmm_latency_mu' : 100,
+    'ssmm_latency_s' : 50,
+    'ssmm_think_mu' : 100,
+    'ssmm_think_s' : 50,
+    'sc_latency_mu' : 10,
+    'sc_latency_s' : 5,
+    'sc_think_mu' : 10,
+    'sc_think_s' : 5,
     
     'ssmm_spread_mu' : 4,
     'ssmm_spread_s' : 2,
@@ -87,18 +96,18 @@ parameters_in_genes = [
     'ssmm_nAgents',
     'sc_nAgents' ,
 
-    'ssmm_latency_mu',
-    'ssmm_latency_s',
-    'ssmm_think_mu',
-    'ssmm_think_s',
-    'sc_latency_mu',
-    'sc_latency_s',
-    'sc_think_mu',
-    'sc_think_s',
-    'sc_timehorizon_mu',
-    'sc_timehorizon_s',
-    'sc_waitTimeBetweenTrading_mu',
-    'sc_waitTimeBetweenTrading_s'
+    #'ssmm_latency_mu',
+    #'ssmm_latency_s',
+    #'ssmm_think_mu',
+    #'ssmm_think_s',
+    #'sc_latency_mu',
+    #'sc_latency_s',
+    #'sc_think_mu',
+    #'sc_think_s',
+    #'sc_timehorizon_mu',
+    #'sc_timehorizon_s',
+    #'sc_waitTimeBetweenTrading_mu',
+    #'sc_waitTimeBetweenTrading_s'
 ]
 
 
@@ -107,10 +116,10 @@ parameter_scaling = OrderedDict({
     'ssmm_nAgents' : 50,
     'sc_nAgents' : 300,
 
-    'ssmm_latency_mu' : 10,
-    'ssmm_latency_s' : 5,
-    'ssmm_think_mu' : 10,
-    'ssmm_think_s' : 5,
+    'ssmm_latency_mu' : 100,
+    'ssmm_latency_s' : 50,
+    'ssmm_think_mu' : 100,
+    'ssmm_think_s' : 50,
     'sc_latency_mu' : 10,
     'sc_latency_s' : 5,
     'sc_think_mu' : 10,

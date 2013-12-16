@@ -10,3 +10,5 @@ simulation_graphs/
 /tex/Template
 /tex/datasets/raw_data/
 python/shizouka_path.py
+.gitignore_copy
+tex/Thesis/Figures/old/
