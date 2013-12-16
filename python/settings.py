@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = True
+TEST_MODE = False
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 MAKE_TRADEPRICE_PLOT = True
@@ -47,17 +47,17 @@ default_parameters = {
     'fundamental_shock_size' : -10,
     'fundamental_shock_round' : 10000,
 
-    'ssmm_nAgents' : 40,
+    'ssmm_nAgents' : 50,
     'sc_nAgents' : 300,
 
-    'ssmm_latency_mu' : 1,
-    'ssmm_latency_s' : 0,
-    'ssmm_think_mu' : 1,
-    'ssmm_think_s' : 0,
-    'sc_latency_mu' : 1,
-    'sc_latency_s' : 0,
-    'sc_think_mu' : 1,
-    'sc_think_s' : 0,
+    'ssmm_latency_mu' : 100,
+    'ssmm_latency_s' : 50,
+    'ssmm_think_mu' : 100,
+    'ssmm_think_s' : 50,
+    'sc_latency_mu' : 10,
+    'sc_latency_s' : 5,
+    'sc_think_mu' : 10,
+    'sc_think_s' : 5,
     
     'ssmm_spread_mu' : 4,
     'ssmm_spread_s' : 2,
