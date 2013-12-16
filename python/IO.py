@@ -10,7 +10,8 @@ import os
 
 dataset_paths = {
     'd1':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/merged_data/d1_sameLatDist_ssmm40_sc100/',
-    'd2':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/merged_data/d2/'
+    'd2':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/merged_data/d2/',
+    'd3':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/merged_data/d3/'
 }
 
 def check_simulation_complete(full_simulation_log_path):
