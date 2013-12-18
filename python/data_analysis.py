@@ -60,8 +60,8 @@ def calculate_stats_for_dataframe(dataframe, labels):
 	from pandas import concat
 	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
 	assert dataframe.shape[0] == labels.shape[0], 'Please pass labels np.array or similar with the same length as the number of rows in the dataframe'
-	stat_functions = ['count', 'mean', 'std', 'median']
-	stat_names = ['Count', 'Mean', 'Std', 'Median']
+	stat_functions = ['count', 'mean', 'std', 'median', 'max', 'min']
+	stat_names = ['Count', 'Mean', 'Std', 'Median', 'Max', 'Min']
 
 	stats = dict()
 	
@@ -143,7 +143,7 @@ def outlier_detection_with_SVM(dataframe, kernel, gamma, outlier_percentage):
 	inliers_idx, dummy = np.where(assignment <= score)
 	outliers_idx, dummy = np.where(assignment > score)
 	
-	print "%s outlisers and %s inliers"%(len(inliers_idx), len(outliers_idx))
+	print "%s inliers and %s outliers"%(len(inliers_idx), len(outliers_idx))
 	return inliers_idx, outliers_idx
 
 if __name__ == "__main__":
