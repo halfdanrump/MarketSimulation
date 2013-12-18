@@ -31,6 +31,7 @@
 \usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' }
 \usepackage{subcaption}
 \usepackage{amsmath}
+\usepackage{verbatim}
 \hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
 \title{\ttitle} % Defines the thesis title - don't touch this
 
@@ -53,11 +54,33 @@
 %	MY OWN COMMANDS
 %----------------------------------------------------------------------------------------
 
+
 %%% MODEL PARAMETERS
 \newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
 \newcommand{\nmm}{\spa{n}{mm}}
 \newcommand{\nsc}{\spa{n}{sc}}
 \newcommand{\nrounds}{\spa{n}{rounds}}
+
+\newcommand{\sclatencymu}{\ensuremath{\lambda_{c, \mu}}}
+\newcommand{\sclatencys}{\ensuremath{\lambda_{c, \sigma}}} 
+\newcommand{\scnAgents}{\ensuremath{N_{c}}} 
+\newcommand{\scthinkmu}{\ensuremath{T_{c, \mu}}}
+\newcommand{\scthinks}{\ensuremath{T_{c, \sigma}}}
+\newcommand{\sctimehorizonmu}{\ensuremath{H_{c, \mu}}}
+\newcommand{\sctimehorizons}{\ensuremath{H_{c, \sigma}}}
+\newcommand{\scwaitTimeBetweenTradingmu}{\ensuremath{W_{c, \mu}}}
+\newcommand{\scwaitTimeBetweenTradings}{\ensuremath{W_{c, \sigma}}}
+\newcommand{\ssmmlatencymu}{\ensuremath{\lambda_{m, \mu}}}
+\newcommand{\ssmmlatencys}{\ensuremath{\lambda_{m, \sigma}}}
+\newcommand{\ssmmnAgents}{\ensuremath{N_{m}}}
+\newcommand{\ssmmthinkmu}{\ensuremath{T_{m, \mu}}}
+\newcommand{\ssmmthinks}{\ensuremath{T_{m, \sigma}}}
+\newcommand{\overshoot}{\ensuremath{f_\text{overshoot}}}
+\newcommand{\roundstable}{\ensuremath{f_\text{stable}}}
+\newcommand{\stdev}{\ensuremath{f_\text{stdev}}}
+\newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{speed}}}
+
+
 
 %%% SYMBOLS
 \newcommand{\round}{t}
