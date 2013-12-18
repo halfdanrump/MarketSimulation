@@ -22,7 +22,8 @@ arguments = parser.parse_args()
 assert arguments.dataset_name, "Please specify dataset name using the '-d' option. (e.g. '-d d4')"
 print arguments
 
-def evaluate(individual, generation, num):
+def evaluate(individual, generation, graph_folder):
+	print "Worker gor graph folder: %s"%graph_folder
 	if settings.VERBOSE >= 1: print "Evaluating new individual"
 	parameters = scale_genes_to_parameters(individual)
 	if settings.VERBOSE >= 2: print parameters
@@ -92,23 +93,25 @@ toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.1, indpb=0.2)
 toolbox.register("select", tools.selTournament, tournsize=settings.tournament_size)
 toolbox.register("evaluate", evaluate)
 
-start_time = socket.gethostname() + '_' + datetime.now().strftime("%Y%m%d-%H%M%S")
-data_folder = '../data/gene_data/%s/%s'%(arguments.dataset_name, start_time)
 
-gene_data_folder = '%s/generations/'%(data_folder)
-graph_folder = '%s/graphs/'%(data_folder)
+def initialize_worker():
+	start_time = socket.gethostname() + '_' + datetime.now().strftime("%Y%m%d-%H%M%S")
+	data_folder = '../data/gene_data/%s/%s'%(arguments.dataset_name, start_time)
+	gene_data_folder = '%s/generations/'%(data_folder)
+	graph_folder = '%s/graphs/'%(data_folder)
 
-
-
-if __name__ == "__main__":
-
-	#pool = multiprocessing.Pool(processes=10)
 	makedirs(gene_data_folder)
 	makedirs(graph_folder)
 	shutil.copyfile('settings.py','%s/settings.py'%(data_folder))
 	if not arguments.skip_scoop:
 		toolbox.register("map", futures.map)
+	return graph_folder, gene_data_folder
 
+if __name__ == "__main__":
+
+	#pool = multiprocessing.Pool(processes=10)
+	
+	graph_folder, gene_data_folder = initialize_worker()
 
 	pop = create_healthy_population()
 	for g in range(settings.n_generations):
@@ -158,7 +161,7 @@ if __name__ == "__main__":
 		
 			new_data = list()
 			for rep in settings.ga_reps:	
-				fitnesses = toolbox.map(toolbox.evaluate, invalid_ind, np.repeat(g, len(invalid_ind)), range(len(invalid_ind)))
+				fitnesses = toolbox.map(toolbox.evaluate, invalid_ind, np.repeat(g, len(invalid_ind)), np.repeat(graph_folder, len(invalid_ind)))
 				for i, (ind, fit) in enumerate(zip(invalid_ind, fitnesses)):
 				    rep_data[i][rep] = fit
 
