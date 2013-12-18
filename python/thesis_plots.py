@@ -137,7 +137,7 @@ def plot_issue_34(dataset):
 	fit = fit.drop('gen', 1)
 	imshow
 
-def plot_issue_43(dataset, n_clusters, load_from_file = False):
+def plot_issue_43(dataset, n_clusters, gamma, load_from_file = False):
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_pca
 	from sklearn.cluster import KMeans	
@@ -147,7 +147,7 @@ def plot_issue_43(dataset, n_clusters, load_from_file = False):
 
 	reduced_par, labels_all_datapoints, km = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)
 	
-	inliers_idx, outliers_idx = outlier_detection_with_SVM(reduced_par, kernel='rbf', gamma=0.1, outlier_percentage=0.01)
+	inliers_idx, outliers_idx = outlier_detection_with_SVM(reduced_par, kernel='rbf', gamma=gamma, outlier_percentage=0.01)
 	transformed_data, pca, components = calculate_pca(par_data.iloc[inliers_idx,:], n_components = 3, whiten=False, normalize=True)
 	
 	kmeans = KMeans(n_clusters = n_clusters)
@@ -167,7 +167,7 @@ def plot_issue_43(dataset, n_clusters, load_from_file = False):
 	
 	
 
-def table_issue_55(dataset, n_clusters, load_from_file = False):
+def table_issue_55(dataset, n_clusters, gamma, load_from_file = False):
 	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_stats_for_dataframe
 	from sklearn.cluster import KMeans
 	from utils import get_group_vector_for_reduced_dataset
@@ -179,7 +179,7 @@ def table_issue_55(dataset, n_clusters, load_from_file = False):
 	
 	
 
-	inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(par_r, kernel='rbf', gamma=0.1, outlier_percentage=0.01)
+	inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(par_r, kernel='rbf', gamma=gamma, outlier_percentage=0.01)
 	
 	kmeans = KMeans(n_clusters = n_clusters)
 	kmeans.fit(par_r.iloc[inliers_idx_r, :])
@@ -198,12 +198,34 @@ def table_issue_55(dataset, n_clusters, load_from_file = False):
 	fval, pval = f_oneway(*fitness_groups)
 	
 
-	return stats, pval
+	return stats, pval, kmeans
 	
 
 	#stats = calculate_stats_for_dataframe(inliers, kmeans.labels_)
 	#return stats, inliers_idx, r_label
 	
+def issue_65(dataset, n_clusters, load_from_file = False):
+	from settings import get_fixed_parameters
+	from fitness import evaluate_simulation_results
+	import settings
+	import os
+	settings.PLOT_SAVE_PROB = 1
+	
+	fit, par, gen = IO.load_pickled_generation_dataframe(dataset)
+	stats, pvals, kmeans = table_issue_55(dataset, n_clusters, load_from_file)
+	graph_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/data_for_figures/issue_65/'
+	
+	for c, cluster in enumerate(kmeans.cluster_centers_):
+		parameters = get_fixed_parameters()
+		
+		parameters.update(dict(zip(par.columns, map(int, cluster))))
+		print parameters
+		#plot_name = '%scluster%s'%(graph_folder, c)
+		folder = '%scluster_%s/'%(graph_folder,c)
+		if not os.path.exists(folder): os.makedirs(folder)
+		data = evaluate_simulation_results(folder, 0, parameters, range(4), autorun=True)
+		
+			
 
 
 
@@ -233,4 +255,4 @@ if __name__ == '__main__':
 	#plot_issue_('d2', 4, True)
 	#table_issue_55(dataset='d2', n_clusters=4, load_from_file=True)
 	#plot_issue_29(dataset='d1', load_clusters_from_file=False)
-	table_issue_55('d3', 4, True)
+	issue_65('d3', 4, True)
