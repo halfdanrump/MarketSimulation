@@ -12,3 +12,4 @@ simulation_graphs/
 python/shizouka_path.py
 .gitignore_copy
 tex/Thesis/Figures/old/
+tex/data_for_figures/

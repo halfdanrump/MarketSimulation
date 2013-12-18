@@ -38,6 +38,7 @@ def run_simulation(parameters, reps, random_path):
 
     processes = list()
     log_folders = IO.get_logfolders(parameters, reps, random_path)
+    
     try:
         for i, rep in enumerate(reps):
             ### Remove old simulation data calculated with the same parameters
