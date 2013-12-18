@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = False
+TEST_MODE = True
 
 
 VERBOSE = 0 
@@ -14,11 +14,14 @@ VERBOSE = 0
 """
 WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
-MAKE_TRADEPRICE_PLOT = True
+ALWAYS_MAKE_TRADEPRICE_PLOT = True
 SAVE_DATA_USED_FOR_PLOTTING = True
 PLOT_SAVE_PROB = 0.02
 
-ga_reps = range(10)
+if TEST_MODE:
+    ga_reps = range(1)
+else:
+    ga_reps = range(10)
 
 reps = xrange(1) ### DEPRECATED!!!!!!!!!!!!!!!!!!!!!
 
