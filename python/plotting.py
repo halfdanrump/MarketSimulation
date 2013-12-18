@@ -45,7 +45,7 @@ def get_epoch_time():
     td = datetime.now() - datetime.utcfromtimestamp(0)
     return repr(int(td.total_seconds() * 10**6))
 
-def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitness, generation_number):
+def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitness, generation_number, plot_name = None):
     fig = plt.figure(figsize=(10, 8), dpi=100)
     ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
     ax.set_xlabel("Round")
@@ -60,9 +60,15 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     fas = get_fundamental_after_shock()
     ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
     time = get_epoch_time()
-    identifier = graph_folder + 'gen%s_'%generation_number + time
-    graph_name = identifier + '.png'
-    fig.savefig(graph_name)
+    if not plot_name:
+        identifier = graph_folder + 'gen%s_'%generation_number + time
+        full_plot_name = identifier + '.png'
+    else:
+        full_plot_name = graph_folder + plot_name + '___%s'%time
+        print full_plot_name
+    
+    
+    fig.savefig(full_plot_name)
 
     if settings.SAVE_DATA_USED_FOR_PLOTTING:     
         data = {'rounds':rounds, 'tradePrice':tradePrice}

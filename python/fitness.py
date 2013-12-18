@@ -3,7 +3,7 @@ from numpy import *
 import IO
 from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
-from settings import stability_margin, KEEP_SIMULATION_DATA, MAKE_TRADEPRICE_PLOT, PLOT_SAVE_PROB, data_for_failed_simulation
+from settings import stability_margin, KEEP_SIMULATION_DATA, ALWAYS_MAKE_TRADEPRICE_PLOT, PLOT_SAVE_PROB, data_for_failed_simulation
 from random import randint
 from plotting import make_tradeprice_plot
 from itertools import groupby
@@ -22,7 +22,7 @@ def get_named_stats(data, attribute_names = list()):
 	return {'mean':mean, 'std':std}
 
 
-def evaluate_simulation_results(graph_folder, generation_number, parameters = {}, reps = [0], autorun = False):
+def evaluate_simulation_results(graph_folder, generation_number, parameters = {}, reps = [0], autorun = False, plot_name = None):
 	assert parameters, "Please specify a dictionary with par_name:par_value as key:value sets"
 
 	data = empty_data_matrix(len(reps))
@@ -41,12 +41,12 @@ def evaluate_simulation_results(graph_folder, generation_number, parameters = {}
 	if simulation_reps_to_run: run_simulation(parameters, simulation_reps_to_run, random_path)
 
 	for r in reps:
-		data[r] = __evaluate_simulation_results(parameters, log_folders[r], graph_folder, generation_number)
+		data[r] = __evaluate_simulation_results(parameters, log_folders[r], graph_folder, generation_number, plot_name)
 	return data
 
 
 
-def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, generation_number):
+def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, generation_number, plot_name = None):
 	assert logdata_folder, "Please specify where the logdata is located"
 
 	data = empty_data_matrix(1)
@@ -73,9 +73,13 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	if 'round_stable' in data_for_failed_simulation.keys():
 		data['round_stable'] = calculate_round_stable(trades['price'], trades['round'], fas)
 
-
-	if np.random.random() <= PLOT_SAVE_PROB:
-		if MAKE_TRADEPRICE_PLOT: make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number)
+	
+	if ALWAYS_MAKE_TRADEPRICE_PLOT:
+		make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number, plot_name)
+	else:
+		if np.random.random() <= PLOT_SAVE_PROB:
+			make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number, plot_name)
+		
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
 	return data
 
