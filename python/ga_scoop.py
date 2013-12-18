@@ -93,7 +93,7 @@ toolbox.register("select", tools.selTournament, tournsize=settings.tournament_si
 toolbox.register("evaluate", evaluate)
 
 start_time = socket.gethostname() + '_' + datetime.now().strftime("%Y%m%d-%H%M%S")
-data_folder = '../data/gene_data/%s/%s/'%(arguments.dataset_name, start_time)
+data_folder = '../data/gene_data/%s/%s'%(arguments.dataset_name, start_time)
 
 gene_data_folder = '%s/generations/'%(data_folder)
 graph_folder = '%s/graphs/'%(data_folder)

@@ -67,7 +67,7 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
         full_plot_name = graph_folder + plot_name + '___%s'%time
         print full_plot_name
     
-    
+    print "Saving plot to %s"%full_plot_name
     fig.savefig(full_plot_name)
 
     if settings.SAVE_DATA_USED_FOR_PLOTTING:     
