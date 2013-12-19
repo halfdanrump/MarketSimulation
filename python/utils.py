@@ -43,13 +43,23 @@ def prettify_table(pandas_tex, label, caption):
 def load_test_trade_data(type = 'stable'):
 	return DataFrame(load_trade_log_data('/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/data/for_testing/' + type + '/'))
 
+def dataframe2latex(dataframe, label, caption):
+	dataframe = dataframe.copy()
+	tex_column_names = get_latex_par_names([dataframe], as_row = True)
+	
+	dataframe.columns = tex_column_names.split(',')
+	final_table = dataframe.to_latex()
+	return final_table
+
 def get_latex_par_names(tables, as_row):
 	assert type(tables) == list, 'Please pass a list of pandas dataframes'
 	assert type(as_row) == bool, 'Please pass boolean as second argument'
 	from pandas import concat
 	df = concat(tables)
 	if as_row:
-		print ', '.join(['\\%s'%g.replace('_', '') for g in df.columns])
+		names = ', '.join(['\\%s'%g.replace('_', '') for g in df.columns])
 	else:
-		print ''.join(['\\%s\n'%g.replace('_', '') for g in df.columns])
+		names = ''.join(['\\%s\n'%g.replace('_', '') for g in df.columns])
+	print names
+	return names
 

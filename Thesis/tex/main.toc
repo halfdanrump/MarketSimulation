@@ -41,18 +41,19 @@
 \contentsline {section}{\numberline {1.6}Experiments}{14}{section.58}
 \contentsline {chapter}{\numberline {2}Parameter tuning}{15}{chapter.59}
 \contentsline {section}{\numberline {2.1}Motivation and overall procedure}{15}{section.60}
-\contentsline {subsection}{\numberline {2.1.1}Selecting fixed parameters}{16}{subsection.66}
+\contentsline {subsection}{\numberline {2.1.1}Selecting fixed parameters}{17}{subsection.66}
 \contentsline {subsection}{\numberline {2.1.2}Filtering parameters}{17}{subsection.67}
-\contentsline {section}{\numberline {2.2}Inverse simulation with a genetic algorithm}{18}{section.69}
+\contentsline {section}{\numberline {2.2}Inverse simulation with a genetic algorithm}{17}{section.69}
 \contentsline {subsection}{\numberline {2.2.1}Representing parameters as genes}{18}{subsection.77}
-\contentsline {subsection}{\numberline {2.2.2}Model fitness}{18}{subsection.79}
+\contentsline {subsection}{\numberline {2.2.2}Model fitness}{19}{subsection.79}
 \contentsline {section}{\numberline {2.3}Controlling market behavior}{19}{section.80}
 \contentsline {section}{\numberline {2.4}Experiments}{19}{section.82}
-\contentsline {section}{\numberline {2.5}Data sets}{19}{section.84}
-\contentsline {chapter}{\numberline {3}Data Analysis}{21}{chapter.85}
-\contentsline {section}{\numberline {3.1}Dataset 1}{21}{section.86}
-\contentsline {subsection}{\numberline {3.1.1}Other decompositions}{21}{subsection.89}
+\contentsline {section}{\numberline {2.5}Data sets and analysis}{20}{section.84}
+\contentsline {chapter}{\numberline {3}Data Analysis}{22}{chapter.92}
+\contentsline {section}{\numberline {3.1}Dataset 1}{22}{section.93}
+\contentsline {subsection}{\numberline {3.1.1}Other decompositions}{22}{subsection.96}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{23}{appendix.90}
+\contentsline {chapter}{\numberline {A}Dataset statistics}{24}{appendix.97}
+\contentsline {section}{\numberline {A.1}Dataset 1}{24}{section.98}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{24}{dummy.91}
+\contentsline {chapter}{Bibliography}{26}{dummy.102}

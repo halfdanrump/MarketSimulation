@@ -8,8 +8,8 @@ from pandas import DataFrame, read_pickle, concat
 import brewer2mpl
 import IO
 from data_analysis import dataset_paths
-figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/Thesis/Figures/'
-table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/Thesis/Tables/'
+figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Figures/'
+table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
 
 
 def plot_issue_21(dataset):
@@ -38,7 +38,7 @@ def plot_issue_21(dataset):
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='stdev', y_name='time_to_reach_new_fundamental', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log')
 	
 	
-def plot_issue_26(dataset, make_plots = True):
+def plot_issue_26(dataset, n_clusters,make_plots = True):
 	"""
 	PCA and Kmeans for dataset 1
 	"""
@@ -56,7 +56,7 @@ def plot_issue_26(dataset, make_plots = True):
 		print "Making scatter plot of PCA decompositions of fitness data for dataset %s"%dataset
 		make_color_grouped_scatter_plot(data_frame=transformed_data, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
 
-	n_clusters = 4
+	
 	kmeans = KMeans(n_clusters = n_clusters)
 	kmeans.fit(transformed_data.values)
 	
@@ -192,11 +192,13 @@ def table_issue_55(dataset, n_clusters, gamma, load_from_file = False):
 	for stat_name, table in stats.items():
 		table.index = ['\%s'%g.replace('_', '') for g in table.index.tolist()]
 		tex = table.to_latex(float_format=lambda x: str(round(x,1)))
-		tex = prettify_table(tex, 'issue_65_%s'%stat_name, 's')
-		with open('%s%s.tex'%(table_save_path, stat_name), 'w') as f:
+		caption = '%s for parameters and fitness values for each cluster in the parameter space for dataset %s.'%(stat_name, dataset)
+		tex = prettify_table(tex, 'issue_65_%s'%stat_name, caption)
+		with open('%s%s_%s.tex'%(table_save_path, dataset, stat_name), 'w') as f:
 			f.write(tex)
 
 	fitness_groups = map(lambda x: fit_data.iloc[indexes_o[where(labels_o==x)]], range(n_clusters))
+	print fitness_groups
 	fval, pval = f_oneway(*fitness_groups)
 	
 
@@ -215,7 +217,7 @@ def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 	
 	fit, par, gen = IO.load_pickled_generation_dataframe(dataset)
 	stats, pvals, kmeans = table_issue_55(dataset, n_clusters, load_from_file)
-	graph_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/data_for_figures/issue_65/'
+	graph_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_65/'
 	
 	for c, cluster in enumerate(kmeans.cluster_centers_):
 		parameters = get_fixed_parameters()
@@ -228,9 +230,16 @@ def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 		data = evaluate_simulation_results(folder, 0, parameters, range(4), autorun=True)
 		
 			
-
-
-
+def issue_83_example_table():
+	import IO
+	import utils
+	fit, par, gen = IO.load_pickled_generation_dataframe('d3')
+	tex_partable = utils.dataframe2latex(par.iloc[range(10),:], 'table:example_dataset_parameters', 'An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algortihm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.')
+	with open('%sexample_dataset_parameters.tex'%table_save_path, 'w') as f:
+			f.write(tex_partable)
+	tex_fittable = utils.dataframe2latex(fit.iloc[range(10),:], 'table:example_dataset_fitnesses', 'This table contains the fitness values for each individual in table \\ref{table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness values are the average of the fitnesses obtained by evaluating each individual ten times')		
+	with open('%sexample_dataset_fitnesses.tex'%table_save_path, 'w') as f:
+			f.write(tex_fittable)
 
 
 def run_all_issues():
@@ -257,3 +266,4 @@ if __name__ == '__main__':
 	#plot_issue_('d2', 4, True)
 	#table_issue_55(dataset='d2', n_clusters=4, load_from_file=True)
 	#plot_issue_29(dataset='d1', load_clusters_from_file=False)
+	issue_83_example_table()

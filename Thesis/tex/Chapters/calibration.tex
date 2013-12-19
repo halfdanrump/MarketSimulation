@@ -6,7 +6,13 @@
 	
 %----------------------------------------------------------------------------------------
 
-The model has several parameters which must be selected carefully before the simulation can be used to infer knowledge about market behavior. The parameter tuning has two overall goals, which can be separated as follows. 
+The model has several parameters which must be selected carefully before the simulation can be used to infer knowledge about market behavior. 
+
+The parameter tuning turned out to consume a significant amount of time, and simple using a genetic algorithm to optimize over the entire space of parameters was not enough. Instead, the process was a slow and iterative one of running the genetic algorithm to create a data set, analyze the data set to find out what was discovered in the search, and then run the genetic algorithm again with different parameters. Thus several data sets were created, each with the purpose of examining some aspect of the simulation, or of the parameter tuning method itself. 
+
+This chapter will cover the instruments used in the optimization of the model parameters, and also mention the machine learning tools used in the analysis of the data sets. 
+
+The parameter tuning has two overall goals, which are covered in the following section.
 
 \section{Motivation and overall procedure}
 First of all, the model must be calibrated such that it mimics the behavior of real markets. Since virtually every aspect of the simulation behavior depends on the values on the various parameters, these must be chosen carefully in order for the simulation to produce realistic behavior. An example of a simulation untuned parameters causing  unrealistic behavior is given in figure \ref{subfig:unrealistic_behavior}. Selecting realistic parameters is by far a simple task. First of all, it requires a way of quantifying the quality of each simulation. The choice of such a quantification is discussed in section \ref{section:simulation_fitness}. Secondly, there might be several different parameter configurations which produce seemingly realistic behavior, but do not correspond to a realistic market setting. An example for this is given in figure \ref{subfig:unrealistic_parameters}, and section \ref{section:filtering_parameters} briefly discusses this point. 
@@ -147,6 +153,28 @@ This section will outline the varioius experiments carried out with the fundamen
 
 
 
-\section{Data sets}
+\section{Data sets and analysis}
+The previous sections contain the details of each of the steps undertaken in order to produce data sets. To summarize, the list below enumerates the steps.
+\begin{enumerate}
+\item Initialize a population in the genetic algorithm with healthy individuals.
+\item Evaluate the fitness for every individual several times and obtain fitness-values by calculating averages.
+\item Stack all individuals that ever lived into a $\datasetNpoints \times \individuallength$ parameter data matrix \datamatrixpar, where $\datasetNpoints$ is the number of individuals, and $\individuallength$ is the length of each individual. Likewise, stack the fitness values into a $\datasetNpoints \times \fitnesslength$ fitness-data matrix \datamatrixfit, where \fitnesslength is the number of fitness values calculated. 
+\item Filter the data by removing rows in \datamatrixpar with parameters which can be deemed not to correspond to real markets, and by removing rows in \datamatrixfit with fitness values that are not realistic. Please refer to section \ref{section:filtering_parameters} for details. Naturally, when a row is removed in \datamatrixpar, it is also removed in \datamatrixfit, and vice versa. 
+\item 
+\end{enumerate}
 
+\begin{table}
+\centering
+\scriptsize
+\input{Tables/example_dataset_parameters.tex}
+\caption{An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.}
+\label{table:example_dataset_parameters}
+\end{table}
+
+\begin{table}
+\centering
+\input{Tables/example_dataset_fitnesses.tex}
+\caption{This table contains the fitness values for each individual in table \ref{table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times}
+\label{table:example_dataset_fitnesses}
+\end{table}
 

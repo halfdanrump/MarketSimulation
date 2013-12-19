@@ -3,7 +3,12 @@
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {2.1}{\ignorespaces Overview of parameters used in the genetic algorithm\relax }}{18}{table.caption.76}
 \contentsline {table}{\numberline {2.2}{\ignorespaces Overview of experiments\relax }}{19}{table.caption.81}
+\contentsline {table}{\numberline {2.3}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.\relax }}{21}{table.caption.90}
+\contentsline {table}{\numberline {2.4}{\ignorespaces This table contains the fitness values for each individual in table \ref {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{21}{table.caption.91}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces s\relax }}{22}{table.caption.87}
-\contentsline {table}{\numberline {3.2}{\ignorespaces s\relax }}{22}{table.caption.88}
+\contentsline {table}{\numberline {3.1}{\ignorespaces Mean for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{23}{table.caption.94}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Std for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{23}{table.caption.95}
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {A.1}{\ignorespaces Median for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{24}{table.caption.99}
+\contentsline {table}{\numberline {A.2}{\ignorespaces Min for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{25}{table.caption.100}
+\contentsline {table}{\numberline {A.3}{\ignorespaces Max for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{25}{table.caption.101}
