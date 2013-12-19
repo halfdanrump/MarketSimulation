@@ -77,6 +77,11 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     plt.close()
     gc.collect()
 
+def make_pretty_tradeprice_plot(rounds, prices, colormap):
+    p = Ppl(colormap, alpha=1)
+    fig, ax = plt.subplots(1)    
+    pass
+
 
 def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, colormap, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
     ### Originally created for issue_21

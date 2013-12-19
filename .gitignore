@@ -6,10 +6,10 @@ simulation_graphs/
 *.pyc
 *.npz
 *.yaml
-/tex/referencedPapers
-/tex/Template
-/tex/datasets/raw_data/
+/Thesis/referencedPapers
+/Thesis/Template
+/Thesis/datasets/raw_data/
 python/shizouka_path.py
 .gitignore_copy
-tex/Thesis/Figures/old/
-tex/data_for_figures/
+/Thesis/tex/Figures/old/
+/Thesis/data_for_figures/

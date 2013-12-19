@@ -1,0 +1,66 @@
+\section{Initial experiments} % (fold)
+\label{sec:initial_experiments}
+Before proceeding to discuss the results of the various experiments, we will take a look at how the model behaves with some reasonably looking hand picked parameters. This is in order to illustrate the differences between the 
+% section initial_experiments (end)
+\subsection{Fundamental price}
+Four different scenarios for how the fundamental price behaves were implemented. 
+\begin{enumerate}
+	\item Flat fundamental
+	\item Impulse
+	\item Step function
+	\item Ramp function
+	\item Random walk (Geometric Brownian motion)
+\end{enumerate}
+The two first scenarios are rather trivial and would not occur in the real world, but since they are simple they are used to verify that the model does not behave in strange ways. The step function is useful, since it simulates a single shock to the fundamental price, such as the sudden arrival of some news. The purpose of a step function fundamental is to 
+
+The ramp function simulates a market in which 
+
+\begin{figure}[htbp]
+%issue 11
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{}
+	\label{fig:}
+\end{figure}
+
+\subsection{Comparing with and without delays}
+
+\section{Data sets} % (fold)
+The inverse simulation makes it possible to generate as many data sets as one wants to. This section presents an overview of the various data sets that were generated, and explain the purpose behind each of them. The analysis and conclusions are presented in chapter \label{chapter:model}.
+
+\label{sec:data_sets}
+
+\subsection{All agents have same delay} % (fold)
+\label{sub:all_agents_have_same_delay}
+
+% subsection all_agents_haev_same_delay (end)
+
+\subsection{Fix agent numbers} % (fold)
+\label{sub:fixing_agent_numbers}
+
+% subsection fixing_agent_numbers (end)
+
+\subsection{Fixing agent speed} % (fold)
+\label{sub:fixing_agent_speed}
+Fast mm and slow sc.
+
+
+% section data_sets (end)
+
+
+
+\begin{table}
+\centering
+\begin{tabular}{c|c|c}
+Dataset name & Parameters in gene & Purpose of experiment\\ \hline
+D3 & overshoot, \sclatencymu, \sclatencys, \scnAgents, \scthinkmu, \scthinks, \sctimehorizonmu, \sctimehorizons, \scwaitTimeBetweenTradingmu, \scwaitTimeBetweenTradings, \ssmmlatencymu, \ssmmlatencys, \ssmmnAgents, \ssmmthinkmu, \ssmmthinks & 
+\end{tabular}
+\caption{Overview of experiments}
+\label{table:experiments_overview}
+\end{table}
+
+
+\section{Searching for stable market configurations}
+
+% subsection fixing_agent_speed (end)

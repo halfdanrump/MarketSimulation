@@ -36,8 +36,20 @@ def get_group_vector_for_reduced_dataset(clusters, cluster_assignment_o2r, clust
 	return indexes_o, labels_o
 
 
+def prettify_table(pandas_tex, label, caption):
+	 return "\\begin{table} \centering %s \label{%s} \caption{%s} \end{table}"%(pandas_tex, label, caption)
+
 
 def load_test_trade_data(type = 'stable'):
 	return DataFrame(load_trade_log_data('/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/data/for_testing/' + type + '/'))
 
+def get_latex_par_names(tables, as_row):
+	assert type(tables) == list, 'Please pass a list of pandas dataframes'
+	assert type(as_row) == bool, 'Please pass boolean as second argument'
+	from pandas import concat
+	df = concat(tables)
+	if as_row:
+		print ', '.join(['\\%s'%g.replace('_', '') for g in df.columns])
+	else:
+		print ''.join(['\\%s\n'%g.replace('_', '') for g in df.columns])
 

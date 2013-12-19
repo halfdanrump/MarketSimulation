@@ -1,0 +1,257 @@
+% Chapter 2
+
+\chapter{Model} % Main chapter title
+
+\label{chapter:model} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+$\frac{}{}$
+\lhead{Chapter 2. \emph{Model}} % This is for the header on each page - perhaps a shortened title
+	
+%----------------------------------------------------------------------------------------
+
+\section{Model}
+As explained in section \ref{chapter:high_frequency_trading}, perhaps the most distinguishable aspect of high frequency trading is the speed with which agents can react to new market information. It is therefore essential that a model should capture this aspect, if it is to be used to draw generalized conclusions about the influence of high frequency trading in the markets.
+
+What are the goals of this model
+
+What are not the goals of this model.
+
+\subsection{Asynchronous vs game theoretic model}
+In this work, we have tried emulate the asynchronous nature of a continuous auction by 
+
+As such, our model bears little resemblance to models derived from a game-theoretic basis, which typically 
+
+This work resembles a real-time simulation.
+
+\subsection{Overall architecture}
+The model consists a market and agents. Agents and the market communicate by exchanging messages which all arrive one or several rounds after they were issued. A complete simulation consists of the several consecutive rounds. In each rounds, some agents submit orders, while others wait for new market information. Order messages arrive at the order books, and trades are executed when prices match.  The following sections will describe the model in detail.
+
+
+
+\subsection{Modeling delays}
+
+Although each round corresponds to a period of real-time, it is not particularly important to specify how long that period is. Instead, what matters is that there is a difference in speed between the agents. In other words, the important thing is that some agents are much faster than other agents. If one thinks of each round as a millisecond of real-time, one realizes that an agent simulating a human trader will require several thousands of simulation rounds to react to market news. On the other hand, fast algorithmic traders may only require a few rounds, making them several orders of magnitude faster than the slow traders. 
+
+This focus on the extremely 
+
+Another issue when simulating 
+
+
+
+
+
+\section{Market components}
+Sending/receiving orders, supply liquidity
+
+\subsection{Stocks}
+A stock is an asset which is traded on a market. The price of a stock is a mysterious thing. A stock is only worth as much as people are willing to pay for it, and the price at which is it traded thus goes up and down according to what beliefs people hold. In financial markets, every trader is supposed to have access to the same information. However, two traders might disagree on the meaning of some piece of information. The way in which a trader evaluates market information and reaches a conclusion on how to trade is called a strategy. While any function which takes some information relevant to the market as input and gives a decision of how to trade (or not trade at all) can be termed a strategy, it is useful to divide strategies into two broad categories. In the first category are strategies which are dubbed chartist strategies, which basically tries to extrapolate on the past price movements. In the other category are strategies which are based on some analysis of the true value of the stock, called the fundamental value. Not surprisingly, these are called fundamentalist strategies. 
+
+Whether or not one type of strategy is more accurate than the other, it is a fact that both types are employed by traders. Hence, a model of such an environment needs to simulate both a traded price and a fundamental price. 
+
+\subsubsection{Fundamental price}\label{section:fundamental_price}
+
+A common way to model the development of the fundamental price is to use a stochastic random walk process. The idea is that, assuming that markets are efficient, any available information about the stock is already reflected in the fundamental price. When some news arrive, this will quickly cause the price to change according to the nature of the news, as rational traders act to adapt to the new situation. The justification for modeling this with a random walk is that, since the fundamental price already reflect whatever news is available, it will only change as new information is released. In other words, the fundamental price is independent of past information. Since new information is fundamentally unpredictable, a random walk model seems suitable. 
+
+The idea behind this is that 
+
+\begin{figure}
+%issue 11
+\subcaptionbox{\label{subfig:}}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
+\subcaptionbox{\label{subfig:}}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
+\caption{\textbf{:}}\label{fig:}
+\end{figure}
+
+
+\subsection{Messages}
+All communication between the market and agents is transmitted in messages. A message sent from agent $i$ to market $j$ (or the other way around) has a transmission time of $\tau_{i,j} = \tau_{j,i}$. The smallest possible transmission time is $\tau_{i,j} = 0$. This means that no information is transmitted instantly between agent and market. $\tau_{i,j}$ is constant through the simulation. Several message types were implemented in order to accommodate the various types of communication.
+
+\begin{figure}[htbp]
+%issue 14
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{}
+	\label{fig:information_exchange}
+\end{figure}
+
+
+\subsubsection{Market information}
+One of the key points of simulating delays is that agents always trade on old information. Before an agent can evaluate its strategy, it has to request the most recent market information. In a model without delays, an agent would simply receive the state of the market in the current round, but when information is delayed the process is somewhat more cumbersome. First the agent sends off a request to obtain the information about the market state. When the request arrives at the market some rounds later, the market serves the request and by sending back another message containing the information. The contents of this message depends on the agent strategy, as the various agent strategies require different information. 
+In the case of a single market, it is reasonable to simplify the model such that the market serves the request instantaneously, since any delay inherent in the market is common for all agents. 
+After a further delay, the message containing the market state finally arrives at the agent, and the agent can then start evaluating its strategy. Figure \ref{fig:information_exchange} summarizes the procedure.
+
+This is analogous to how 
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{When an agent wants to submit an order it has to go through several steps of interaction with the market. The process is comparable to how real traders communicate with markets via a network, such as the Internet.}
+	\label{fig:information_exchange}
+\end{figure}
+
+\subsubsection{Orders}
+An order is a message which is sent from an agent to a market when the agent has decided to trade. An order is an offer to buy or sell a specified number of shares at a certain price at a certain market. Orders can either be limit orders or market orders. A limit order will only result in a trade to be executed if there is a matching order when it arrives to the market. A market order will stay in the order book until a matching order arrives, or until it expires after a number of rounds set by the submitting agent. 
+
+When an agents submits an order, it has to decide on the trade price, the number of shares, limit or market order, and whether to buy or sell. Details on how each type of agent does this can be found in section \ref{section:agents}.
+
+
+
+
+\subsubsection{Transaction receipts}
+When two orders match, a receipt is sent to each of the two agents involved in the trade. The seller receives a receipt specifying the number of shares that it has to deliver, and the buyer gets a receipt for the amount of cash to be paid. Because of the transmission delay, the agents to not update their portfolios when the trade actually happens, but when they receive the receipt. In the case that an agent does not have enough shares or cash in its portfolio, the agent is allowed to borrow the necessary assets, thus bringing its portfolio into negative. An agent cannot submit new sell orders while holding a negative number of shares. Similarly, an agent cannot submit any new buy orders while having a negative amount of cash. In the case that the agent has neither cash nor shares, it simply becomes inactive.
+
+\subsubsection{Order cancellations}
+It can happen that an agent wants to change a previously submitted order, or cancel it entirely. In fact, this is what the market maker agent does frequently, as described in section \ref{section:market_maker}. In this case, the agent issues a message to the market requesting that the order should be removed. Due to the presence of delays, the agent's order might be filled before the cancellation reaches the market, in which case the market will ignore the request to cancel.
+
+\subsection{Order book}
+The order book is a record of all unmatched orders for a single stock. Since any buy-and sell orders submitted at the same price will cause a trade to be executed, and the matched orders to subsequently be removed, there must at point of time during the simulationbe a non-negative price difference between the sell order with he lowest price and the buy order with the highest price. This difference is called the \textit{spread}, and is denoted as follows
+\begin{equation}\label{equation:spread_definition}
+\spread = \pask - \pbid
+\end{equation}
+where \pask{} is the lowest \ask{} price and \pbid{} is the highest \bid{} price, both at round \round. These prices are also frequently referred to as the \textit{best} \ask{} and \bid{} prices.
+
+\begin{table}
+\centering
+\begin{tabular}{ccc}
+ASK-volume & Price & BID-volume
+\end{tabular}
+\caption{TABLE ILLUSTRATING ORDER BOOK}\label{table:example_order_book}
+\end{table}
+
+When an agent 
+
+\subsubsection{Price updating}
+Each time an order is added or removed, the order book has to update the best \bid{} and \ask{} prices. Since it often happens that several orders arrive in the same round. This means that the order book spread can fluctuate within a single round. However, since one round is considered the minimum quantum of time,  these within-round fluctuations are not recorded in the order book history. Instead, after all orders have been processed, the resulting best \bid{} and \ask{} prices are registered as the best prices for that round. Agents who look at the market will therefore only be able to see the state of the order book after the book has finished processing all price changes due to the arrival or removal of orders. The subscript denoting time equation \ref{equation:spread_definition} therefore refers to the prices at the end of that round. This difference between the traded prices and the best prices is shown on figure \ref{fig:within_round_price_fluctuations}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{}
+	\label{fig:within_round_price_fluctuations}
+\end{figure}
+
+When no orders arrive or are removed from the order book, the prices are updated as $\pask[ + 1] = \pask$ and $\pbid[ + 1] = \pbid$.
+
+Since orders can be removed due to cancellations or because they expire, the order in which incoming messages is processed matters to the outcome of \pask{} and \pbid. Messages are therefore processed in random orders, so that no agent is favored.
+
+
+
+\subsubsection{Order matching}
+When a trade is executed between orders $o_1$ and $o_2$, the traded volume is 
+\begin{equation}
+\Delta v = \min (v_{o_1}, v_{o_1}) \nonumber
+\end{equation}
+If $v_{o_1} = v_{o_2}$ the orders are \textit{fully matched}, and both are removed from the order book. In the case of a \textit{partial match}, that is, if the volume of one order is larger than the volume of the other, then the order with the smaller volume is removed, and the volume of the other order is subtracted by $\Delta v$. The price of the transaction is the price of the market order which was already in the book. 
+
+Each agent knows the volume of every order that it submitted, when the order was dispatched. However, when an order is partially filled by a matching but smaller order, the volume of the order at the market changes. Since it takes time for the order to be transmitted for the agent to the market, the agent cannot immediately update its knowledge of the order volume. In this case the order has one volume at the agent side and another in the market side. The momentary disparity of agent market side and agent side volumes can have several consequences, such as agents short-selling without, agents submitting cancellations for orders which have already been filled. Rules that handle these situations are described in section \ref{section_marketRules}. Unlike volumes, the price of a standing market order does not change, and hence the situation of a disparity between market- and agent-side price knowledge does not occur.
+
+\subsubsection{Empty order book}
+Since orders are removed when their volume is depleted, it can happen that one or both sides of the order book is empty. XXXWRITE SOME MORE HERE
+
+
+
+ 
+\subsection{Market}
+\subsubsection{Short selling}
+Although some market do allow deliberate short selling, this practice is not allowed in the simulation. That is, an agent is not allowed to place a sell order for more stock than it has in its portfolio at the time it places the order. However, due to the presence of delays, it can happen that an agent is required to deliver on a sell order for more stocks than it holds when notified of the order. A sequence of events which causes this to happen is  illustrated on figure \ref{fig:short_selling}. The agent who is short is required to deliver the stocks, and thus goes into negative on its portfolio, and has to buy back the stocks before it can place further sell orders. Although the sequence of events shown in figure \ref{fig:short_selling} may seem unlikely, it did in fact occur frequently, making it necessary to implement handling of this special case. 
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption{The HFT agent submits a sell order for 100 stocks, and another agent submits a price-matching buy order which fills the sell order. Before the transaction receipt reaches the seller, the seller decides to cancel the order, and submit another order at a different price. When the transaction receipt reaches the seller, the agent promptly sends out a cancellation of its second sell order, as it knows it cannot fulfill the order. However, before the cancellation reaches the market, a third agent fills the sell order, and a receipt is send to the seller who ends up being short.}
+	\label{fig:short_selling}
+\end{figure}
+
+
+
+
+\section{Agents}\label{section:agents}
+The model contains three types of agents, each employing a different strategy. Each strategy has several parameters which greatly impact the behavior of the agent.
+
+The purpose of this work is to model a market in which some agents are much faster than other agents. To this effect, we divide the agents into two groups. The first one is the group of slow traders, which are meant to represent human traders, and algorithmic traders using long-term strategies. The other group is the strategies representing the high frequency traders. 
+
+\cite{Reference1}
+
+
+
+\subsection{Slow traders}\label{section:slow_traders}
+
+
+The purpose of this agent type is to include agents which 
+
+The stylized trader model used in this work is inspired by the model used in \cite{chiWang} and \cite{theImpactOfHeterogenous}. However, due to the fundamental differences in the way that the simulation works, the model has been modified significantly. 
+
+Since the stylized trader model is so predominant in the market simulation literature (see \cite{asd}, \cite{asd} etc.), we feel that we need to justify our choice of not using it. 
+
+The basic idea of the model is that there are basically three basic techniques that any trader mixes draws upon to form his own strategy. 
+\begin{description}
+\item[Fundamental analysis] Traders subscribing to this way of thinking believe that they can know the true value of a stock by estimating the fundamental price (see section \ref{section:fundamental_price}). Furthermore, such traders believe that any deviation from the fundamental price is due to other traders misinterpreting the market, and that such deviations will eventually disappear. In other words, given enough time, the traded price will converge towards the fundamental price. 
+\item[Technical analysis] Traders using technical analysis do not care whether or not the stock is over valued. Instead, they believe that they can predict future price movements from past data. Traditional technical analyst approaches extrapolates on price movements by using simple mathematical models and a good deal of heuristics.
+\item[Noise trading] Some traders are in possession of insider knowledge, which means that they think that they know something about the stock that others do not. They use this information to trade the stock, for better or for worse. Such traders were dubbed noise traders, since it is highly unlikely that any one individual would come in possession of information which actually gives that person an advantage in the market. Any such belief is therefore naive, and might as well inflict a loss on the agent than generate a profit.
+\end{description}
+
+Whether or not one strategy is better than the others is not for this thesis to discuss. The point is that all three techniques are commonly used among traders, and that rather to subscribing solely to one way of thinking, most people use a mix of all three. 
+
+
+
+
+In this model, it is assumed that all slow traders know the true fundamental value of the stock at some time in the past.
+
+aspects of human behavior which influences their decisions to trade. The first one 
+
+ with the one significant alteration that it uses no historical data. In other words, the model does not simulate the contribution made by chartist speculation. This is justified because of the short time-scales at which the HFTs operate. 
+ 
+
+ 
+ 
+As mentioned, chartist strategies work by extrapolating on historical price movements to predict future price movements. However, due to the short span of real-time which the simulation covers, it hardly makes sense to 
+ 
+In our model we preserve the fundamental and noise trader characteristics, but dispose of the chartist element. Although this is contrary to common practice, we justify it as follows. Most chartist strategies operate on a timescale of days to weeks to months. However, the simulation proposed in this work merely simulates a few minutes of real-time\footnote{This is not entirely accurate as each round can be interpreted as an arbitrary length of real-time. However, since we are interested in what phenomena occur when we have some agents which are several orders of magnitude faster than other agents, we need a high time resolution, effectively capping the length of real-time which can be simulated}. Any chartist strategy based on the accumulated history of price movement over a long period of time will simply be too sluggish to follow with the high frequency price fluctuations occurring within the simulation. 
+
+It is possible that some traders utilize chartist algorithms on a very short time scale, but any trader employing such a strategy must be fast enough to react to the rapid changes. In order for the model to cope with the presence of such agents, a HFT-chartist agents was implemented as described in section \ref{section:hft_chartist}.
+
+
+
+Secondly, we are not interested in long term market dynamics. The model is limited to simulating only periods which are of key interest, as is discussed in section \ref{section:experiments}.
+ 
+ However, remembering that the time resolution at which slow traders are observing the markets is so low, that the information that they are watching is close to constant during the simulation. The contribution from a chartist strategy can therefore be represented by a random number. The strategy is therefore simply
+
+
+
+
+
+
+The stylized traders play the same role as the slow trades in \cite{strategicLiquiditySupply}
+
+The orders submitted the stylized traders throughout the run of the simulation should be thought of as being submitted by a variety of different agents, all observing the same date, but interpreting it differently using different strategies. As for the timing of the order, the same argument goes. In the simulation, a constant number of orders arrive at each round, and sent to the buy- and sell side with equal probability. Thus no attempt it made to model any kind of herding phenomenon, since there is no time in which such a thing could occur.
+
+
+\subsubsection{Arrival of orders}\label{section:poisson_process}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{Figures/Electron.pdf}
+		\rule{35em}{0.5pt}
+	\caption[Slow trader order arrival]{Slow trader order arrive randomly according to a Poisson process. The bars show the volume generated by slow traders. XXXWRITEMORE}
+	\label{fig:poisson_arrival}
+\end{figure}
+
+
+\subsection{Market makers}\label{section:market_maker}
+For the sake of simplicity, each market maker is only allowed to have one order at each side of the order book at the same time. The agent can therefore not stack orders on either side of the order book. 
+
+\subsection{HFT Chartists}\label{section:hft_chartist}
+
+\section{Simulation rounds}
+
+
+\section{Implementation}
+
+
+\section{Experiments}\label{section:experiments}
+WRITE ABOUT KEY POINTS OF INTEREST IN TIME
+
+
+

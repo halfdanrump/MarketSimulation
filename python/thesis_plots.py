@@ -170,7 +170,7 @@ def plot_issue_43(dataset, n_clusters, gamma, load_from_file = False):
 def table_issue_55(dataset, n_clusters, gamma, load_from_file = False):
 	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_stats_for_dataframe
 	from sklearn.cluster import KMeans
-	from utils import get_group_vector_for_reduced_dataset
+	from utils import get_group_vector_for_reduced_dataset, prettify_table
 	from scipy.stats import f_oneway
 	from numpy import where
 
@@ -190,7 +190,9 @@ def table_issue_55(dataset, n_clusters, gamma, load_from_file = False):
 	stats = calculate_stats_for_dataframe(all_data.iloc[indexes_o,:], labels_o)
 	
 	for stat_name, table in stats.items():
+		table.index = ['\%s'%g.replace('_', '') for g in table.index.tolist()]
 		tex = table.to_latex(float_format=lambda x: str(round(x,1)))
+		tex = prettify_table(tex, 'issue_65_%s'%stat_name, 's')
 		with open('%s%s.tex'%(table_save_path, stat_name), 'w') as f:
 			f.write(tex)
 
@@ -204,7 +206,7 @@ def table_issue_55(dataset, n_clusters, gamma, load_from_file = False):
 	#stats = calculate_stats_for_dataframe(inliers, kmeans.labels_)
 	#return stats, inliers_idx, r_label
 	
-def issue_65(dataset, n_clusters, load_from_file = False):
+def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 	from settings import get_fixed_parameters
 	from fitness import evaluate_simulation_results
 	import settings
@@ -255,4 +257,3 @@ if __name__ == '__main__':
 	#plot_issue_('d2', 4, True)
 	#table_issue_55(dataset='d2', n_clusters=4, load_from_file=True)
 	#plot_issue_29(dataset='d1', load_clusters_from_file=False)
-	issue_65('d3', 4, True)
