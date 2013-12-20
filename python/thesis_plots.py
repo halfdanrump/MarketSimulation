@@ -12,7 +12,7 @@ figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thes
 table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
 
 
-def plot_issue_21(dataset):
+def issue_21_basic_scatter_plots(dataset):
 	"""
 	Makes scatter plots of fitness
 	"""
@@ -38,7 +38,7 @@ def plot_issue_21(dataset):
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='stdev', y_name='time_to_reach_new_fundamental', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log')
 	
 	
-def plot_issue_26(dataset, n_clusters,make_plots = True):
+def issue_26_plot_fitness_pca(dataset, n_clusters):
 	"""
 	PCA and Kmeans for dataset 1
 	"""
@@ -46,28 +46,25 @@ def plot_issue_26(dataset, n_clusters,make_plots = True):
 	from sklearn.cluster import KMeans
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
-	transformed_data, pca, n_components  = calculate_pca(fit_data, n_components=3)
-
-	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
-	filename = figure_save_path + dataset + '_issue_26_fitness_PCA_a_3components.png'
-	
-	if make_plots: 
-		print "Making scatter plot of PCA decompositions of fitness data for dataset %s"%dataset
+	def do_for_dataset(data, data_name):
+		transformed_data, fit_pca, fit_components  = calculate_pca(data, n_components=3, normalize = True)
+		colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
+		filename = figure_save_path + dataset + '_issue_26_1%s_PCA_3components.png'%data_name
+		print "Making scatter plot of PCA decompositions of %s data for dataset %s"%(data_name, dataset)
 		make_color_grouped_scatter_plot(data_frame=transformed_data, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
-
-	
-	kmeans = KMeans(n_clusters = n_clusters)
-	kmeans.fit(transformed_data.values)
-	
-	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
-	filename = figure_save_path + dataset + '_issue_26_fitness_PCA_b_clusters.png'
-	
-	if make_plots: 
-		print "Making scatter plot of K-means clusters of fitness data for dataset %s"%dataset
-		make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 		
-	return kmeans, pca, fit_data
+		kmeans = KMeans(n_clusters = n_clusters)
+		kmeans.fit(transformed_data.values)
+		colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
+		filename = figure_save_path + dataset + '_issue_26_2%s_clusters_in_PCA_space.png'%data_name
+		print "Making scatter plot of K-means clusters of %s data for dataset %s"%(data_name, dataset)
+		make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
+	
+	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	do_for_dataset(fit_data, 'fitness')
+	do_for_dataset(par_data, 'parameter')
+	
+	
 	
 
 def plot_issue_29(dataset, load_clusters_from_file = False):
@@ -227,7 +224,7 @@ def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 		#plot_name = '%scluster%s'%(graph_folder, c)
 		folder = '%scluster_%s/'%(graph_folder,c)
 		if not os.path.exists(folder): os.makedirs(folder)
-		data = evaluate_simulation_results(folder, 0, parameters, range(4), autorun=True)
+		evaluate_simulation_results(folder, 0, parameters, range(4), autorun=True)
 		
 			
 def issue_83_example_table():
@@ -241,29 +238,47 @@ def issue_83_example_table():
 	with open('%sexample_dataset_fitnesses.tex'%table_save_path, 'w') as f:
 			f.write(tex_fittable)
 
+def issue_36_kernelPCA(dataset, load_from_file):
+	import IO
+	from data_analysis import reduce_npoints_kmeans
+	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
-def run_all_issues():
+
+	reduced_par, labels_all_datapoints, km = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)	
+	return reduced_par, labels_all_datapoints, km
+
+
+def analyze_d1():
 	plot_issue_21(dataset='d1')
-	plot_issue_26(dataset='d1')
+	plot_issue_26(dataset='d1', n_clusters=4)
 	plot_issue_29(dataset='d1', load_clusters_from_file=False)
 	plot_issue_32(dataset='d1')
 
+def analyse_d2():
 	plot_issue_21(dataset='d2')
-	plot_issue_26(dataset='d2')
+	plot_issue_26(dataset='d2', n_clusters=4)
 	plot_issue_29(dataset='d2')
 	plot_issue_32(dataset='d2')
 	plot_issue_43(dataset='d2', n_clusters=4)
 	table_issue_55(dataset='d2', n_clusters=4)
 
+def analyse_d3():
 	plot_issue_21(dataset='d3')
-	plot_issue_26(dataset='d3')
+	plot_issue_26(dataset='d3', n_clusters=4)
 	plot_issue_29(dataset='d3')
 	plot_issue_32(dataset='d3')
 	plot_issue_43(dataset='d3', n_clusters=4)
 	table_issue_55(dataset='d3', n_clusters=4)
 
+
+	
+
+	
+
+	
+
 if __name__ == '__main__':
 	#plot_issue_('d2', 4, True)
 	#table_issue_55(dataset='d2', n_clusters=4, load_from_file=True)
 	#plot_issue_29(dataset='d1', load_clusters_from_file=False)
-	issue_83_example_table()
+	pass
