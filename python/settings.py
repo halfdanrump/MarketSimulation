@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = True
+TEST_MODE = False 
 
 
 VERBOSE = 0 
@@ -45,7 +45,7 @@ else:
     population_size = 200
 
 n_generations = 1000
-mutation_prob = 0.1
+mutation_prob = 0.2
 crossover_prob = 0.4
 tournament_size = 2
 
@@ -60,16 +60,16 @@ default_parameters = {
     'fundamental_shock_round' : 10000,
 
     'ssmm_nAgents' : 30,
-    'sc_nAgents' : 150,
+    'sc_nAgents' : 100,
 
-    'ssmm_latency_mu' : 10,
-    'ssmm_latency_s' : 5,
-    'ssmm_think_mu' : 100,
-    'ssmm_think_s' : 50,
-    'sc_latency_mu' : 100,
-    'sc_latency_s' : 10,
-    'sc_think_mu' : 5,
-    'sc_think_s' : 5,
+    'ssmm_latency_mu' : 50,
+    'ssmm_latency_s' : 20,
+    'ssmm_think_mu' : 50,
+    'ssmm_think_s' : 20,
+    'sc_latency_mu' : 50,
+    'sc_latency_s' : 20,
+    'sc_think_mu' : 50,
+    'sc_think_s' : 20,
     
     'ssmm_spread_mu' : 4,
     'ssmm_spread_s' : 2,
@@ -101,16 +101,16 @@ parameters_in_genes = [
 
     'ssmm_latency_mu',
     'ssmm_latency_s',
-    #'ssmm_think_mu',
-    #'ssmm_think_s',
+    'ssmm_think_mu',
+    'ssmm_think_s',
     'sc_latency_mu',
     'sc_latency_s',
-    #'sc_think_mu',
-    #'sc_think_s',
-    #'sc_timehorizon_mu',
-    #'sc_timehorizon_s',
-    #'sc_waitTimeBetweenTrading_mu',
-    #'sc_waitTimeBetweenTrading_s'
+    'sc_think_mu',
+    'sc_think_s',
+    'sc_timehorizon_mu',
+    'sc_timehorizon_s',
+    'sc_waitTimeBetweenTrading_mu',
+    'sc_waitTimeBetweenTrading_s'
 ]
 
 
@@ -119,14 +119,14 @@ parameter_scaling = OrderedDict({
     'ssmm_nAgents' : 50,
     'sc_nAgents' : 300,
 
-    'ssmm_latency_mu' : 100,
-    'ssmm_latency_s' : 50,
-    'ssmm_think_mu' : 100,
-    'ssmm_think_s' : 50,
-    'sc_latency_mu' : 10,
-    'sc_latency_s' : 5,
-    'sc_think_mu' : 10,
-    'sc_think_s' : 5,
+    'ssmm_latency_mu' : 50,
+    'ssmm_latency_s' : 20,
+    'ssmm_think_mu' : 50,
+    'ssmm_think_s' : 20,
+    'sc_latency_mu' : 50,
+    'sc_latency_s' : 20,
+    'sc_think_mu' : 50,
+    'sc_think_s' : 20,
     
     'ssmm_spread_mu' : 4,
     'ssmm_spread_s' : 2,
