@@ -63,3 +63,15 @@ def get_latex_par_names(tables, as_row):
 	print names
 	return names
 
+def export_stats_dict_as_tex(dataset, stats, data_name):
+	from thesis_plots import table_save_path
+	for stat_name, table in stats.items():
+		table.index = ['\%s'%g.replace('_', '') for g in table.index.tolist()]
+		tex = table.to_latex(float_format=lambda x: str(round(x,1)))
+		caption = '%s for parameters and fitness values for each cluster in the parameter space for dataset %s.'%(stat_name, dataset)
+		tex = prettify_table(tex, 'issue_65_cluster_in_%s_space_%s'%(data_name,stat_name), caption)
+		filename = '%s%s_%s_%s.tex'%(table_save_path, dataset, data_name, stat_name) 
+		print 'Writing table to %s'%filename
+		with open(filename, 'w') as f:
+			f.write(tex)
+
