@@ -11,7 +11,8 @@ import os
 dataset_paths = {
     'd1':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d1_sameLatDist_ssmm40_sc100/',
     'd2':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d2/',
-    'd3':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d3/'
+    'd3':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d3/',
+    'd9':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d9_fixed_nAgents_vary_latpars/'
 }
 
 def check_simulation_complete(full_simulation_log_path):
@@ -99,10 +100,10 @@ def load_tradeprice_data(filename):
     return rounds, prices
 
 def pickle_generation_data(dataset_name):
-    dataset_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/tex/datasets/'
+    dataset_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/'
     par, fit = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name)
-    par.to_pickle(dataset_path + 'merged_data/%s/pars.pandas'%dataset_name)
-    fit.to_pickle(dataset_path + 'merged_data/%s/fits.pandas'%dataset_name)
+    par.to_pickle(dataset_paths[dataset_name] + 'pars.pandas')
+    fit.to_pickle(dataset_paths[dataset_name] + 'fits.pandas')
 
 def load_pickled_generation_dataframe(dataset_name):
     datapath = dataset_paths[dataset_name]
