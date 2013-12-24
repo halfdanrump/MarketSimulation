@@ -13,3 +13,6 @@ python/shizouka_path.py
 .gitignore_copy
 /Thesis/tex/Figures/old/
 /Thesis/data_for_figures/
+./Thesis/tex/Figures/
+Thesis/tex/Tables/
+Thesis/tex/Figures/

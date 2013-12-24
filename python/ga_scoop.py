@@ -34,7 +34,6 @@ def evaluate(individual, generation, graph_folder):
 	else:
 		stats = get_invalid_gene_fitness()
 	return stats
-	
 
 
 def get_invalid_gene_fitness():

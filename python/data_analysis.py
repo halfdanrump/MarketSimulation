@@ -1,4 +1,4 @@
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.decomposition import PCA
 from IO import load_all_generations_as_DataFrame, dataset_paths
 import IO
@@ -79,11 +79,11 @@ def calculate_stats_for_dataframe(dataframe, labels):
 	
 	#stats = DataFrame([[eval(s)(merged_labels.values()[i]) for s in stats_to_calculate] for i in clusters], columns=stats_to_calculate, index=['c%s'%i for i in clusters])
 
-def reduce_npoints_kmeans(dataframe, dataset_name, n_datapoints = 1000, load_from_file = False):
+def reduce_npoints_kmeans(dataframe, dataset_name, data_name, n_datapoints = 1000, load_from_file = False):
 	import inspect
 	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
 	issue_number = inspect.stack()[1][3]
-	store_file = temp_storage + dataset_name + '_' + issue_number + '_kmeans.pkl'
+	store_file = temp_storage + dataset_name + '_' + issue_number + '_' + data_name+ '_kmeans.pkl'
 	
 	if load_from_file:
 		print 'Loading kmeans from file...'

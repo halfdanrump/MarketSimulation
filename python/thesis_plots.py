@@ -38,7 +38,7 @@ def issue_21_basic_scatter_plots(dataset):
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='stdev', y_name='time_to_reach_new_fundamental', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log')
 	
 	
-def issue_26_plot_fitness_pca(dataset, n_clusters):
+def issue_26_plot_pca_and_cluster(dataset, n_clusters):
 	"""
 	PCA and Kmeans for dataset 1
 	"""
@@ -49,14 +49,14 @@ def issue_26_plot_fitness_pca(dataset, n_clusters):
 	def do_for_dataset(data, data_name):
 		transformed_data, fit_pca, fit_components  = calculate_pca(data, n_components=3, normalize = True)
 		colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
-		filename = figure_save_path + dataset + '_issue_26_1%s_PCA_3components.png'%data_name
+		filename = figure_save_path + dataset + '_issue_26_1_%s_PCA_3components.png'%data_name
 		print "Making scatter plot of PCA decompositions of %s data for dataset %s"%(data_name, dataset)
 		make_color_grouped_scatter_plot(data_frame=transformed_data, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
 		
 		kmeans = KMeans(n_clusters = n_clusters)
 		kmeans.fit(transformed_data.values)
 		colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
-		filename = figure_save_path + dataset + '_issue_26_2%s_clusters_in_PCA_space.png'%data_name
+		filename = figure_save_path + dataset + '_issue_26_2_%s_clusters_in_PCA_space.png'%data_name
 		print "Making scatter plot of K-means clusters of %s data for dataset %s"%(data_name, dataset)
 		make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 	
@@ -67,82 +67,63 @@ def issue_26_plot_fitness_pca(dataset, n_clusters):
 	
 	
 
-def plot_issue_29(dataset, load_clusters_from_file = False):
-	from data_analysis import reduce_npoints_kmeans
-	from data_analysis import calculate_pca
+def issue_29_reduce_and_affinity(dataset, affinity_damping, load_clusters_from_file = False):
+	from data_analysis import reduce_npoints_kmeans, calculate_pca
 	from sklearn.cluster import AffinityPropagation
+	from sklearn.preprocessing import scale
 	from plotting import make_color_grouped_scatter_plot
 	from plotting import make_scatter_plot_for_labelled_data
 
 	"""
 	Use KMeans on fitness data to reduce number of datapoints and then use affinity propagation
 	"""
+	def do_issue(data, data_name):
+		reduced_points, labels, km = reduce_npoints_kmeans(dataframe = data, dataset_name = dataset, data_name=data_name, n_datapoints = 1000, load_from_file = False)
+		transformed_data, pca, components = calculate_pca(reduced_points, n_components=3)
+		colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
+		filename = figure_save_path + dataset + '_issue_29_1_%s_reduced_number_of_points.png'%data_name
+		print "Making scatter plot of %s data for dataset %s, where the number of points have been reduced by K-Means clustering"%(data_name, dataset)
+		make_color_grouped_scatter_plot(data_frame=transformed_data, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
+
+		ap = AffinityPropagation(damping=affinity_damping)
+		ap.fit(reduced_points)
+		print "Making scatter plot of Affinity Propagation clusters of %s data for dataset %s"%(data_name, dataset)
+		filename = figure_save_path + dataset + '_issue_29_2_%s_affinity.png'%data_name
+		make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=ap.labels_, filename=filename, colormap = colormap, legend=True)	
+	
+		
+
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	do_issue(fit_data, 'fitness')
+	do_issue(par_data, 'parameter')
 
-	#trans_full_dataset, pca, components = calculate_pca(fit_data, n_components=3)
-	points, labels, km = reduce_npoints_kmeans(dataframe = fit_data, dataset_name = dataset, n_datapoints = 1000, load_from_file = False)
 	
-	print points
-	
-	transformed_data, pca, components = calculate_pca(points, n_components=3)
-	
-	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
-	filename = figure_save_path + dataset + '_issue_29_fitness_reduced_number_of_points.png'
-	print "Making scatter plot of fitness data for dataset %s, where the number of points have been reduced by K-Means clustering"%dataset
-	make_color_grouped_scatter_plot(data_frame=transformed_data, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
-
+def issue_88_affinity_after_norm_and_outlier(dataset, load_from_file):
+	from sklearn.preprocessing import scale
+	from sklearn.cluster import AffinityPropagation
+	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM
+	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	reduced_fitness, labels, km = reduce_npoints_kmeans(dataframe = par_data, dataset_name = dataset, data_name='parameter', n_datapoints = 1000, load_from_file = load_from_file)
+	inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(reduced_fitness, kernel='rbf', gamma=0.1, outlier_percentage=0.01)
+	return inliers_idx_r, outliers_idx_r
 	ap = AffinityPropagation(damping=0.97)
-	ap.fit(transformed_data.values)
-	print "Making scatter plot of Affinity Propagation clusters of fitness data for dataset %s"%dataset
-	filename = figure_save_path + dataset + '_issue_29_fitness_affinity.png'
-	make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=ap.labels_, filename=filename, colormap = colormap, legend=True)
+	ap.t
+	#trans_full_dataset, pca, components = calculate_pca(fit_data, n_components=3)
+	
+	
+	
 
 	#dbscan = DBSCAN(min_samples=100)
 
-def plot_issue_32(dataset):
-	from data_analysis import calculate_pca
-	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
-	
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
-	
-	
-	par_trans, pca, components = calculate_pca(par_data, n_components=3, whiten = True)
-	columns = ['d%s'%i for i in range(1, 3+1)]
-	
-	df = DataFrame(par_trans, columns=columns)
-	filename = figure_save_path + dataset + '_issue_32_parameters_PCA.png'
-	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
-	print "Making scatter plot of PCA decomposition of parameter data for dataset %s"%dataset
-	make_color_grouped_scatter_plot(df, x_name='d1', y_name='d2', color_by='d3', filename=filename, colormap=colormap)
-	
-	kmeans, fit_pca, fit_data = plot_issue_26(dataset = dataset, make_plots=False)	
-	
-	filename = figure_save_path + dataset + '_issue_32_parameters_kmeans_labelled.png'
-	print "Making scatter plot of K-means clusters of parameter data for dataset %s"%dataset
-	make_scatter_plot_for_labelled_data(data_frame=df, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 
-
-	
-	
-
-def plot_issue_34(dataset):
-	from matplotlib.pyplot import imshow
-	datapath = dataset_paths[dataset]
-	par = read_pickle(datapath + 'pars.pandas')
-	par = par.drop('gen', 1)
-	fit = read_pickle(datapath + 'fits.pandas')
-	fit = fit.drop('gen', 1)
-	imshow
-
-def plot_issue_43(dataset, n_clusters, gamma, load_from_file = False):
+def issue_43_outlier_detection(dataset, n_clusters, gamma, load_from_file = False):
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_pca
 	from sklearn.cluster import KMeans	
-	from utils import get_group_vector_for_reduced_dataset
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
 
-	reduced_par, labels_all_datapoints, km = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)
+	reduced_par, labels_all_datapoints, km = reduce_npoints_kmeans(par_data, dataset, 'parameters', n_datapoints=1000, load_from_file=load_from_file)
 	
 	inliers_idx, outliers_idx = outlier_detection_with_SVM(reduced_par, kernel='rbf', gamma=gamma, outlier_percentage=0.01)
 	transformed_data, pca, components = calculate_pca(par_data.iloc[inliers_idx,:], n_components = 3, whiten=False, normalize=True)
@@ -164,43 +145,54 @@ def plot_issue_43(dataset, n_clusters, gamma, load_from_file = False):
 	
 	
 
-def table_issue_55(dataset, n_clusters, gamma, load_from_file = False):
+def issue_55_calc_cluster_stats(dataset, n_clusters, gamma, load_from_file = False):
 	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_stats_for_dataframe
 	from sklearn.cluster import KMeans
-	from utils import get_group_vector_for_reduced_dataset, prettify_table
+	from utils import get_group_vector_for_reduced_dataset, export_stats_dict_as_tex
 	from scipy.stats import f_oneway
 	from numpy import where
+	from sklearn.preprocessing import scale
 
+	def reduce_outlier_cluster_stats(data, data_target, data_name, gamma):
+		reduced, cluster_assignment_o2r, km_r = reduce_npoints_kmeans(data, dataset, data_name, n_datapoints=1000, load_from_file=load_from_file)	
+		inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(reduced, kernel='rbf', gamma=gamma, outlier_percentage=0.01)
+		kmeans = KMeans(n_clusters = n_clusters)
+		kmeans.fit(reduced.iloc[inliers_idx_r, :])
+		indexes_i, labels_i =  get_group_vector_for_reduced_dataset(inliers_idx_r, cluster_assignment_o2r, cluster_assignment_r2g = kmeans.labels_)
+		all_data = concat([par_data, fit_data], axis=1)
+		stats = calculate_stats_for_dataframe(all_data.iloc[indexes_i,:], labels_i)
+		export_stats_dict_as_tex(dataset, stats, data_name)
+		#groups = map(lambda x: scale(data_target.iloc[indexes_i[where(labels_i==x)]]), range(n_clusters))
+		#fval, pval = f_oneway(*groups)
+		#print "P-vals for %s clusters: %s"%(data_name, pval)
+	
+	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	reduce_outlier_cluster_stats(par_data, fit_data, 'parameter', gamma=gamma[0])
+	reduce_outlier_cluster_stats(fit_data, par_data, 'fitnss', gamma=gamma[1])
+	"""
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)	
 	par_r, cluster_assignment_o2r, km_r = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)
 	
-	
-
 	inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(par_r, kernel='rbf', gamma=gamma, outlier_percentage=0.01)
 	
 	kmeans = KMeans(n_clusters = n_clusters)
 	kmeans.fit(par_r.iloc[inliers_idx_r, :])
 
-	indexes_o, labels_o =  get_group_vector_for_reduced_dataset(inliers_idx_r, cluster_assignment_o2r, cluster_assignment_r2g = kmeans.labels_)
+	indexes_i, labels_i =  get_group_vector_for_reduced_dataset(inliers_idx_r, cluster_assignment_o2r, cluster_assignment_r2g = kmeans.labels_)
 	#inliers_idx_o = get_labels_r2o(cluster_assignment_o2r, inliers_idx_r)
 	all_data = concat([par_data, fit_data], axis=1)
-	stats = calculate_stats_for_dataframe(all_data.iloc[indexes_o,:], labels_o)
+	stats = calculate_stats_for_dataframe(all_data.iloc[indexes_i,:], labels_i)
 	
-	for stat_name, table in stats.items():
-		table.index = ['\%s'%g.replace('_', '') for g in table.index.tolist()]
-		tex = table.to_latex(float_format=lambda x: str(round(x,1)))
-		caption = '%s for parameters and fitness values for each cluster in the parameter space for dataset %s.'%(stat_name, dataset)
-		tex = prettify_table(tex, 'issue_65_%s'%stat_name, caption)
-		with open('%s%s_%s.tex'%(table_save_path, dataset, stat_name), 'w') as f:
-			f.write(tex)
-
-	fitness_groups = map(lambda x: fit_data.iloc[indexes_o[where(labels_o==x)]], range(n_clusters))
-	print fitness_groups
+	export_stats_dict_as_tex(dataset, stats)
+	
+	fitness_groups = map(lambda x: fit_data.iloc[indexes_i[where(labels_i==x)]], range(n_clusters))
 	fval, pval = f_oneway(*fitness_groups)
-	
-
+	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
+	filename = figure_save_path + dataset + '_issue_55_1_%s_clusters_in_PCA_space.png'%data_name
+	print "Making scatter plot of K-means clusters of %s data for dataset %s"%(data_name, dataset)
+	make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 	return stats, pval, kmeans
-	
+	"""
 
 	#stats = calculate_stats_for_dataframe(inliers, kmeans.labels_)
 	#return stats, inliers_idx, r_label
@@ -213,7 +205,7 @@ def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 	settings.PLOT_SAVE_PROB = 1
 	
 	fit, par, gen = IO.load_pickled_generation_dataframe(dataset)
-	stats, pvals, kmeans = table_issue_55(dataset, n_clusters, load_from_file)
+	stats, pvals, kmeans = issue_55_calc_cluster_stats(dataset, n_clusters, load_from_file)
 	graph_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_65/'
 	
 	for c, cluster in enumerate(kmeans.cluster_centers_):
@@ -227,16 +219,6 @@ def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 		evaluate_simulation_results(folder, 0, parameters, range(4), autorun=True)
 		
 			
-def issue_83_example_table():
-	import IO
-	import utils
-	fit, par, gen = IO.load_pickled_generation_dataframe('d3')
-	tex_partable = utils.dataframe2latex(par.iloc[range(10),:], 'table:example_dataset_parameters', 'An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algortihm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.')
-	with open('%sexample_dataset_parameters.tex'%table_save_path, 'w') as f:
-			f.write(tex_partable)
-	tex_fittable = utils.dataframe2latex(fit.iloc[range(10),:], 'table:example_dataset_fitnesses', 'This table contains the fitness values for each individual in table \\ref{table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness values are the average of the fitnesses obtained by evaluating each individual ten times')		
-	with open('%sexample_dataset_fitnesses.tex'%table_save_path, 'w') as f:
-			f.write(tex_fittable)
 
 def issue_36_kernelPCA(dataset, load_from_file):
 	import IO
@@ -249,14 +231,14 @@ def issue_36_kernelPCA(dataset, load_from_file):
 
 
 def analyze_d1():
-	plot_issue_21(dataset='d1')
-	plot_issue_26(dataset='d1', n_clusters=4)
-	plot_issue_29(dataset='d1', load_clusters_from_file=False)
-	plot_issue_32(dataset='d1')
+	issue_21_basic_scatter_plots(dataset='d1')
+	issue_26_plot_pca(dataset='d1', n_clusters=4)
+	issue_29_reduce_and_affinity(dataset='d1', affinity_damping=0.97, load_clusters_from_file=True)
 
 def analyse_d2():
-	plot_issue_21(dataset='d2')
-	plot_issue_26(dataset='d2', n_clusters=4)
+	issue_21_basic_scatter_plots(dataset='d2')
+	issue_26_plot_pca(dataset='d2', n_clusters=4)
+	
 	plot_issue_29(dataset='d2')
 	plot_issue_32(dataset='d2')
 	plot_issue_43(dataset='d2', n_clusters=4)
