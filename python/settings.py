@@ -59,16 +59,16 @@ default_parameters = {
     'fundamental_shock_size' : -10,
     'fundamental_shock_round' : 10000,
 
-    'ssmm_nAgents' : 50,
-    'sc_nAgents' : 300,
+    'ssmm_nAgents' : 30,
+    'sc_nAgents' : 150,
 
-    'ssmm_latency_mu' : 100,
-    'ssmm_latency_s' : 50,
+    'ssmm_latency_mu' : 10,
+    'ssmm_latency_s' : 5,
     'ssmm_think_mu' : 100,
     'ssmm_think_s' : 50,
-    'sc_latency_mu' : 10,
-    'sc_latency_s' : 5,
-    'sc_think_mu' : 10,
+    'sc_latency_mu' : 100,
+    'sc_latency_s' : 10,
+    'sc_think_mu' : 5,
     'sc_think_s' : 5,
     
     'ssmm_spread_mu' : 4,
@@ -96,15 +96,15 @@ if TEST_MODE:
 
 
 parameters_in_genes = [
-    'ssmm_nAgents',
-    'sc_nAgents' ,
+    #'ssmm_nAgents',
+    #'sc_nAgents' ,
 
-    #'ssmm_latency_mu',
-    #'ssmm_latency_s',
+    'ssmm_latency_mu',
+    'ssmm_latency_s',
     #'ssmm_think_mu',
     #'ssmm_think_s',
-    #'sc_latency_mu',
-    #'sc_latency_s',
+    'sc_latency_mu',
+    'sc_latency_s',
     #'sc_think_mu',
     #'sc_think_s',
     #'sc_timehorizon_mu',
