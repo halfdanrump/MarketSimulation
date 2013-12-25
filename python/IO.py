@@ -111,6 +111,7 @@ def load_pickled_generation_dataframe(dataset_name):
     fit_data = read_pickle(datapath + 'fits.pandas')
     par_data = read_pickle(datapath + 'pars.pandas')
     gen = fit_data['gen']
+    gen = gen.astype(int)
     fit_data = fit_data.drop('gen', 1)
     par_data = par_data.drop('gen', 1)
     return fit_data, par_data, gen
