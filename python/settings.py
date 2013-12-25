@@ -19,9 +19,9 @@ SAVE_DATA_USED_FOR_PLOTTING = True
 PLOT_SAVE_PROB = 1
 
 if TEST_MODE:
-    ga_reps = range(10)
-else:
     ga_reps = range(1)
+else:
+    ga_reps = range(10)
 
 reps = xrange(1) ### DEPRECATED!!!!!!!!!!!!!!!!!!!!!
 
@@ -59,7 +59,7 @@ default_parameters = {
     'fundamental_shock_size' : -10,
     'fundamental_shock_round' : 10000,
 
-    'ssmm_nAgents' : 30,
+    'ssmm_nAgents' : 50,
     'sc_nAgents' : 150,
 
     'ssmm_latency_mu' : 50,
@@ -96,7 +96,7 @@ if TEST_MODE:
 
 
 parameters_in_genes = [
-    #'ssmm_nAgents',
+    'ssmm_nAgents',
     #'sc_nAgents' ,
 
     'ssmm_latency_mu',

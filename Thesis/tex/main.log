@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  25 DEC 2013 17:55
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  25 DEC 2013 20:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -915,7 +915,7 @@ n input line 12.
 
 [2
 
-] [3] <Figures/Electron.pdf, id=473, 398.3386pt x 284.52756pt>
+] [3] <Figures/Electron.pdf, id=488, 398.3386pt x 284.52756pt>
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
@@ -1003,28 +1003,50 @@ File: Figures/Electron.pdf Graphic file (type pdf)
  <use Figures/Electron.pdf>
 Package pdftex.def Info: Figures/Electron.pdf used on input line 56.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
- [17] [18]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 114.
+ [17]
+
+Package natbib Warning: Citation `genetic1' on page 18 undefined on input line 
+80.
 
 
-(/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
+Package natbib Warning: Citation `genetic2' on page 18 undefined on input line 
+80.
+
+[18]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 104.
+
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 114.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 104.
+ [19]
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 146.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 162.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
- [19] (./Tables/example_dataset_parameters.tex)
-Overfull \hbox (3.47867pt too wide) in paragraph at lines 1--170
+
+
+LaTeX Warning: Reference `chapter:results_and_discussion' on page 20 undefined 
+on input line 173.
+
+
+LaTeX Warning: Reference `section:experiments_overview' on page 20 undefined on
+ input line 173.
+
+
+LaTeX Warning: Reference `results_and_discussion' on page 20 undefined on input
+ line 173.
+
+[20] [21] (./Tables/example_dataset_parameters.tex)
+Overfull \hbox (3.47867pt too wide) in paragraph at lines 1--190
  [][] 
  []
 
-(./Tables/example_dataset_fitnesses.tex) [20] [21] (./Partials/no_reaction.tex
+(./Tables/example_dataset_fitnesses.tex) [22] (./Partials/no_reaction.tex
 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figure
-s/test/gen0_1387987146731556L.png, id=664, 578.16pt x 433.62pt>
+s/test/gen0_1387987146731556L.png, id=690, 578.16pt x 433.62pt>
 File: /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_f
 igures/test/gen0_1387987146731556L.png Graphic file (type png)
 
@@ -1048,7 +1070,7 @@ Underfull \hbox (badness 2384) in paragraph at lines 1--1
 
 
 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figure
-s/test/gen0_1387987146764027L.png, id=666, 578.16pt x 433.62pt>
+s/test/gen0_1387987146764027L.png, id=692, 578.16pt x 433.62pt>
 File: /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_f
 igures/test/gen0_1387987146764027L.png Graphic file (type png)
 
@@ -1070,39 +1092,39 @@ m/it/10 ^^U[]$\OT1/cmr/m/n/10 =17, $\OML/cmm/m/it/10 ^^U[]$\OT1/cmr/m/n/10 =21,
  $\OML/cmm/m/it/10 ^^U[]$\OT1/cmr/m/n/10 =17, 
  []
 
-)) (./Chapters/data_analysis.tex [22 </Users/halfdan/Dropbox/Waseda/Research/Ma
+)) (./Chapters/data_analysis.tex [23 </Users/halfdan/Dropbox/Waseda/Research/Ma
 rketSimulation/Thesis/data_for_figures/test/gen0_1387987146731556L.png> </Users
 /halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/test/
-gen0_1387987146764027L.png>]
+gen0_1387987146764027L.png>] [24]
 Chapter 3.
 ------------------------------------------------------------------------------
  3 Data Analysis
 ------------------------------------------------------------------------------
-(./Tables/d9_parameter_Mean.tex
-Overfull \hbox (7.16493pt too wide) in paragraph at lines 1--24
+(./Tables/d3_parameter_Mean.tex
+Overfull \hbox (7.16493pt too wide) in paragraph at lines 1--26
  [][] 
  []
 
-) (./Tables/d9_fitness_Mean.tex
-Overfull \hbox (7.16493pt too wide) in paragraph at lines 1--24
+) (./Tables/d3_fitness_Mean.tex
+Overfull \hbox (7.16493pt too wide) in paragraph at lines 1--26
  [][] 
  []
 
-) (./Tables/d9_parameter_Count.tex)) (./Appendices/AppendixA.tex [23
+) (./Tables/d3_parameter_Count.tex)) (./Appendices/AppendixA.tex [25
 
-] [24]
-[25]
+] [26]
+[27]
 Appendix A.
 ------------------------------------------------------------------------------
  A Dataset statistics
 ------------------------------------------------------------------------------
-) [26
+) [28
 
 ]
 ------------------------------------------------------------------------------
  Bibliography
 ------------------------------------------------------------------------------
-(./main.bbl) [27
+(./main.bbl) [29
 
 
 ]
@@ -1110,16 +1132,22 @@ Appendix A.
 Package natbib Warning: There were undefined citations.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 461.
-[28
+[30
 
 ]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 461.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 461.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 461.
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 956B43F2851570A3B4CCD22789F78EB0;9739.
 
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 2C5B74AEFF55864B81B28BAC1582B71B;10227
+(rerunfilecheck)             After:  2B259EF179C0ACE3C85719892405F909;10373.
 
 LaTeX Warning: There were undefined references.
 
@@ -1129,38 +1157,77 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 461.
  ) 
 Here is how much of TeX's memory you used:
- 11291 strings out of 493488
- 159762 string characters out of 3141326
- 272176 words of memory out of 3000000
- 14202 multiletter control sequences out of 15000+200000
+ 11324 strings out of 493488
+ 160288 string characters out of 3141326
+ 276176 words of memory out of 3000000
+ 14215 multiletter control sequences out of 15000+200000
  20937 words of font info for 79 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 49i,13n,45p,1138b,485s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></u
-sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
-/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/l
-ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/l
-ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
-al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local
-/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/te
-xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texli
-ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/
-2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/201
-2/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texlive/2012
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2012/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2012/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2012/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2012/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2012/texmf
--dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on main.pdf (43 pages, 373324 bytes).
+ 49i,13n,45p,1517b,489s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{table.caption.106} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{dummy.112} has been referenced but does not exist, 
+replaced by a fixed one
+
+pdfTeX warning (dest): name{section.111} has been referenced but does not exist
+, replaced by a fixed one
+
+pdfTeX warning (dest): name{appendix.110} has been referenced but does not exis
+t, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.109} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{section.105} has been referenced but does not exist
+, replaced by a fixed one
+
+pdfTeX warning (dest): name{chapter.104} has been referenced but does not exist
+, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.103} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.101} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.100} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.98} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.97} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{section.96} has been referenced but does not exist,
+ replaced by a fixed one
+
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
+/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
+usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></
+usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr
+/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/l
+ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loc
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/loc
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
+/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/t
+exlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texl
+ive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive
+/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/20
+12/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2012/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texlive/2012/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2012/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2012/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2012/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2012/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2012/texmf-d
+ist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
+Output written on main.pdf (45 pages, 378899 bytes).
 PDF statistics:
- 817 PDF objects out of 1000 (max. 8388607)
- 729 compressed objects within 8 object streams
- 163 named destinations out of 1000 (max. 500000)
- 496 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 864 PDF objects out of 1000 (max. 8388607)
+ 774 compressed objects within 8 object streams
+ 183 named destinations out of 1000 (max. 500000)
+ 520 words of extra memory for PDF output out of 10000 (max. 10000000)
 

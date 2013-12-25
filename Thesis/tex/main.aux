@@ -121,59 +121,69 @@
 \newlabel{section:filtering_parameters}{{2.1.2}{17}{Filtering parameters\relax }{subsection.67}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Inverse simulation with a genetic algorithm}{17}{section.69}}
 \newlabel{section:genetic_algorithm}{{2.2}{17}{Inverse simulation with a genetic algorithm\relax }{section.69}{}}
+\citation{genetic1}
+\citation{genetic2}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath  { \texttt  {n}_\texttt  {mm} }= \ensuremath  { \texttt  {n}_\texttt  {sc} }= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{18}{figure.caption.68}}
 \newlabel{fig:no_marketmakers}{{2.2}{18}{Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\nmm = \nsc = 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax \relax }{figure.caption.68}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces Overview of parameters used in the genetic algorithm\relax }}{18}{table.caption.76}}
-\newlabel{table:genetic_algorithm_parameters}{{2.1}{18}{Overview of parameters used in the genetic algorithm\relax \relax }{table.caption.76}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Representing parameters as genes}{18}{subsection.77}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.2}{\ignorespaces Overview of experiments\relax }}{19}{table.caption.81}}
-\newlabel{table:optimization_goals}{{2.2}{19}{Overview of experiments\relax \relax }{table.caption.81}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Model fitness}{19}{subsection.79}}
-\newlabel{section:simulation_fitness}{{2.2.2}{19}{Model fitness\relax }{subsection.79}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Controlling market behavior}{19}{section.80}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Experiments}{19}{section.82}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces \relax }}{20}{figure.caption.83}}
-\newlabel{fig:}{{2.3}{20}{\relax \relax }{figure.caption.83}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Data sets and analysis}{20}{section.84}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.3}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.\relax }}{21}{table.caption.90}}
-\newlabel{table:example_dataset_parameters}{{2.3}{21}{An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.\relax \relax }{table.caption.90}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.4}{\ignorespaces This table contains the fitness values for each individual in table \ref  {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{21}{table.caption.91}}
-\newlabel{table:example_dataset_fitnesses}{{2.4}{21}{This table contains the fitness values for each individual in table \ref {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax \relax }{table.caption.91}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.6}Data analysis}{21}{section.92}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.1}Preprocessing}{21}{subsection.93}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.1.1}Removing outliers}{21}{subsubsection.94}}
-\newlabel{no_reaction_0}{{2.4a}{22}{\ssmmlatencymu =49, \ssmmlatencys =8, \sclatencymu =32, \sclatencys =19, \overshoot =1.0, \timetoreachnewfundamental =29210.0, \roundstable =23970.0, \stdev =0.482\relax \relax }{figure.caption.95}{}}
-\newlabel{sub@no_reaction_0}{{a}{22}{\ssmmlatencymu =49, \ssmmlatencys =8, \sclatencymu =32, \sclatencys =19, \overshoot =1.0, \timetoreachnewfundamental =29210.0, \roundstable =23970.0, \stdev =0.482\relax \relax }{figure.caption.95}{}}
-\newlabel{no_reaction_1}{{2.4b}{22}{\ssmmlatencymu =7, \ssmmlatencys =17, \sclatencymu =21, \sclatencys =17, \overshoot =1.0, \timetoreachnewfundamental =28229.0, \roundstable =23146.0, \stdev =0.5\relax \relax }{figure.caption.95}{}}
-\newlabel{sub@no_reaction_1}{{b}{22}{\ssmmlatencymu =7, \ssmmlatencys =17, \sclatencymu =21, \sclatencys =17, \overshoot =1.0, \timetoreachnewfundamental =28229.0, \roundstable =23146.0, \stdev =0.5\relax \relax }{figure.caption.95}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.2}Data visualization}{22}{subsection.96}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2.1}Color toned scatter plots}{22}{subsubsection.97}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2.2}title}{22}{subsubsection.98}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.3}Clustering algorithms}{22}{subsection.99}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Data Analysis}{23}{chapter.100}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Representing parameters as genes}{18}{subsection.76}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Model fitness}{19}{subsection.78}}
+\newlabel{section:simulation_fitness}{{2.2.2}{19}{Model fitness\relax }{subsection.78}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Genetic algorithm parameters}{19}{subsection.79}}
+\newlabel{section:ga_parameters}{{2.2.3}{19}{Genetic algorithm parameters\relax }{subsection.79}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces Overview of parameters used in the genetic algorithm\relax }}{20}{table.caption.80}}
+\newlabel{table:genetic_algorithm_parameters}{{2.1}{20}{Overview of parameters used in the genetic algorithm\relax \relax }{table.caption.80}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.2}{\ignorespaces Overview of experiments\relax }}{20}{table.caption.83}}
+\newlabel{table:optimization_goals}{{2.2}{20}{Overview of experiments\relax \relax }{table.caption.83}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.4}}{20}{subsection.81}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Controlling market behavior}{20}{section.82}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Experiments}{20}{section.84}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Data sets and experiments}{20}{section.86}}
+\newlabel{section:datasets_and_experiments}{{2.5}{20}{Data sets and experiments\relax }{section.86}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces \relax }}{21}{figure.caption.85}}
+\newlabel{fig:}{{2.3}{21}{\relax \relax }{figure.caption.85}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Data sets}{21}{subsection.88}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.3}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained parameters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each parameter.\relax }}{22}{table.caption.94}}
+\newlabel{table:example_dataset_parameters}{{2.3}{22}{An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained parameters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each parameter.\relax \relax }{table.caption.94}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.4}{\ignorespaces This table contains the fitness values for each individual in table \ref  {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{22}{table.caption.95}}
+\newlabel{table:example_dataset_fitnesses}{{2.4}{22}{This table contains the fitness values for each individual in table \ref {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax \relax }{table.caption.95}{}}
+\newlabel{no_reaction_0}{{2.4a}{23}{\ssmmlatencymu =49, \ssmmlatencys =8, \sclatencymu =32, \sclatencys =19, \overshoot =1.0, \timetoreachnewfundamental =29210.0, \roundstable =23970.0, \stdev =0.482\relax \relax }{figure.caption.100}{}}
+\newlabel{sub@no_reaction_0}{{a}{23}{\ssmmlatencymu =49, \ssmmlatencys =8, \sclatencymu =32, \sclatencys =19, \overshoot =1.0, \timetoreachnewfundamental =29210.0, \roundstable =23970.0, \stdev =0.482\relax \relax }{figure.caption.100}{}}
+\newlabel{no_reaction_1}{{2.4b}{23}{\ssmmlatencymu =7, \ssmmlatencys =17, \sclatencymu =21, \sclatencys =17, \overshoot =1.0, \timetoreachnewfundamental =28229.0, \roundstable =23146.0, \stdev =0.5\relax \relax }{figure.caption.100}{}}
+\newlabel{sub@no_reaction_1}{{b}{23}{\ssmmlatencymu =7, \ssmmlatencys =17, \sclatencymu =21, \sclatencys =17, \overshoot =1.0, \timetoreachnewfundamental =28229.0, \roundstable =23146.0, \stdev =0.5\relax \relax }{figure.caption.100}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Experiments}{23}{subsection.96}}
+\newlabel{section:experiments_overview}{{2.5.2}{23}{Experiments\relax }{subsection.96}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Data analysis}{23}{section.97}}
+\newlabel{section:data_analysis_techniques}{{2.6}{23}{Data analysis\relax }{section.97}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.1}Preprocessing}{23}{subsection.98}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.1.1}Removing outliers}{23}{subsubsection.99}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.2}Data visualization}{23}{subsection.101}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2.1}Color toned scatter plots}{24}{subsubsection.102}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2.2}title}{24}{subsubsection.103}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.3}Clustering algorithms}{24}{subsection.104}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Data Analysis}{25}{chapter.105}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chapter:model}{{3}{23}{Data Analysis\relax }{chapter.100}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Dataset 1}{23}{section.101}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Other decompositions}{23}{subsection.105}}
+\newlabel{chapter:model}{{3}{25}{Data Analysis\relax }{chapter.105}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Dataset 1}{25}{section.106}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Other decompositions}{25}{subsection.110}}
 \@writefile{toc}{\vspace  {2em}}
-\newlabel{issue_65_cluster_in_parameter_space_Mean}{{\caption@xref {issue_65_cluster_in_parameter_space_Mean}{ on input line 24}}{24}{Dataset 1\relax }{table.caption.102}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Mean for parameters and fitness values for each cluster in the parameter space for dataset d9.\relax }}{24}{table.caption.102}}
-\newlabel{issue_65_cluster_in_fitness_space_Mean}{{\caption@xref {issue_65_cluster_in_fitness_space_Mean}{ on input line 24}}{24}{Dataset 1\relax }{table.caption.103}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Mean for parameters and fitness values for each cluster in the fitness space for dataset d9.\relax }}{24}{table.caption.103}}
-\newlabel{issue_65_cluster_in_parameter_space_Count}{{\caption@xref {issue_65_cluster_in_parameter_space_Count}{ on input line 24}}{25}{Dataset 1\relax }{table.caption.104}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Count for parameters and fitness values for each cluster in the parameter space for dataset d9.\relax }}{25}{table.caption.104}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Dataset statistics}{26}{appendix.106}}
+\newlabel{issue_65_cluster_in_parameter_space_Mean}{{\caption@xref {issue_65_cluster_in_parameter_space_Mean}{ on input line 26}}{26}{Dataset 1\relax }{table.caption.107}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Mean for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{26}{table.caption.107}}
+\newlabel{issue_65_cluster_in_fitness_space_Mean}{{\caption@xref {issue_65_cluster_in_fitness_space_Mean}{ on input line 26}}{26}{Dataset 1\relax }{table.caption.108}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Mean for parameters and fitness values for each cluster in the fitness space for dataset d3.\relax }}{26}{table.caption.108}}
+\newlabel{issue_65_cluster_in_parameter_space_Count}{{\caption@xref {issue_65_cluster_in_parameter_space_Count}{ on input line 26}}{27}{Dataset 1\relax }{table.caption.109}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Count for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{27}{table.caption.109}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Dataset statistics}{28}{appendix.111}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{AppendixA}{{A}{26}{Dataset statistics\relax }{appendix.106}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {A.1}Dataset 1}{26}{section.107}}
+\newlabel{AppendixA}{{A}{28}{Dataset statistics\relax }{appendix.111}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.1}Dataset 1}{28}{section.112}}
 \@writefile{toc}{\vspace  {2em}}
 \bibstyle{unsrtnat}
 \bibdata{Bibliography}
 \bibcite{Reference1}{{1}{2001}{{Hawthorn et~al.}}{{Hawthorn, Weber, and Scholten}}}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{27}{dummy.108}}
-\newlabel{Bibliography}{{11}{27}{Dataset 1\relax }{dummy.108}{}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{29}{dummy.113}}
+\newlabel{Bibliography}{{11}{29}{Dataset 1\relax }{dummy.113}{}}
 \bibcite{chiWang}{{1}{}{{}}{{}}}
 \bibcite{riseOfComputerizedTrading}{{2}{}{{}}{{}}}
 \bibcite{strategicLiquiditySupply}{{3}{}{{}}{{}}}

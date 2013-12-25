@@ -44,23 +44,27 @@
 \contentsline {subsection}{\numberline {2.1.1}Selecting fixed parameters}{17}{subsection.66}
 \contentsline {subsection}{\numberline {2.1.2}Filtering parameters}{17}{subsection.67}
 \contentsline {section}{\numberline {2.2}Inverse simulation with a genetic algorithm}{17}{section.69}
-\contentsline {subsection}{\numberline {2.2.1}Representing parameters as genes}{18}{subsection.77}
-\contentsline {subsection}{\numberline {2.2.2}Model fitness}{19}{subsection.79}
-\contentsline {section}{\numberline {2.3}Controlling market behavior}{19}{section.80}
-\contentsline {section}{\numberline {2.4}Experiments}{19}{section.82}
-\contentsline {section}{\numberline {2.5}Data sets and analysis}{20}{section.84}
-\contentsline {section}{\numberline {2.6}Data analysis}{21}{section.92}
-\contentsline {subsection}{\numberline {2.6.1}Preprocessing}{21}{subsection.93}
-\contentsline {subsubsection}{\numberline {2.6.1.1}Removing outliers}{21}{subsubsection.94}
-\contentsline {subsection}{\numberline {2.6.2}Data visualization}{22}{subsection.96}
-\contentsline {subsubsection}{\numberline {2.6.2.1}Color toned scatter plots}{22}{subsubsection.97}
-\contentsline {subsubsection}{\numberline {2.6.2.2}title}{22}{subsubsection.98}
-\contentsline {subsection}{\numberline {2.6.3}Clustering algorithms}{22}{subsection.99}
-\contentsline {chapter}{\numberline {3}Data Analysis}{23}{chapter.100}
-\contentsline {section}{\numberline {3.1}Dataset 1}{23}{section.101}
-\contentsline {subsection}{\numberline {3.1.1}Other decompositions}{23}{subsection.105}
+\contentsline {subsection}{\numberline {2.2.1}Representing parameters as genes}{18}{subsection.76}
+\contentsline {subsection}{\numberline {2.2.2}Model fitness}{19}{subsection.78}
+\contentsline {subsection}{\numberline {2.2.3}Genetic algorithm parameters}{19}{subsection.79}
+\contentsline {subsection}{\numberline {2.2.4}}{20}{subsection.81}
+\contentsline {section}{\numberline {2.3}Controlling market behavior}{20}{section.82}
+\contentsline {section}{\numberline {2.4}Experiments}{20}{section.84}
+\contentsline {section}{\numberline {2.5}Data sets and experiments}{20}{section.86}
+\contentsline {subsection}{\numberline {2.5.1}Data sets}{21}{subsection.88}
+\contentsline {subsection}{\numberline {2.5.2}Experiments}{23}{subsection.96}
+\contentsline {section}{\numberline {2.6}Data analysis}{23}{section.97}
+\contentsline {subsection}{\numberline {2.6.1}Preprocessing}{23}{subsection.98}
+\contentsline {subsubsection}{\numberline {2.6.1.1}Removing outliers}{23}{subsubsection.99}
+\contentsline {subsection}{\numberline {2.6.2}Data visualization}{23}{subsection.101}
+\contentsline {subsubsection}{\numberline {2.6.2.1}Color toned scatter plots}{24}{subsubsection.102}
+\contentsline {subsubsection}{\numberline {2.6.2.2}title}{24}{subsubsection.103}
+\contentsline {subsection}{\numberline {2.6.3}Clustering algorithms}{24}{subsection.104}
+\contentsline {chapter}{\numberline {3}Data Analysis}{25}{chapter.105}
+\contentsline {section}{\numberline {3.1}Dataset 1}{25}{section.106}
+\contentsline {subsection}{\numberline {3.1.1}Other decompositions}{25}{subsection.110}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Dataset statistics}{26}{appendix.106}
-\contentsline {section}{\numberline {A.1}Dataset 1}{26}{section.107}
+\contentsline {chapter}{\numberline {A}Dataset statistics}{28}{appendix.111}
+\contentsline {section}{\numberline {A.1}Dataset 1}{28}{section.112}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{27}{dummy.108}
+\contentsline {chapter}{Bibliography}{29}{dummy.113}

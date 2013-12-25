@@ -1,12 +1,12 @@
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {1.1}{\ignorespaces TABLE ILLUSTRATING ORDER BOOK\relax }}{7}{table.caption.40}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Overview of parameters used in the genetic algorithm\relax }}{18}{table.caption.76}
-\contentsline {table}{\numberline {2.2}{\ignorespaces Overview of experiments\relax }}{19}{table.caption.81}
-\contentsline {table}{\numberline {2.3}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.\relax }}{21}{table.caption.90}
-\contentsline {table}{\numberline {2.4}{\ignorespaces This table contains the fitness values for each individual in table \ref {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{21}{table.caption.91}
+\contentsline {table}{\numberline {2.1}{\ignorespaces Overview of parameters used in the genetic algorithm\relax }}{20}{table.caption.80}
+\contentsline {table}{\numberline {2.2}{\ignorespaces Overview of experiments\relax }}{20}{table.caption.83}
+\contentsline {table}{\numberline {2.3}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained parameters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each parameter.\relax }}{22}{table.caption.94}
+\contentsline {table}{\numberline {2.4}{\ignorespaces This table contains the fitness values for each individual in table \ref {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{22}{table.caption.95}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Mean for parameters and fitness values for each cluster in the parameter space for dataset d9.\relax }}{24}{table.caption.102}
-\contentsline {table}{\numberline {3.2}{\ignorespaces Mean for parameters and fitness values for each cluster in the fitness space for dataset d9.\relax }}{24}{table.caption.103}
-\contentsline {table}{\numberline {3.3}{\ignorespaces Count for parameters and fitness values for each cluster in the parameter space for dataset d9.\relax }}{25}{table.caption.104}
+\contentsline {table}{\numberline {3.1}{\ignorespaces Mean for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{26}{table.caption.107}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Mean for parameters and fitness values for each cluster in the fitness space for dataset d3.\relax }}{26}{table.caption.108}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Count for parameters and fitness values for each cluster in the parameter space for dataset d3.\relax }}{27}{table.caption.109}
 \addvspace {10\p@ }

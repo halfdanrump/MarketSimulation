@@ -7,9 +7,11 @@ Warning--I didn't find a database entry for "chiWang"
 Warning--I didn't find a database entry for "theImpactOfHeterogenous"
 Warning--I didn't find a database entry for "asd"
 Warning--I didn't find a database entry for "strategicLiquiditySupply"
+Warning--I didn't find a database entry for "genetic1"
+Warning--I didn't find a database entry for "genetic2"
 You've used 1 entry,
             2481 wiz_defined-function locations,
-            568 strings with 4783 characters,
+            570 strings with 4799 characters,
 and the built_in function-call counts, 480 in all, are:
 = -- 41
 > -- 21
@@ -48,4 +50,4 @@ warning$ -- 0
 while$ -- 4
 width$ -- 0
 write$ -- 22
-(There were 4 warnings)
+(There were 6 warnings)

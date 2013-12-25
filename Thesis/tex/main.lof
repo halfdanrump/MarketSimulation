@@ -8,6 +8,6 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces \textbf {Motivatoin for tuning:} the two\relax }}{16}{figure.caption.61}
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath { \texttt {n}_\texttt {mm} }= \ensuremath { \texttt {n}_\texttt {sc} }= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{18}{figure.caption.68}
-\contentsline {figure}{\numberline {2.3}{\ignorespaces \relax }}{20}{figure.caption.83}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \relax }}{21}{figure.caption.85}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
