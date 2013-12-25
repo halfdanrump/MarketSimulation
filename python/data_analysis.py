@@ -57,23 +57,27 @@ def calculate_cluster_stats(dataframe, cluster_labels):
 	"""
 	
 def calculate_stats_for_dataframe(dataframe, labels):
-	from pandas import concat
+	from pandas import concat, Series
+	from numpy import where
 	assert isinstance(dataframe, DataFrame), "Expected pandas DataFrame, but got %s."%type(dataframe)
 	assert dataframe.shape[0] == labels.shape[0], 'Please pass labels np.array or similar with the same length as the number of rows in the dataframe'
 	stat_functions = ['count', 'mean', 'std', 'median', 'max', 'min']
 	stat_names = ['Count', 'Mean', 'Std', 'Median', 'Max', 'Min']
 
 	stats = dict()
-	
+
+	distinct_labels = range(max(labels)+1)
+	col_names = map(lambda x: 'c%s'%x, distinct_labels)
+	count =  Series(dict(zip(col_names,[len(where(labels == g)[0]) for g in distinct_labels])), name = 'Count')
 	for stat, stat_name in zip(stat_functions, stat_names): 
-
-		stats[stat_name] = DataFrame(columns = ['c' + str(c) for c in set(labels)], index = dataframe.columns)
-
+		stats[stat_name] = DataFrame(columns = col_names, index = dataframe.columns)
 		for cluster in set(labels):	
-			
+			print cluster
 			c = getattr(dataframe.iloc[labels == cluster,:], stat)().copy()
-
-			stats[stat_name]['c'+str(cluster)] = c
+			stats[stat_name][col_names[cluster]] = c
+			print count
+		stats[stat_name] = stats[stat_name].append(count)
+		#print stats[stat_name]
 
 	return stats
 	
