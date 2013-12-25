@@ -149,7 +149,6 @@ def issue_55_calc_cluster_stats(dataset, n_clusters, gamma, load_from_file = Fal
 	from sklearn.cluster import KMeans
 	from utils import get_group_vector_for_reduced_dataset, export_stats_dict_as_tex
 	from plotting import make_scatter_plot_for_labelled_data
-	from numpy import where
 	#from scipy.stats import f_oneway
 	#from numpy import where
 	#from sklearn.preprocessing import scale
@@ -160,7 +159,7 @@ def issue_55_calc_cluster_stats(dataset, n_clusters, gamma, load_from_file = Fal
 		kmeans = KMeans(n_clusters = n_clusters)
 		kmeans.fit(reduced.iloc[inliers_idx_r, :])
 		indexes_i, labels_i =  get_group_vector_for_reduced_dataset(inliers_idx_r, cluster_assignment_o2r, cluster_assignment_r2g = kmeans.labels_)
-		
+		print DataFrame(kmeans.cluster_centers_, columns=data.columns)
 
 		all_data = concat([par_data, fit_data], axis=1)
 		stats = calculate_stats_for_dataframe(all_data.iloc[indexes_i,:], labels_i)
@@ -252,6 +251,8 @@ def issue_82_parameter_evolution(dataset):
 	def d3():
 		#make_pretty_generation_plot(folder + 'd3_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'])
 		make_pretty_generation_plot(folder + 'd3_nAgents.png', generations, [group['ssmm_nAgents'].mean(), group['sc_nAgents'].mean()], 'Average nuber of agents', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd9_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average think time std', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd9_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'])
 	from plotting import make_pretty_generation_plot
 	folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_82_generation_plots/'
 	fit,par,gen = IO.load_pickled_generation_dataframe(dataset)

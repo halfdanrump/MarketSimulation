@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = False 
+TEST_MODE = True
 
 
 VERBOSE = 0 
@@ -16,12 +16,12 @@ WITH_SIMULATION_OUTPUT = False
 KEEP_SIMULATION_DATA = False
 ALWAYS_MAKE_TRADEPRICE_PLOT = False
 SAVE_DATA_USED_FOR_PLOTTING = True
-PLOT_SAVE_PROB = 0.02
+PLOT_SAVE_PROB = 1
 
 if TEST_MODE:
-    ga_reps = range(1)
-else:
     ga_reps = range(10)
+else:
+    ga_reps = range(1)
 
 reps = xrange(1) ### DEPRECATED!!!!!!!!!!!!!!!!!!!!!
 
@@ -60,7 +60,7 @@ default_parameters = {
     'fundamental_shock_round' : 10000,
 
     'ssmm_nAgents' : 30,
-    'sc_nAgents' : 100,
+    'sc_nAgents' : 150,
 
     'ssmm_latency_mu' : 50,
     'ssmm_latency_s' : 20,
@@ -101,16 +101,16 @@ parameters_in_genes = [
 
     'ssmm_latency_mu',
     'ssmm_latency_s',
-    'ssmm_think_mu',
-    'ssmm_think_s',
+    #'ssmm_think_mu',
+    #'ssmm_think_s',
     'sc_latency_mu',
     'sc_latency_s',
-    'sc_think_mu',
-    'sc_think_s',
-    'sc_timehorizon_mu',
-    'sc_timehorizon_s',
-    'sc_waitTimeBetweenTrading_mu',
-    'sc_waitTimeBetweenTrading_s'
+    #'sc_think_mu',
+    #'sc_think_s',
+    #'sc_timehorizon_mu',
+    #'sc_timehorizon_s',
+    #'sc_waitTimeBetweenTrading_mu',
+    #'sc_waitTimeBetweenTrading_s'
 ]
 
 

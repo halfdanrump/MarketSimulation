@@ -63,15 +63,41 @@ def get_latex_par_names(tables, as_row):
 	print names
 	return names
 
+def get_latex_par_names_from_list(list_of_names):
+	tex_names = list()
+	for name in list_of_names:
+		tex_names.append('\\%s'%name.replace('_', ''))
+	return tex_names
+
 def export_stats_dict_as_tex(dataset, stats, data_name):
 	from thesis_plots import table_save_path
 	for stat_name, table in stats.items():
 		table.index = ['\%s'%g.replace('_', '') for g in table.index.tolist()]
 		tex = table.to_latex(float_format=lambda x: str(round(x,1)))
-		caption = '%s for parameters and fitness values for each cluster in the parameter space for dataset %s.'%(stat_name, dataset)
+		
+		caption = '%s for parameters and fitness values for each cluster in the %s space for dataset %s.'%(stat_name, data_name, dataset)
 		tex = prettify_table(tex, 'issue_65_cluster_in_%s_space_%s'%(data_name,stat_name), caption)
 		filename = '%s%s_%s_%s.tex'%(table_save_path, dataset, data_name, stat_name) 
 		print 'Writing table to %s'%filename
 		with open(filename, 'w') as f:
 			f.write(tex)
 
+def export_tradeprice_figure_as_tex(filenames, label_root):
+	import IO
+	partials_dir = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Partials/'
+	sub_tex=list()
+	for subfig, data_filename in enumerate(filenames):
+		rounds, prices, fit, par = IO.load_tradeprice_data_with_parameters(data_filename)
+		par_tex_names = get_latex_par_names_from_list(par.keys())
+		pc = '%s'%", ".join(map(lambda p, v: '%s=%s'%(p,v), par_tex_names, par.values()))
+		fit_tex_names = get_latex_par_names_from_list(fit.keys())
+		fc = '%s'%", ".join(map(lambda p, v: '%s=%s'%(p,v), fit_tex_names, map(lambda x: round(x,3), fit.values())))
+		caption = "%s, %s"%(pc, fc)
+		label = '%s_%s'%(label_root, subfig)
+		figure_filename = data_filename.replace('.npz', '.png')
+		sub_tex.append("\subcaptionbox{%s\label{%s}}[0.49\linewidth]{\includegraphics[width=0.5\\textwidth]{%s}}"%(caption, label, figure_filename))
+	joined_subs = "\n".join(sub_tex)
+	full_tex = "\\begin{figure}%s \end{figure}"%joined_subs
+	
+	with open('%s%s.tex'%(partials_dir, label_root), 'w') as f:
+		f.write(full_tex)

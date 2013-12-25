@@ -41,8 +41,6 @@ def calculate_cluster_stats(dataframe, cluster_labels):
 	print "median with KMmeans\n", group.median()
 	return group.count(), group.mean(), group.std(), group.median()
 
-	
-
 	"""
 	stats_to_calculate = ['count', 'mean', 'std', 'median']
 	stats = dict()
@@ -72,10 +70,8 @@ def calculate_stats_for_dataframe(dataframe, labels):
 	for stat, stat_name in zip(stat_functions, stat_names): 
 		stats[stat_name] = DataFrame(columns = col_names, index = dataframe.columns)
 		for cluster in set(labels):	
-			print cluster
 			c = getattr(dataframe.iloc[labels == cluster,:], stat)().copy()
 			stats[stat_name][col_names[cluster]] = c
-			print count
 		stats[stat_name] = stats[stat_name].append(count)
 		#print stats[stat_name]
 

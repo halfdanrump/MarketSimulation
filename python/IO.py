@@ -99,6 +99,17 @@ def load_tradeprice_data(filename):
     prices = d['tradePrice']
     return rounds, prices
 
+def load_tradeprice_data_with_parameters(filename):
+    """
+    Loads the data (stored as .npz) used to generate the tradePrice plots
+    """
+    d = np.load(filename).items()[0][1].item()
+    rounds = d['rounds']
+    prices = d['tradePrice']
+    fit = d['fitness']
+    par = d['parameters']
+    return rounds, prices, fit, par
+
 def pickle_generation_data(dataset_name):
     dataset_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/'
     par, fit = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name)

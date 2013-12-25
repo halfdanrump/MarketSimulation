@@ -30,7 +30,7 @@ def evaluate(individual, generation, graph_folder):
 		data = evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
 		stats = get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
-		print "Finished simulation with parameters: %s"%scale_genes_to_parameters(individual, False)
+		print "Gen %s: Finished simulation with parameters: %s"%(generation, scale_genes_to_parameters(individual, False))
 	else:
 		stats = get_invalid_gene_fitness()
 	return stats
@@ -88,7 +88,7 @@ toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.att
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("mate", tools.cxTwoPoints)
-toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.1, indpb=0.2)
+toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.2, indpb=0.2)
 toolbox.register("select", tools.selTournament, tournsize=settings.tournament_size)
 toolbox.register("evaluate", evaluate)
 

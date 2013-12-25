@@ -1,7 +1,6 @@
 This is BibTeX, Version 0.99d (TeX Live 2012)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
-A level-1 auxiliary file: file.aux
 The style file: unsrtnat.bst
 Database file #1: Bibliography.bib
 Warning--I didn't find a database entry for "chiWang"
@@ -10,7 +9,7 @@ Warning--I didn't find a database entry for "asd"
 Warning--I didn't find a database entry for "strategicLiquiditySupply"
 You've used 1 entry,
             2481 wiz_defined-function locations,
-            569 strings with 4791 characters,
+            568 strings with 4783 characters,
 and the built_in function-call counts, 480 in all, are:
 = -- 41
 > -- 21

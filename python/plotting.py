@@ -70,17 +70,29 @@ def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitne
     print "Saving plot to %s"%full_plot_name
     fig.savefig(full_plot_name)
 
+    pars_in_gene = dict([(k, all_parameters[k]) for k in settings.parameters_in_genes])
+    fit = dict(zip(list(fitness.dtype.names), list(fitness.item())))
     if settings.SAVE_DATA_USED_FOR_PLOTTING:     
-        data = {'rounds':rounds, 'tradePrice':tradePrice}
+        data = {'rounds':rounds, 'tradePrice':tradePrice, 'fitness': fit, 'parameters':pars_in_gene}
         np.savez_compressed(identifier, data)
 
     plt.close()
     gc.collect()
 
-def make_pretty_tradeprice_plot(rounds, prices, colormap):
-    p = Ppl(colormap, alpha=1)
+def make_pretty_tradeprice_plot(path_to_npz_file):
+    import IO
+    rounds, prices, fit, par = IO.load_tradeprice_data_with_parameters(path_to_npz_file)
+    cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)    
-    pass
+    p.plot(ax, rounds, prices)
+
+    filename = path_to_npz_file.replace('.npz', '.png')
+    fas = get_fundamental_after_shock()
+    ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
+    ax.set_ylabel('Ticks')
+    ax.set_xlabel('Rounds')
+    fig.savefig(filename)
 
 def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)

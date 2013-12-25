@@ -52,15 +52,15 @@
 \contentsline {section}{\numberline {2.6}Data analysis}{21}{section.92}
 \contentsline {subsection}{\numberline {2.6.1}Preprocessing}{21}{subsection.93}
 \contentsline {subsubsection}{\numberline {2.6.1.1}Removing outliers}{21}{subsubsection.94}
-\contentsline {subsection}{\numberline {2.6.2}Data visualization}{22}{subsection.95}
-\contentsline {subsubsection}{\numberline {2.6.2.1}Color toned scatter plots}{22}{subsubsection.96}
-\contentsline {subsubsection}{\numberline {2.6.2.2}title}{22}{subsubsection.97}
-\contentsline {subsection}{\numberline {2.6.3}Clustering algorithms}{22}{subsection.98}
-\contentsline {chapter}{\numberline {3}Data Analysis}{23}{chapter.99}
-\contentsline {section}{\numberline {3.1}Dataset 1}{23}{section.100}
+\contentsline {subsection}{\numberline {2.6.2}Data visualization}{22}{subsection.96}
+\contentsline {subsubsection}{\numberline {2.6.2.1}Color toned scatter plots}{22}{subsubsection.97}
+\contentsline {subsubsection}{\numberline {2.6.2.2}title}{22}{subsubsection.98}
+\contentsline {subsection}{\numberline {2.6.3}Clustering algorithms}{22}{subsection.99}
+\contentsline {chapter}{\numberline {3}Data Analysis}{23}{chapter.100}
+\contentsline {section}{\numberline {3.1}Dataset 1}{23}{section.101}
 \contentsline {subsection}{\numberline {3.1.1}Other decompositions}{23}{subsection.105}
 \vspace {2em}
 \contentsline {chapter}{\numberline {A}Dataset statistics}{26}{appendix.106}
 \contentsline {section}{\numberline {A.1}Dataset 1}{26}{section.107}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{28}{dummy.111}
+\contentsline {chapter}{Bibliography}{27}{dummy.108}
