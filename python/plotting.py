@@ -82,6 +82,19 @@ def make_pretty_tradeprice_plot(rounds, prices, colormap):
     fig, ax = plt.subplots(1)    
     pass
 
+def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels):
+    cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(cmap, alpha=1)
+    fig, ax = plt.subplots(1)
+    ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+    ax.set_xlabel('Generation')
+    ax.set_ylabel(x_axis_name)
+    for series, label in zip(lines_to_plot, legend_labels):
+        print len(generations)
+        print series.values.shape
+        p.plot(ax, generations, series, linewidth=2, label=label)
+    p.legend(ax)
+    fig.savefig(filename)
 
 def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, colormap, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
     ### Originally created for issue_21

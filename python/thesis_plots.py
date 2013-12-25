@@ -47,7 +47,7 @@ def issue_26_plot_pca_and_cluster(dataset, n_clusters):
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	
 	def do_for_dataset(data, data_name):
-		transformed_data, fit_pca, fit_components  = calculate_pca(data, n_components=3, normalize = True)
+		transformed_data, pca, components  = calculate_pca(data, n_components=3, normalize = True)
 		colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
 		filename = figure_save_path + dataset + '_issue_26_1_%s_PCA_3components.png'%data_name
 		print "Making scatter plot of PCA decompositions of %s data for dataset %s"%(data_name, dataset)
@@ -63,7 +63,6 @@ def issue_26_plot_pca_and_cluster(dataset, n_clusters):
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	do_for_dataset(fit_data, 'fitness')
 	do_for_dataset(par_data, 'parameter')
-	
 	
 	
 
@@ -146,12 +145,14 @@ def issue_43_outlier_detection(dataset, n_clusters, gamma, load_from_file = Fals
 	
 
 def issue_55_calc_cluster_stats(dataset, n_clusters, gamma, load_from_file = False):
-	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_stats_for_dataframe
+	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_stats_for_dataframe, calculate_pca
 	from sklearn.cluster import KMeans
 	from utils import get_group_vector_for_reduced_dataset, export_stats_dict_as_tex
-	from scipy.stats import f_oneway
+	from plotting import make_scatter_plot_for_labelled_data
 	from numpy import where
-	from sklearn.preprocessing import scale
+	#from scipy.stats import f_oneway
+	#from numpy import where
+	#from sklearn.preprocessing import scale
 
 	def reduce_outlier_cluster_stats(data, data_target, data_name, gamma):
 		reduced, cluster_assignment_o2r, km_r = reduce_npoints_kmeans(data, dataset, data_name, n_datapoints=1000, load_from_file=load_from_file)	
@@ -159,16 +160,24 @@ def issue_55_calc_cluster_stats(dataset, n_clusters, gamma, load_from_file = Fal
 		kmeans = KMeans(n_clusters = n_clusters)
 		kmeans.fit(reduced.iloc[inliers_idx_r, :])
 		indexes_i, labels_i =  get_group_vector_for_reduced_dataset(inliers_idx_r, cluster_assignment_o2r, cluster_assignment_r2g = kmeans.labels_)
+		
+
 		all_data = concat([par_data, fit_data], axis=1)
 		stats = calculate_stats_for_dataframe(all_data.iloc[indexes_i,:], labels_i)
 		export_stats_dict_as_tex(dataset, stats, data_name)
 		#groups = map(lambda x: scale(data_target.iloc[indexes_i[where(labels_i==x)]]), range(n_clusters))
 		#fval, pval = f_oneway(*groups)
 		#print "P-vals for %s clusters: %s"%(data_name, pval)
-	
+		transformed_data, pca, components  = calculate_pca(data.iloc[indexes_i,:], n_components=3, normalize = True)	
+		filename = figure_save_path + dataset + 'isse55_1_clusters_in_PCA_%s_space.png'%(data_name)
+		colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
+		print "Making scatter plot of K-means clusters of %s data for dataset %s"%(data_name, dataset)
+		make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=labels_i, filename=filename, colormap = colormap, legend=True)
+		#fitness_groups = map(lambda x: data.iloc[indexes_i[where(labels_i==x)]], range(n_clusters))
+		
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	reduce_outlier_cluster_stats(par_data, fit_data, 'parameter', gamma=gamma[0])
-	reduce_outlier_cluster_stats(fit_data, par_data, 'fitnss', gamma=gamma[1])
+	reduce_outlier_cluster_stats(fit_data, par_data, 'fitness', gamma=gamma[1])
 	"""
 	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)	
 	par_r, cluster_assignment_o2r, km_r = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)
@@ -229,6 +238,34 @@ def issue_36_kernelPCA(dataset, load_from_file):
 	reduced_par, labels_all_datapoints, km = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)	
 	return reduced_par, labels_all_datapoints, km
 
+
+def issue_82_parameter_evolution(dataset):
+	def get_stats(name, stats):
+		return [getattr(group[name], s)() for s in stats]	
+	
+	def d9():
+		make_pretty_generation_plot(folder + 'd9_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd9_latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd9_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average think time std', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd9_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'])
+
+	def d3():
+		#make_pretty_generation_plot(folder + 'd3_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd3_nAgents.png', generations, [group['ssmm_nAgents'].mean(), group['sc_nAgents'].mean()], 'Average nuber of agents', ['Market makers', 'Chartists'])
+	from plotting import make_pretty_generation_plot
+	folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_82_generation_plots/'
+	fit,par,gen = IO.load_pickled_generation_dataframe(dataset)
+	all_data = concat([fit,par, DataFrame(gen)], axis=1)
+	generations = list(set(all_data['gen']))
+	group = all_data.groupby('gen')
+	stats = ['min', 'mean', 'median']
+	
+	make_pretty_generation_plot(folder + dataset + '_time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats)
+	make_pretty_generation_plot(folder + dataset + '_stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats)
+	make_pretty_generation_plot(folder + dataset + '_round_stable.png', generations, get_stats('round_stable', stats), 'Round entering stability margin', stats)
+	make_pretty_generation_plot(folder + dataset + '_overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats)
+	eval(dataset)()	
+	
 
 def analyze_d1():
 	issue_21_basic_scatter_plots(dataset='d1')
