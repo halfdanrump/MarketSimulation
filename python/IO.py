@@ -58,8 +58,9 @@ def store_generation_as_data_matrix(generation_data, generation_number, path):
     np.savez_compressed(path + 'gen_%s_fit'%generation_number, fit_matrix)
 
 
-def load_all_generations_as_DataFrame(folder_name):
+def load_all_generations_as_DataFrame(folder_name, drop_invalid_individuals=True):
     #gen_par = dict()
+    from pandas import concat
     all_par = DataFrame()
     all_fit = DataFrame()
     gen_pars_files = [f for f in os.listdir(folder_name) if re.match('gen_\d+_pars\.npz', f)]
@@ -83,12 +84,17 @@ def load_all_generations_as_DataFrame(folder_name):
     ### Remove invalid genes
     all_par = all_par.reset_index(drop=True)
     all_fit = all_fit.reset_index(drop=True)
-    i, = np.where(all_fit['overshoot'] >= 10**6)
-    all_par = all_par.drop(i)
-    all_fit = all_fit.drop(i)
-    all_par = all_par.reset_index(drop=True)
-    all_fit = all_fit.reset_index(drop=True)
-    return all_par, all_fit
+    if drop_invalid_individuals:
+        i, = np.where(all_fit['overshoot'] >= 10**6)
+        invalid_individuals = concat([all_par.iloc[i,:], all_fit.iloc[i,:]], axis=1)
+        print "Number of discarded individuals: %s"%i
+        all_par = all_par.drop(i)
+        all_fit = all_fit.drop(i)
+        all_par = all_par.reset_index(drop=True)
+        all_fit = all_fit.reset_index(drop=True)
+        return all_par, all_fit, invalid_individuals
+    else:
+        return all_par, all_fit, DataFrame()
 
 def load_tradeprice_data(filename):
     """
@@ -112,7 +118,7 @@ def load_tradeprice_data_with_parameters(filename):
 
 def pickle_generation_data(dataset_name):
     dataset_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/'
-    par, fit = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name)
+    par, fit, invalids = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name)
     par.to_pickle(dataset_paths[dataset_name] + 'pars.pandas')
     fit.to_pickle(dataset_paths[dataset_name] + 'fits.pandas')
 

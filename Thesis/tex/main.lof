@@ -1,13 +1,14 @@
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces \textbf {:}\relax }}{4}{figure.caption.30}
-\contentsline {figure}{\numberline {1.2}{\ignorespaces \relax }}{5}{figure.caption.32}
-\contentsline {figure}{\numberline {1.3}{\ignorespaces When an agent wants to submit an order it has to go through several steps of interaction with the market. The process is comparable to how real traders communicate with markets via a network, such as the Internet.\relax }}{6}{figure.caption.34}
-\contentsline {figure}{\numberline {1.4}{\ignorespaces \relax }}{8}{figure.caption.42}
-\contentsline {figure}{\numberline {1.5}{\ignorespaces The HFT agent submits a sell order for 100 stocks, and another agent submits a price-matching buy order which fills the sell order. Before the transaction receipt reaches the seller, the seller decides to cancel the order, and submit another order at a different price. When the transaction receipt reaches the seller, the agent promptly sends out a cancellation of its second sell order, as it knows it cannot fulfill the order. However, before the cancellation reaches the market, a third agent fills the sell order, and a receipt is send to the seller who ends up being short.\relax }}{10}{figure.caption.48}
-\contentsline {figure}{\numberline {1.6}{\ignorespaces Slow trader order arrival}}{13}{figure.caption.53}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces \textbf {Motivatoin for tuning:} the two\relax }}{16}{figure.caption.61}
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath { \texttt {n}_\texttt {mm} }= \ensuremath { \texttt {n}_\texttt {sc} }= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{18}{figure.caption.68}
-\contentsline {figure}{\numberline {2.3}{\ignorespaces \relax }}{21}{figure.caption.85}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces \textbf {:}\relax }}{5}{figure.caption.33}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces \relax }}{6}{figure.caption.35}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces When an agent wants to submit an order it has to go through several steps of interaction with the market. The process is comparable to how real traders communicate with markets via a network, such as the Internet.\relax }}{7}{figure.caption.37}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces \relax }}{9}{figure.caption.45}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces The HFT agent submits a sell order for 100 stocks, and another agent submits a price-matching buy order which fills the sell order. Before the transaction receipt reaches the seller, the seller decides to cancel the order, and submit another order at a different price. When the transaction receipt reaches the seller, the agent promptly sends out a cancellation of its second sell order, as it knows it cannot fulfill the order. However, before the cancellation reaches the market, a third agent fills the sell order, and a receipt is send to the seller who ends up being short.\relax }}{11}{figure.caption.51}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Slow trader order arrival}}{14}{figure.caption.56}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces \textbf {Motivatoin for tuning:} the two\relax }}{17}{figure.caption.65}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath { \texttt {n}_\texttt {mm} }= \ensuremath { \texttt {n}_\texttt {sc} }= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{21}{figure.caption.86}
+\addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
