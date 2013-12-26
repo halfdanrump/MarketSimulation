@@ -48,16 +48,7 @@ The main parameters of interest are the ones that control the latency and speed 
 
 The remaining model parameters will either be fixed for each experiment, or varied by the genetic algorithm. 
 
-\subsection{Filtering parameters}\label{section:filtering_parameters}
-As mentioned earlier, it is not enough simply to define a fitness function which assigns high values to parameters causing realistic behavior. In addition, it is important to discard parameters which obviously do not correspond to a realistic setting. Imagine that the simulation scores high fitness values when executed without any market makers. Since it is known that real markets do in fact contain market makers, nothing can be inferred from such a result. Indeed this might be a consequence of poorly designed fitness measures, but since it is easier to use domain specific knowledge to filter out the unrealistic parameters
 
-\begin{figure}[htbp]
-	\centering
-		\includegraphics{Figures/Electron.pdf}
-		\rule{35em}{0.5pt}
-	\caption{Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\nmm = \nsc = 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.}
-	\label{fig:no_marketmakers}
-\end{figure}
 
 
 
@@ -136,10 +127,8 @@ Table \ref{table:genetic_algorithm_parameters} presents an overview of the param
 \end{table}
 
 
-\subsection{}
-
-\section{Controlling market behavior}
-Inverse simulation is a handy tool, because it makes it possible to specify desired behavior, and then search for parameters yielding such behavior. The four fitness measures defined in section \ref{section:simulation_fitness} gives 16 combinatinos for how to optimize the model. 
+\subsection{Controlling market behavior}
+The four fitness measures defined in section \ref{section:simulation_fitness} make it possible to specify the type of market behaviour that is favoured by the genetic algorithm. gives 16 combinatinos for how to optimize the model. 
 
 First of all, we are interested in establishing which parameters cause the market to return to a stable state after the fundamental price has incurred a shock
 
@@ -153,20 +142,17 @@ First of all, we are interested in establishing which parameters cause the marke
 \label{table:optimization_goals}
 \end{table}
 
-\section{Experiments}
-This section will outline the varioius experiments carried out with the fundamental. 
 
+\subsection{Filtering parameters}\label{section:filtering_parameters}
+As mentioned earlier, it is not enough simply to define a fitness function which assigns high values to parameters causing realistic behavior. In addition, it is important to discard parameters which obviously do not correspond to a realistic setting. Imagine that the simulation scores high fitness values when executed without any market makers. Since it is known that real markets do in fact contain market makers, nothing can be inferred from such a result. Indeed this might be a consequence of poorly designed fitness measures, but since it is easier to use domain specific knowledge to filter out the unrealistic parameters
 
 \begin{figure}[htbp]
-%issue 18
 	\centering
 		\includegraphics{Figures/Electron.pdf}
 		\rule{35em}{0.5pt}
-	\caption{}
-	\label{fig:}
+	\caption{Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\nmm = \nsc = 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.}
+	\label{fig:no_marketmakers}
 \end{figure}
-
-
 
 
 
@@ -197,7 +183,8 @@ Tables \ref{table:example_dataset_parameters} and \ref{table:example_dataset_fit
 \label{table:example_dataset_fitnesses}
 \end{table}
 
-\subsection{Experiments}\label{section:experiments_overview}
+
+\section{Genetic algorithm performance and experiments}
 
 \section{Data analysis}\label{section:data_analysis_techniques}
 
