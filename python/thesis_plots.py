@@ -10,7 +10,8 @@ import IO
 from data_analysis import dataset_paths
 figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Figures/'
 table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
-
+import os
+import utils
 
 def issue_21_basic_scatter_plots(dataset):
 	"""
@@ -268,6 +269,69 @@ def issue_82_parameter_evolution(dataset):
 	eval(dataset)()	
 	
 
+def issue_101_plot_pars_vs_fitness(dataset):
+	from plotting import make_pretty_multiline_xy_plot, make_pretty_scatter_plot
+	folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_101_pars_vs_fits/'
+	#if not eos.mkdir(folder)
+	def mkplot(groupby, plots_to_make):
+		g = a.groupby(groupby)
+		x = g.groups.keys()
+		s = a.sort(groupby)
+		for attr, stat in plots_to_make:
+			print groupby, attr, stat
+			y = getattr(g[attr],stat)()
+			filename = '%s%s__vs__%s(%s)'%(folder, groupby, attr, stat)
+			make_pretty_multiline_xy_plot(x, groupby, '%s (%s)'%(attr, stat), filename, g[attr].std()/2, y)
+			filename = '%s%s__vs__%s_scatter'%(folder, groupby, attr)
+			make_pretty_scatter_plot(s[groupby], s[attr], groupby, attr, filename)
+	
+	def d9():
+		groupby = 'ssmm_latency_mu'
+		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
+		mkplot(groupby, plots_to_make)
+
+		groupby = 'sc_latency_mu'
+		plots_to_make = [('overshoot', 'min'), ('time_to_reach_new_fundamental', 'std'), ('time_to_reach_new_fundamental', 'min'), ('time_to_reach_new_fundamental', 'mean')]
+		mkplot(groupby, plots_to_make)
+
+		groupby = 'ssmm_latency_s'
+		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
+		mkplot(groupby, plots_to_make)
+
+		groupby = 'sc_latency_s'
+		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean'), ('time_to_reach_new_fundamental', 'min')]
+		mkplot(groupby, plots_to_make)
+
+	par, fit, gen = IO.load_pickled_generation_dataframe(dataset)
+	a = concat([par,fit],axis=1)
+	eval(dataset)()
+
+def issue_102_plot_overshoot_and_noreaction():
+	### Cannot be finished yet. Needs to be run with "new" data
+	pass
+
+def issue_103_manually_removing_large_fitness_points(dataset, fitness_threshold):
+	from plotting import make_color_grouped_scatter_plot
+	from numpy import where
+	fit, par, gen = IO.load_pickled_generation_dataframe(dataset)
+	o = where(fit.overshoot > fitness_threshold)[0]
+	not_o = where(fit.overshoot <= fitness_threshold)[0]
+	
+	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
+	filename = figure_save_path + dataset + '_issue__103_%s_manually_removing_outiers.png'%dataset
+	print "Making scatter plot of for some overshoot vs stdev after manually removing points with large overshoot (dataset %s)"%dataset
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'overshoot', 'time_to_reach_new_fundamental', filename, colormap)
+	stats = concat([par.iloc[not_o,:].mean(), par.iloc[o,:].mean(), par.iloc[not_o,:].mean(), par.iloc[o,:].std()], axis=1)
+	lt = '\overshoot > %s'%fitness_threshold
+	st = '\overshoot > %s'%fitness_threshold
+	stats.columns = ['%s (mean)'%st, '%s (mean)'%lt, '%s (std)'%st, '%s (std)'%lt]
+	
+	tex_index = utils.get_latex_par_names_from_list(stats.index.tolist())
+	stats.index = tex_index
+	print utils.prettify_table(stats.to_latex(float_format=lambda x: str(round(x,1))), 'LABEL', 'CAPTION')
+	return stats
+
+"""
 def analyze_d1():
 	issue_21_basic_scatter_plots(dataset='d1')
 	issue_26_plot_pca(dataset='d1', n_clusters=4)
@@ -289,7 +353,7 @@ def analyse_d3():
 	plot_issue_32(dataset='d3')
 	plot_issue_43(dataset='d3', n_clusters=4)
 	table_issue_55(dataset='d3', n_clusters=4)
-
+"""
 
 	
 

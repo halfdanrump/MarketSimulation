@@ -5,7 +5,7 @@ import textwrap
 from datetime import datetime
 import settings
 import gc
-from utils import get_fundamental_after_shock
+from utils import get_fundamental_after_shock, pfn
 #import IO
 import brewer2mpl
 from ppl import Ppl
@@ -92,6 +92,28 @@ def make_pretty_tradeprice_plot(path_to_npz_file):
     ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
     ax.set_ylabel('Ticks')
     ax.set_xlabel('Rounds')
+    fig.savefig(filename)
+
+def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_error_bar=None, *ys):
+    cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(cmap, alpha=1)
+    fig, ax = plt.subplots(1)    
+    ax.set_xlabel(pfn(xlabel))
+    ax.set_ylabel(pfn(ylabel))
+    ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+    for y in ys:
+        ax.errorbar(x, y, yerr=y_error_bar, fmt='o')
+        p.plot(ax, x, y, linewidth=2)
+        fig.savefig(filename)
+
+def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename):
+    cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(cmap, alpha=0.8)
+    fig, ax = plt.subplots(1)    
+    ax.set_xlabel(pfn(xlabel))
+    ax.set_ylabel(pfn(ylabel))
+    ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+    p.scatter(ax, x, y)
     fig.savefig(filename)
 
 def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels):

@@ -1,6 +1,10 @@
 import utils
+from pandas import concat
+import IO
+from numpy import where
+import brewer2mpl
 def issue_83_example_table():
-	import IO
+	
 	from thesis_plots import table_save_path
 	fit, par, gen = IO.load_pickled_generation_dataframe('d3')
 	tex_partable = utils.dataframe2latex(par.iloc[range(10),:], 'table:example_dataset_parameters', 'An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algortihm. In this case, each individual contained paremeters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each.')

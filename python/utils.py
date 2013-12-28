@@ -37,7 +37,7 @@ def get_group_vector_for_reduced_dataset(clusters, cluster_assignment_o2r, clust
 
 
 def prettify_table(pandas_tex, label, caption):
-	 return "\\begin{table} \centering %s \label{%s} \caption{%s} \end{table}"%(pandas_tex, label, caption)
+	 return "\\begin{table}\n \centering\n %s \label{%s}\n \caption{%s}\n \end{table}"%(pandas_tex, label, caption)
 
 
 def load_test_trade_data(type = 'stable'):
@@ -77,7 +77,7 @@ def export_stats_dict_as_tex(dataset, stats, data_name):
 		
 		caption = '%s for parameters and fitness values for each cluster in the %s space for dataset %s.'%(stat_name, data_name, dataset)
 		tex = prettify_table(tex, 'issue_65_cluster_in_%s_space_%s'%(data_name,stat_name), caption)
-		filename = '%s%s_%s_%s.tex'%(table_save_path, dataset, data_name, stat_name) 
+		filename = '%s%s_%s_%s.tex'%(table_save_path, dataset, data_name, stat_name)
 		print 'Writing table to %s'%filename
 		with open(filename, 'w') as f:
 			f.write(tex)
@@ -101,3 +101,7 @@ def export_tradeprice_figure_as_tex(filenames, label_root):
 	
 	with open('%s%s.tex'%(partials_dir, label_root), 'w') as f:
 		f.write(full_tex)
+
+def pfn(name):
+	### Pretty format name
+	return name.replace('_', ' ').capitalize()
