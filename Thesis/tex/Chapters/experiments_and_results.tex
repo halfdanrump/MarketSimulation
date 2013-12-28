@@ -2,3 +2,33 @@
 As mentioned in the previous chapter, the process of finding was an iterative one of running an experiment, analyzing the generated data, draw conclusions and then repeat the steps with a new experiments designed to amend the mistakes of the previous experiment. This chapter will go through each of these steps and explain the insights that were gained.
 
 \section{D3}
+In this experiment, the number of \ssmmnAgents and \scnAgents as well all the latency parameters were included in the individuals. The genetic algorithm was run for 1000 generations with a population size of 200. A total of 
+
+
+\section{D9}
+
+\subsection{Calculating statistics for outliers}
+
+\begin{table}
+	 \centering
+	 \begin{tabular}{lrrrr}
+	\toprule
+	{} &  \overshoot > 10 (mean) &  \overshoot > 10 (mean) &  \overshoot > 10 (std) &  \overshoot > 10 (std) \\
+	\midrule
+	\sclatencymu                &                    73.8 &                    21.2 &                   21.2 &                   13.2 \\
+	\sclatencys                 &                     5.2 &                     9.6 &                    9.6 &                    5.7 \\
+	\scthinkmu                  &                    64.3 &                    24.3 &                   24.3 &                   13.6 \\
+	\scthinks                   &                    11.4 &                    10.2 &                   10.2 &                    5.6 \\
+	\sctimehorizonmu            &                  1804.5 &                  2134.1 &                 2134.1 &                 1444.1 \\
+	\sctimehorizons             &                  1413.2 &                  1024.0 &                 1024.0 &                  629.2 \\
+	\scwaitTimeBetweenTradingmu &                    29.9 &                    23.8 &                   23.8 &                   12.9 \\
+	\scwaitTimeBetweenTradings  &                     3.6 &                     9.5 &                    9.5 &                    5.8 \\
+	\ssmmlatencymu              &                    46.0 &                    29.9 &                   29.9 &                   14.7 \\
+	\ssmmlatencys               &                     4.6 &                     8.8 &                    8.8 &                    5.0 \\
+	\ssmmthinkmu                &                    37.6 &                    27.0 &                   27.0 &                   14.2 \\
+	\ssmmthinks                 &                     0.9 &                    10.0 &                   10.0 &                    6.0 \\
+	\bottomrule
+	\end{tabular}
+	\label{LABEL}
+	\caption{CAPTION}
+\end{table}

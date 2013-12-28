@@ -59,16 +59,16 @@
 \contentsline {subsection}{\numberline {3.3.4}Evolution of parameters}{24}{subsection.99}
 \contentsline {section}{\numberline {3.4}Data analysis tools}{24}{section.100}
 \contentsline {subsection}{\numberline {3.4.1}Preprocessing}{24}{subsection.101}
-\contentsline {subsubsection}{\numberline {3.4.1.1}Removing outliers}{25}{subsubsection.102}
-\contentsline {subsection}{\numberline {3.4.2}Data visualization}{25}{subsection.104}
-\contentsline {subsubsection}{\numberline {3.4.2.1}Color toned scatter plots}{25}{subsubsection.105}
-\contentsline {subsubsection}{\numberline {3.4.2.2}title}{25}{subsubsection.106}
-\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{25}{subsection.107}
-\contentsline {chapter}{\numberline {4}Experiments}{26}{chapter.108}
-\contentsline {section}{\numberline {4.1}D3: Varying}{26}{section.109}
+\contentsline {subsection}{\numberline {3.4.2}Data visualization}{24}{subsection.102}
+\contentsline {subsubsection}{\numberline {3.4.2.1}Color toned scatter plots}{25}{subsubsection.103}
+\contentsline {subsubsection}{\numberline {3.4.2.2}Removing outliers}{25}{subsubsection.104}
+\contentsline {subsubsection}{\numberline {3.4.2.3}title}{26}{subsubsection.106}
+\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{26}{subsection.107}
+\contentsline {chapter}{\numberline {4}Experiments}{27}{chapter.108}
+\contentsline {section}{\numberline {4.1}D3}{27}{section.109}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Additional tables}{27}{appendix.110}
-\contentsline {section}{\numberline {A.1}Dataset 1}{27}{section.111}
-\contentsline {chapter}{\numberline {B}Third party software}{28}{appendix.112}
+\contentsline {chapter}{\numberline {A}Additional tables}{28}{appendix.110}
+\contentsline {section}{\numberline {A.1}Dataset 1}{28}{section.111}
+\contentsline {chapter}{\numberline {B}Third party software}{29}{appendix.112}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{29}{dummy.113}
+\contentsline {chapter}{Bibliography}{30}{dummy.113}

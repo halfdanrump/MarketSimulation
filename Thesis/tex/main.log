@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 DEC 2013 15:13
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  28 DEC 2013 15:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1012,7 +1012,7 @@ LaTeX Font Info:    Try loading font information for OMS+cmr on input line 96.
  (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 96.
  [19]
 File: Figures/Electron.pdf Graphic file (type pdf)
@@ -1042,9 +1042,184 @@ Overfull \hbox (3.47867pt too wide) in paragraph at lines 1--205
  [][] 
  []
 
-(./Tables/example_dataset_fitnesses.tex) [23] [24] (./Partials/no_reaction.tex
+(./Tables/example_dataset_fitnesses.tex) [23] [24]
+File: Figures/Electron.pdf Graphic file (type pdf)
+ <use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 246.
+(pdftex.def)             Requested size: 208.73653pt x 149.097pt.
+
+
+! Package caption Error: \setcaptionsubtype outside float.
+
+See the caption package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.246 ...phics[width=0.5\textwidth]{Electron.pdf}}
+                                                  
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package caption Error: \setcaptionsubtype outside float.
+
+See the caption package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.246 ...phics[width=0.5\textwidth]{Electron.pdf}}
+                                                  
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 246--246
+ [][] 
+ []
+
+
+! Package caption Error: \caption outside float.
+
+See the caption package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.246 ...phics[width=0.5\textwidth]{Electron.pdf}}
+                                                  
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: Figures/Electron.pdf Graphic file (type pdf)
+<use Figures/Electron.pdf>
+Package pdftex.def Info: Figures/Electron.pdf used on input line 248.
+(pdftex.def)             Requested size: 208.73653pt x 149.097pt.
+
+
+! Package caption Error: \setcaptionsubtype outside float.
+
+See the caption package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.248 ...phics[width=0.5\textwidth]{Electron.pdf}}
+                                                  
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package caption Error: \setcaptionsubtype outside float.
+
+See the caption package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.248 ...phics[width=0.5\textwidth]{Electron.pdf}}
+                                                  
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 248--248
+ [][] 
+ []
+
+
+! Package caption Error: \caption outside float.
+
+See the caption package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.248 ...phics[width=0.5\textwidth]{Electron.pdf}}
+                                                  
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package caption Error: \caption outside float.
+
+See the caption package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.249 \caption
+              {\textbf{:}}\label{fig:}
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.64668pt too wide) in paragraph at lines 246--250
+[]\OT1/cmr/m/it/10.95 *[] *[]
+ []
+
+! Too many }'s.
+\@endfloatbox ...pagefalse \outer@nobreak \egroup 
+                                                  \color@endbox 
+l.250 \end{figure}
+                  
+You've closed more groups than you opened.
+Such booboos are generally harmless, so keep going.
+
+[25]
+! Extra \endgroup.
+\color@endgroup ->\endgraf \endgroup 
+                                     
+l.250 \end{figure}
+                  
+Things are pretty mixed up, but I think the worst is over.
+
+! Too many }'s.
+\color@endbox ->\color@endgroup \egroup 
+                                        
+l.250 \end{figure}
+                  
+You've closed more groups than you opened.
+Such booboos are generally harmless, so keep going.
+
+
+! LaTeX Error: \begin{document} ended by \end{figure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.250 \end{figure}
+                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.250 \end{figure}
+                  
+Things are pretty mixed up, but I think the worst is over.
+
+(./Partials/no_reaction.tex
 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figure
-s/test/gen0_1387987146731556L.png, id=720, 578.16pt x 433.62pt>
+s/test/gen0_1387987146731556L.png, id=729, 578.16pt x 433.62pt>
 File: /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_f
 igures/test/gen0_1387987146731556L.png Graphic file (type png)
 
@@ -1068,7 +1243,7 @@ Underfull \hbox (badness 2384) in paragraph at lines 1--1
 
 
 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figure
-s/test/gen0_1387987146764027L.png, id=722, 578.16pt x 433.62pt>
+s/test/gen0_1387987146764027L.png, id=731, 578.16pt x 433.62pt>
 File: /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_f
 igures/test/gen0_1387987146764027L.png Graphic file (type png)
 
@@ -1090,7 +1265,7 @@ m/it/10 ^^U[]$\OT1/cmr/m/n/10 =17, $\OML/cmm/m/it/10 ^^U[]$\OT1/cmr/m/n/10 =21,
  $\OML/cmm/m/it/10 ^^U[]$\OT1/cmr/m/n/10 =17, 
  []
 
-)) (./Chapters/experiments_and_results.tex [25 </Users/halfdan/Dropbox/Waseda/R
+)) (./Chapters/experiments_and_results.tex [26 </Users/halfdan/Dropbox/Waseda/R
 esearch/MarketSimulation/Thesis/data_for_figures/test/gen0_1387987146731556L.pn
 g> </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_fig
 ures/test/gen0_1387987146764027L.png>]
@@ -1098,27 +1273,27 @@ Chapter 4.
 ------------------------------------------------------------------------------
  4 Experiments
 ------------------------------------------------------------------------------
-) (./Appendices/AppendixA.tex [26
+) (./Appendices/AppendixA.tex [27
 
 ]
 Appendix A.
 ------------------------------------------------------------------------------
  A Additional tables
 ------------------------------------------------------------------------------
-) (./Appendices/AppendixB.tex [27
+) (./Appendices/AppendixB.tex [28
 
 ]
 Appendix B.
 ------------------------------------------------------------------------------
  B Third party software
 ------------------------------------------------------------------------------
-) [28
+) [29
 
 ]
 ------------------------------------------------------------------------------
  Bibliography
 ------------------------------------------------------------------------------
-(./main.bbl) [29
+(./main.bbl) [30
 
 
 ]
@@ -1126,7 +1301,7 @@ Appendix B.
 Package natbib Warning: There were undefined citations.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 461.
-[30
+[31
 
 ]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 461.
@@ -1140,8 +1315,8 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 4F56DCBDFF17C0286E2B333F64795751;11587
-(rerunfilecheck)             After:  100F9FCC1DFE8850F1F7EC9FC23D7806;11566.
+(rerunfilecheck)             Before: 100F9FCC1DFE8850F1F7EC9FC23D7806;11566
+(rerunfilecheck)             After:  A4E8138E29DAFDFB074926D686FFE1F9;11518.
 
 LaTeX Warning: There were undefined references.
 
@@ -1151,19 +1326,26 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 461.
  ) 
 Here is how much of TeX's memory you used:
- 11319 strings out of 493488
- 160242 string characters out of 3141326
+ 11330 strings out of 493488
+ 160382 string characters out of 3141326
  258176 words of memory out of 3000000
- 14221 multiletter control sequences out of 15000+200000
- 20937 words of font info for 79 fonts, out of 3000000 for 9000
+ 14226 multiletter control sequences out of 15000+200000
+ 22142 words of font info for 84 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 49i,12n,45p,1599b,485s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{section.112} has been referenced but does not exi
-st, replaced by a fixed one
+ 49i,12n,45p,1599b,489s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{subsubsection.105} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.104} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.102} has been referenced but does not
+ exist, replaced by a fixed one
 
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
 /usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
 usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></
+usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></
 usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
 sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr
 /local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/l
@@ -1179,13 +1361,14 @@ texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/texlive/2012/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2012/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2012/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2012/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2012/texmf
--dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2012/texmf-d
-ist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on main.pdf (46 pages, 380034 bytes).
+f-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2012/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2012/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2012/texmf-dis
+t/fonts/type1/public/amsfonts/symbols/msam7.pfb>
+Output written on main.pdf (47 pages, 397301 bytes).
 PDF statistics:
- 870 PDF objects out of 1000 (max. 8388607)
- 779 compressed objects within 8 object streams
- 172 named destinations out of 1000 (max. 500000)
+ 885 PDF objects out of 1000 (max. 8388607)
+ 791 compressed objects within 8 object streams
+ 175 named destinations out of 1000 (max. 500000)
  560 words of extra memory for PDF output out of 10000 (max. 10000000)
 
