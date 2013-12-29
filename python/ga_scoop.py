@@ -14,6 +14,7 @@ import numpy as np
 import shutil
 import argparse
 import socket
+import utils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--skip-scoop', '-ss', action="store_true", default=False)
@@ -27,13 +28,14 @@ def evaluate(individual, generation, graph_folder):
 	parameters = scale_genes_to_parameters(individual)
 	if settings.VERBOSE >= 2: print parameters
 	if verify_simulation_parameters(parameters):
-		data = evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
+		
+		data, saved_simulation_data_ids = evaluate_simulation_results(graph_folder, generation, parameters, settings.reps, autorun=True)
 		stats = get_named_stats(data, settings.fitness_weights.keys())
 		stats = tuple(OrderedDict(stats['mean']).values())
 		print "Gen %s: Finished simulation with parameters: %s"%(generation, scale_genes_to_parameters(individual, False))
 	else:
 		stats = get_invalid_gene_fitness()
-	return stats
+	return (stats, saved_simulation_data_ids)
 
 
 def get_invalid_gene_fitness():
@@ -107,7 +109,6 @@ def initialize_worker():
 	return graph_folder, gene_data_folder
 
 if __name__ == "__main__":
-
 	#pool = multiprocessing.Pool(processes=10)
 	
 	graph_folder, gene_data_folder = initialize_worker()
@@ -160,12 +161,19 @@ if __name__ == "__main__":
 		
 			new_data = list()
 			for rep in settings.ga_reps:	
-				fitnesses = toolbox.map(toolbox.evaluate, invalid_ind, np.repeat(g, len(invalid_ind)), np.repeat(graph_folder, len(invalid_ind)))
-				for i, (ind, fit) in enumerate(zip(invalid_ind, fitnesses)):
+				results = toolbox.map(toolbox.evaluate, invalid_ind, np.repeat(g, len(invalid_ind)), np.repeat(graph_folder, len(invalid_ind)))
+				
+				### Unpacking long list of short tuples into short list of long tuples (sort of like transposing..)
+				results = zip(*results)
+				fitnesses = list(results[0])
+				ids = list(results[1])
+
+				for i, (ind, fit, simdata_ids) in enumerate(zip(invalid_ind, fitnesses, ids)):
 				    rep_data[i][rep] = fit
 
 				    scaled_ind = scale_genes_to_parameters(ind, False)
-				    new_data.append({'ind': scaled_ind, 'fit': tuple(fit)})
+
+				    new_data.append({'ind': scaled_ind, 'fit': tuple(fit), 'data_ids':tuple(simdata_ids)})
 
 			fitnesses_mean = [np.mean(rep_data[i],0) for i in range(len(rep_data))]
 			
@@ -174,7 +182,7 @@ if __name__ == "__main__":
 		
 		# The population is entirely replaced by the offspring
 		pop[:] = offspring
-
+		print new_data
 		store_generation_as_data_matrix(new_data, g, gene_data_folder)
 
 

@@ -12,7 +12,8 @@ dataset_paths = {
     'd1':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d1_sameLatDist_ssmm40_sc100/',
     'd2':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d2/',
     'd3':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d3/',
-    'd9':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d9_fixed_nAgents_vary_latpars/'
+    'd9':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d9_fixed_nAgents_vary_latpars/',
+    'd10':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d10_vary_only_latpars/'
 }
 
 def check_simulation_complete(full_simulation_log_path):
@@ -58,46 +59,53 @@ def store_generation_as_data_matrix(generation_data, generation_number, path):
     
     np.savez_compressed(path + 'gen_%s_pars'%generation_number, par_matrix)
     np.savez_compressed(path + 'gen_%s_fit'%generation_number, fit_matrix)
-    if all_ids: np.savez_compressed(path + 'gen_%s_data_ids'%generation_number, all_ids)
+    if all_ids: np.savez_compressed(path + 'gen_%s_dataids'%generation_number, all_ids)
 
 
-def load_all_generations_as_DataFrame(folder_name, drop_invalid_individuals=True, with_data_ids = True):
+def load_all_generations_as_DataFrame(folder_name, drop_invalid_individuals=True):
     #gen_par = dict()
     from pandas import concat
-    all_par = DataFrame()
-    all_fit = DataFrame()
+    def load_files(files):
+        all_data = DataFrame()
+        for f in files:
+            datafile = np.load(folder_name + f)
+            df = DataFrame(datafile.items()[0][1])
+            datafile.close()
+            gen_num = np.repeat(f.split('_')[1], len(df))
+            df['gen'] = gen_num
+            all_data = all_data.append(df)
+        all_data = all_data.reset_index(drop=True)   
+        return all_data
+
     gen_pars_files = [f for f in os.listdir(folder_name) if re.match('gen_\d+_pars\.npz', f)]
     gen_fit_files = [f for f in os.listdir(folder_name) if re.match('gen_\d+_fit\.npz', f)]
-    print "Loading data for %s generations..."%len(gen_pars_files)
-    for p,f in zip(gen_pars_files, gen_fit_files):
-        gen_num = p.split('_')[1]
-        print gen_num
-        dp = np.load(folder_name + p)
-        df = np.load(folder_name + f)
-        pars = DataFrame(dp.items()[0][1])
-        fit = DataFrame(df.items()[0][1])
-        gen_num = np.repeat(gen_num, len(fit))
-        fit['gen'] = gen_num
-        pars['gen'] = gen_num
-        all_par = all_par.append(DataFrame(pars))
-        all_fit = all_fit.append(DataFrame(fit))
-        dp.close()
-        df.close()
-    
+    gen_id_files = [f for f in os.listdir(folder_name) if re.match('gen_\d+_dataids\.npz', f)]
+    print "Loading data from %s generations..."%len(gen_pars_files)
+    all_par = load_files(gen_pars_files)
+    all_fit = load_files(gen_fit_files)
+    all_ids = load_files(gen_id_files)    
     ### Remove invalid genes
-    all_par = all_par.reset_index(drop=True)
-    all_fit = all_fit.reset_index(drop=True)
+    
     if drop_invalid_individuals:
         i, = np.where(all_fit['overshoot'] >= 10**6)
         invalid_individuals = concat([all_par.iloc[i,:], all_fit.iloc[i,:]], axis=1)
-        print "Number of discarded individuals: %s"%i
+        print "Number of discarded individuals: %s"%len(i)
         all_par = all_par.drop(i)
-        all_fit = all_fit.drop(i)
         all_par = all_par.reset_index(drop=True)
+
+        all_fit = all_fit.drop(i)
         all_fit = all_fit.reset_index(drop=True)
-        return all_par, all_fit, all_data_ids, invalid_individuals
+
+        try:
+            all_ids = all_ids.drop(i)
+            all_ids = all_ids.reset_index(drop=True)
+            invalid_individuals = concat([invalid_individuals, all_ids.iloc[i,:]])
+        except Exception:
+            pass
+        
+        return all_par, all_fit, all_ids, invalid_individuals
     else:
-        return all_par, all_fit, all_data_ids, DataFrame()
+        return all_par, all_fit, all_ids, DataFrame()
 
 def save_tradeprice_data(rounds, tradePrice, fitness, all_parameters, filename):
     pars_in_gene = dict([(k, all_parameters[k]) for k in settings.parameters_in_genes])
@@ -127,12 +135,13 @@ def load_tradeprice_data_with_parameters(filename):
     par = d['parameters']
     return rounds, prices, fit, par
 
-def pickle_generation_data(dataset_name, with_data_ids = True):
+def pickle_generation_data(dataset_name):
     dataset_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/'
-    par, fit, ids, invalids = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name, with_data_ids)
+    par, fit, ids, invalids = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name)
+    os.mkdir(dataset_paths[dataset_name])
     par.to_pickle(dataset_paths[dataset_name] + 'pars.pandas')
     fit.to_pickle(dataset_paths[dataset_name] + 'fits.pandas')
-    if with_data_ids: ids.to_pickle(dataset_paths[dataset_name] + 'ids.pandas')
+    ids.to_pickle(dataset_paths[dataset_name] + 'ids.pandas')
 
 
 def load_pickled_generation_dataframe(dataset_name):
@@ -144,4 +153,10 @@ def load_pickled_generation_dataframe(dataset_name):
     gen = gen.astype(int)
     fit_data = fit_data.drop('gen', 1)
     par_data = par_data.drop('gen', 1)
-    return fit_data, par_data, gen
+    try:
+        ids = read_pickle(datapath + 'ids.pandas')
+    except IOError:
+        ids = None
+        print "No file containing simulation data identifiers was found."
+
+    return fit_data, par_data, gen, ids
