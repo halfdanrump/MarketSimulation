@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = True
+TEST_MODE = False
 
 
 VERBOSE = 0 
@@ -63,7 +63,7 @@ default_parameters = {
     'fundamental_shock_size' : -10,
     'fundamental_shock_round' : 10000,
 
-    'ssmm_nAgents' : 50,
+    'ssmm_nAgents' : 52,
     'sc_nAgents' : 150,
 
     'ssmm_latency_mu' : 50,
@@ -100,8 +100,8 @@ if TEST_MODE:
 
 
 parameters_in_genes = [
-    'ssmm_nAgents',
-    #'sc_nAgents' ,
+    #'ssmm_nAgents',
+    'sc_nAgents' ,
 
     'ssmm_latency_mu',
     'ssmm_latency_s',
