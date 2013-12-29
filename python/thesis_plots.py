@@ -19,7 +19,7 @@ def issue_21_basic_scatter_plots(dataset):
 	"""
 	from plotting import make_color_grouped_scatter_plot
 	
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	
 	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
 	print "Making scatter plots of fitness data for dataset %s"%dataset
@@ -61,7 +61,7 @@ def issue_26_plot_pca_and_cluster(dataset, n_clusters):
 		print "Making scatter plot of K-means clusters of %s data for dataset %s"%(data_name, dataset)
 		make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
 	
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	do_for_dataset(fit_data, 'fitness')
 	do_for_dataset(par_data, 'parameter')
 	
@@ -93,7 +93,7 @@ def issue_29_reduce_and_affinity(dataset, affinity_damping, load_clusters_from_f
 	
 		
 
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	do_issue(fit_data, 'fitness')
 	do_issue(par_data, 'parameter')
 
@@ -102,7 +102,7 @@ def issue_88_affinity_after_norm_and_outlier(dataset, load_from_file):
 	from sklearn.preprocessing import scale
 	from sklearn.cluster import AffinityPropagation
 	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	reduced_fitness, labels, km = reduce_npoints_kmeans(dataframe = par_data, dataset_name = dataset, data_name='parameter', n_datapoints = 1000, load_from_file = load_from_file)
 	inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(reduced_fitness, kernel='rbf', gamma=0.1, outlier_percentage=0.01)
 	return inliers_idx_r, outliers_idx_r
@@ -120,7 +120,7 @@ def issue_43_outlier_detection(dataset, n_clusters, gamma, load_from_file = Fals
 	from plotting import make_color_grouped_scatter_plot, make_scatter_plot_for_labelled_data
 	from data_analysis import reduce_npoints_kmeans, outlier_detection_with_SVM, calculate_pca
 	from sklearn.cluster import KMeans	
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
 
 	reduced_par, labels_all_datapoints, km = reduce_npoints_kmeans(par_data, dataset, 'parameters', n_datapoints=1000, load_from_file=load_from_file)
@@ -175,36 +175,10 @@ def issue_55_calc_cluster_stats(dataset, n_clusters, gamma, load_from_file = Fal
 		make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=labels_i, filename=filename, colormap = colormap, legend=True)
 		#fitness_groups = map(lambda x: data.iloc[indexes_i[where(labels_i==x)]], range(n_clusters))
 		
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	reduce_outlier_cluster_stats(par_data, fit_data, 'parameter', gamma=gamma[0])
 	reduce_outlier_cluster_stats(fit_data, par_data, 'fitness', gamma=gamma[1])
-	"""
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)	
-	par_r, cluster_assignment_o2r, km_r = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)
-	
-	inliers_idx_r, outliers_idx_r = outlier_detection_with_SVM(par_r, kernel='rbf', gamma=gamma, outlier_percentage=0.01)
-	
-	kmeans = KMeans(n_clusters = n_clusters)
-	kmeans.fit(par_r.iloc[inliers_idx_r, :])
 
-	indexes_i, labels_i =  get_group_vector_for_reduced_dataset(inliers_idx_r, cluster_assignment_o2r, cluster_assignment_r2g = kmeans.labels_)
-	#inliers_idx_o = get_labels_r2o(cluster_assignment_o2r, inliers_idx_r)
-	all_data = concat([par_data, fit_data], axis=1)
-	stats = calculate_stats_for_dataframe(all_data.iloc[indexes_i,:], labels_i)
-	
-	export_stats_dict_as_tex(dataset, stats)
-	
-	fitness_groups = map(lambda x: fit_data.iloc[indexes_i[where(labels_i==x)]], range(n_clusters))
-	fval, pval = f_oneway(*fitness_groups)
-	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
-	filename = figure_save_path + dataset + '_issue_55_1_%s_clusters_in_PCA_space.png'%data_name
-	print "Making scatter plot of K-means clusters of %s data for dataset %s"%(data_name, dataset)
-	make_scatter_plot_for_labelled_data(data_frame=transformed_data, x_name='d1', y_name='d2', labels=kmeans.labels_, filename=filename, colormap = colormap, legend=True)
-	return stats, pval, kmeans
-	"""
-
-	#stats = calculate_stats_for_dataframe(inliers, kmeans.labels_)
-	#return stats, inliers_idx, r_label
 	
 def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 	from settings import get_fixed_parameters
@@ -213,7 +187,7 @@ def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 	import os
 	settings.PLOT_SAVE_PROB = 1
 	
-	fit, par, gen = IO.load_pickled_generation_dataframe(dataset)
+	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
 	stats, pvals, kmeans = issue_55_calc_cluster_stats(dataset, n_clusters, load_from_file)
 	graph_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_65/'
 	
@@ -232,7 +206,7 @@ def issue_65_run_sim_for_clusters(dataset, n_clusters, load_from_file = False):
 def issue_36_kernelPCA(dataset, load_from_file):
 	import IO
 	from data_analysis import reduce_npoints_kmeans
-	fit_data, par_data, gen = IO.load_pickled_generation_dataframe(dataset_name=dataset)
+	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
 
 	reduced_par, labels_all_datapoints, km = reduce_npoints_kmeans(par_data, dataset, n_datapoints=1000, load_from_file=load_from_file)	
@@ -256,7 +230,7 @@ def issue_82_parameter_evolution(dataset):
 		make_pretty_generation_plot(folder + 'd9_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'])
 	from plotting import make_pretty_generation_plot
 	folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_82_generation_plots/'
-	fit,par,gen = IO.load_pickled_generation_dataframe(dataset)
+	fit,par,gen,ids = IO.load_pickled_generation_dataframe(dataset)
 	all_data = concat([fit,par, DataFrame(gen)], axis=1)
 	generations = list(set(all_data['gen']))
 	group = all_data.groupby('gen')
@@ -302,7 +276,7 @@ def issue_101_plot_pars_vs_fitness(dataset):
 		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean'), ('time_to_reach_new_fundamental', 'min')]
 		mkplot(groupby, plots_to_make)
 
-	par, fit, gen = IO.load_pickled_generation_dataframe(dataset)
+	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
 	a = concat([par,fit],axis=1)
 	eval(dataset)()
 
@@ -313,7 +287,7 @@ def issue_102_plot_overshoot_and_noreaction():
 def issue_103_manually_removing_large_fitness_points(dataset, fitness_threshold):
 	from plotting import make_color_grouped_scatter_plot
 	from numpy import where
-	fit, par, gen = IO.load_pickled_generation_dataframe(dataset)
+	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
 	o = where(fit.overshoot > fitness_threshold)[0]
 	not_o = where(fit.overshoot <= fitness_threshold)[0]
 	

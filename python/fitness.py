@@ -1,13 +1,12 @@
 import numpy as np
-from numpy import *
 import IO
 from simulation_interface import run_simulation
 #from settings import data_to_calculate, simulation_parameters
-from settings import stability_margin, KEEP_SIMULATION_DATA, ALWAYS_MAKE_TRADEPRICE_PLOT, PLOT_SAVE_PROB, data_for_failed_simulation
+from settings import stability_margin, KEEP_SIMULATION_DATA, PLOT_SAVE_PROB, data_for_failed_simulation
 from random import randint
-from plotting import make_tradeprice_plot
 from itertools import groupby
-from utils import get_fundamental_after_shock, empty_data_matrix
+from utils import get_fundamental_after_shock, empty_data_matrix, get_epoch_time
+import plotting
 #from collections import Iterable
 
 def get_named_stats(data, attribute_names = list()):
@@ -26,6 +25,7 @@ def evaluate_simulation_results(graph_folder, generation_number, parameters = {}
 	assert parameters, "Please specify a dictionary with par_name:par_value as key:value sets"
 
 	data = empty_data_matrix(len(reps))
+	saved_simulation_data_ids = list()
 
 	simulation_reps_to_run = []
 	random_path = str(randint(0, 2**64))
@@ -41,8 +41,10 @@ def evaluate_simulation_results(graph_folder, generation_number, parameters = {}
 	if simulation_reps_to_run: run_simulation(parameters, simulation_reps_to_run, random_path)
 
 	for r in reps:
-		data[r] = __evaluate_simulation_results(parameters, log_folders[r], graph_folder, generation_number, plot_name)
-	return data
+		data[r], data_id = __evaluate_simulation_results(parameters, log_folders[r], graph_folder, generation_number, plot_name)
+		if data_id: saved_simulation_data_ids.append(data_id)
+
+	return data, saved_simulation_data_ids
 
 
 
@@ -74,14 +76,19 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 		data['round_stable'] = calculate_round_stable(trades['price'], trades['round'], fas)
 
 	
-	if ALWAYS_MAKE_TRADEPRICE_PLOT:
-		make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number, plot_name)
+	if np.random.random() <= PLOT_SAVE_PROB:
+		data_id = 'gen%s_%s_%s'%(generation_number, get_epoch_time(), str(abs(hash(np.random.random()))))
+		print graph_folder + data_id + '.npz'
+		
+		IO.save_tradeprice_data(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.npz')
+		#plotting.make_pretty_tradeprice_plot(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.png')
+		plotting.make_tradeprice_plot(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.png')
 	else:
-		if np.random.random() <= PLOT_SAVE_PROB:
-			make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number, plot_name)
+		data_id = None
 		
 	if not KEEP_SIMULATION_DATA: IO.delete_simulation_data(logdata_folder)
-	return data
+	return data, data_id
+
 
 def calculate_round_stable(prices, rounds, fas):
 	for p, r in zip(prices[::-1], rounds[::-1]):
@@ -92,7 +99,7 @@ def calculate_round_stable(prices, rounds, fas):
 def calculate_overshoot(new_fundamental, prices, rounds):
 	when_reach_fund = get_first_round_to_reach_new_fundamental(prices, rounds)
 	
-	idx, = where(rounds > when_reach_fund)
+	idx, = np.where(rounds > when_reach_fund)
 	
 	try:
 		max_price = max(prices[idx])

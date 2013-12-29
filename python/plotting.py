@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import textwrap
-from datetime import datetime
+
 import settings
 import gc
 from utils import get_fundamental_after_shock, pfn
@@ -11,7 +11,7 @@ import brewer2mpl
 from ppl import Ppl
 #import string
 import pandas
-from numpy import log, sqrt
+
 def how_to_make_plot():
 
     fig = plt.figure()
@@ -41,58 +41,43 @@ def how_to_make_plot():
     fig.text(.1,.1,txt)
     plt.savefig("test.png")
 
-def get_epoch_time():
-    td = datetime.now() - datetime.utcfromtimestamp(0)
-    return repr(int(td.total_seconds() * 10**6))
 
-def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitness, generation_number, plot_name = None):
+
+def make_tradeprice_plot(rounds, prices, fit, par, filename):
     fig = plt.figure(figsize=(10, 8), dpi=100)
     ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
     ax.set_xlabel("Round")
     ax.set_ylabel("Traded price")
 
-    caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in settings.parameters_in_genes]), 100))
+    caption = "\n".join(textwrap.wrap(repr([(k,par[k]) for k in settings.parameters_in_genes]), 100))
     caption += '\nFitness: %s'%str(settings.fitness_weights.keys())
-    caption += '\nFitness: %s'%str(fitness)
+    caption += '\nFitness: %s'%str(fit)
     fig.text(0.1,0.1, caption)
-    ax.plot(rounds, tradePrice, lw=2)
+    ax.plot(rounds, prices, lw=2)
 
     fas = get_fundamental_after_shock()
     ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
-    time = get_epoch_time()
-    if not plot_name:
-        identifier = graph_folder + 'gen%s_'%generation_number + time
-        full_plot_name = identifier + '.png'
-    else:
-        full_plot_name = graph_folder + plot_name + '___%s'%time
-        print full_plot_name
     
-    print "Saving plot to %s"%full_plot_name
-    fig.savefig(full_plot_name)
-
-    pars_in_gene = dict([(k, all_parameters[k]) for k in settings.parameters_in_genes])
-    fit = dict(zip(list(fitness.dtype.names), list(fitness.item())))
-    if settings.SAVE_DATA_USED_FOR_PLOTTING:     
-        data = {'rounds':rounds, 'tradePrice':tradePrice, 'fitness': fit, 'parameters':pars_in_gene}
-        np.savez_compressed(identifier, data)
+    print "Saving plot to %s"%filename
+    fig.savefig(filename)
 
     plt.close()
     gc.collect()
 
-def make_pretty_tradeprice_plot(path_to_npz_file):
-    import IO
-    rounds, prices, fit, par = IO.load_tradeprice_data_with_parameters(path_to_npz_file)
+
+
+def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)    
     p.plot(ax, rounds, prices)
-
-    filename = path_to_npz_file.replace('.npz', '.png')
     fas = get_fundamental_after_shock()
     ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
-    ax.set_ylabel('Ticks')
-    ax.set_xlabel('Rounds')
+    ax.set_ylabel('Traded price (ticks)')
+    ax.set_xlabel('Time (rounds)')
     fig.savefig(filename)
+    plt.close()
+    gc.collect()
 
 def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_error_bar=None, *ys):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
@@ -105,6 +90,8 @@ def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_error_bar=None,
         ax.errorbar(x, y, yerr=y_error_bar, fmt='o')
         p.plot(ax, x, y, linewidth=2)
         fig.savefig(filename)
+    plt.close()
+    gc.collect()
 
 def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)

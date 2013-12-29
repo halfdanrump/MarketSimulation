@@ -12,13 +12,11 @@ from numpy import mean, std, median
 temp_storage = '/Users/halfdan/temp/'
 
 
-def issue_41(n_clusters, dataset = 'd1'):
+def issue_41(n_clusters, dataset):
 	"""
 	Calculate clusters for K-means and calculate fitness stats for each cluster
 	"""
-	datapath = dataset_paths[dataset]
-	par_data, gen = IO.load_pickled_generation_dataframe(datapath + 'pars.pandas')
-	fit_data, gen = IO.load_pickled_generation_dataframe(datapath + 'fits.pandas')
+	fit_data, par_data, gen, ids= IO.load_pickled_generation_dataframe(dataset)
 	par_trans, pca, components = calculate_pca(par_data, n_components=4)
 
 	kmeans = KMeans(n_clusters=n_clusters, n_jobs=-1, verbose=0)

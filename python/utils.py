@@ -2,6 +2,7 @@ import numpy as np
 from settings import default_parameters as defpar, fitness_types
 from IO import load_trade_log_data
 from pandas import DataFrame
+from datetime import datetime
 
 def get_fundamental_after_shock():
 	return defpar['fundamental_initial_value'] + defpar['fundamental_shock_size']
@@ -105,3 +106,7 @@ def export_tradeprice_figure_as_tex(filenames, label_root):
 def pfn(name):
 	### Pretty format name
 	return name.replace('_', ' ').capitalize()
+
+def get_epoch_time():
+    td = datetime.now() - datetime.utcfromtimestamp(0)
+    return str(int(td.total_seconds() * 10**6))
