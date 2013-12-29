@@ -241,12 +241,13 @@ In all experiments, outliers were present in both the parameters space and in th
 
 
 \begin{itemize}
-\item Apply a monotonically increasing transformation $f(x)$ to some or all of the features for every data point in the data set. A common choice of $f$ is $f(x) = \log x$, as it efficiently reduces the impact of data points with extremely high values. Figure 
-\item Divide 
+\item Apply a monotonically increasing transformation $f(x)$ to some or all of the features for every data point in the data set. A common choice of $f$ is $f(x) = \log x$, as it efficiently reduces the impact of data points with extremely high values. Figure \ref{figure:scatter_log_transform} illustrates the effect of applying the log-transform. 
+\item Manually select one or more criteria for when a data point is to be considered an outlier. It is worth noticing that \overshoot and \stdev 
+\item Use a one-class support vector machine to calculate a probability for each data point that said point is an inlier or an outlier. In this case, inliers 
 \end{itemize}
 
 \begin{figure}\label{figure:scatter_log_transform}
-\subcaptionbox{\label{subfig:}}
+\subcaptionbox{Scatter plot of \stdev vs. \overshoot\label{subfig:}}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
 \subcaptionbox{\label{subfig:}}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
