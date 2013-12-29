@@ -3,14 +3,12 @@
 #import IO
 #import numpy as np
 #from numpy import log
-from pandas import DataFrame, read_pickle, concat
+from pandas import DataFrame, concat
 #from ppl import Ppl
 import brewer2mpl
 import IO
-from data_analysis import dataset_paths
 figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Figures/'
 table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
-import os
 import utils
 
 def issue_21_basic_scatter_plots(dataset):
@@ -38,7 +36,12 @@ def issue_21_basic_scatter_plots(dataset):
 	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_e.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='stdev', y_name='time_to_reach_new_fundamental', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log')
 	
-	
+	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_f.png'
+	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='time_to_reach_new_fundamental', y_name='stdev', color_by='round_stable', filename=filename, colormap = colormap)
+
+	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_g.png'
+	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='time_to_reach_new_fundamental', y_name='stdev', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log', color_function='log')
+
 def issue_26_plot_pca_and_cluster(dataset, n_clusters):
 	"""
 	PCA and Kmeans for dataset 1
@@ -284,20 +287,27 @@ def issue_102_plot_overshoot_and_noreaction():
 	### Cannot be finished yet. Needs to be run with "new" data
 	pass
 
-def issue_103_manually_removing_large_fitness_points(dataset, fitness_threshold):
+def issue_103_manually_removing_large_fitness_points(dataset, overshoot_threshold):
 	from plotting import make_color_grouped_scatter_plot
 	from numpy import where
 	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
-	o = where(fit.overshoot > fitness_threshold)[0]
-	not_o = where(fit.overshoot <= fitness_threshold)[0]
+	o = where(fit.overshoot > overshoot_threshold)[0]
+	not_o = where(fit.overshoot <= overshoot_threshold)[0]
 	
 	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
 	filename = figure_save_path + dataset + '_issue__103_%s_manually_removing_outiers.png'%dataset
 	print "Making scatter plot of for some overshoot vs stdev after manually removing points with large overshoot (dataset %s)"%dataset
-	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'overshoot', 'time_to_reach_new_fundamental', filename, colormap)
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap)
+	filename = figure_save_path + dataset + '_issue__103_%s_manually_removing_outiers_logscaled.png'%dataset
+	print "Making scatter plot of for some overshoot vs stdev after manually removing points with large overshoot (dataset %s) and applying log-scaling"%dataset
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap, x_function='log', y_function='log', color_function='log')
+	print 'Making scatter plot'
+	filename = figure_save_path + dataset + '_issue__103_%s_c.png'%dataset
+	make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='stdev', filename=filename, colormap = colormap)
+	
 	stats = concat([par.iloc[not_o,:].mean(), par.iloc[o,:].mean(), par.iloc[not_o,:].mean(), par.iloc[o,:].std()], axis=1)
-	lt = '\overshoot > %s'%fitness_threshold
-	st = '\overshoot > %s'%fitness_threshold
+	lt = '\overshoot > %s'%overshoot_threshold
+	st = '\overshoot > %s'%overshoot_threshold
 	stats.columns = ['%s (mean)'%st, '%s (mean)'%lt, '%s (std)'%st, '%s (std)'%lt]
 	
 	tex_index = utils.get_latex_par_names_from_list(stats.index.tolist())
@@ -305,32 +315,9 @@ def issue_103_manually_removing_large_fitness_points(dataset, fitness_threshold)
 	print utils.prettify_table(stats.to_latex(float_format=lambda x: str(round(x,1))), 'LABEL', 'CAPTION')
 	return stats
 
-"""
-def analyze_d1():
-	issue_21_basic_scatter_plots(dataset='d1')
-	issue_26_plot_pca(dataset='d1', n_clusters=4)
-	issue_29_reduce_and_affinity(dataset='d1', affinity_damping=0.97, load_clusters_from_file=True)
-
-def analyse_d2():
-	issue_21_basic_scatter_plots(dataset='d2')
-	issue_26_plot_pca(dataset='d2', n_clusters=4)
-	
-	plot_issue_29(dataset='d2')
-	plot_issue_32(dataset='d2')
-	plot_issue_43(dataset='d2', n_clusters=4)
-	table_issue_55(dataset='d2', n_clusters=4)
-
-def analyse_d3():
-	plot_issue_21(dataset='d3')
-	plot_issue_26(dataset='d3', n_clusters=4)
-	plot_issue_29(dataset='d3')
-	plot_issue_32(dataset='d3')
-	plot_issue_43(dataset='d3', n_clusters=4)
-	table_issue_55(dataset='d3', n_clusters=4)
-"""
-
-	
-
+def remake_make_all_thesis_plots():
+	issue_21_basic_scatter_plots(dataset='d3')
+	issue_103_manually_removing_large_fitness_points(dataset='d3', overshoot_threshold=10)
 	
 
 	

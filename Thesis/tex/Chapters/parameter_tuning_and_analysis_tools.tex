@@ -223,7 +223,7 @@ Tables \ref{table:example_dataset_parameters} and \ref{table:example_dataset_fit
 
 \section{Data analysis tools}\label{section:data_analysis_techniques}
 Using inverse simulation merely creates a lot of data. This data has to be analyzed before any 
-\subsection{Preprocessing}
+
 Data normalization
 
 \subsection{Data visualization}
@@ -231,6 +231,8 @@ It is useful to be able to plot the data points
 
 \subsubsection{Color toned scatter plots}
 Scatter plots are useful for initial data analysis, as one can quickly detect problems such as outliers, and maybe even detect clusters of data points. 
+
+\subsection{Preprocessing}
 
 \subsubsection{Handling outliers}
 The term outliers is often used as a label for data which is considered ``invalid'' in the sense that is not a product of the true data generation process, but  due to various sources of noise. In this report, data that was caused by failing simulations corresponds to the usual understanding of outliers. However, as was already explained in section \ref{section:failed_simulations}, data from such simulations are never included in \datamatrixpar{} and \datamatrixfit{} to begin with. Instead, outliers in this report refer to entries in \datamatrixpar{} and \datamatrixfit{}  deviate significantly from the majority of the data points by having extreme values.
@@ -240,27 +242,26 @@ Such data points caused problems when applying data analysis techniques which re
 In all experiments, outliers were present in both the parameters space and in the fitness space. Outliers in the parameter space occur because of abnormally large mutations, and any dimension of the parameter space is susceptible to such an event. In the fitness space, only a few of the features suffered from the occurrence of outliers. The feature \roundstable cannot contain outliers, because the shock to the fundamental occurs at round $\round = 10^4$, and because the simulation is terminated at round $\round = 10^5$, hence $\roundstable \in [10^4,10^4+1,\hdots 10^5]$. The same is true for \timetoreachnewfundamental. \stdev and \overshoot, on the other hand, are susceptible to outliers, because the two features have no upper bound.
 
 
-\begin{itemize}
-\item Apply a monotonically increasing transformation $f(x)$ to some or all of the features for every data point in the data set. A common choice of $f$ is $f(x) = \log x$, as it efficiently reduces the impact of data points with extremely high values. Figure \ref{figure:scatter_log_transform} illustrates the effect of applying the log-transform. 
+\begin{enumerate}
+\item Apply a monotonically increasing transformation $f(x)$ to some or all of the features for every data point in the data set. A common choice of $f$ is $f(x) = \log x$, as it efficiently reduces the impact of data points with extremely high values. Figure \ref{figure:scatter_log_transform} illustrates the effect of applying the log-transform. The log-scaling does a fairly good job of reducing the importance of the outliers in the \stdev feature, while the change is less dramatic in \timetoreachnewfundamental. While the left scatter plot does not really reveal any structure of the data, the transformation makes it possible to spot to rough clusters when inspecting the right plot.
+
+Another simple method is to manually remove 
 \item Manually select one or more criteria for when a data point is to be considered an outlier. It is worth noticing that \overshoot and \stdev 
 \item Use a one-class support vector machine to calculate a probability for each data point that said point is an inlier or an outlier. In this case, inliers 
-\end{itemize}
+\end{enumerate}
 
 \begin{figure}\label{figure:scatter_log_transform}
-\subcaptionbox{Scatter plot of \stdev vs. \overshoot\label{subfig:}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\subcaptionbox{\label{subfig:}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\caption{\textbf{:}}\label{fig:}
+\subcaptionbox{Untouched data}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{d3_issue_21_fitness_scatter_f.png}}
+\subcaptionbox{Log-scaled}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{d3_issue_21_fitness_scatter_g.png}}
+\subcaptionbox{Without outliers}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{d3_issue__103_d3_manually_removing_outiers.png}}
+\subcaptionbox{Log-scaled and without outliers}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{d3_issue__103_d3_manually_removing_outiers_logscaled.png}}
+\caption{Color toned scatter plots of \timetoreachnewfundamental, \stdev and \roundstable taken from dataset \dthree after applying log-scaling and manually removing outliers}
 \end{figure}
 
-\begin{figure}\label{figure:scatter_outliers_example}
-\subcaptionbox{\label{subfig:}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\subcaptionbox{\label{subfig:}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\caption{\textbf{:}}\label{fig:}
-\end{figure}
 
 In the parameters data set, outliers can occur due to abnormally large mutations. 
 Some parameters cause the simulation to act in strange ways, and even crash in some cases. For instance, the the order book becomes empty, the simulation throws an exception and terminates. Similarly, if the best \bid/\ask prices drops to zero, the simulation exits. As such 

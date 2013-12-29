@@ -1,9 +1,9 @@
-from sklearn.cluster import KMeans, MiniBatchKMeans
+from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
-from IO import load_all_generations_as_DataFrame, dataset_paths
+from IO import load_all_generations_as_DataFrame
 import IO
 #import matplotlib.pyplot as plt
-from pandas import DataFrame, concat
+from pandas import DataFrame
 import cPickle
 import numpy as np
 from numpy import mean, std, median

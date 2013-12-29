@@ -1,6 +1,19 @@
 \chapter{Experiments}
 As mentioned in the previous chapter, the process of finding was an iterative one of running an experiment, analyzing the generated data, draw conclusions and then repeat the steps with a new experiments designed to amend the mistakes of the previous experiment. This chapter will go through each of these steps and explain the insights that were gained.
 
+\begin{table}
+	\centering
+	\begin{tabular}{l|l}
+	Dataset id & Parameters in genes\\
+	\dthree & \sclatencymu, \sclatencys, \scnAgents, \scthinkmu, \scthinks, \sctimehorizonmu, \sctimehorizons, \scwaitTimeBetweenTradingmu, \scwaitTimeBetweenTradings, \ssmmlatencymu, \ssmmlatencys, \ssmmnAgents, \ssmmthinkmu, \ssmmthinks	
+	\end{tabular}
+\end{table}
+
+Data set \dthree was the first run of the genetic algorithm that actually produced something that looked like results. The following parameters were included in the genetic algorithm individuals:
+\begin{center}
+\sclatencymu, \sclatencys, \scnAgents, \scthinkmu, \scthinks, \sctimehorizonmu, \sctimehorizons, \scwaitTimeBetweenTradingmu, \scwaitTimeBetweenTradings, \ssmmlatencymu, \ssmmlatencys, \ssmmnAgents, \ssmmthinkmu, \ssmmthinks
+\end{center}
+
 \section{D3}
 In this experiment, the number of \ssmmnAgents and \scnAgents as well all the latency parameters were included in the individuals. The genetic algorithm was run for 1000 generations with a population size of 200. A total of 
 

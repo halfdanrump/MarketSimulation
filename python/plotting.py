@@ -11,6 +11,7 @@ import brewer2mpl
 from ppl import Ppl
 #import string
 import pandas
+from numpy import log
 
 def how_to_make_plot():
 
@@ -178,7 +179,6 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
         cbar.ax.set_xticklabels([str(int(t)) for t in bounds])# vertically oriented colorbar
 
     fig.savefig(filename)
-    fig.close()
 
 def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False):
     ### Originally created for issue_28
