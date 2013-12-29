@@ -67,12 +67,24 @@ def make_tradeprice_plot(rounds, prices, fit, par, filename):
 
 
 def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
+    from settings import default_parameters as dp
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)    
-    p.plot(ax, rounds, prices)
+    p.plot(ax, rounds, prices, zorder=1)
+    
+    #ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+    ### Plotting statbility margins
     fas = get_fundamental_after_shock()
-    ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
+    ax.hlines(y = [fas - settings.stability_margin, fas + settings.stability_margin], xmin=0, xmax=settings.n_simulation_rounds, linestyles = 'dashed')
+    ### Plotting fundamental step function
+    y = [dp['fundamental_initial_value'], dp['fundamental_initial_value'] + dp['fundamental_shock_size'], ]
+    xmin = [0, dp['fundamental_shock_round']]
+    xmax = [dp['fundamental_shock_round'], settings.n_simulation_rounds]  
+    
+    ax.hlines(y, xmin, xmax, linestyles = 'solid', colors='black', linewidth=2, zorder=2)
+    ax.vlines(x = dp['fundamental_shock_round'], ymin=dp['fundamental_initial_value'] + dp['fundamental_shock_size'], ymax = dp['fundamental_initial_value'], colors='black', linewidth=2, zorder=3)
+
     ax.set_ylabel('Traded price (ticks)')
     ax.set_xlabel('Time (rounds)')
     fig.savefig(filename)
@@ -102,6 +114,7 @@ def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename):
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     p.scatter(ax, x, y)
     fig.savefig(filename)
+    fig.close()
 
 def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
@@ -116,6 +129,7 @@ def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_nam
         p.plot(ax, generations, series, linewidth=2, label=label)
     p.legend(ax)
     fig.savefig(filename)
+    fig.close()
 
 def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, colormap, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
     ### Originally created for issue_21
@@ -143,7 +157,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     data_frame['groups'] = pandas.cut(data_frame[color_by], bins=bins, labels = False)
     groups = pandas.cut(data_frame[color_by], bins=bins)
     bounds = []
-
+    
     
     for g in range(n_intervals):
         x = eval(x_function)(data_frame[data_frame.groups == g][x_name])
@@ -164,7 +178,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
         cbar.ax.set_xticklabels([str(int(t)) for t in bounds])# vertically oriented colorbar
 
     fig.savefig(filename)
-
+    fig.close()
 
 def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False):
     ### Originally created for issue_28
@@ -197,6 +211,7 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     
 
     fig.savefig(filename)
+    fig.close()
 
 
 """
