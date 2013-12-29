@@ -2,7 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 
-TEST_MODE = False
+TEST_MODE = True
 
 
 VERBOSE = 0 
