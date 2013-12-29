@@ -17,7 +17,7 @@ import socket
 import utils
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--skip-scoop', '-ss', action="store_true", default=False)
+parser.add_argument('--skip-scoop', action="store_true", default=False)
 parser.add_argument('--dataset-name', '-d')
 arguments = parser.parse_args()
 assert arguments.dataset_name, "Please specify dataset name using the '-d' option. (e.g. '-d d4')"
@@ -34,7 +34,9 @@ def evaluate(individual, generation, graph_folder):
 		stats = tuple(OrderedDict(stats['mean']).values())
 		print "Gen %s: Finished simulation with parameters: %s"%(generation, scale_genes_to_parameters(individual, False))
 	else:
+		print "Invalid gene"
 		stats = get_invalid_gene_fitness()
+		saved_simulation_data_ids = list()
 	return (stats, saved_simulation_data_ids)
 
 

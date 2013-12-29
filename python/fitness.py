@@ -43,7 +43,7 @@ def evaluate_simulation_results(graph_folder, generation_number, parameters = {}
 	for r in reps:
 		data[r], data_id = __evaluate_simulation_results(parameters, log_folders[r], graph_folder, generation_number, plot_name)
 		if data_id: saved_simulation_data_ids.append(data_id)
-	print saved_simulation_data_ids
+
 	return data, saved_simulation_data_ids
 
 
@@ -81,8 +81,8 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 		print graph_folder + data_id + '.npz'
 		
 		IO.save_tradeprice_data(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.npz')
-		plotting.make_pretty_tradeprice_plot(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.png')
-		#make_tradeprice_plot(trades['round'], trades['price'], parameters, graph_folder, data, generation_number, plot_name)
+		#plotting.make_pretty_tradeprice_plot(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.png')
+		plotting.make_tradeprice_plot(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.png')
 	else:
 		data_id = None
 		

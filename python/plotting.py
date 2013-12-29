@@ -42,37 +42,28 @@ def how_to_make_plot():
     plt.savefig("test.png")
 
 
-"""
-def make_tradeprice_plot(rounds, tradePrice, all_parameters, graph_folder, fitness, generation_number, plot_name = None):
+
+def make_tradeprice_plot(rounds, prices, fit, par, filename):
     fig = plt.figure(figsize=(10, 8), dpi=100)
     ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
     ax.set_xlabel("Round")
     ax.set_ylabel("Traded price")
 
-    caption = "\n".join(textwrap.wrap(repr([(k,all_parameters[k]) for k in settings.parameters_in_genes]), 100))
+    caption = "\n".join(textwrap.wrap(repr([(k,par[k]) for k in settings.parameters_in_genes]), 100))
     caption += '\nFitness: %s'%str(settings.fitness_weights.keys())
-    caption += '\nFitness: %s'%str(fitness)
+    caption += '\nFitness: %s'%str(fit)
     fig.text(0.1,0.1, caption)
-    ax.plot(rounds, tradePrice, lw=2)
+    ax.plot(rounds, prices, lw=2)
 
     fas = get_fundamental_after_shock()
     ax.hlines([fas - settings.stability_margin, fas + settings.stability_margin], 0, settings.n_simulation_rounds)
-    time = get_epoch_time()
-    if not plot_name:
-        identifier = graph_folder + 'gen%s_'%generation_number + time
-        full_plot_name = identifier + '.png'
-    else:
-        full_plot_name = graph_folder + plot_name + '___%s'%time
-        print full_plot_name
     
-    print "Saving plot to %s"%full_plot_name
-    fig.savefig(full_plot_name)
-
-    
+    print "Saving plot to %s"%filename
+    fig.savefig(filename)
 
     plt.close()
     gc.collect()
-"""
+
 
 
 def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
@@ -85,6 +76,8 @@ def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
     ax.set_ylabel('Traded price (ticks)')
     ax.set_xlabel('Time (rounds)')
     fig.savefig(filename)
+    plt.close()
+    gc.collect()
 
 def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_error_bar=None, *ys):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
@@ -97,6 +90,8 @@ def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_error_bar=None,
         ax.errorbar(x, y, yerr=y_error_bar, fmt='o')
         p.plot(ax, x, y, linewidth=2)
         fig.savefig(filename)
+    plt.close()
+    gc.collect()
 
 def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
