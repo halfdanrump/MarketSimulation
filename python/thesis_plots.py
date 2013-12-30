@@ -218,19 +218,26 @@ def issue_36_kernelPCA(dataset, load_from_file):
 
 def issue_82_parameter_evolution(dataset):
 	def get_stats(name, stats):
-		return [getattr(group[name], s)() for s in stats]	
+		return [getattr(group[name], s)() for s in stats]
 	
 	def d9():
-		make_pretty_generation_plot(folder + 'd9_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd9_latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd9_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average think time std', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd9_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd9_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()])
+		make_pretty_generation_plot(folder + 'd9_latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()])
+		make_pretty_generation_plot(folder + 'd9_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average think time std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_s'].std(), group['sc_think_s'].std()])
+		make_pretty_generation_plot(folder + 'd9_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_mu'].std(), group['sc_think_mu'].std()])
+		make_pretty_generation_plot(folder + 'd9_scwaittime_mu.png', generations, [group['sc_waitTimeBetweenTrading_mu'].mean()], 'Average of the chartist waiting time distribution mean', ['Chartists'], y_errorbar=[group['sc_waitTimeBetweenTrading_mu'].std()])
+		make_pretty_generation_plot(folder + 'd9_sctimehorizon_mu.png', generations, [group['sc_timehorizon_mu'].mean()], 'Average of the chartist time horizon distribution mean', ['Chartists'], y_errorbar=[group['sc_timehorizon_mu'].std	()])
 
 	def d3():
 		#make_pretty_generation_plot(folder + 'd3_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd3_nAgents.png', generations, [group['ssmm_nAgents'].mean(), group['sc_nAgents'].mean()], 'Average nuber of agents', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd9_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average think time std', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd9_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd3_nAgents.png', generations, [group['ssmm_nAgents'].mean(), group['sc_nAgents'].mean()], 'Average number of agents', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd3_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average if the thinking time standard deviation', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd3_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average of the thinking time distribution mean', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd3_latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average of the latency distribution mean', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd3_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average of the latency distribution standard deviation', ['Market makers', 'Chartists'])
+		make_pretty_generation_plot(folder + 'd3_scwaittime_mu.png', generations, [group['sc_waitTimeBetweenTrading_mu'].mean()], 'Average of the chartist waiting time distribution mean', ['Chartists'])
+		make_pretty_generation_plot(folder + 'd3_sctimehorizon_mu.png', generations, [group['sc_timehorizon_mu'].mean()], 'Average of the chartist time horizon distribution mean', ['Chartists'])
+	
 	from plotting import make_pretty_generation_plot
 	folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_82_generation_plots/'
 	fit,par,gen,ids = IO.load_pickled_generation_dataframe(dataset)
@@ -240,8 +247,8 @@ def issue_82_parameter_evolution(dataset):
 	stats = ['min', 'mean', 'median']
 	
 	make_pretty_generation_plot(folder + dataset + '_time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats)
-	make_pretty_generation_plot(folder + dataset + '_stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats)
-	make_pretty_generation_plot(folder + dataset + '_round_stable.png', generations, get_stats('round_stable', stats), 'Round entering stability margin', stats)
+	make_pretty_generation_plot(folder + dataset + '_stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats, y_logscale=True)
+	make_pretty_generation_plot(folder + dataset + '_round_stable.png', generations, get_stats('round_stable', stats), 'Round entering stability margin', stats, y_logscale=True)
 	make_pretty_generation_plot(folder + dataset + '_overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats)
 	eval(dataset)()	
 	

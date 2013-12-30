@@ -13,6 +13,8 @@ from ppl import Ppl
 import pandas
 from numpy import log
 
+errorbar_color=brewer2mpl.get_map('Set1', 'qualitative', 9).mpl_colors[8]
+
 def how_to_make_plot():
 
     fig = plt.figure()
@@ -92,7 +94,7 @@ def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
     plt.close()
     gc.collect()
 
-def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_error_bar=None, *ys):
+def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_errorbar=None, *ys):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)    
@@ -100,7 +102,7 @@ def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_error_bar=None,
     ax.set_ylabel(pfn(ylabel))
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     for y in ys:
-        ax.errorbar(x, y, yerr=y_error_bar, fmt='o')
+        ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
         p.plot(ax, x, y, linewidth=2)
         fig.savefig(filename)
     plt.close()
@@ -115,22 +117,34 @@ def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename):
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     p.scatter(ax, x, y)
     fig.savefig(filename)
-    fig.close()
 
-def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels):
+
+def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels, y_errorbar=None, y_logscale = False):
+    if y_errorbar:
+        assert isinstance(y_errorbar, list), "Please provide a list for error bars"
+        assert len(y_errorbar) == len(lines_to_plot), "When plotting error bars you must specify an array of error bars for each line that is plotted"
+    
+
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)
-    ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     ax.set_xlabel('Generation')
     ax.set_ylabel(x_axis_name)
-    for series, label in zip(lines_to_plot, legend_labels):
-        print len(generations)
-        print series.values.shape
-        p.plot(ax, generations, series, linewidth=2, label=label)
-    p.legend(ax)
+    if y_logscale: 
+        ax.set_yscale('log')
+        plt.grid(b=True, which='both', axis='y', color='0.65',linestyle='dashed')
+        legend_labels = map(lambda s: s + ' (log)', legend_labels)
+    else: ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+
+    for i, (series, label) in enumerate(zip(lines_to_plot, legend_labels)):
+        p.plot(ax, generations, series, linewidth=2, label=label, zorder=2)
+    
+    if y_errorbar: 
+        for i, (series, label) in enumerate(zip(lines_to_plot, legend_labels)):
+            ax.errorbar(generations, series, yerr=y_errorbar[i], zorder=1, capsize=2, barsabove=True, ecolor = errorbar_color)
+    
+    p.legend(ax, loc=0)
     fig.savefig(filename)
-    fig.close()
 
 def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, colormap, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
     ### Originally created for issue_21
