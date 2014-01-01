@@ -150,7 +150,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     ### Originally created for issue_21
     def dummy(a): return a
     data_frame = data_frame.copy()
-    p = Ppl(colormap, alpha=1)
+    p = Ppl(colormap, alpha=0.5)
 
     fig, ax = plt.subplots(1)
     #ax.set_autoscale_on(False)
@@ -179,7 +179,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
         y = eval(y_function)(data_frame[data_frame.groups == g][y_name])
         p.scatter(ax, x, y, label=str(groups.levels[g]))
 
-    if legend: p.legend(ax)
+    if legend: p.legend(ax, loc=0)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
     
     bounds = bins
@@ -187,14 +187,26 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
         cmap = p.get_colormap().mpl_colormap
         
         norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
-        ax2 = fig.add_axes([0.2, 0.94 , 0.7, 0.03])
-        ax2.set_ylabel(color_by.capitalize().replace('_', ' '))
-        cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, spacing='proportional', ticks=bounds, norm=norm, alpha=p.get_alpha(), orientation='horizontal')
-        cbar.ax.set_xticklabels([str(int(t)) for t in bounds])# vertically oriented colorbar
+        #ax2.set_ylabel(color_by.capitalize().replace('_', ' '), rotation='horizontal')
+        #ax2.xaxis.get_major_formatter().set_powerlimits((0, 1))
+        #ax2.yaxis.get_major_formatter().set_powerlimits((0, 1))
+        ax2 = fig.add_axes([0.9, 0.1 , 0.03, 0.8])
+
+        cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, spacing='proportional', ticks=bounds, norm=norm, alpha=p.get_alpha(), orientation='vertical')
+        #cbar.ax.set_xticklabels(map(lambda x: '%.3g'%x, bounds))# vertically oriented colorbar
+        cbar.ax.set_yticklabels([])# vertically oriented colorbar
+        #for j, lab in enumerate(map(lambda lower, upper: '%.3g~%.3g'%(lower, upper), bounds[:-1], bounds[1::])):
+        cbar.ax.text(0,1.02, '%.3g'%max(bounds))
+        #for j, lab in enumerate(map(lambda upper: '< %.3g'%upper, bounds[1::])):
+        #    cbar.ax.text(.5, (2 * j + 1) / 8.0, lab, ha='center', va='center', rotation='vertical')
+        #cbar.ax.set_xticklabels([str(int(t)) for t in bounds])# vertically oriented colorbar
+        if color_function == 'log': label = color_by.capitalize().replace('_', ' ') + ' (log)'
+        else: label = color_by.capitalize().replace('_', ' ')
+        cbar.ax.set_ylabel(label, rotation='vertical')
 
     fig.savefig(filename)
 
-def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False):
+def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False, point_size = 5):
     ### Originally created for issue_28
     def dummy(a): return a
     p = Ppl(colormap, alpha=1)
@@ -218,15 +230,13 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     for g in range(n_labels + 1):
         x = eval(x_function)(data_frame[labels == g][x_name])
         y = eval(y_function)(data_frame[labels == g][y_name])
-        p.scatter(ax, x, y, label=str(len(labels[labels == g])))
+        p.scatter(ax, x, y, label='C%s: %s'%(g, str(len(labels[labels == g]))), s=point_size)
 
-    if legend: p.legend(ax)
+    if legend: p.legend(ax, loc=0, fancybox=True)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
     
 
     fig.savefig(filename)
-    fig.close()
-
 
 """
 def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):

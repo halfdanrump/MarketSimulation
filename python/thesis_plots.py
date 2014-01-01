@@ -10,36 +10,43 @@ import IO
 figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Figures/'
 table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
 import utils
+import os
+
+def make_issue_specific_figure_folder(name, dataset):
+	name.replace('/', '')
+	folder = '%s%s/%s/'%(figure_save_path, name, dataset)
+	if not os.path.exists(folder): os.makedirs(folder)
+	return folder
 
 def issue_21_basic_scatter_plots(dataset):
 	"""
 	Makes scatter plots of fitness
 	"""
 	from plotting import make_color_grouped_scatter_plot
-	
+	folder = make_issue_specific_figure_folder('21_scatter_plots', dataset)
 	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	
 	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
 	print "Making scatter plots of fitness data for dataset %s"%dataset
-	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_a.png'
+	filename = folder + 'a.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='overshoot', y_name='time_to_reach_new_fundamental', color_by='stdev', filename=filename, colormap = colormap, y_function='log')
 
-	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_b.png'
+	filename = folder + 'b.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='overshoot', y_name='stdev', color_by='time_to_reach_new_fundamental', filename=filename, colormap = colormap)
 
-	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_c.png'
+	filename = folder + 'c.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='stdev', filename=filename, colormap = colormap)
 	
-	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_d.png'
+	filename = folder + 'd.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='stdev', y_name='round_stable', color_by='time_to_reach_new_fundamental', filename=filename, colormap = colormap, x_function='log', y_function='log')
 
-	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_e.png'
+	filename = folder + 'e.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='stdev', y_name='time_to_reach_new_fundamental', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log')
 	
-	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_f.png'
+	filename = folder + 'f.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='time_to_reach_new_fundamental', y_name='stdev', color_by='round_stable', filename=filename, colormap = colormap)
 
-	filename = figure_save_path + dataset + '_issue_21_fitness_scatter_g.png'
+	filename = folder + 'g.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='time_to_reach_new_fundamental', y_name='stdev', color_by='round_stable', filename=filename, colormap = colormap, x_function='log', y_function='log', color_function='log')
 
 def issue_26_plot_pca_and_cluster(dataset, n_clusters):
@@ -221,41 +228,41 @@ def issue_82_parameter_evolution(dataset):
 		return [getattr(group[name], s)() for s in stats]
 	
 	def d9():
-		make_pretty_generation_plot(folder + 'd9_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()])
-		make_pretty_generation_plot(folder + 'd9_latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()])
-		make_pretty_generation_plot(folder + 'd9_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average think time std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_s'].std(), group['sc_think_s'].std()])
-		make_pretty_generation_plot(folder + 'd9_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_mu'].std(), group['sc_think_mu'].std()])
-		make_pretty_generation_plot(folder + 'd9_scwaittime_mu.png', generations, [group['sc_waitTimeBetweenTrading_mu'].mean()], 'Average of the chartist waiting time distribution mean', ['Chartists'], y_errorbar=[group['sc_waitTimeBetweenTrading_mu'].std()])
-		make_pretty_generation_plot(folder + 'd9_sctimehorizon_mu.png', generations, [group['sc_timehorizon_mu'].mean()], 'Average of the chartist time horizon distribution mean', ['Chartists'], y_errorbar=[group['sc_timehorizon_mu'].std	()])
+		make_pretty_generation_plot(folder + 'latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()])
+		make_pretty_generation_plot(folder + 'latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()])
+		make_pretty_generation_plot(folder + 'thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average think time std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_s'].std(), group['sc_think_s'].std()])
+		make_pretty_generation_plot(folder + 'thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average think time mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_mu'].std(), group['sc_think_mu'].std()])
+		make_pretty_generation_plot(folder + 'scwaittime_mu.png', generations, [group['sc_waitTimeBetweenTrading_mu'].mean()], 'Average of the chartist waiting time distribution mean', ['Chartists'], y_errorbar=[group['sc_waitTimeBetweenTrading_mu'].std()])
+		make_pretty_generation_plot(folder + 'sctimehorizon_mu.png', generations, [group['sc_timehorizon_mu'].mean()], 'Average of the chartist time horizon distribution mean', ['Chartists'], y_errorbar=[group['sc_timehorizon_mu'].std	()])
 
 	def d3():
 		#make_pretty_generation_plot(folder + 'd3_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd3_nAgents.png', generations, [group['ssmm_nAgents'].mean(), group['sc_nAgents'].mean()], 'Average number of agents', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd3_thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average if the thinking time standard deviation', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd3_thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average of the thinking time distribution mean', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd3_latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average of the latency distribution mean', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd3_latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average of the latency distribution standard deviation', ['Market makers', 'Chartists'])
-		make_pretty_generation_plot(folder + 'd3_scwaittime_mu.png', generations, [group['sc_waitTimeBetweenTrading_mu'].mean()], 'Average of the chartist waiting time distribution mean', ['Chartists'])
-		make_pretty_generation_plot(folder + 'd3_sctimehorizon_mu.png', generations, [group['sc_timehorizon_mu'].mean()], 'Average of the chartist time horizon distribution mean', ['Chartists'])
+		make_pretty_generation_plot(folder + 'nAgents.png', generations, [group['ssmm_nAgents'].mean(), group['sc_nAgents'].mean()], 'Average number of agents', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_nAgents'].std(), group['sc_nAgents'].std()])
+		make_pretty_generation_plot(folder + 'thinkpars_s.png', generations, [group['ssmm_think_s'].mean(), group['sc_think_s'].mean()], 'Average if the thinking time standard deviation', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_s'].std(), group['sc_think_s'].std()])
+		make_pretty_generation_plot(folder + 'thinkpars_mu.png', generations, [group['ssmm_think_mu'].mean(), group['sc_think_mu'].mean()], 'Average of the thinking time distribution mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_think_mu'].std(), group['sc_think_mu'].std()])
+		make_pretty_generation_plot(folder + 'latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average of the latency distribution mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()])
+		make_pretty_generation_plot(folder + 'latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average of the latency distribution standard deviation', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()])
+		make_pretty_generation_plot(folder + 'scwaittime_mu.png', generations, [group['sc_waitTimeBetweenTrading_mu'].mean()], 'Average of the chartist waiting time distribution mean', ['Chartists'], y_errorbar=[group['sc_waitTimeBetweenTrading_mu'].std()])
+		make_pretty_generation_plot(folder + 'sctimehorizon_mu.png', generations, [group['sc_timehorizon_mu'].mean()], 'Average of the chartist time horizon distribution mean', ['Chartists'], y_errorbar=[group['sc_timehorizon_mu'].std()])
 	
 	from plotting import make_pretty_generation_plot
-	folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_82_generation_plots/'
+	folder = make_issue_specific_figure_folder('82_generation_plots', dataset)
 	fit,par,gen,ids = IO.load_pickled_generation_dataframe(dataset)
 	all_data = concat([fit,par, DataFrame(gen)], axis=1)
 	generations = list(set(all_data['gen']))
 	group = all_data.groupby('gen')
 	stats = ['min', 'mean', 'median']
 	
-	make_pretty_generation_plot(folder + dataset + '_time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats)
-	make_pretty_generation_plot(folder + dataset + '_stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats, y_logscale=True)
-	make_pretty_generation_plot(folder + dataset + '_round_stable.png', generations, get_stats('round_stable', stats), 'Round entering stability margin', stats, y_logscale=True)
-	make_pretty_generation_plot(folder + dataset + '_overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats)
+	make_pretty_generation_plot(folder + 'time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats)
+	make_pretty_generation_plot(folder + 'stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats, y_logscale=True)
+	make_pretty_generation_plot(folder + 'round_stable.png', generations, get_stats('round_stable', stats), 'Round entering stability margin', stats, y_logscale=True)
+	make_pretty_generation_plot(folder + 'overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats)
 	eval(dataset)()	
 	
 
 def issue_101_plot_pars_vs_fitness(dataset):
 	from plotting import make_pretty_multiline_xy_plot, make_pretty_scatter_plot
-	folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/issue_101_pars_vs_fits/'
+	folder = make_issue_specific_figure_folder('101_pars_vs_fits', dataset)
 	#if not eos.mkdir(folder)
 	def mkplot(groupby, plots_to_make):
 		g = a.groupby(groupby)
@@ -297,22 +304,29 @@ def issue_102_plot_overshoot_and_noreaction():
 def issue_103_manually_removing_large_fitness_points(dataset, overshoot_threshold):
 	from plotting import make_color_grouped_scatter_plot
 	from numpy import where
+	folder = make_issue_specific_figure_folder('103_scatter_manual_outlier', dataset)
 	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
 	o = where(fit.overshoot > overshoot_threshold)[0]
 	not_o = where(fit.overshoot <= overshoot_threshold)[0]
 	
 	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
-	filename = figure_save_path + dataset + '_issue__103_%s_manually_removing_outiers.png'%dataset
-	print "Making scatter plot of for some overshoot vs stdev after manually removing points with large overshoot (dataset %s)"%dataset
-	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap)
-	filename = figure_save_path + dataset + '_issue__103_%s_manually_removing_outiers_logscaled.png'%dataset
-	print "Making scatter plot of for some overshoot vs stdev after manually removing points with large overshoot (dataset %s) and applying log-scaling"%dataset
-	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap, x_function='log', y_function='log', color_function='log')
-	print 'Making scatter plot'
-	filename = figure_save_path + dataset + '_issue__103_%s_c.png'%dataset
-	make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='stdev', filename=filename, colormap = colormap)
 	
-	stats = concat([par.iloc[not_o,:].mean(), par.iloc[o,:].mean(), par.iloc[not_o,:].mean(), par.iloc[o,:].std()], axis=1)
+	filename = folder + 'a.png'
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap)
+	
+	filename = folder + 'b.png'
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap, x_function='log', y_function='log', color_function='log')
+	
+	filename = folder + 'c.png'
+	make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='stdev', filename=filename, colormap = colormap)
+
+	filename = folder + 'd.png'
+	make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='stdev', y_name='round_stable', color_by='time_to_reach_new_fundamental', filename=filename, colormap = colormap, x_function='log', y_function='log')
+
+	filename = folder + 'e.png'
+	make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='stdev', y_name='overshoot', color_by='time_to_reach_new_fundamental', filename=filename, colormap = colormap)
+	
+	stats = concat([par.iloc[not_o,:].mean(), par.iloc[o,:].mean(), par.iloc[not_o,:].std(), par.iloc[o,:].std()], axis=1)
 	lt = '\overshoot > %s'%overshoot_threshold
 	st = '\overshoot > %s'%overshoot_threshold
 	stats.columns = ['%s (mean)'%st, '%s (mean)'%lt, '%s (std)'%st, '%s (std)'%lt]
@@ -322,13 +336,74 @@ def issue_103_manually_removing_large_fitness_points(dataset, overshoot_threshol
 	print utils.prettify_table(stats.to_latex(float_format=lambda x: str(round(x,1))), 'LABEL', 'CAPTION')
 	return stats
 
+def issue_108(dataset, n_clusters, overshoot_threshold):
+	from numpy import where, repeat
+	from sklearn.cluster import KMeans
+	from plotting import make_scatter_plot_for_labelled_data
+	from data_analysis import calculate_stats_for_dataframe
+	folder = make_issue_specific_figure_folder('108 cluster after removing outliers', dataset)
+	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
+	o = where(fit.overshoot > overshoot_threshold)[0]
+	not_o = where(fit.overshoot <= overshoot_threshold)[0]
+
+	km = KMeans(n_clusters=n_clusters)
+	data_to_cluster = fit[['stdev', 'round_stable', 'time_to_reach_new_fundamental']].iloc[not_o,:]
+	labels = km.fit_predict(data_to_cluster)
+	#group_members = [where(labels == label)[0] for label in range(km.n_clusters)]
+	
+	data_to_plot = fit.iloc[not_o]
+	filename = folder + 'kmeans_%s.png'%n_clusters
+	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
+	make_scatter_plot_for_labelled_data(data_to_plot, x_name='stdev', y_name='round_stable', labels=labels, filename=filename, colormap=colormap, x_function = 'log', y_function = 'log', legend = True)
+
+	fit_inlier_stats = calculate_stats_for_dataframe(fit.iloc[not_o,:], labels)
+	fit_outlier_stats = calculate_stats_for_dataframe(fit.iloc[o,:], repeat(0, len(o)))
+	fit_mean_table = concat([fit_inlier_stats['Mean'], fit_outlier_stats['Mean']], axis=1)
+	fit_mean_table.index = utils.get_latex_par_names_from_list(fit_mean_table.index)
+	print fit_mean_table.to_latex(float_format=lambda x: str(round(x,1)))
+
+	par_inlier_stats = calculate_stats_for_dataframe(par.iloc[not_o,:], labels)
+	par_outlier_stats = calculate_stats_for_dataframe(par.iloc[o,:], repeat(0, len(o)))
+	par_mean_table = concat([par_inlier_stats['Mean'], par_outlier_stats['Mean']], axis=1)
+	par_mean_table.index = utils.get_latex_par_names_from_list(par_mean_table.index)
+	print par_mean_table.to_latex(float_format=lambda x: str(round(x,1)))
+	#fit_mean_table.columns = ['C0', 'C1', 'C3', 'Outliers']
+
+	from sklearn.mixture import GMM
+	gmm = GMM(n_components = n_clusters, covariance_type = 'full')
+	gmm.fit(data_to_cluster)
+	labels = gmm.predict(data_to_cluster)
+	data_to_plot = fit.iloc[not_o]
+	filename = folder + 'gmm_%s.png'%n_clusters
+	colormap = brewer2mpl.get_map('Set2', 'Qualitative', n_clusters, reverse=True)
+	make_scatter_plot_for_labelled_data(data_to_plot, x_name='stdev', y_name='round_stable', labels=labels, filename=filename, colormap=colormap, x_function = 'log', y_function = 'log', legend = True)
+
+	fit_inlier_stats = calculate_stats_for_dataframe(fit.iloc[not_o,:], labels)
+	fit_outlier_stats = calculate_stats_for_dataframe(fit.iloc[o,:], repeat(0, len(o)))
+	fit_mean_table = concat([fit_inlier_stats['Mean'], fit_outlier_stats['Mean']], axis=1)
+	fit_mean_table.index = utils.get_latex_par_names_from_list(fit_mean_table.index)
+	print fit_mean_table.to_latex(float_format=lambda x: str(round(x,1)))
+
+	par_inlier_stats = calculate_stats_for_dataframe(par.iloc[not_o,:], labels)
+	par_outlier_stats = calculate_stats_for_dataframe(par.iloc[o,:], repeat(0, len(o)))
+	par_mean_table = concat([par_inlier_stats['Mean'], par_outlier_stats['Mean']], axis=1)
+	par_mean_table.index = utils.get_latex_par_names_from_list(par_mean_table.index)
+	print par_mean_table.to_latex(float_format=lambda x: str(round(x,1)))
+
+
+	return data_to_cluster
+
+
+
 def remake_make_all_thesis_plots():
 	issue_21_basic_scatter_plots(dataset='d3')
 	issue_103_manually_removing_large_fitness_points(dataset='d3', overshoot_threshold=10)
 	
-
-	
-
+	issue_21_basic_scatter_plots(dataset='d9')
+	issue_103_manually_removing_large_fitness_points(dataset='d9', overshoot_threshold=10)
+	issue_108(dataset='d9', n_clusters=3, overshoot_threshold=10)
+	issue_108(dataset='d9', n_clusters=4, overshoot_threshold=10)
+	issue_108(dataset='d9', n_clusters=5, overshoot_threshold=10)
 if __name__ == '__main__':
 	#plot_issue_('d2', 4, True)
 	#table_issue_55(dataset='d2', n_clusters=4, load_from_file=True)
