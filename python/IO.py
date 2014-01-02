@@ -13,7 +13,8 @@ dataset_paths = {
     'd2':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d2/',
     'd3':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d3/',
     'd9':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d9_fixed_nAgents_vary_latpars/',
-    'd10':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d10_vary_only_latpars/'
+    'd10':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d10_vary_nssmm_vary_latpars/',
+    'd11':'/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d11_vary_nsc_vary_latpars/'
 }
 
 def check_simulation_complete(full_simulation_log_path):
