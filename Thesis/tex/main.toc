@@ -61,8 +61,8 @@
 \contentsline {subsubsection}{\numberline {3.4.1.1}Color toned scatter plots}{25}{subsubsection.103}
 \contentsline {subsection}{\numberline {3.4.2}Preprocessing}{25}{subsection.104}
 \contentsline {subsubsection}{\numberline {3.4.2.1}Handling outliers}{25}{subsubsection.105}
-\contentsline {subsubsection}{\numberline {3.4.2.2}title}{27}{subsubsection.110}
-\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{27}{subsection.111}
+\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{27}{subsection.110}
+\contentsline {subsubsection}{\numberline {3.4.3.1}GMM}{27}{subsubsection.111}
 \contentsline {chapter}{\numberline {4}Experiments}{28}{chapter.112}
 \contentsline {section}{\numberline {4.1}D3}{28}{section.113}
 \contentsline {section}{\numberline {4.2}D9}{31}{section.118}
