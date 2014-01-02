@@ -225,7 +225,7 @@ class Ppl:
 
     def legend(self, ax, facecolor = None, **kwargs):
         if not facecolor: facecolor = self.light_grey
-        legend = ax.legend(frameon=True, scatterpoints=1, **kwargs)
+        legend = ax.legend(scatterpoints=1, **kwargs)
         rect = legend.get_frame()
         rect.set_facecolor(facecolor)
         rect.set_linewidth(0.0)

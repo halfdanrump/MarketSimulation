@@ -90,6 +90,8 @@ def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
 
     ax.set_ylabel('Traded price (ticks)')
     ax.set_xlabel('Time (rounds)')
+    ax.set_xlim([0, max(round)])
+    ax.set_ylim([min(fas - settings.stability_margin, prices), max(fas + settings.stability_margin, prices)])
     fig.savefig(filename)
     plt.close()
     gc.collect()
@@ -232,7 +234,7 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
         y = eval(y_function)(data_frame[labels == g][y_name])
         p.scatter(ax, x, y, label='C%s: %s'%(g, str(len(labels[labels == g]))), s=point_size)
 
-    if legend: p.legend(ax, loc=0, fancybox=True)
+    if legend: p.legend(ax, loc=0, fancybox=True, markerscale=5, frameon=False)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
     
 
