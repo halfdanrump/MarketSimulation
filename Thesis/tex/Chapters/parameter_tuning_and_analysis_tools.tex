@@ -102,6 +102,29 @@ To this end, four fitness measures were defined.
 The balance between the number 
 Several parameters influence the number of orders submitted by the high frequency traders.
 
+\begin{description}
+\item[\roundstable < \timetoreachnewfundamental] This happens when the traded price never leaves the stability margin after reaching the new fundamental price. Note however that this case does not necessarily mean that the prices do not flicker. 
+\item[\roundstable > \timetoreachnewfundamental] This happens when the traded price leaves the stability margin once or more after reaching the new fundamental. The traded price can be close to the fundamental, but flickers in and out of the stability margin as on Figure \ref{figure:tradeprice_exaples_fitness_a} shows an example where the trade price fairly stable and with no overshoot, leading to good (low) \stdev and \overshoot fitness values to be assigned to the parameters. However, even though the traded prices are mostly within the stability margin, occasional flickers out of the margin causes the simulation to score a bad (high) \roundstable fitness. Note also that \timetoreachnewfundamental is undefined in this case. 
+\item[\roundstable = \timetoreachnewfundamental] This happens if a trade is executed at price $\smargin - \fas < \pmatch < \smargin + \fas$, and another trade is executed at price $\pmatch = \fas$ in the same round. 
+\end{description}
+
+\begin{figure}
+\centering
+\subcaptionbox{\label{figure:tradeprice_exaples_fitness_a}}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{issue_113_tradeprice_plots/all/low_stdev_but_not_stable.png}}
+\subcaptionbox{\label{figure:tradeprice_exaples_fitness_b}}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{issue_113_tradeprice_plots/all/low_stdev_and_stable.png}}
+\subcaptionbox{\label{figure:tradeprice_exaples_fitness_c}}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{issue_113_tradeprice_plots/all/high_stdev_but_stable.png}}
+\label{figure:tradeprice_exaples_fitness}
+\end{figure}
+
+\begin{description}
+\item[\overshoot]
+\end{description}
+
+It is possible for a simulation to be considered stable even before
+
 \subsection{Genetic algorithm parameters}\label{section:ga_parameters}
 Although this is a basic version of genetic algorithm, using it correctly is not necessarily easy, as was encountered. First of all, the parameters for the genetic algorithm itself must be established. The larger and more complex the search space, the more resources the search will require, since the evaluating the fitness function (i.e., the running the simulation) will have to be done a larger number of times. 
 

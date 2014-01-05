@@ -26,7 +26,8 @@ def issue_21_basic_scatter_plots(dataset):
 	folder = make_issue_specific_figure_folder('21_scatter_plots', dataset)
 	fit_data, par_data, gen, ids = IO.load_pickled_generation_dataframe(dataset_name=dataset)
 	
-	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
+	#colormap = brewer2mpl.get_map('YlOrRd', 'Sequential', 9, reverse=True)
+	colormap = brewer2mpl.get_map('Spectral', 'Diverging', 9, reverse=True)
 	print "Making scatter plots of fitness data for dataset %s"%dataset
 	filename = folder + 'a.png'
 	make_color_grouped_scatter_plot(data_frame=fit_data, x_name='overshoot', y_name='time_to_reach_new_fundamental', color_by='stdev', filename=filename, colormap = colormap, y_function='log')
@@ -266,89 +267,50 @@ def issue_82_parameter_evolution(dataset):
 	
 	make_pretty_generation_plot(folder + 'time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats)
 	make_pretty_generation_plot(folder + 'stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats, y_logscale=True)
-	make_pretty_generation_plot(folder + 'round_stable.png', generations, get_stats('round_stable', stats), 'Round entering stability margin', stats, y_logscale=True)
+	make_pretty_generation_plot(folder + 'round_stable.png', generations, get_stats('round_stable', stats), 'Round stable', stats, y_logscale=True)
 	make_pretty_generation_plot(folder + 'overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats)
 	eval(dataset)()	
 	
 
-def issue_101_plot_pars_vs_fitness(dataset):
-	from plotting import make_pretty_multiline_xy_plot, make_pretty_scatter_plot
+def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold):
+	from plotting import get_pretty_multiline_xy_plot, make_pretty_scatter_plot
+	from numpy import where
 	folder = make_issue_specific_figure_folder('101_pars_vs_fits', dataset)
 	#if not eos.mkdir(folder)
-	def mkplot(groupby, plots_to_make):
-		g = a.groupby(groupby)
+	stats = ['mean', 'median']
+
+	def get_plots_to_make(fitness_types):
+		plots_to_make = list()
+		for fitness_type in fitness_types:
+			for stat in stats:
+				plots_to_make.append((fitness_type, stat))
+		return plots_to_make
+
+
+	def mkplot(all_data, groupby, plots_to_make):
+		g = all_data.groupby(groupby)
 		x = g.groups.keys()
-		s = a.sort(groupby)
+		s = all_data.sort(groupby)
 		for attr, stat in plots_to_make:
 			print groupby, attr, stat
 			y = getattr(g[attr],stat)()
 			filename = '%s%s__vs__%s(%s)'%(folder, groupby, attr, stat)
-			make_pretty_multiline_xy_plot(x, groupby, '%s (%s)'%(attr, stat), filename, g[attr].std()/2, y)
-			filename = '%s%s__vs__%s_scatter'%(folder, groupby, attr)
-			make_pretty_scatter_plot(s[groupby], s[attr], groupby, attr, filename)
+			ax, fig = get_pretty_multiline_xy_plot(x, groupby, '%s (%s)'%(attr, stat), filename, g[attr].std()/2, y)
+			filename = '%s%s__vs__%s(%s)_scatter'%(folder, groupby, attr, stat)
+			make_pretty_scatter_plot(s[groupby], s[attr], groupby, '%s (%s)'%(attr, stat), filename, ax=ax, fig=fig)
 	
-	def d9():
-		groupby = 'ssmm_latency_mu'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'sc_latency_mu'
-		plots_to_make = [('overshoot', 'min'), ('time_to_reach_new_fundamental', 'std'), ('time_to_reach_new_fundamental', 'min'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'ssmm_latency_s'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'sc_latency_s'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean'), ('time_to_reach_new_fundamental', 'min')]
-		mkplot(groupby, plots_to_make)
-
-	def d10():
-		groupby = 'ssmm_latency_mu'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'sc_latency_mu'
-		plots_to_make = [('overshoot', 'min'), ('time_to_reach_new_fundamental', 'std'), ('time_to_reach_new_fundamental', 'min'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'ssmm_latency_s'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'sc_latency_s'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean'), ('time_to_reach_new_fundamental', 'min')]
-		mkplot(groupby, plots_to_make)		
-
-		groupby = 'ssmm_nAgents'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean'), ('time_to_reach_new_fundamental', 'min')]
-		mkplot(groupby, plots_to_make)
-
-	def d11():
-		groupby = 'ssmm_latency_mu'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'sc_latency_mu'
-		plots_to_make = [('overshoot', 'min'), ('time_to_reach_new_fundamental', 'std'), ('time_to_reach_new_fundamental', 'min'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'ssmm_latency_s'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean')]
-		mkplot(groupby, plots_to_make)
-
-		groupby = 'sc_latency_s'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean'), ('time_to_reach_new_fundamental', 'min')]
-		mkplot(groupby, plots_to_make)		
-
-		groupby = 'sc_nAgents'
-		plots_to_make = [('overshoot', 'mean'), ('time_to_reach_new_fundamental', 'mean'), ('time_to_reach_new_fundamental', 'min')]
-		mkplot(groupby, plots_to_make)
+	def run_analysis(groups, data, plots_to_make):
+		for groupby in groups:
+			mkplot(data, groupby, plots_to_make)
 
 	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
-	a = concat([par,fit],axis=1)
-	eval(dataset)()
+	#o = where(fit.overshoot > overshoot_threshold)[0]
+	not_o = where(fit.overshoot <= overshoot_threshold)[0]
+	all_data = concat([par.iloc[not_o],fit.iloc[not_o]]	,axis=1)
+	plots_to_make = get_plots_to_make(fit.columns)
+	run_analysis(par.columns, all_data, plots_to_make)
+
+	#eval(dataset)(all_data, fitness_types = fit.columns, parameters_to_group_by = par.columns)
 
 def issue_102_plot_overshoot_and_noreaction():
 	### Cannot be finished yet. Needs to be run with "new" data
@@ -359,11 +321,13 @@ def issue_103_manually_removing_large_fitness_points(dataset, overshoot_threshol
 	from numpy import where
 	folder = make_issue_specific_figure_folder('103_scatter_manual_outlier', dataset)
 	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
+	#fit['overshoot'] -= 2
 	o = where(fit.overshoot > overshoot_threshold)[0]
 	not_o = where(fit.overshoot <= overshoot_threshold)[0]
 	
-	colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
-	
+	#colormap = brewer2mpl.get_map('RdBu', 'diverging', 4, reverse=True)
+	colormap = brewer2mpl.get_map('Spectral', 'Diverging', 9, reverse=True)
+
 	filename = folder + 'a.png'
 	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap)
 	
@@ -378,6 +342,36 @@ def issue_103_manually_removing_large_fitness_points(dataset, overshoot_threshol
 
 	filename = folder + 'e.png'
 	make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='stdev', y_name='overshoot', color_by='time_to_reach_new_fundamental', filename=filename, colormap = colormap)
+
+	filename = folder + 'h.png'
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap, x_function='log')
+
+	filename = folder + 'i.png'
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap)
+	
+	filename = folder + 'l.png'
+	make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='stdev', y_name='round_stable', color_by='overshoot', filename=filename, colormap = colormap, x_function='log', y_function='log')
+
+	filename = folder + 'k.png'
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'stdev', 'time_to_reach_new_fundamental', 'overshoot', filename, colormap, x_function='log')
+
+	filename = folder + 'g.png'
+	make_color_grouped_scatter_plot(fit.iloc[not_o], 'overshoot', 'time_to_reach_new_fundamental', 'round_stable', filename, colormap)
+	
+	filename = folder + 'j.png'
+	ax, fig = make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='overshoot', filename=filename, colormap = colormap)
+	ax.plot(range(0,10**5), range(0,10**5), linestyle='dashed', color='black', alpha = 0.5)
+	ax.text(40000, 80000, "A", fontsize = 18, alpha = 0.6)
+	ax.text(80000, 40000, "B", fontsize = 18, alpha = 0.6)
+	fig.savefig(filename)
+
+	#Plot with A B regions
+	filename = folder + 'f.png'
+	ax, fig = make_color_grouped_scatter_plot(data_frame=fit.iloc[not_o], x_name='time_to_reach_new_fundamental', y_name='round_stable', color_by='stdev', filename=filename, colormap = colormap, color_function='log')
+	ax.plot(range(0,10**5), range(0,10**5), linestyle='dashed', color='black', alpha = 0.5)
+	ax.text(40000, 80000, "A", fontsize = 18, alpha = 0.6)
+	ax.text(80000, 40000, "B", fontsize = 18, alpha = 0.6)
+	fig.savefig(filename)
 	
 	stats = concat([par.iloc[not_o,:].mean(), par.iloc[o,:].mean(), par.iloc[not_o,:].std(), par.iloc[o,:].std()], axis=1)
 	lt = '$\overshoot > %s$'%overshoot_threshold
@@ -390,20 +384,39 @@ def issue_103_manually_removing_large_fitness_points(dataset, overshoot_threshol
 	return stats
 
 def issue_108(dataset, n_clusters, overshoot_threshold):
-	from numpy import where, repeat, log
+	from numpy import where, repeat, log, random
 	from sklearn.cluster import KMeans
 	from plotting import make_scatter_plot_for_labelled_data
 	from data_analysis import calculate_stats_for_dataframe
 	from sklearn.mixture import GMM
+	from sklearn.decomposition import PCA
+	from sklearn.preprocessing import scale
+	
+	plots_to_make = [
+					{'x_name':'stdev', 'x_function':'log', 'y_name':'round_stable', 'y_function':'log'},
+					{'x_name':'time_to_reach_new_fundamental', 'y_name':'round_stable'},
+					{'x_name':'stdev', 'x_function':'log', 'y_name':'time_to_reach_new_fundamental'}
+					]
 
 	folder = make_issue_specific_figure_folder('108 cluster after removing outliers', dataset)
 	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
 	o = where(fit.overshoot > overshoot_threshold)[0]
 	not_o = where(fit.overshoot <= overshoot_threshold)[0]
 	data_to_plot = fit.iloc[not_o]
+	pca = PCA(n_components = 2)
+	par_transformed = pca.fit_transform(scale(par.iloc[not_o].astype(float)))
+	par_transformed += random.random(par_transformed.shape)*0.2
+	par_inliers_PCA = DataFrame(par_transformed, columns = ['PC1', 'PC2'])
+	
+	
+	print 'Component 0:'
+	print map(lambda c, n: '%s=%.3g'%(n, c), pca.components_[0], utils.get_latex_par_names_from_list(par.columns))
+	print 'Component 1:'
+	print map(lambda c, n: '%s=%.3g'%(n, c), pca.components_[1], utils.get_latex_par_names_from_list(par.columns))
+
 	colormap = brewer2mpl.get_map('Paired', 'Qualitative', n_clusters, reverse=True)
 
-	def make_tables(name, clustering_method, cluster_labels):
+	def make_tables(clustering_method, name, cluster_labels):
 		fit_inlier_stats = calculate_stats_for_dataframe(fit.iloc[not_o,:], cluster_labels)
 		fit_outlier_stats = calculate_stats_for_dataframe(fit.iloc[o,:], repeat(0, len(o)))
 		fit_mean_table = concat([fit_inlier_stats['Mean'], fit_outlier_stats['Mean']], axis=1)
@@ -413,42 +426,71 @@ def issue_108(dataset, n_clusters, overshoot_threshold):
 		par_mean_table = concat([par_inlier_stats['Mean'], par_outlier_stats['Mean']], axis=1)
 		par_mean_table.index = utils.get_latex_par_names_from_list(par_mean_table.index)
 		tex = par_mean_table.to_latex(float_format=lambda x: str(round(x,1)))
-		filename = folder + '%s_%s_%s.tex'%(clustering_method, n_clusters, name)
+		filename = folder + '%s_%s_%s.tex'%(n_clusters,clustering_method, name)
 		tex = utils.prettify_table(fit_mean_table.to_latex(float_format=lambda x: str(round(x,1))), 'table:fit_gmm_'+name, 'gmm_'+name)
 		tex += utils.prettify_table(par_mean_table.to_latex(float_format=lambda x: str(round(x,1))), 'table:par_kmeans_'+name, 'kmeans_'+name)
 
 		with open(filename, 'w') as f:
 			f.write(tex)
 
-	def cluster_and_label(name, data_to_cluster, xname, yname, xfunc='dummy', yfunc='dummy'):
+	def make_plots(clustering_method, data_name, labels):
+		for i, plotargs in enumerate(plots_to_make):
+			filename = folder + '%s_%s_%s_fit_%s.png'%(n_clusters, clustering_method, data_name, i)
+			make_scatter_plot_for_labelled_data(data_to_plot, labels=labels, filename=filename, colormap=colormap, legend = True, **plotargs)
+		filename = folder + '%s_%s_%s_par.png'%(n_clusters, clustering_method, data_name)
+		make_scatter_plot_for_labelled_data(par_inliers_PCA, x_name='PC1', y_name='PC2', labels=labels, filename=filename, colormap=colormap, legend = True)
+		filename = folder + '%s_%s_%s_par_omit.png'%(n_clusters, clustering_method, data_name)
+		make_scatter_plot_for_labelled_data(par_inliers_PCA, x_name='PC1', y_name='PC2', labels=labels, filename=filename, colormap=colormap, legend = True, omit_largest=n_clusters-4)
+
+	def cluster_and_label(name, data_to_cluster):
+		data_to_cluster = scale(data_to_cluster)
 		km = KMeans(n_clusters=n_clusters)
 		labels = km.fit_predict(data_to_cluster)
-		filename = folder + 'kmeans_%s_%s.png'%(n_clusters, name)
-		make_scatter_plot_for_labelled_data(data_to_plot, x_name=xname, y_name=yname, labels=labels, filename=filename, colormap=colormap, x_function = xfunc, y_function = yfunc, legend = True)
-		make_tables(name, 'kmeans', labels)
+		make_plots('kmm', name, labels)
+		make_tables('kmm', name, labels)
 		gmm = GMM(n_components = n_clusters, covariance_type = 'full')
 		gmm.fit(data_to_cluster)
 		labels = gmm.predict(data_to_cluster)
-		filename = folder + 'gmm_%s_%s.png'%(n_clusters, name)
-		make_scatter_plot_for_labelled_data(data_to_plot, x_name=xname, y_name=yname, labels=labels, filename=filename, colormap=colormap, x_function = 'log', y_function = 'log', legend = True)
-		make_tables(name, 'gmm', labels)
+		make_plots('gmm', name, labels)
+		make_tables('gmm', name, labels)
 
 
 	data_to_cluster = concat([log(fit['stdev']), log(fit['round_stable']), fit['time_to_reach_new_fundamental']], axis=1).iloc[not_o,:]
-	cluster_and_label('logs_logr_t', data_to_cluster, 'stdev', 'round_stable', 'log', 'log')
-
+	cluster_and_label('logs_logr_t', data_to_cluster)
+	"""
 	data_to_cluster = concat([log(fit['stdev']), log(fit['round_stable'])], axis=1).iloc[not_o,:]
 	cluster_and_label('logs_logr', data_to_cluster, 'stdev', 'round_stable', 'log', 'log')
 
-	data_to_cluster = concat([fit['round_stable'], fit['time_to_reach_new_fundamental'], fit['stdev']], axis=1).iloc[not_o,:]
-	cluster_and_label('r_t_s', data_to_cluster, 'round_stable', 'time_to_reach_new_fundamental')
+	data_to_cluster = concat([fit['round_stable'], log(fit['stdev'])], axis=1).iloc[not_o,:]
+	cluster_and_label('r_logs', data_to_cluster, 'time_to_reach_new_fundamental', 'round_stable')
+
+	data_to_cluster = concat([fit['round_stable'], fit['time_to_reach_new_fundamental'], log(fit['stdev'])], axis=1).iloc[not_o,:]
+	cluster_and_label('t_r_logs', data_to_cluster, 'time_to_reach_new_fundamental', 'round_stable')
 
 	data_to_cluster = concat([fit['round_stable'], fit['time_to_reach_new_fundamental']], axis=1).iloc[not_o,:]
-	cluster_and_label('r_t', data_to_cluster, 'round_stable','time_to_reach_new_fundamental')
-	#group_members = [where(labels == label)[0] for label in range(km.n_clusters)]
+	cluster_and_label('t_r', data_to_cluster, 'time_to_reach_new_fundamental', 'round_stable')
+	"""
+
+	data_to_cluster = fit.iloc[not_o,:]
+	cluster_and_label('all', data_to_cluster)
 	
+	
+
 	#fit_mean_table.columns = ['C0', 'C1', 'C3', 'Outliers']
-	return data_to_cluster
+
+def issue_113_make_all_tradeprice_plots():
+	from plotting import make_pretty_tradeprice_plot
+	data_folder = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_tradeprice_plots/'
+	mapping = {
+			'gen12_1386710381616696.npz' : 'low_stdev_but_not_stable',
+			'gen56_1388690478773536.npz' : 'low_stdev_and_stable',
+			'gen13_1387568360402236.npz' : 'high_stdev_but_stable'
+
+	}
+	figure_folder = make_issue_specific_figure_folder('issue_113_tradeprice_plots', 'all')
+	for dataname, plotname in mapping.items():
+		rounds, prices = IO.load_tradeprice_data(data_folder + dataname)
+		make_pretty_tradeprice_plot(rounds, prices, figure_folder + plotname, dpi = 200, figsize=tuple(map(lambda x: x*1, [8,4])), format = 'pdf')
 
 def plots_for_d3():
 	issue_21_basic_scatter_plots(dataset='d3')
@@ -490,6 +532,7 @@ def remake_make_all_thesis_plots():
 	plots_for_d9()
 	plots_for_d10()
 	plots_for_d11()
+	issue_113_make_all_tradeprice_plots()
 	
 	
 

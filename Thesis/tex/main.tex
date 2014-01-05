@@ -58,6 +58,7 @@
 % % % DATASETS
 \newcommand{\dthree}{d1}
 \newcommand{\dnine}{d9}
+\newcommand{\dten}{d10}
 
 %%% Consistency commands
 \newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
@@ -102,13 +103,15 @@
 
 %%% SYMBOLS
 \newcommand{\round}{r}
-\newcommand{\delay}{$p^m$}
+\newcommand{\delay}{\ensuremath{p^m}}
 \newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
 \newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
 \newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
-\newcommand{\pmatch}{$p^m$}
+\newcommand{\pmatch}{\ensuremath{p^m}}
 \newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
 
+\newcommand{\smargin}{\ensuremath{m_\text{stable}}}
+\newcommand{\fas}{\ensuremath{p_\text{fas}}}
 
 %%% OTHER COMMANDS
 \newcommand{\ask}{ask}
@@ -265,7 +268,8 @@ volatility &\\
 \pbid & The highest \bid price in the order book at the end of round \round\\
 \pmatch & Match price, i.e., the price at which a trade is executed\\
 \fund & Fundamental price at round \round\\
-
+\fas & Fundamental price after shock \\
+\smargin & Size in ticks of the stability margin around each side of \fas
 }
 
 %----------------------------------------------------------------------------------------

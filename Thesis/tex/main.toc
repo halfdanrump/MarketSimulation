@@ -4,11 +4,11 @@
 \vspace {1em}
 \contentsline {chapter}{Contents}{iii}{dummy.3}
 \contentsline {chapter}{List of Figures}{vi}{dummy.5}
-\contentsline {chapter}{List of Tables}{vii}{dummy.7}
-\contentsline {chapter}{Abbreviations}{viii}{dummy.9}
-\contentsline {chapter}{Physical Constants}{ix}{dummy.12}
-\contentsline {chapter}{Physical Constants}{x}{dummy.15}
-\contentsline {chapter}{Symbols}{xi}{dummy.18}
+\contentsline {chapter}{List of Tables}{viii}{dummy.7}
+\contentsline {chapter}{Abbreviations}{ix}{dummy.9}
+\contentsline {chapter}{Physical Constants}{x}{dummy.12}
+\contentsline {chapter}{Physical Constants}{xi}{dummy.15}
+\contentsline {chapter}{Symbols}{xii}{dummy.18}
 \vspace {2em}
 \contentsline {chapter}{\numberline {1}High Frequency Trading}{2}{chapter.21}
 \contentsline {section}{\numberline {1.1}Overview of High Frequency Trading}{2}{section.22}
@@ -47,31 +47,40 @@
 \contentsline {section}{\numberline {3.2}Inverse simulation with a genetic algorithm}{18}{section.70}
 \contentsline {subsection}{\numberline {3.2.1}Representing parameters as genes}{19}{subsection.77}
 \contentsline {subsection}{\numberline {3.2.2}Model fitness}{19}{subsection.79}
-\contentsline {subsection}{\numberline {3.2.3}Genetic algorithm parameters}{19}{subsection.80}
-\contentsline {subsection}{\numberline {3.2.4}Controlling market behavior}{20}{subsection.82}
-\contentsline {subsection}{\numberline {3.2.5}Filtering parameters}{20}{subsection.84}
-\contentsline {subsection}{\numberline {3.2.6}Handling failed simulations}{22}{subsection.86}
-\contentsline {section}{\numberline {3.3}Applying the genetic algorithm}{22}{section.88}
-\contentsline {subsection}{\numberline {3.3.1}Time complexity}{22}{subsection.89}
-\contentsline {subsection}{\numberline {3.3.2}Experiments: Dividing the search into parts}{23}{subsection.90}
-\contentsline {subsection}{\numberline {3.3.3}Gene pool as data set}{24}{subsection.92}
-\contentsline {subsection}{\numberline {3.3.4}Convergence of parameters}{25}{subsection.100}
-\contentsline {section}{\numberline {3.4}Data analysis tools}{25}{section.101}
-\contentsline {subsection}{\numberline {3.4.1}Data visualization}{25}{subsection.102}
-\contentsline {subsubsection}{\numberline {3.4.1.1}Color toned scatter plots}{25}{subsubsection.103}
-\contentsline {subsection}{\numberline {3.4.2}Preprocessing}{25}{subsection.104}
-\contentsline {subsubsection}{\numberline {3.4.2.1}Handling outliers}{25}{subsubsection.105}
-\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{27}{subsection.110}
-\contentsline {subsubsection}{\numberline {3.4.3.1}GMM}{27}{subsubsection.111}
-\contentsline {chapter}{\numberline {4}Experiments}{28}{chapter.112}
-\contentsline {section}{\numberline {4.1}D3}{28}{section.113}
-\contentsline {section}{\numberline {4.2}D9}{31}{section.118}
-\contentsline {subsection}{\numberline {4.2.1}Parameter and fitness evolution}{31}{subsection.119}
-\contentsline {subsection}{\numberline {4.2.2}Visualizing the data set}{31}{subsection.123}
-\contentsline {subsection}{\numberline {4.2.3}Calculating statistics for outliers}{32}{subsection.128}
+\contentsline {subsection}{\numberline {3.2.3}Genetic algorithm parameters}{20}{subsection.81}
+\contentsline {subsection}{\numberline {3.2.4}Controlling market behavior}{21}{subsection.83}
+\contentsline {subsection}{\numberline {3.2.5}Filtering parameters}{21}{subsection.85}
+\contentsline {subsection}{\numberline {3.2.6}Handling failed simulations}{21}{subsection.87}
+\contentsline {section}{\numberline {3.3}Applying the genetic algorithm}{23}{section.89}
+\contentsline {subsection}{\numberline {3.3.1}Time complexity}{23}{subsection.90}
+\contentsline {subsection}{\numberline {3.3.2}Experiments: Dividing the search into parts}{24}{subsection.91}
+\contentsline {subsection}{\numberline {3.3.3}Gene pool as data set}{24}{subsection.93}
+\contentsline {subsection}{\numberline {3.3.4}Convergence of parameters}{25}{subsection.101}
+\contentsline {section}{\numberline {3.4}Data analysis tools}{25}{section.102}
+\contentsline {subsection}{\numberline {3.4.1}Data visualization}{26}{subsection.103}
+\contentsline {subsubsection}{\numberline {3.4.1.1}Color toned scatter plots}{26}{subsubsection.104}
+\contentsline {subsection}{\numberline {3.4.2}Preprocessing}{26}{subsection.105}
+\contentsline {subsubsection}{\numberline {3.4.2.1}Handling outliers}{26}{subsubsection.106}
+\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{28}{subsection.111}
+\contentsline {subsubsection}{\numberline {3.4.3.1}GMM}{28}{subsubsection.112}
+\contentsline {chapter}{\numberline {4}Experiments}{29}{chapter.113}
+\contentsline {section}{\numberline {4.1}D3}{29}{section.114}
+\contentsline {subsection}{\numberline {4.1.1}Section summary}{32}{subsection.119}
+\contentsline {section}{\numberline {4.2}D9: Fixing the number of high frequency traders}{33}{section.120}
+\contentsline {subsection}{\numberline {4.2.1}Parameter and fitness evolution}{33}{subsection.121}
+\contentsline {subsection}{\numberline {4.2.2}Visualizing the data set}{33}{subsection.125}
+\contentsline {subsection}{\numberline {4.2.3}Analysing scatter plots}{35}{subsection.129}
+\contentsline {subsubsection}{\numberline {4.2.3.1}\ensuremath {f_\text {m}}vs \ensuremath {f_\sigma }}{35}{subsubsection.130}
+\contentsline {subsubsection}{\numberline {4.2.3.2}\ensuremath {f_\text {m}}vs. \ensuremath {f_\text {s}}}{35}{subsubsection.133}
+\contentsline {subsubsection}{\numberline {4.2.3.3}\ensuremath {f_\sigma }vs. \ensuremath {f_\text {s}}}{37}{subsubsection.142}
+\contentsline {subsection}{\numberline {4.2.4}Looking for parameters causing certain behavior}{38}{subsection.147}
+\contentsline {subsection}{\numberline {4.2.5}Section summary}{39}{subsection.150}
+\contentsline {section}{\numberline {4.3}D10}{39}{section.151}
+\contentsline {section}{\numberline {4.4}D11}{39}{section.157}
+\contentsline {section}{\numberline {4.5}Hall of fame}{39}{section.163}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Additional tables}{35}{appendix.130}
-\contentsline {section}{\numberline {A.1}Dataset 1}{35}{section.131}
-\contentsline {chapter}{\numberline {B}Third party software}{36}{appendix.132}
+\contentsline {chapter}{\numberline {A}Additional tables}{50}{appendix.164}
+\contentsline {section}{\numberline {A.1}Dataset 1}{50}{section.165}
+\contentsline {chapter}{\numberline {B}Third party software}{51}{appendix.166}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{37}{dummy.133}
+\contentsline {chapter}{Bibliography}{52}{dummy.167}

@@ -69,11 +69,21 @@ def make_tradeprice_plot(rounds, prices, fit, par, filename):
 
 
 
-def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
+def make_pretty_tradeprice_plot(rounds, prices, filename, format = 'png', **figargs):
     from settings import default_parameters as dp
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
-    fig, ax = plt.subplots(1)    
+    fig = plt.figure(num=None, **figargs)
+    ax = fig.add_subplot(1,1,1)
+    #fig, ax = plt.subplots(1)
+    """
+    if kwargs.has_key('dpi'):
+        fig.set_dpi(kwargs['dpi'])
+    if kwargs.has_key('figwidth'):
+        fig.set_figwidth(kwargs['figwidth'])
+    if kwargs.has_key('figheight'):
+        fig.set_figheight(kwargs['figheight'])
+    """
     p.plot(ax, rounds, prices, zorder=1)
     
     #ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
@@ -90,13 +100,13 @@ def make_pretty_tradeprice_plot(rounds, prices, fit, par, filename):
 
     ax.set_ylabel('Traded price (ticks)')
     ax.set_xlabel('Time (rounds)')
-    ax.set_xlim([0, max(round)])
-    ax.set_ylim([min(fas - settings.stability_margin, prices), max(fas + settings.stability_margin, prices)])
+    ax.set_xlim([0, max(rounds)])
+    ax.set_ylim([min(fas - settings.stability_margin-2, min(prices)), max(fas + settings.stability_margin, max(prices))])
     fig.savefig(filename)
     plt.close()
     gc.collect()
 
-def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_errorbar=None, *ys):
+def get_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_errorbar=None, *ys):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)    
@@ -106,18 +116,22 @@ def make_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_errorbar=None, 
     for y in ys:
         ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
         p.plot(ax, x, y, linewidth=2)
-        fig.savefig(filename)
-    plt.close()
-    gc.collect()
+    fig.savefig(filename)
+    return ax, fig
 
-def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename):
+def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename, ax=None, fig=None):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
-    p = Ppl(cmap, alpha=0.8)
-    fig, ax = plt.subplots(1)    
+    p = Ppl(cmap, alpha=0.3)
+    if (not ax) and (not fig):
+        fig, ax = plt.subplots(1)    
     ax.set_xlabel(pfn(xlabel))
     ax.set_ylabel(pfn(ylabel))
+    ax.set_xlim([min(x), max(x)])
+    ax.set_ylim([min(y), max(y)])
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
-    p.scatter(ax, x, y)
+
+    p.scatter(ax, x, y, s=5, linewidth=0)
+
     fig.savefig(filename)
 
 
@@ -152,7 +166,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     ### Originally created for issue_21
     def dummy(a): return a
     data_frame = data_frame.copy()
-    p = Ppl(colormap, alpha=0.5)
+    p = Ppl(colormap, alpha=1)
 
     fig, ax = plt.subplots(1)
     #ax.set_autoscale_on(False)
@@ -179,7 +193,7 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     for g in range(n_intervals):
         x = eval(x_function)(data_frame[data_frame.groups == g][x_name])
         y = eval(y_function)(data_frame[data_frame.groups == g][y_name])
-        p.scatter(ax, x, y, label=str(groups.levels[g]))
+        p.scatter(ax, x, y, label=str(groups.levels[g]), s = 5, linewidth=0)
 
     if legend: p.legend(ax, loc=0)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
@@ -194,22 +208,23 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
         #ax2.yaxis.get_major_formatter().set_powerlimits((0, 1))
         ax2 = fig.add_axes([0.9, 0.1 , 0.03, 0.8])
 
-        cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, spacing='proportional', ticks=bounds, norm=norm, alpha=p.get_alpha(), orientation='vertical')
+        cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, spacing='proportional', ticks=bounds, norm=norm, alpha=1, orientation='vertical')
         #cbar.ax.set_xticklabels(map(lambda x: '%.3g'%x, bounds))# vertically oriented colorbar
         cbar.ax.set_yticklabels([])# vertically oriented colorbar
         #for j, lab in enumerate(map(lambda lower, upper: '%.3g~%.3g'%(lower, upper), bounds[:-1], bounds[1::])):
-        cbar.ax.text(0,1.02, '%.3g'%max(bounds))
+        cbar.ax.text(0,1.02, '%.3g'%max(map(eval(color_function), bounds)))
         #for j, lab in enumerate(map(lambda upper: '< %.3g'%upper, bounds[1::])):
         #    cbar.ax.text(.5, (2 * j + 1) / 8.0, lab, ha='center', va='center', rotation='vertical')
         #cbar.ax.set_xticklabels([str(int(t)) for t in bounds])# vertically oriented colorbar
         if color_function == 'log': label = color_by.capitalize().replace('_', ' ') + ' (log)'
         else: label = color_by.capitalize().replace('_', ' ')
         cbar.ax.set_ylabel(label, rotation='vertical')
-
     fig.savefig(filename)
+    return ax, fig
 
-def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False, point_size = 5):
+def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False, point_size = 5, omit_largest = 0):
     ### Originally created for issue_28
+    assert omit_largest < max(set(labels)), "omit_largest must be smaller than number of clusters"
     def dummy(a): return a
     p = Ppl(colormap, alpha=1)
 
@@ -227,14 +242,18 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     # Show the whole color range
     
-    n_labels  = labels.max()
+    cluster_size = map(lambda l: len(labels[labels == l]), set(labels))
+    sizes, groups = zip(*sorted(zip(cluster_size, set(labels)), reverse=True))
+    #print sizes, groups
+    for order_to_plot, group in enumerate(list(groups)[-(len(groups)-omit_largest):]):
+        #print order_to_plot, sizes[order_to_plot], group, cluster_size[group]
+        x = eval(x_function)(data_frame[labels == group][x_name])
+        y = eval(y_function)(data_frame[labels == group][y_name])
+        p.scatter(ax, x, y, label='C%s: %s'%(group, cluster_size[group]), s=point_size, linewidth=0, zorder=order_to_plot)
+    if legend: 
+        legend = p.legend(ax, loc=0, fancybox=True, markerscale=5, frameon=False)
+        legend.set_zorder(100)
 
-    for g in range(n_labels + 1):
-        x = eval(x_function)(data_frame[labels == g][x_name])
-        y = eval(y_function)(data_frame[labels == g][y_name])
-        p.scatter(ax, x, y, label='C%s: %s'%(g, str(len(labels[labels == g]))), s=point_size)
-
-    if legend: p.legend(ax, loc=0, fancybox=True, markerscale=5, frameon=False)
     #ax.set_title('prettyplotlib `scatter` example\nshowing default color cycle and scatter params')
     
 
