@@ -154,6 +154,9 @@ def load_pickled_generation_dataframe(dataset_name):
     gen = gen.astype(int)
     fit_data = fit_data.drop('gen', 1)
     par_data = par_data.drop('gen', 1)
+    fit_data['overshoot'] -= 2
+    fit_data['time_to_reach_new_fundamental'] -= 10000
+    fit_data['round_stable'] -= 10000
     try:
         ids = read_pickle(datapath + 'ids.pandas')
     except IOError:
