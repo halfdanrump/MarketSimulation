@@ -249,12 +249,33 @@ def issue_82_parameter_evolution(dataset, vline_x = []):
 	
 	def d10():
 		make_pretty_generation_plot(folder + 'latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()], vline_x = vline_x)
-		make_pretty_generation_plot(folder + 'latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()], vline_x = vline_x)
-		make_pretty_generation_plot(folder + 'nAgents.png', generations, [group['ssmm_nAgents'].mean()], 'Average number of agents', ['Market makers'], y_errorbar=[group['ssmm_nAgents'].std()], vline_x = vline_x)
+		
+		fig, ax, filename = make_pretty_generation_plot(folder + 'latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()], vline_x = vline_x)
+		ax.fill_between(x=[30, 50], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='red', alpha=0.1)
+		ax.fill_between(x=[0, 17], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='blue', alpha=0.1)
+		fig.savefig(filename)
+		
+		fig, ax, filename = make_pretty_generation_plot(folder + 'nAgents.png', generations, [group['ssmm_nAgents'].mean()], 'Average number of agents', ['Market makers'], y_errorbar=[group['ssmm_nAgents'].std()], vline_x = vline_x)
+		ax.fill_between(x=[30, 50], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='red', alpha=0.1)
+		ax.fill_between(x=[0, 17], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='blue', alpha=0.1)
+		fig.savefig(filename)
 
-		make_pretty_generation_plot(folder + 'latpars_mu_median.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean(), group['ssmm_latency_mu'].median(), group['sc_latency_mu'].median()], 'Average latency mean', ['Market makers (mean)', 'Chartists (mean)', 'Market makers (median)', 'Chartists (median)'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std(), None, None])
-		make_pretty_generation_plot(folder + 'latpars_s_median.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean(), group['ssmm_latency_s'].median(), group['sc_latency_s'].median()], 'Average latency std', ['Market makers (mean)', 'Chartists (mean)', 'Market makers (median)', 'Chartists (median)'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std(), None, None])
-		make_pretty_generation_plot(folder + 'nAgents_median.png', generations, [group['ssmm_nAgents'].mean(), group['ssmm_nAgents'].median()], 'Number of agents', ['Market makers (mean)', 'Market makers (median)'], y_errorbar=[group['ssmm_nAgents'].std(), None])
+		fig, ax, filename = make_pretty_generation_plot(folder + 'time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats, vline_x = vline_x)
+		ax.fill_between(x=[0, 17], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='blue', alpha=0.1)
+		fig.savefig(filename)
+		
+		fig, ax, filename = make_pretty_generation_plot(folder + 'stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats, y_logscale=True, vline_x=vline_x)
+		ax.fill_between(x=[30, 50], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='red', alpha=0.1)
+		fig.savefig(filename)
+
+		fig, ax, filename = make_pretty_generation_plot(folder + 'round_stable.png', generations, get_stats('round_stable', stats), 'Round stable', stats, y_logscale=True, vline_x=vline_x)
+		ax.fill_between(x=[30, 50], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='red', alpha=0.1)
+		fig.savefig(filename)
+		
+		fig, ax, filename = make_pretty_generation_plot(folder + 'overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats, vline_x=vline_x)
+		ax.fill_between(x=[30, 50], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='red', alpha=0.1)
+		ax.fill_between(x=[0, 17], y1=ax.get_ylim()[0], y2=ax.get_ylim()[1], color='blue', alpha=0.1)
+		fig.savefig(filename)
 
 	def d11():
 		make_pretty_generation_plot(folder + 'latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()])
@@ -445,34 +466,41 @@ def issue_108(dataset, n_clusters, overshoot_threshold, load_pickled_labels = Fa
 		filename = folder + 'clustering_%s_%s'%(dataset, name)
 		plot_pca_components(filename=filename, components=components[::-1])
 		components['$\\gamma$'] = pca.explained_variance_ratio_
-		print
-		print utils.prettify_table(components.to_latex(float_format=lambda x: str(round(x,2))), label='table:clustering_%s_%s'%(dataset, name), caption='XXX')
-		print 
+		
+		filename = folder + 'clustering_%s_%s.tex'%(dataset, name)
+		tex = utils.prettify_table(components.to_latex(float_format=lambda x: str(round(x,2))), label='table:clustering_%s_%s'%(dataset, name), caption='XXX')
+		with open(filename, 'w') as f:
+				f.write(tex)
 	print_pca_components(pca, 'allclusters')
 
 	def make_tables(clustering_method, name, cluster_labels):
-		fit_inlier_stats = calculate_stats_for_dataframe(fit.iloc[not_o,:], cluster_labels)
-		fit_outlier_stats = calculate_stats_for_dataframe(fit.iloc[o,:], repeat(0, len(o)))
-		fit_mean_table = concat([fit_inlier_stats['Mean'], fit_outlier_stats['Mean']], axis=1)
-		fit_mean_table = fit_mean_table.drop('Count', axis=0)
-		fit_mean_table.index = utils.get_latex_par_names_from_list(fit_mean_table.index)
-		fit_mean_table = fit_mean_table.transpose()
 		
-		par_inlier_stats = calculate_stats_for_dataframe(par.iloc[not_o,:], cluster_labels)
-		par_outlier_stats = calculate_stats_for_dataframe(par.iloc[o,:], repeat(0, len(o)))
-		par_mean_table = concat([par_inlier_stats['Mean'], par_outlier_stats['Mean']], axis=1)
-		par_mean_table.index = utils.get_latex_par_names_from_list(par_mean_table.index)
-		par_mean_table = par_mean_table.transpose()
+		def make_table(stat):
+			fit_inlier_stats = calculate_stats_for_dataframe(fit.iloc[not_o,:], cluster_labels)
+			fit_outlier_stats = calculate_stats_for_dataframe(fit.iloc[o,:], repeat(0, len(o)))
+			fit_mean_table = concat([fit_inlier_stats[stat], fit_outlier_stats[stat]], axis=1)
+			fit_mean_table = fit_mean_table.drop('Count', axis=0)
+			fit_mean_table.index = utils.get_latex_par_names_from_list(fit_mean_table.index)
+			fit_mean_table = fit_mean_table.transpose()
+			
+			par_inlier_stats = calculate_stats_for_dataframe(par.iloc[not_o,:], cluster_labels)
+			par_outlier_stats = calculate_stats_for_dataframe(par.iloc[o,:], repeat(0, len(o)))
+			par_mean_table = concat([par_inlier_stats[stat], par_outlier_stats[stat]], axis=1)
+			par_mean_table.index = utils.get_latex_par_names_from_list(par_mean_table.index)
+			par_mean_table = par_mean_table.transpose()
+			
+			full_table = concat([fit_mean_table, par_mean_table], axis=1)
+			print full_table.columns
+			full_table = full_table.sort('\\overshoot')
+			tex = full_table.to_latex(float_format=lambda x: str(round(x,1)))
+			
+			tex = utils.prettify_table(full_table.to_latex(float_format=lambda x: str(round(x,1))), 'table:fit_gmm_'+name, 'gmm_'+name)
+			filename = folder + '%s_%s_%s_%s.tex'%(n_clusters,clustering_method, name, stat)
+			with open(filename, 'w') as f:
+				f.write(tex)
 		
-		full_table = concat([fit_mean_table, par_mean_table], axis=1)
-		full_table = full_table.sort('overshoot')
-		tex = full_table.to_latex(float_format=lambda x: str(round(x,1)))
-		filename = folder + '%s_%s_%s.tex'%(n_clusters,clustering_method, name)
-		tex = utils.prettify_table(full_table.to_latex(float_format=lambda x: str(round(x,1))), 'table:fit_gmm_'+name, 'gmm_'+name)
-
-		with open(filename, 'w') as f:
-			f.write(tex)
-
+		make_table('Mean')
+		make_table('Std')
 	#def make_pca_plots():
 
 

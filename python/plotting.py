@@ -134,7 +134,7 @@ def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename, ax=None, fig=None):
     fig.savefig(filename)
 
 
-def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels, y_errorbar=None, y_logscale = False, vline_x = []):
+def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels, y_errorbar=None, y_logscale = False, vline_x = [], save_figure = True):
     if y_errorbar:
         assert isinstance(y_errorbar, list), "Please provide a list for error bars"
         assert len(y_errorbar) == len(lines_to_plot), "When plotting error bars you must specify an array of error bars for each line that is plotted"
@@ -163,7 +163,9 @@ def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_nam
             ax.vlines(x = x, ymin = ax.get_ylim()[0], ymax = ax.get_ylim()[1], linewidth = 1, linestyles = 'dashed', alpha = 0.5)
 
     p.legend(ax, loc=0)
-    fig.savefig(filename)
+    if save_figure: fig.savefig(filename)
+    return fig, ax, filename
+    
 
 def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filename, colormap, x_function = 'dummy', y_function = 'dummy', color_function = 'dummy', legend = False, colorbar = True):
     ### Originally created for issue_21

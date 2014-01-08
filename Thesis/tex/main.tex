@@ -53,12 +53,16 @@
 %----------------------------------------------------------------------------------------
 %	MY OWN COMMANDS
 %----------------------------------------------------------------------------------------
-\newcommand{\E}[1]{\mathrm{E}[#1]}
+\newcommand{\E}[1]{\mathrm{E}_\text{p}[#1]}
+\newcommand{\Var}[1]{\mathrm{Var}_\text{p}[#1]}
+\newcommand{\Cov}[1]{\mathrm{Cov}_\text{p}[#1]}
+\newcommand{\Median}[1]{\mathrm{M}_\text{p}[#1]}
 
-\newcommand{\Var}[1]{\mathrm{Var}[#1]}
+\newcommand{\Ecluster}[2]{\mathrm{E}_\text{C{#2}}[#1]}
+\newcommand{\Varcluster}[2]{\mathrm{Var}_\text{C#2}[#1]}
+\newcommand{\Covcluster}[2]{\mathrm{Cov}_\text{C#2}[#1]}
 
-\newcommand{\Cov}[1]{\mathrm{Cov}[#1]}
-\newcommand{\Median}[1]{\mathrm{M}[#1]}
+
 
 % % % DATASETS
 \newcommand{\dthree}{d1}
@@ -225,6 +229,7 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \textbf{MM} & \textbf{M}arket \textbf{M}aker \\
 \textbf{SD} & \textbf{S}tandard \textbf{D}eviation \\
 \textbf{GD} & \textbf{G}aussian \textbf{D}istribution \\
+\textbf{GMM} & \textbf{G}aussian \textbf{M}ixture \textbf{M}odel \\
 \textbf{GA} & \textbf{G}enetic  \textbf{A}lgorithm \\
 %\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
 }
@@ -359,7 +364,7 @@ As such, this project turned out to be just as much about software engineering a
 
 \input{Appendices/AppendixA}
 \input{Appendices/AppendixB}
-%\input{Appendices/AppendixC}
+\input{Appendices/AppendixC}
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 

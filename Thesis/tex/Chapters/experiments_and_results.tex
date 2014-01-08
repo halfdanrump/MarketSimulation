@@ -270,18 +270,7 @@ The scatter plots for \dten{} are somewhat similar to those of \dnine, and they 
 Scatter plots for \dten{} have been included in 
 
 
-\begin{figure}
-	%issue 15
-	\centering
-	\subcaptionbox{Evolution of \ssmmlatencymu{} and \sclatencymu\label{fig:d10_evolution_parameters_a}}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/latpars_mu.png}}
-	\subcaptionbox{Evolution of \ssmmlatencys{} and \sclatencys\label{fig:d10_evolution_parameters_b}}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/latpars_s.png}}
-	\subcaptionbox{Evolution of \ssmmnAgents\label{fig:d10_evolution_parameters_c}}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/nAgents.png}}
-	\caption{Evolution of the model parameters in experiment \dten}
-	\label{fig:d10_evolution_parameters}
-\end{figure}
+
 
 
 Note that the definition of ``nice'' market behavior is, of course, qualitative in nature. In this experiment, as well as in \dnine{} and \deleven, the search for such nice behavior was carried out by minimizing all four fitness measures, as nice market behavior was taken to be a market that . Whether this can be accomplished by the model or not is a question that can only be answered by running the 
@@ -312,34 +301,39 @@ Figure \ref{fig:d10_evolution_fitness} shows the evolution of the four fitness m
 Figure \ref{fig:d10_evolution_fitness} show the evolution of the population wide mean, median and minimum statistics for each of the four fitness-measures. 
 \begin{description}
 \item[Model stability]
-Figure \ref{fig:d10_evolution_fitness_a}: shows that  the GA quickly manages to find some parameters which cause the simulation to stabilize quickly. However, these individuals do not manage to dominate the population evident by the mean and median curves remaining steady until generation 30 or so. In the 20 generations that follows, the population undergoes a rapid change, as the population wide average of \roundstable drop from close to $10^5$ to around $2\cdot 10^4$ rounds on average. The disparity between the mean and the median indicates that the population undergoes a rapid change in the same period, from mostly containing unstable individuals to mostly containing stable individuals. In generation 42, the median curve crosses the mean curve, which means that the the population contain as many stable simulations as it contain unstable simulations. From that point on the unstable simulations are quickly replaced by stable individuals.
+Figure \ref{fig:d10_evolution_fitness_a}: shows that  the GA quickly manages to find some parameters which cause the simulation to stabilize quickly. However, these individuals do not manage to dominate the population evident by the mean and median curves remaining almost the same until generation 30 or so. In the next 20 generations the population undergoes a rapid change, as the population wide average of \roundstable drop from close to $10^5$ to around $2\cdot 10^4$ rounds on average. The disparity between the mean and the median indicates that the population undergoes a rapid change in the same period, from mostly containing unstable individuals to mostly containing stable individuals. In generation 42, the median curve crosses the mean curve, which means that the the population contain as many stable simulations as it contain unstable simulations. From that point on the unstable simulations are quickly replaced by stable individuals.
 \item[Price fluctuations and overshoot] During the same period, the population average \stdev also decreases fairly rapidly, but the drop is less pronounced than the drop in \stdev. As figures \ref{fig:d10_evolution_parameters_a} and \ref{fig:d10_evolution_parameters_b} show, the number of market makers rapidly increased during this period, as did the average latency of the market makers. Since the mean and median are close in both figure\footnote{Since \overshoot is discrete, the median and $\min$ statistics are also discrete}, the mean is representative of the evolution of the entire population.
 \item[Responsiveness] \timetoreachnewfundamental measures the time it takes for the model to react to the shock in the fundamental, and the evolution of the population wide statistics is shown on figure \ref{fig:d10_evolution_fitness_b}. Although the GA is instructed to minimize \timetoreachnewfundamental in order to look for more faster models, it clearly fails to do this. Indeed, the most responsive simulation took only about 4000 rounds to reach the new fundamental, but this individual died out in favor of slower individuals. In the last generation the most responsive simulation took around 14000 rounds to reach the new fundamental. The reasons for this failure to locate responsive models is discussed in section \ref{section:correlation_fitness}. In the A large change of the average of \timetoreachnewfundamental happens in the rounds five to 15. In this period, the median is lower than the mean, which means that the growth in the mean can be attributed to a minority of individuals.
 \end{description}
 
-In order to get an idea of what parameters may have been responsible for the generation of the model behavior that is reflected by fitness-measures, \ref{fig:d10_evolution_parameters} show the evolution of each of the parameters that were varied by the GA. Since the median was found to follow the mean nicely for all the parameters, the medians are not displayed. The gray error bars show the population wide variance.
+On figures \ref{fig:d10_evolution_fitness} and \ref{fig:d10_evolution_parameters}, the two areas shaded in a light blue and light red respectively show the two periods during which there was a drastic change in parameters and fitness-values. By comparing the time at which parameters and fitness-values change, it is possible to get an idea of how parameters influence the fitness-values. To that end, figure \ref{fig:d10_evolution_parameters} shows the evolution of each of the parameters that were varied by the GA\footnote{Since the median was found to follow the mean nicely for all the parameters, the medians are not displayed. Also, the gray error bars show the population wide variance}.
+\begin{figure}
+	%issue 15
+	\centering
+	\subcaptionbox{Evolution of \ssmmlatencymu{} and \sclatencymu\label{fig:d10_evolution_parameters_a}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/latpars_mu.png}}
+	\subcaptionbox{Evolution of \ssmmlatencys{} and \sclatencys\label{fig:d10_evolution_parameters_b}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/latpars_s.png}}
+	\subcaptionbox{Evolution of \ssmmnAgents\label{fig:d10_evolution_parameters_c}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/nAgents.png}}
+	\caption{Evolution of the model parameters in experiment \dten}
+	\label{fig:d10_evolution_parameters}
+\end{figure}
+
+The two periods indicated by the shaded squares seem to reflect some sudden changes in the parameters.
 
 \begin{description}
+\item[Average agent latency]  As is shown on figure \ref{fig:d10_evolution_parameters_a}, individuals containing large latency parameters are selected for both HFT market makers and HFT chartists. $\E{\sclatencymu}$ grows grows quickly during the first 20 rounds (blue shade). Referring back to figure \ref{fig:d10_evolution_fitness}, it is seen that $\E{\timetoreachnewfundamental}$ and $\E{\overshoot}$ grows and shrinks respectively. As for $\E{\ssmmlatencymu}$, it grows from rounds 20 through 50 (red shade), and this  seems to be strongly reflected in the growth of $\E{\roundstable}$, and to a lesser degree a decline in $\E{\overshoot}$ and $\E{\stdev}$. Furthermore, the small size of the error bars on both curves show that the population consistently moves towards containing more individuals with larger latency parameters for both HFT agent types. While initially $\E{\ssmmlatencymu} \approx \E{\sclatencymu}$, the population wide mean $\E{\sclatencymu}$ ends up being roughly 1.5 times larger than $\E{\sclatencymu}$. Finally, note also that the growth of  $\E{\sclatencymu}$ and $\E{\ssmmlatencymu}$ seem to be somewhat independent, as they sometimes grow together, sometimes not.
 
-\item[Average agent latency]  As is shown on figure \ref{fig:d10_evolution_parameters_a}, individuals containing large latency parameters are selected for both HFT market makers and HFT chartists. Furthermore, the small size of the error bars on both curves show that the population consistently moves towards containing more individuals with larger latency parameters. While initially $\E{\ssmmlatencymu} \approx \E{\sclatencymu}$, the population wide mean $\E{\sclatencymu}$ ends up being roughly 1.5 times larger than $\E{\sclatencymu}$. 
+\item[Number of market makers] The number of market makers increases almost every generation, but grows especially quickly through rounds 20 to 50 (red shade)
 
-This growth of $\E{\sclatencymu}$ is not changed when $\E{\ssmmlatencymu}$ subsequently starts growing, indicating that the preference for high values of \sclatencymu{} does not depend on low values of \ssmmlatencymu.
-
-\item[Number of market makers] The number of market makers increases almost every generation, but grows especially quickly through rounds 20 to 50, as indicated by the vertical bars.
+\item[Agent latency variance] Figure \ref{fig:d10_evolution_parameters_b}: The trends for $\E{\sclatencys}$ and $\E{\ssmmlatencys}$ are less clear, as the population-wide variances $\Var{\sclatencymu}$ and $\ssmmlatencymu$ illustrated by the large error bars are high compared to the change in $\E{\sclatencymu}$ and $\E{\ssmmlatencymu}$. While this could mean that the simulation behaves more nicely when the difference between the latency parameters of the trading agents is smaller, further experiments would have to be carried out to confirm this fact. XXX
 \end{description}
-
-\begin{itemize}
-\item 
-\item  Figure \ref{fig:d10_evolution_parameters_b}: The trends for $\E{\sclatencys}$ and $\E{\ssmmlatencys}$ are less clear, as the population-wide variances $\Var{\sclatencymu}$ and $\ssmmlatencymu$ illustrated by the large error bars are high compared to the change in $\E{\sclatencymu}$ and $\E{\ssmmlatencymu}$. While this could mean that the simulation behaves more nicely when the difference between the latency parameters of the trading agents is smaller, further experiments would have to be carried out to confirm this fact. XXX
-\item  Figure \ref{fig:d10_evolution_parameters_b} shows that there is a clear preference towards simulations with more market makers. 
-\end{itemize}
-
-
 
 In summary, the genetic algorithm prefers simulations with many, but relatively slow market makers. Apparently simulations with slow chartists also outperformed those with fast chartists, but since the number of HFT chartists was fixed at $\scnAgents = $, this experiment does not reveal how the simulation would perform with more (or less) chartists. It is possible to imagine that the market would perform just as well with a few and fast chartists. Section \ref{section:experiment_11} contains the analysis of an experiment in which the number of chartists were varied. The discussion above can be summarized as follows:
 
 \begin{enumerate}
-\item The responsiveness of the market seems to be particularly influenced by latency of the chartists. Slower chartists made the market response to the fundamental shock slower.
+\item The responsiveness of the market seems to be particularly influenced by latency of the chartists. Slower chartists made the market require more time to respond to the fundamental shock.
 \item The time it takes for the market to become depends in particular on the number of market makers and on the latency of the market makers. More but slower market makers seems to make the market settle within the stability margin faster.
 \item The overshoot of the market seems to be influenced by all three factors, as did the fluctuations of the traded prices.
 \item The market was more stable but reacted slowly when the chartists were slower than the market makers.
@@ -366,37 +360,69 @@ Both \overshoot and \stdev were used for the GA selection, and although these tw
 
  (simulations with a small overshoot also tend to have more stable trade prices), and there work together towards selecting the same type of simulations. \timetoreachnewfundamental and \roundstable both  The same is not the case for \timetoreachnewfundamental and \roundstable, as it possible that a simulation responds quickly to the shock, but does not stay within the stability margin. 
 
+\subsection{Parameter-fitness correlations}
+This section will 
 
-
+Each of the four fitness measures has been plotted against \sclatencymu, \ssmmlatencymu and \ssmmnAgents on figures \ref{fig:d10_parvfit_sclatencymu}, \ref{fig:d10_parvfit_ssmmlatencymu} and \ref{fig:d10_parvfit_ssmmnagents}, respectively. Each green dots are the data of a single simulation. The solid curve shows the estimated conditional mean of the fitness given the parameter, and the error bars show the estimated conditional variance. Figures of the four fitness plotted against \sclatencys and \ssmmlatencys did not reveal anything of interest, but have been included in appendix \ref{AppendixC} for reference.
 
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \sclatencymu and \overshoot}
+	\subcaptionbox{Correlation between \sclatencymu and \overshoot\label{fig:d10_parvfit_sclatencymu_a}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_mu__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \roundstable}
+	\subcaptionbox{Correlation between \sclatencymu and \roundstable\label{fig:d10_parvfit_sclatencymu_b}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_mu__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \stdev}
+	\subcaptionbox{Correlation between \sclatencymu and \stdev\label{fig:d10_parvfit_sclatencymu_c}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_mu__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \timetoreachnewfundamental}
+	\subcaptionbox{Correlation between \sclatencymu and \timetoreachnewfundamental\label{fig:d10_parvfit_sclatencymu_d}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_mu__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
-	
 	\caption{Correlation between \sclatencymu and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_sclatencymu}
 \end{figure}
 
+\subsubsection{Chartist latency and market response time}
+Figure \ref{fig:d10_parvfit_sclatencymu} shows 
+
+The first claim made in the previous section was that:
+\begin{enumerate}
+\setcounter{enumi}{0}
+\item The responsiveness of the market seems to be particularly influenced by latency of the chartists. Slower chartists made the market require more time to respond to the fundamental shock.
+\end{enumerate}
+Looking at figure \ref{fig:d10_parvfit_sclatencymu} this indeed does seem to be the case. The simulations that had faster chartists did actually manage to reach the new fundamental faster than those markets having slow chartists. The average response time for markets in which the chartists had a latency of less than 30 rounds was around 18000 rounds, whereas it was around 25000 rounds with chartists with more than 100 rounds of latency. The market response time is most sensitive in the range $20< \sclatencymu<60$, and does not change much for larger latencies. 
+
+\begin{enumerate}
+\setcounter{enumi}{1}
+\item The time it takes for the market to become stable depends in particular on the number of market makers and on the latency of the market makers. More but slower market makers seems to make the market settle within the stability margin faster.
+\end{enumerate}
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item The overshoot of the market seems to be influenced by all three factors, as did the fluctuations of the traded prices.
+\end{enumerate}
+This seems to be very true when referring to figures \ref{fig:d10_parvfit_sclatencymu_a}, \ref{fig:d10_parvfit_sclatencymu_c} and \ref{fig:d10_parvfit_ssmmnAgents_a} \ref{fig:d10_parvfit_ssmmnAgents_c}
+
+and somewhat true for
+
+\ref{fig:d10_parvfit_ssmmnAgents_a} and \ref{fig:d10_parvfit_ssmmnAgents_c}
+
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item The market was more stable but reacted slowly when the chartists were slower than the market makers.
+\end{enumerate}
+
+
+
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \ssmmlatencymu and \overshoot}
+	\subcaptionbox{Correlation between \ssmmlatencymu and \overshoot\label{fig:d10_parvfit_ssmmlatencymu_a}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_mu__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmlatencymu and \roundstable}
+	\subcaptionbox{Correlation between \ssmmlatencymu and \roundstable\label{fig:d10_parvfit_ssmmlatencymu_b}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_mu__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmlatencymu and \stdev}
+	\subcaptionbox{Correlation between \ssmmlatencymu and \stdev\label{fig:d10_parvfit_ssmmlatencymu_c}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_mu__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmlatencymu and \timetoreachnewfundamental}
+	\subcaptionbox{Correlation between \ssmmlatencymu and \timetoreachnewfundamental\label{fig:d10_parvfit_ssmmlatencymu_d}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_mu__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
-	
 	\caption{Correlation between \sclatencymu and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_ssmmlatencymu}
 \end{figure}
@@ -405,18 +431,23 @@ Both \overshoot and \stdev were used for the GA selection, and although these tw
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \overshoot}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \overshoot\label{fig:d10_parvfit_ssmmnAgents_a}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \roundstable}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \roundstable\label{fig:d10_parvfit_ssmmnAgents_b}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \stdev}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \stdev\label{fig:d10_parvfit_ssmmnAgents_c}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \timetoreachnewfundamental}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \timetoreachnewfundamental\label{fig:d10_parvfit_ssmmnAgents_d}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
-	
 	\caption{Correlation between \ssmmnAgents and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_ssmmnAgents}
 \end{figure}
+
+
+\subsection{Clustering}
+In this section, the focus is shifted from looking at population wide statistics to analysis sub-groups within each population. Whereas the previous sections showed that there do indeed exist statistical relationships between the latency of the agents and the behavior of the model, each discovered correlation was calculated over the entire population. 
+
+For instance, even though prediction of, say a negative correlation between \timetoreachnewfundamental was \sclatencymu was found, there might be configurations of the model in which faster chartists were actually beneficial to the market. In order to investigate this, a Gaussian mixture model (GMM) was used to find clusters in the fitness space. All four fitness measures were used for the clustering. After discarding simulations with undefined fitness values and removing outliers, the data set contained 80813 data points. The large number of data points and the low number of dimensions made it possible to allow a each Gaussian component to have a full covariance matrix, giving the model a high level of flexibility. Figure \ref{fig:d10_scatter_clusters} shows scatter plots of the data after it has been grouped. Tables \ref{table:fit_gmm_all_mean} and \ref{table:fit_gmm_all_std} respectively show the mean and standard deviation calculated over each cluster. The tables are sorted by the average value of \overshoot.
 
 
 
@@ -431,30 +462,65 @@ Both \overshoot and \stdev were used for the GA selection, and although these tw
 \end{figure}
 
 
+$\Varcluster{\roundstable}{8}$ and $\Varcluster{\roundstable}{11}$ and $\Varcluster{\roundstable}{5}$ are large. The points in this cluster have parameters which 
+
+
+
+\subsubsection*{Chartist latency and market response time}
+As was noted earlier, the evolution of \sclatencymu and \timetoreachnewfundamental indicates that slow chartists made the market slow, and fast chartists made the market fast. C1 is the cluster with the $\Ecluster{\timetoreachnewfundamental}{1}$
+
 \begin{table}
  \centering
  \begin{tabular}{l|rrrr|rrrrrr}
 \toprule
 {} &  \overshoot &  \roundstable &  \stdev &  \timetoreachnewfundamental &  \sclatencymu &  \sclatencys &  \ssmmlatencymu &  \ssmmlatencys &  \ssmmnAgents &  \Count \\
 \midrule
-C0  &         0.0 &       15992.4 &     0.6 &                     18798.0 &         121.4 &          6.0 &            77.4 &            5.7 &         126.8 &  3081 \\
-C6  &         0.3 &       24784.6 &     0.7 &                     32679.3 &          84.2 &          9.6 &            22.6 &           10.7 &          62.3 &   967 \\
-C7  &         1.0 &       15470.6 &     0.7 &                     18112.7 &         115.9 &          6.6 &            74.0 &            6.8 &         119.5 & 14367 \\
-C10 &         2.0 &       42480.7 &     0.8 &                     17095.6 &         107.5 &          8.0 &            65.6 &            8.1 &         106.1 &  5666 \\
-C11 &         2.0 &       86962.9 &     0.9 &                     16144.2 &         100.5 &          8.8 &            55.1 &            9.4 &          88.6 &  5346 \\
-C9  &         3.0 &       64765.3 &     1.0 &                     17526.8 &          96.7 &          9.1 &            48.7 &            9.8 &          84.9 &   671 \\
-C4  &         3.0 &       88431.4 &     1.1 &                     14875.3 &          89.4 &          9.2 &            39.7 &           10.0 &          67.5 & 10429 \\
-C1  &         4.0 &       89495.1 &     1.2 &                     14173.1 &          77.5 &          9.6 &            30.1 &           10.4 &          56.9 &  6957 \\
-C5  &         4.7 &       89847.0 &     1.3 &                     21795.8 &          66.6 &          9.4 &            22.1 &           10.2 &          52.2 &  4959 \\
-C8  &         5.4 &       89926.7 &     1.3 &                     12507.6 &          52.6 &          9.3 &            27.0 &           10.7 &          50.2 &  4880 \\
-C3  &         6.7 &       89927.3 &     1.8 &                     21765.8 &          49.3 &          9.4 &            21.7 &           10.7 &          41.1 &   975 \\
-C2  &         7.9 &       89996.1 &     1.6 &                     11574.7 &          36.4 &          9.2 &            26.4 &            9.6 &          36.4 &  5375 \\
+C1  &         0.0 &       16301.2 &     0.6 &                     19217.4 &         127.2 &          6.2 &            78.4 &            5.2 &         132.2 &  7803 \\
+C7  &         0.3 &       24383.1 &     0.7 &                     32005.5 &          87.0 &          9.5 &            25.8 &           10.5 &          66.7 &  1012 \\
+C10 &         1.0 &       15832.8 &     0.7 &                     18602.8 &         121.9 &          6.5 &            76.3 &            6.0 &         126.3 & 25245 \\
+C8  &         2.0 &       81599.7 &     0.9 &                     16333.6 &         101.8 &          8.7 &            56.4 &            9.2 &          91.3 &  7442 \\
+C11 &         2.0 &       30515.0 &     0.7 &                     17822.9 &         114.2 &          7.3 &            71.7 &            7.0 &         117.5 &  5056 \\
+C0  &         3.0 &       89015.0 &     1.1 &                     14687.5 &          89.0 &          9.2 &            39.5 &           10.0 &          66.8 &  9201 \\
+C5  &         3.0 &       51306.4 &     0.9 &                     16508.7 &         102.2 &          9.0 &            59.2 &            8.8 &          96.0 &   356 \\
+C6  &         3.0 &       83914.2 &     1.1 &                     16820.9 &          92.3 &          9.2 &            40.6 &           10.0 &          72.4 &  1598 \\
+C9  &         4.0 &       89496.0 &     1.2 &                     14459.8 &          77.7 &          9.6 &            29.9 &           10.4 &          56.7 &  7278 \\
+C4  &         5.0 &       89896.6 &     1.4 &                     22034.2 &          62.4 &          9.4 &            21.5 &           10.3 &          51.6 &  5331 \\
+C3  &         6.7 &       86440.9 &     1.8 &                     18692.7 &          54.9 &          9.2 &            26.2 &           10.5 &          38.0 &   390 \\
+C2  &         7.9 &       89996.1 &     1.6 &                     11574.7 &          36.4 &          9.2 &            26.4 &            9.6 &          36.4 &  10101 \\
 Outliers  &        11.5 &       89998.8 &     2.2 &                      8835.1 &          17.8 &          9.3 &            24.3 &            8.5 &          19.4 &   740 \\
 \bottomrule
 \end{tabular}
- \label{table:fit_gmm_all}
- \caption{Mean statistics for each cluster. The column named Count shows the number of points assigned to each cluster.}
+ \label{table:fit_gmm_all_mean}
+ \caption{Mean for each fitness-cluster.}
  \end{table}
+ 
+ C2 contains the fastest simulations, which take an average of $11.5\times 10^3$ rounds to reach the new fundamental. This group is also the one with the largest overshoot. 
+
+\begin{table}
+ \centering
+ \begin{tabular}{l|rrrr|rrrrrr}
+\toprule
+{} &  \overshoot &  \roundstable &  \stdev &  \timetoreachnewfundamental &  \sclatencymu &  \sclatencys &  \ssmmlatencymu &  \ssmmlatencys &  \ssmmnAgents &  \Count \\
+\midrule
+C1  &         0.0 &        2142.8 &     0.0 &                      2220.9 &          10.9 &          4.7 &             7.1 &            3.3 &          11.3 &  7803 \\
+C7  &         0.5 &        4827.7 &     0.2 &                      7424.7 &          18.4 &          3.8 &            18.7 &            5.4 &          23.2 &  1012 \\
+C10 &         0.0 &        2150.8 &     0.1 &                      2261.1 &          12.7 &          4.7 &             9.3 &            4.1 &          14.7 & 25245 \\
+C8  &         0.0 &       10563.6 &     0.1 &                      1926.7 &          10.3 &          4.0 &            12.2 &            5.3 &          20.0 &  7442 \\
+C11 &         0.0 &        6952.5 &     0.1 &                      2276.1 &          13.8 &          4.7 &            11.6 &            4.7 &          18.3 &  5056 \\
+C0  &         0.0 &        1380.7 &     0.1 &                      1479.2 &           9.7 &          3.4 &            14.7 &            5.0 &          12.7 &  9201 \\
+C5  &         0.0 &       17151.2 &     0.1 &                      2087.1 &          11.2 &          4.2 &            12.5 &            5.2 &          21.4 &   356 \\
+C6  &         0.0 &        3961.3 &     0.1 &                      2646.9 &          10.3 &          3.5 &            16.9 &            5.2 &          16.0 &  1598 \\
+C9  &         0.0 &        1048.5 &     0.1 &                      2368.7 &          13.0 &          3.4 &            12.7 &            4.9 &           9.4 &  7278 \\
+C4  &         1.4 &         423.6 &     0.2 &                      4246.5 &          21.3 &          4.3 &            11.6 &            5.3 &          10.4 &  5331 \\
+C2  &         1.6 &         211.8 &     0.2 &                      1943.0 &          16.0 &          5.2 &            11.7 &            5.5 &          13.7 & 10101 \\
+C3  &         2.9 &        7387.0 &     0.4 &                     11884.0 &          26.0 &          4.5 &            15.0 &            5.5 &          30.6 &   390 \\
+Outliers  &         0.8 &           0.6 &     0.3 &                      2691.9 &          11.3 &          6.1 &            13.4 &            5.7 &          14.2 &   740 \\
+\bottomrule
+\end{tabular}
+ \label{table:fit_gmm_all_std}
+ \caption{Standard deviation for each fitness-cluster.}
+ \end{table}
+
 
 The point of the clustering is not that all groups should have distinctly different parameter statistics. 
  

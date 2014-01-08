@@ -76,13 +76,18 @@
 \contentsline {subsection}{\numberline {4.2.4}Looking for parameters causing certain behavior}{38}{subsection.147}
 \contentsline {subsection}{\numberline {4.2.5}Section summary}{39}{subsection.149}
 \contentsline {section}{\numberline {4.3}D10}{39}{section.150}
-\contentsline {subsection}{\numberline {4.3.1}Fitness and parameter evolution}{40}{subsection.153}
-\contentsline {subsection}{\numberline {4.3.2}Correlation between fitness measures}{43}{subsection.159}
-\contentsline {section}{\numberline {4.4}D11}{45}{section.167}
-\contentsline {section}{\numberline {4.5}Hall of fame}{45}{section.173}
+\contentsline {subsection}{\numberline {4.3.1}Fitness and parameter evolution}{39}{subsection.152}
+\contentsline {subsection}{\numberline {4.3.2}Correlation between fitness measures}{43}{subsection.160}
+\contentsline {subsection}{\numberline {4.3.3}Parameter-fitness correlations}{44}{subsection.162}
+\contentsline {subsection}{\numberline {4.3.4}Clustering}{46}{subsection.172}
+\contentsline {section}{\numberline {4.4}D11}{50}{section.178}
+\contentsline {section}{\numberline {4.5}Hall of fame}{50}{section.184}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Additional tables}{54}{appendix.174}
-\contentsline {section}{\numberline {A.1}Dataset 1}{54}{section.175}
-\contentsline {chapter}{\numberline {B}Third party software}{55}{appendix.176}
+\contentsline {chapter}{\numberline {A}Additional tables}{55}{appendix.185}
+\contentsline {section}{\numberline {A.1}Dataset 1}{55}{section.186}
+\contentsline {chapter}{\numberline {B}Third party software}{56}{appendix.187}
+\contentsline {chapter}{\numberline {C}Additional figures}{57}{appendix.188}
+\contentsline {section}{\numberline {C.1}Scatter plots for d10}{57}{section.189}
+\contentsline {section}{\numberline {C.2}Correlation plots of \ensuremath {\lambda _{c, \sigma }}and \ensuremath {\lambda _{m, \sigma }}}{57}{section.194}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{56}{dummy.177}
+\contentsline {chapter}{Bibliography}{62}{dummy.197}
