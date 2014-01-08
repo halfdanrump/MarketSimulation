@@ -12,3 +12,5 @@ def reduce_outlier_cluster(data, n_clusters=8,dataset = 'd9', data_name='fitness
 
 def pca_and_plot():
 	pass
+
+def 

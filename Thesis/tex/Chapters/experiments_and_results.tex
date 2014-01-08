@@ -1,4 +1,4 @@
-\chapter{Experiments}
+\chapter{Experiments}\label{chapter:experiments_and_results}
 As mentioned in the previous chapter, the process of finding was an iterative one of running an experiment, analyzing the generated data, draw conclusions and then repeat the steps with a new experiments designed to amend the mistakes of the previous experiment. This chapter will go through each of these steps and explain the insights that were gained.
 
 This chapter presents the flow of analysis as it was carried out, rather 
@@ -41,7 +41,7 @@ Fixed parameters:
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d3/latpars_mu.png}}
 	\subcaptionbox{Evolution of \ssmmthinkmu and \scthinkmu}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d3/thinkpars_mu.png}}
-	\subcaptionbox{Evolution of \nmm and \nsc}
+	\subcaptionbox{Evolution of \ssmmnAgents and \scnAgents}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d3/nAgents.png}}	\caption{Evolution of time delay parameters common both HFT agent types, and of the number of agents in experiment \dthree}\label{fig:d3_evolution_latpars_nAgents}
 \end{figure}
 
@@ -258,29 +258,6 @@ The easiest first step is to do that for the outliers and inliers.
 
 
 
-\begin{table}
-	 \centering
-	 \begin{tabular}{lrrrr}
-	\toprule
-	{} &  \overshoot > 10 (mean) &  \overshoot > 10 (mean) &  \overshoot > 10 (std) &  \overshoot > 10 (std) \\
-	\midrule
-	\sclatencymu                &                    73.8 &                    21.2 &                   21.2 &                   13.2 \\
-	\sclatencys                 &                     5.2 &                     9.6 &                    9.6 &                    5.7 \\
-	\scthinkmu                  &                    64.3 &                    24.3 &                   24.3 &                   13.6 \\
-	\scthinks                   &                    11.4 &                    10.2 &                   10.2 &                    5.6 \\
-	\sctimehorizonmu            &                  1804.5 &                  2134.1 &                 2134.1 &                 1444.1 \\
-	\sctimehorizons             &                  1413.2 &                  1024.0 &                 1024.0 &                  629.2 \\
-	\scwaitTimeBetweenTradingmu &                    29.9 &                    23.8 &                   23.8 &                   12.9 \\
-	\scwaitTimeBetweenTradings  &                     3.6 &                     9.5 &                    9.5 &                    5.8 \\
-	\ssmmlatencymu              &                    46.0 &                    29.9 &                   29.9 &                   14.7 \\
-	\ssmmlatencys               &                     4.6 &                     8.8 &                    8.8 &                    5.0 \\
-	\ssmmthinkmu                &                    37.6 &                    27.0 &                   27.0 &                   14.2 \\
-	\ssmmthinks                 &                     0.9 &                    10.0 &                   10.0 &                    6.0 \\
-	\bottomrule
-	\end{tabular}
-	\label{LABEL}
-	\caption{CAPTION}
-\end{table}
 
 As manually labeling hundreds of thousands of data points is not really an option, clustering algorithms were used to separate the fitness data into groups with distinct characteristics. 
 
@@ -289,34 +266,108 @@ As manually labeling hundreds of thousands of data points is not really an optio
 
 \section{D10}
 In the previous section, some weak tendencies 
+The scatter plots for \dten{} are somewhat similar to those of \dnine, and they have therefore been placed in appendix \ref{appendix:figures}
+Scatter plots for \dten{} have been included in 
+
 
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Evolution of \ssmmlatencymu and \sclatencymu}
+	\subcaptionbox{Evolution of \ssmmlatencymu{} and \sclatencymu\label{fig:d10_evolution_parameters_a}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/latpars_mu.png}}
-	\subcaptionbox{Evolution of \ssmmlatencys and \sclatencys}
+	\subcaptionbox{Evolution of \ssmmlatencys{} and \sclatencys\label{fig:d10_evolution_parameters_b}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/latpars_s.png}}
-	\subcaptionbox{Evolution of \nmm}
+	\subcaptionbox{Evolution of \ssmmnAgents\label{fig:d10_evolution_parameters_c}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/nAgents.png}}
 	\caption{Evolution of the model parameters in experiment \dten}
 	\label{fig:d10_evolution_parameters}
 \end{figure}
 
+
+Note that the definition of ``nice'' market behavior is, of course, qualitative in nature. In this experiment, as well as in \dnine{} and \deleven, the search for such nice behavior was carried out by minimizing all four fitness measures, as nice market behavior was taken to be a market that . Whether this can be accomplished by the model or not is a question that can only be answered by running the 
+
+If, say, a fast reaction on the cost of a larger overshoot, one could search for such behavior by omitting \overshoot{} from the optimization criteria.
+
+
+
+Figure \ref{fig:d10_evolution_fitness} shows the evolution of the four fitness measures. The population wide mean is plotted along the median and minimum statistics. Since all four fitness measures were minimized, the curve for the minimum value shows the best individual alive during each generation, with respect to each fitness measure. While the mean reflects how the overall population is evolving,  the median is useful as it gives an insight into how skewed the population wide distribution of parameters is. 
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Evolution of \roundstable}
+	\subcaptionbox{Evolution of \roundstable\label{fig:d10_evolution_fitness_a}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/round_stable.png}}
-	\subcaptionbox{Evolution of \timetoreachnewfundamental}
+	\subcaptionbox{Evolution of \timetoreachnewfundamental\label{fig:d10_evolution_fitness_b}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/time_to_reach_new_fundamental.png}}
-	\subcaptionbox{Evolution of \stdev}
+	\subcaptionbox{Evolution of \stdev\label{fig:d10_evolution_fitness_c}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/stdev.png}}
-	\subcaptionbox{Evolution of \overshoot}
+	\subcaptionbox{Evolution of \overshoot\label{fig:d10_evolution_fitness_d}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d10/overshoot.png}}
 	\caption{Evolution of the four fitness measures in experiment \dten}
 	\label{fig:d10_evolution_fitness}
 \end{figure}
+
+
+
+\subsection{Fitness and parameter evolution}
+Figure \ref{fig:d10_evolution_fitness} show the evolution of the population wide mean, median and minimum statistics for each of the four fitness-measures. 
+\begin{description}
+\item[Model stability]
+Figure \ref{fig:d10_evolution_fitness_a}: shows that  the GA quickly manages to find some parameters which cause the simulation to stabilize quickly. However, these individuals do not manage to dominate the population evident by the mean and median curves remaining steady until generation 30 or so. In the 20 generations that follows, the population undergoes a rapid change, as the population wide average of \roundstable drop from close to $10^5$ to around $2\cdot 10^4$ rounds on average. The disparity between the mean and the median indicates that the population undergoes a rapid change in the same period, from mostly containing unstable individuals to mostly containing stable individuals. In generation 42, the median curve crosses the mean curve, which means that the the population contain as many stable simulations as it contain unstable simulations. From that point on the unstable simulations are quickly replaced by stable individuals.
+\item[Price fluctuations and overshoot] During the same period, the population average \stdev also decreases fairly rapidly, but the drop is less pronounced than the drop in \stdev. As figures \ref{fig:d10_evolution_parameters_a} and \ref{fig:d10_evolution_parameters_b} show, the number of market makers rapidly increased during this period, as did the average latency of the market makers. Since the mean and median are close in both figure\footnote{Since \overshoot is discrete, the median and $\min$ statistics are also discrete}, the mean is representative of the evolution of the entire population.
+\item[Responsiveness] \timetoreachnewfundamental measures the time it takes for the model to react to the shock in the fundamental, and the evolution of the population wide statistics is shown on figure \ref{fig:d10_evolution_fitness_b}. Although the GA is instructed to minimize \timetoreachnewfundamental in order to look for more faster models, it clearly fails to do this. Indeed, the most responsive simulation took only about 4000 rounds to reach the new fundamental, but this individual died out in favor of slower individuals. In the last generation the most responsive simulation took around 14000 rounds to reach the new fundamental. The reasons for this failure to locate responsive models is discussed in section \ref{section:correlation_fitness}. In the A large change of the average of \timetoreachnewfundamental happens in the rounds five to 15. In this period, the median is lower than the mean, which means that the growth in the mean can be attributed to a minority of individuals.
+\end{description}
+
+In order to get an idea of what parameters may have been responsible for the generation of the model behavior that is reflected by fitness-measures, \ref{fig:d10_evolution_parameters} show the evolution of each of the parameters that were varied by the GA. Since the median was found to follow the mean nicely for all the parameters, the medians are not displayed. The gray error bars show the population wide variance.
+
+\begin{description}
+
+\item[Average agent latency]  As is shown on figure \ref{fig:d10_evolution_parameters_a}, individuals containing large latency parameters are selected for both HFT market makers and HFT chartists. Furthermore, the small size of the error bars on both curves show that the population consistently moves towards containing more individuals with larger latency parameters. While initially $\E{\ssmmlatencymu} \approx \E{\sclatencymu}$, the population wide mean $\E{\sclatencymu}$ ends up being roughly 1.5 times larger than $\E{\sclatencymu}$. 
+
+This growth of $\E{\sclatencymu}$ is not changed when $\E{\ssmmlatencymu}$ subsequently starts growing, indicating that the preference for high values of \sclatencymu{} does not depend on low values of \ssmmlatencymu.
+
+\item[Number of market makers] The number of market makers increases almost every generation, but grows especially quickly through rounds 20 to 50, as indicated by the vertical bars.
+\end{description}
+
+\begin{itemize}
+\item 
+\item  Figure \ref{fig:d10_evolution_parameters_b}: The trends for $\E{\sclatencys}$ and $\E{\ssmmlatencys}$ are less clear, as the population-wide variances $\Var{\sclatencymu}$ and $\ssmmlatencymu$ illustrated by the large error bars are high compared to the change in $\E{\sclatencymu}$ and $\E{\ssmmlatencymu}$. While this could mean that the simulation behaves more nicely when the difference between the latency parameters of the trading agents is smaller, further experiments would have to be carried out to confirm this fact. XXX
+\item  Figure \ref{fig:d10_evolution_parameters_b} shows that there is a clear preference towards simulations with more market makers. 
+\end{itemize}
+
+
+
+In summary, the genetic algorithm prefers simulations with many, but relatively slow market makers. Apparently simulations with slow chartists also outperformed those with fast chartists, but since the number of HFT chartists was fixed at $\scnAgents = $, this experiment does not reveal how the simulation would perform with more (or less) chartists. It is possible to imagine that the market would perform just as well with a few and fast chartists. Section \ref{section:experiment_11} contains the analysis of an experiment in which the number of chartists were varied. The discussion above can be summarized as follows:
+
+\begin{enumerate}
+\item The responsiveness of the market seems to be particularly influenced by latency of the chartists. Slower chartists made the market response to the fundamental shock slower.
+\item The time it takes for the market to become depends in particular on the number of market makers and on the latency of the market makers. More but slower market makers seems to make the market settle within the stability margin faster.
+\item The overshoot of the market seems to be influenced by all three factors, as did the fluctuations of the traded prices.
+\item The market was more stable but reacted slowly when the chartists were slower than the market makers.
+\end{enumerate}
+The accuracy of the above analysis is limited as it only looks at population wide statistics at a given point in the duration of the GA. The following section contain an analysis in which the generation to which each data point belongs is considered irrelevant. The analysis will try to confirm each of the four statements above.
+
+
+
+
+\subsection{Correlation between fitness measures}\label{section:correlation_fitness}
+A factor which influences the evolution of parameters is correlation between the fitness-measures. If two or more fitness measures have non-negative correlation coefficients, individuals will be statistically more likely to get good scores in the correlated fitness measures at the same time. Since all fitness measures are given equal weight in the selection process, individuals scoring well in the correlated fitness-measures will win over individuals which score well on another, statistically independent fitness measure. It is therefore important to compare the selection tendencies with the correlation between fitness-measures. Figure \ref{figure:d10_fitness_correlation} shows a plot of the correlation matrix for \dten. Since later generations will be affected by the biased selection and therefore contain more individuals which did well on the correlated fitness measures, the correlation coefficients in the figure were calculated over individuals in the first generation only.
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{Electron.pdf}
+\caption{Correlation matrix of the four fitness measures in the first generation of dataset \dten	}
+\label{figure:d10_fitness_correlation}
+\end{figure}
+
+For instance, the correlation between \overshoot and \stdev means that an individual which scores a good \overshoot-fitness will be statistically likely to also score a good \stdev-fitness. Since all four fitness measures are weighed evenly in the selection, models with behavior which is assigned good values for \overshoot and \stdev will score a better overall fitness than a simulation with a good fitness 
+
+In other words, the correlation between \stdev and \overshoot means that stable individuals will outlive fast individuals as they are selected for breeding more often. This is not a property of a model itself, but rather a problem with the definition of the fitness measures. This problem can be circumvented by not using of the correlated fitness values. XXX
+
+Both \overshoot and \stdev were used for the GA selection, and although these two fitness measures do reflect different properties of the simulations, they were found to be somewhat correlated. That is, a simulation which tends to have a small overshoot also tends to have stable traded prices. 
+
+ (simulations with a small overshoot also tend to have more stable trade prices), and there work together towards selecting the same type of simulations. \timetoreachnewfundamental and \roundstable both  The same is not the case for \timetoreachnewfundamental and \roundstable, as it possible that a simulation responds quickly to the shock, but does not stay within the stability margin. 
+
+
+
 
 \begin{figure}
 	%issue 15
@@ -330,7 +381,7 @@ In the previous section, some weak tendencies
 	\subcaptionbox{Correlation between \sclatencymu and \timetoreachnewfundamental}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_mu__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
 	
-	\caption{Correlation between \sclatencymu and the four fitness measures\dten}
+	\caption{Correlation between \sclatencymu and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_sclatencymu}
 \end{figure}
 
@@ -346,7 +397,7 @@ In the previous section, some weak tendencies
 	\subcaptionbox{Correlation between \ssmmlatencymu and \timetoreachnewfundamental}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_mu__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
 	
-	\caption{Correlation between \sclatencymu and the four fitness measures\dten}
+	\caption{Correlation between \sclatencymu and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_ssmmlatencymu}
 \end{figure}
 
@@ -354,32 +405,102 @@ In the previous section, some weak tendencies
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \ssmmnAgents and \overshoot}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \overshoot}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents and \roundstable}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \roundstable}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents and \stdev}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \stdev}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents and \timetoreachnewfundamental}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \timetoreachnewfundamental}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
 	
-	\caption{Correlation between \ssmmnAgents and the four fitness measures\dten}
+	\caption{Correlation between \ssmmnAgents and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_ssmmnAgents}
 \end{figure}
 
-\section{D11}
 
 
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Evolution of \ssmmlatencymu and \sclatencymu}
+	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_0.png}}
+	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_1.png}}
+	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_2.png}}
+	\caption{Scatter plots in fitness space showing the grouping of data points when using a GMM with 12 clusters.}
+	\label{fig:d10_scatter_clusters}
+\end{figure}
+
+
+\begin{table}
+ \centering
+ \begin{tabular}{l|rrrr|rrrrrr}
+\toprule
+{} &  \overshoot &  \roundstable &  \stdev &  \timetoreachnewfundamental &  \sclatencymu &  \sclatencys &  \ssmmlatencymu &  \ssmmlatencys &  \ssmmnAgents &  \Count \\
+\midrule
+C0  &         0.0 &       15992.4 &     0.6 &                     18798.0 &         121.4 &          6.0 &            77.4 &            5.7 &         126.8 &  3081 \\
+C6  &         0.3 &       24784.6 &     0.7 &                     32679.3 &          84.2 &          9.6 &            22.6 &           10.7 &          62.3 &   967 \\
+C7  &         1.0 &       15470.6 &     0.7 &                     18112.7 &         115.9 &          6.6 &            74.0 &            6.8 &         119.5 & 14367 \\
+C10 &         2.0 &       42480.7 &     0.8 &                     17095.6 &         107.5 &          8.0 &            65.6 &            8.1 &         106.1 &  5666 \\
+C11 &         2.0 &       86962.9 &     0.9 &                     16144.2 &         100.5 &          8.8 &            55.1 &            9.4 &          88.6 &  5346 \\
+C9  &         3.0 &       64765.3 &     1.0 &                     17526.8 &          96.7 &          9.1 &            48.7 &            9.8 &          84.9 &   671 \\
+C4  &         3.0 &       88431.4 &     1.1 &                     14875.3 &          89.4 &          9.2 &            39.7 &           10.0 &          67.5 & 10429 \\
+C1  &         4.0 &       89495.1 &     1.2 &                     14173.1 &          77.5 &          9.6 &            30.1 &           10.4 &          56.9 &  6957 \\
+C5  &         4.7 &       89847.0 &     1.3 &                     21795.8 &          66.6 &          9.4 &            22.1 &           10.2 &          52.2 &  4959 \\
+C8  &         5.4 &       89926.7 &     1.3 &                     12507.6 &          52.6 &          9.3 &            27.0 &           10.7 &          50.2 &  4880 \\
+C3  &         6.7 &       89927.3 &     1.8 &                     21765.8 &          49.3 &          9.4 &            21.7 &           10.7 &          41.1 &   975 \\
+C2  &         7.9 &       89996.1 &     1.6 &                     11574.7 &          36.4 &          9.2 &            26.4 &            9.6 &          36.4 &  5375 \\
+Outliers  &        11.5 &       89998.8 &     2.2 &                      8835.1 &          17.8 &          9.3 &            24.3 &            8.5 &          19.4 &   740 \\
+\bottomrule
+\end{tabular}
+ \label{table:fit_gmm_all}
+ \caption{Mean statistics for each cluster. The column named Count shows the number of points assigned to each cluster.}
+ \end{table}
+
+The point of the clustering is not that all groups should have distinctly different parameter statistics. 
+ 
+ \begin{figure}
+ \centering
+ \begin{minipage}[t]{.5\linewidth}
+ \vspace{25pt}
+ \centering
+ \begin{tabular}{lrrrrrr}
+\toprule
+{} &  \sclatencymu &  \sclatencys &  \ssmmlatencymu &  \ssmmlatencys &  \ssmmnAgents &  $\gamma$ \\
+\midrule
+0 &          0.53 &        -0.24 &            0.54 &          -0.24 &          0.56 &    0.57 \\
+1 &          -0.0 &         0.74 &           -0.01 &          -0.67 &          0.03 &    0.18 \\
+2 &          0.23 &         0.63 &            0.16 &            0.7 &          0.19 &    0.17 \\
+\bottomrule
+\end{tabular}
+\end{minipage}%
+\begin{minipage}[t]{.5\linewidth}
+\vspace{0pt}
+\centering
+\includegraphics[width=0.75\linewidth]{manually_selected/108_cluster_after_removing_outliers/d10/clustering_d10_allclusters.png}
+\end{minipage}
+\label{table:clustering_d10_allclusters}
+\caption{XXX}
+\end{figure}
+%Component 0:
+%\[\sclatencymu=0.532, \sclatencys=-0.235, \ssmmlatencymu=0.544, \ssmmlatencys=-0.239, \ssmmnAgents=0.555\]
+%Component 1:
+%\[\sclatencymu=0.532, \sclatencys=-0.235, \ssmmlatencymu=0.544, \ssmmlatencys=-0.239, \ssmmnAgents=0.555\]
+%Component 2:
+%\[\sclatencymu=0.532, \sclatencys=-0.235, \ssmmlatencymu=0.544, \ssmmlatencys=-0.239, \ssmmnAgents=0.555\]
+
+
+\section{D11}\label{section:experiment_9}
+
+\begin{figure}
+	%issue 15
+	\centering
+	\subcaptionbox{Evolution of \ssmmlatencymu{} and \sclatencymu}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d11/latpars_mu.png}}
-	\subcaptionbox{Evolution of \ssmmlatencys and \sclatencys}
+	\subcaptionbox{Evolution of \ssmmlatencys{} and \sclatencys}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d11/latpars_s.png}}
-	\subcaptionbox{Evolution of \nmm}
+	\subcaptionbox{Evolution of \scnAgents}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d11/nAgents.png}}
-	\caption{Evolution of the model parameters in experiment \dten}
+	\caption{Evolution of the model parameters in experiment \deleven}
 	\label{fig:d11_evolution_parameters}
 \end{figure}
 
@@ -394,39 +515,39 @@ In the previous section, some weak tendencies
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d11/stdev.png}}
 	\subcaptionbox{Evolution of \overshoot}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d11/overshoot.png}}
-	\caption{Evolution of the four fitness measures in experiment \dten}
+	\caption{Evolution of the four fitness measures in experiment \deleven}
 	\label{fig:d11_evolution_fitness}
 \end{figure}
 
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \sclatencymu and \overshoot}
+	\subcaptionbox{Correlation between \sclatencymu{} and \overshoot}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_latency_mu__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \roundstable}
+	\subcaptionbox{Correlation between \sclatencymu{} and \roundstable}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_latency_mu__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \stdev}
+	\subcaptionbox{Correlation between \sclatencymu{} and \stdev}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_latency_mu__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \timetoreachnewfundamental}
+	\subcaptionbox{Correlation between \sclatencymu{} and \timetoreachnewfundamental}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_latency_mu__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
 	
-	\caption{Correlation between \sclatencymu and the four fitness measures\dten}
+	\caption{Correlation between \sclatencymu and the four fitness measures in experiment \deleven}
 	\label{fig:d11_parvfit_sclatencymu}
 \end{figure}
 
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \ssmmlatencymu and \overshoot}
+	\subcaptionbox{Correlation between \ssmmlatencymu{} and \overshoot}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/ssmm_latency_mu__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmlatencymu and \roundstable}
+	\subcaptionbox{Correlation between \ssmmlatencymu{} and \roundstable}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/ssmm_latency_mu__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmlatencymu and \stdev}
+	\subcaptionbox{Correlation between \ssmmlatencymu{} and \stdev}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/ssmm_latency_mu__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmlatencymu and \timetoreachnewfundamental}
+	\subcaptionbox{Correlation between \ssmmlatencymu{} and \timetoreachnewfundamental}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/ssmm_latency_mu__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
 	
-	\caption{Correlation between \sclatencymu{} and the four fitness measures\dten}
+	\caption{Correlation between \sclatencymu{} and the four fitness measures in experiment \deleven}
 	\label{fig:d11_parvfit_ssmmlatencymu}
 \end{figure}
 
@@ -434,18 +555,18 @@ In the previous section, some weak tendencies
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \nsc{} and \overshoot}
+	\subcaptionbox{Correlation between \scnAgents{} and \overshoot}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \nsc{} and \roundstable}
+	\subcaptionbox{Correlation between \scnAgents{} and \roundstable}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \nsc{} and \stdev}
+	\subcaptionbox{Correlation between \scnAgents{} and \stdev}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \nsc{} and \timetoreachnewfundamental}
+	\subcaptionbox{Correlation between \scnAgents{} and \timetoreachnewfundamental}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
 	
-	\caption{Correlation between \ssmmnAgents{} and the four fitness measures\dten}
+	\caption{Correlation between \ssmmnAgents{} and the four fitness measures in experiment \deleven}
 	\label{fig:d11_parvfit_scAgents}
 \end{figure}
 
 
-\section{Hall of fame}
+\section{Hall of fame}\label{section:hall_of_fame}

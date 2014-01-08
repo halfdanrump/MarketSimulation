@@ -345,12 +345,13 @@ class Ppl:
 
         # If we have both negative and positive values, use a divergent colormap
         if 'cmap' not in kwargs:
-            if kwargs['vmax'] > 0 and kwargs['vmin'] < 0:
-                kwargs['cmap'] = self.blue_red
-            elif kwargs['vmax'] <= 0:
-                kwargs['cmap'] = self.blues_r
-            elif kwargs['vmax'] > 0:
-                kwargs['cmap'] = self.reds
+            kwargs['cmap'] = self.blue_red
+            #if kwargs['vmax'] > 0 and kwargs['vmin'] < 0:
+            #    kwargs['cmap'] = self.blue_red
+            #elif kwargs['vmax'] <= 0:
+            #    kwargs['cmap'] = self.blues_r
+            #elif kwargs['vmax'] > 0:
+            #    kwargs['cmap'] = self.reds
 
         if 'xticklabels' in kwargs:
             xticklabels = kwargs['xticklabels']

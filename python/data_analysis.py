@@ -63,7 +63,7 @@ def calculate_stats_for_dataframe(dataframe, labels):
 	stats = dict()
 
 	distinct_labels = range(max(labels)+1)
-	col_names = map(lambda x: 'c%s'%x, distinct_labels)
+	col_names = map(lambda x: 'C%s'%x, distinct_labels)
 	count =  Series(dict(zip(col_names,[len(where(labels == g)[0]) for g in distinct_labels])), name = 'Count')
 	for stat, stat_name in zip(stat_functions, stat_names): 
 		stats[stat_name] = DataFrame(columns = col_names, index = dataframe.columns)

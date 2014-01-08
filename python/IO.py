@@ -6,6 +6,7 @@ from settings import fitness_types, fitness_weights, parameters_in_genes
 from pandas import DataFrame, read_pickle
 import re
 import os
+import shutil
 #from shutils import rmtree
 
 dataset_paths = {
@@ -144,6 +145,9 @@ def pickle_generation_data(dataset_name):
     fit.to_pickle(dataset_paths[dataset_name] + 'fits.pandas')
     ids.to_pickle(dataset_paths[dataset_name] + 'ids.pandas')
 
+    shutil.copy(dataset_path + 'raw_data/%s/settings.py'%dataset_name, '%s/settings.py'%dataset_paths[dataset_name])
+
+    
 
 def load_pickled_generation_dataframe(dataset_name):
     datapath = dataset_paths[dataset_name]

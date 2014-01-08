@@ -3,6 +3,33 @@
 \section{Trader speed and market overshoot}
 
 \section{Trader speed and price stability}
+Trade-off between responsiveness and stability.
+
+Refer to the section of the best individuals. 
+Some simulations were fast and unstable, while others were slow and stable. Although there were models in between, no stable model managed to be as fast as another unstable model. and no fast model managed to be as stable as a stable one. 
+
+The trade-off between these two types of behavior was shown to be 
+
+Whether such ideal market behavior is possible within the model is doubtful. 
+
+
+
+As was shown in figure \ref{figure:d10_fitness_correlation}, \timetoreachnewfundamental{} is negatively correlated with both \stdev{} and \overshoot{}. This is another factor that points towards the existence between responsiveness and stability. The negative correlation means that \timetoreachnewfundamental will be high when \stdev and \overshoot are low and vice versa. 
+XXX: insert figure of D11 fitness correlation
 
 \section{Ratio of agents}
+In chapter \ref{chapter:experiments_and_results} it was shown that a correlation exists between the number of high frequency traders and some of the fitness measures. 
 
+It is possible that this evolution of the parameters is caused by the model being unable to be both fast and stable, but that there exists a trade-off between the two. Even though such a trade-off is not inherent in the model, in may happen to be inevitable when performing a parameter search, simply because the set of parameters causing the model to be both responsive and stable are so few that they are simply too difficult to find. Indeed, as is shown in section \ref{section:hall_of_fame}, no parameters caused the market to be both 
+
+
+\section{Strategy crowding}
+
+\section{Between data set inconsistencies}
+
+\section{Model assumptions}
+
+\section{Model limitations}
+The most obvious limitation imposed by the model is the small number of different agent strategies.
+
+Another possible short-coming is the simplicity of the slow trader strategy. 

@@ -53,17 +53,21 @@
 %----------------------------------------------------------------------------------------
 %	MY OWN COMMANDS
 %----------------------------------------------------------------------------------------
+\newcommand{\E}[1]{\mathrm{E}[#1]}
 
+\newcommand{\Var}[1]{\mathrm{Var}[#1]}
+
+\newcommand{\Cov}[1]{\mathrm{Cov}[#1]}
+\newcommand{\Median}[1]{\mathrm{M}[#1]}
 
 % % % DATASETS
 \newcommand{\dthree}{d1}
 \newcommand{\dnine}{d9}
 \newcommand{\dten}{d10}
+\newcommand{\deleven}{d10}
 
 %%% Consistency commands
 \newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
-\newcommand{\nmm}{\spa{n}{mm}}
-\newcommand{\nsc}{\spa{n}{sc}}
 \newcommand{\nrounds}{\spa{n}{rounds}}
 
 \newcommand{\datamatrixpar}[1][]{\ensuremath{\boldsymbol{P}_{#1}}}
@@ -77,6 +81,7 @@
 \newcommand{\hftsc}{HFT market chartist}
 
 \newcommand{\Count}{\ensuremath{\text{Count}}}
+
 
 %%% MODEL PARAMETERS
 
@@ -218,6 +223,9 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \textbf{ST} & \textbf{S}low \textbf{T}rader\\
 \textbf{OB} & \textbf{O}rder \textbf{B}ook \\
 \textbf{MM} & \textbf{M}arket \textbf{M}aker \\
+\textbf{SD} & \textbf{S}tandard \textbf{D}eviation \\
+\textbf{GD} & \textbf{G}aussian \textbf{D}istribution \\
+\textbf{GA} & \textbf{G}enetic  \textbf{A}lgorithm \\
 %\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
 }
 
@@ -258,10 +266,14 @@ volatility &\\
 
 \clearpage % Start a new page
 
-\lhead{\emph{Symbols}} % Set the left side page header to "Physical Constants"
+\lhead{\emph{Symbols and notation}} % Set the left side page header to "Physical Constants"
 
 \listofconstants{ll} % Include a list of Physical Constants (a four column table)
 {
+$\E{\textbf{x}}$ & The sample mean of vector $\textbf{x}$\\
+$\Var{\textbf{x}}$ & The sampe variance of vector $\textbf{x}$ \\
+$\Cov{\textbf{x}, \textbf{y}}$ & The sample covariance between vector $\textbf{x}$ and $\textbf{y}$\\
+$\Median{\textbf{x}}$ & The sample median of vector $\textbf{x}$\\
 \delay & Time delay in rounds from agent $i$ to market $j$. Note that $\tau_{i,j} = \tau_{j,i}$.\\
 \spread & Spread at the end of round $t$\\
 \pask & The lowest \ask price in the order book at the end of round \round\\
@@ -278,7 +290,7 @@ volatility &\\
 
 \clearpage % Start a new page
 
-\lhead{\emph{Parameters and default values}} % Set the left side page header to "Symbols"
+\lhead{\emph{Model parameters}} % Set the left side page header to "Symbols"
 
 \listofnomenclature{llll} % Include a list of Symbols (a three column table)
 {
@@ -286,12 +298,10 @@ volatility &\\
 \textbf{Symbol} & \textbf{Description}& \textbf{Unit}\\
 \nrounds & Number of simulation rounds & \\
 ***$\lambda$ & Average number of ST orders per round & \\
-\sclatencymu & Mean of the Gaussian distribution for \hftsc{} latency& \\
-\sclatencys &Standard deviation of the Gaussian distribution for \hftsc{}&\\
+\sclatencymu, \sclatencys & Mean and SD parameters of the GD for \hftsc{} latency& \\
 \scnAgents & Number of \hftsc{} agents&\\
-\scthinkmu & Mean of the Gaussian distribution for \hftsc{} thinking time&\\
-\scthinks& Standard deviation of the Gaussian distribution for \hftsc{} thinking time&\\
-\sctimehorizonmu& Mean of the Gaussian distribution for \hftsc{} time horizon&\\
+\scthinkmu, \scthinks & Mean and SD parameters of the GD for \hftsc{} thinking time&\\
+\sctimehorizonmu, \sctimehorizons & Mean and SD parameters of the GD for \hftsc{} time horizon&\\
 \sctimehorizons& Standard deviation of the Gaussian distribution for \hftsc{} time horizon&\\
 \scwaitTimeBetweenTradingmu& Mean of the Gaussian distribution for the number of rounds that \hftsc{} agents wait between submitting traders&\\
 \scwaitTimeBetweenTradings& Standard deviation of the Gaussian distribution for the number of rounds that \hftsc{} agents wait between submitting traders&\\
@@ -299,11 +309,8 @@ volatility &\\
 \ssmmlatencys& Standard deviation of the Gaussian distribution for \hftmm{} latency&\\
 \ssmmnAgents& Number of \hftmm{} agents&\\
 \ssmmthinkmu& Mean of the Gaussian distribution for \hftsc{} thinking time&\\
-\ssmmthinks& Standard deviation of the Gaussian distribution for \hftsc{} thinking time.&\\
-
-
-\nmm & Number of hft market maker agents. &\\
-\nsc & Number of hft simple chartist agents. &}
+\ssmmthinks & Standard deviation of the Gaussian distribution for \hftsc{} thinking time.&\\
+}
 
 %----------------------------------------------------------------------------------------
 %	DEDICATION

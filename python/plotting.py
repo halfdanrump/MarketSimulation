@@ -106,17 +106,16 @@ def make_pretty_tradeprice_plot(rounds, prices, filename, format = 'png', **figa
     plt.close()
     gc.collect()
 
-def get_pretty_multiline_xy_plot(x, xlabel, ylabel, filename, y_errorbar=None, *ys):
+def get_pretty_xy_plot(x, y, xlabel, ylabel, filename, y_errorbar=None, save_figure = True):
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)    
     ax.set_xlabel(pfn(xlabel))
     ax.set_ylabel(pfn(ylabel))
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
-    for y in ys:
-        ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
-        p.plot(ax, x, y, linewidth=2)
-    fig.savefig(filename)
+    ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
+    p.plot(ax, x, y, linewidth=2)
+    if save_figure: fig.savefig(filename)
     return ax, fig
 
 def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename, ax=None, fig=None):
@@ -135,7 +134,7 @@ def make_pretty_scatter_plot(x, y, xlabel, ylabel, filename, ax=None, fig=None):
     fig.savefig(filename)
 
 
-def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels, y_errorbar=None, y_logscale = False):
+def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_name, legend_labels, y_errorbar=None, y_logscale = False, vline_x = []):
     if y_errorbar:
         assert isinstance(y_errorbar, list), "Please provide a list for error bars"
         assert len(y_errorbar) == len(lines_to_plot), "When plotting error bars you must specify an array of error bars for each line that is plotted"
@@ -159,6 +158,10 @@ def make_pretty_generation_plot(filename, generations, lines_to_plot, x_axis_nam
         for i, (series, label) in enumerate(zip(lines_to_plot, legend_labels)):
             ax.errorbar(generations, series, yerr=y_errorbar[i], zorder=1, capsize=2, barsabove=True, ecolor = errorbar_color)
     
+    if vline_x:
+        for x in vline_x:
+            ax.vlines(x = x, ymin = ax.get_ylim()[0], ymax = ax.get_ylim()[1], linewidth = 1, linestyles = 'dashed', alpha = 0.5)
+
     p.legend(ax, loc=0)
     fig.savefig(filename)
 
@@ -222,9 +225,11 @@ def make_color_grouped_scatter_plot(data_frame, x_name, y_name, color_by, filena
     fig.savefig(filename)
     return ax, fig
 
-def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False, point_size = 5, omit_largest = 0):
+def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, filename, colormap, x_function = 'dummy', y_function = 'dummy', legend = False, point_size = 5, omit_largest = 0, labels_to_plot = []):
     ### Originally created for issue_28
+    if not labels_to_plot: labels_to_plot = set(labels)
     assert omit_largest < max(set(labels)), "omit_largest must be smaller than number of clusters"
+    colors = colormap.mpl_colors
     def dummy(a): return a
     p = Ppl(colormap, alpha=1)
 
@@ -247,9 +252,11 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     #print sizes, groups
     for order_to_plot, group in enumerate(list(groups)[-(len(groups)-omit_largest):]):
         #print order_to_plot, sizes[order_to_plot], group, cluster_size[group]
-        x = eval(x_function)(data_frame[labels == group][x_name])
-        y = eval(y_function)(data_frame[labels == group][y_name])
-        p.scatter(ax, x, y, label='C%s: %s'%(group, cluster_size[group]), s=point_size, linewidth=0, zorder=order_to_plot)
+        if group in labels_to_plot:
+            #print 'Plotting points in group %s'%group
+            x = eval(x_function)(data_frame[labels == group][x_name])
+            y = eval(y_function)(data_frame[labels == group][y_name])
+            p.scatter(ax, x, y, label='C%s: %s'%(group, list(sizes)[order_to_plot]), s=point_size, linewidth=0, zorder=order_to_plot, color=colors[group])
     if legend: 
         legend = p.legend(ax, loc=0, fancybox=True, markerscale=5, frameon=False)
         legend.set_zorder(100)
@@ -259,6 +266,19 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
 
     fig.savefig(filename)
 
+def plot_pca_components(filename, components):
+    def dummy(a): return a
+    colormap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(colormap, alpha=1)
+    fig, ax = plt.subplots(1)
+    p.pcolormesh(fig, ax, components.values)
+    ax.set_xticks([])
+    yticks = np.linspace(len(components) - 0.5, 0.5, len(components))
+    ax.set_yticks(yticks)
+    y_ticklabels = map(lambda x: 'PCA %s'%x, range(len(components)))
+    ax.set_yticklabels(y_ticklabels)
+    fig.savefig(filename)
+    return fig, ax
 """
 def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):
     assert x_axis_name in all_data.dtype.names, "x axis parameter not found"

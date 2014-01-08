@@ -78,7 +78,7 @@ g_{i,j} \sim \mathcal{U}(0,1)
 \end{equation}
 
 
-Some of the model parameters are integers, such as \nmm and \nsc, and these are rounded after being scaled and before they are passed to the simulation.
+Some of the model parameters are integers, such as \ssmmnAgents{} and \scnAgents{}, and these are rounded after being scaled and before they are passed to the simulation.
 
 
 
@@ -156,8 +156,8 @@ First of all, we are interested in establishing which parameters cause the marke
 \begin{table}
 \begin{tabular}{c|c}
 \textbf{Parameter} & \textbf{Range}\\
-\nmm & \\
-\nsc & 
+\ssmmnAgents & \\
+\scnAgents & 
 \end{tabular}
 \caption{Overview of experiments}
 \label{table:optimization_goals}
@@ -171,7 +171,7 @@ As mentioned earlier, it is not enough simply to define a fitness function which
 	\centering
 		\includegraphics{Figures/Electron.pdf}
 		\rule{35em}{0.5pt}
-	\caption{Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\nmm = \nsc = 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.}
+	\caption{Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ssmmnAgents = \scnAgents = 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.}
 	\label{fig:no_marketmakers}
 \end{figure}
 

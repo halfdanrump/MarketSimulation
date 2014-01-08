@@ -74,13 +74,15 @@
 \contentsline {subsubsection}{\numberline {4.2.3.2}\ensuremath {f_\text {m}}vs. \ensuremath {f_\text {s}}}{35}{subsubsection.133}
 \contentsline {subsubsection}{\numberline {4.2.3.3}\ensuremath {f_\sigma }vs. \ensuremath {f_\text {s}}}{37}{subsubsection.142}
 \contentsline {subsection}{\numberline {4.2.4}Looking for parameters causing certain behavior}{38}{subsection.147}
-\contentsline {subsection}{\numberline {4.2.5}Section summary}{39}{subsection.150}
-\contentsline {section}{\numberline {4.3}D10}{39}{section.151}
-\contentsline {section}{\numberline {4.4}D11}{39}{section.157}
-\contentsline {section}{\numberline {4.5}Hall of fame}{39}{section.163}
+\contentsline {subsection}{\numberline {4.2.5}Section summary}{39}{subsection.149}
+\contentsline {section}{\numberline {4.3}D10}{39}{section.150}
+\contentsline {subsection}{\numberline {4.3.1}Fitness and parameter evolution}{40}{subsection.153}
+\contentsline {subsection}{\numberline {4.3.2}Correlation between fitness measures}{43}{subsection.159}
+\contentsline {section}{\numberline {4.4}D11}{45}{section.167}
+\contentsline {section}{\numberline {4.5}Hall of fame}{45}{section.173}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Additional tables}{50}{appendix.164}
-\contentsline {section}{\numberline {A.1}Dataset 1}{50}{section.165}
-\contentsline {chapter}{\numberline {B}Third party software}{51}{appendix.166}
+\contentsline {chapter}{\numberline {A}Additional tables}{54}{appendix.174}
+\contentsline {section}{\numberline {A.1}Dataset 1}{54}{section.175}
+\contentsline {chapter}{\numberline {B}Third party software}{55}{appendix.176}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{52}{dummy.167}
+\contentsline {chapter}{Bibliography}{56}{dummy.177}

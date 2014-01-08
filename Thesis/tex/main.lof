@@ -8,7 +8,7 @@
 \contentsline {figure}{\numberline {2.6}{\ignorespaces Slow trader order arrival}}{14}{figure.caption.55}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces \textbf {Motivatoin for tuning:} the two\relax }}{17}{figure.caption.64}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath { \texttt {n}_\texttt {mm} }= \ensuremath { \texttt {n}_\texttt {sc} }= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{22}{figure.caption.86}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath {N_{m}}= \ensuremath {N_{c}}= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{22}{figure.caption.86}
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Color toned scatter plots of \ensuremath {f_\text {s}}, \ensuremath {f_\sigma }and \ensuremath {f_\text {m}}taken from dataset d1after applying log-scaling and manually removing outliers\relax }}{28}{figure.caption.110}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Evolution of time delay parameters common both HFT agent types, and of the number of agents in experiment d1\relax }}{30}{figure.caption.116}
@@ -25,15 +25,18 @@
 \contentsline {figure}{\numberline {4.12}{\ignorespaces Scatter plot of \ensuremath {f_\text {m}}, \ensuremath {f_\text {s}}and \ensuremath {f_\sigma }\relax }}{37}{figure.caption.143}
 \contentsline {figure}{\numberline {4.13}{\ignorespaces Scatter plot of \ensuremath {f_\text {m}}, \ensuremath {f_\text {s}}and \ensuremath {f_\text {o}}\relax }}{38}{figure.caption.144}
 \contentsline {figure}{\numberline {4.14}{\ignorespaces \relax }}{38}{figure.caption.148}
-\contentsline {figure}{\numberline {4.15}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{40}{figure.caption.152}
-\contentsline {figure}{\numberline {4.16}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{41}{figure.caption.153}
-\contentsline {figure}{\numberline {4.17}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measuresd10\relax }}{42}{figure.caption.154}
-\contentsline {figure}{\numberline {4.18}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measuresd10\relax }}{43}{figure.caption.155}
-\contentsline {figure}{\numberline {4.19}{\ignorespaces Correlation between \ensuremath {N_{m}}and the four fitness measuresd10\relax }}{44}{figure.caption.156}
-\contentsline {figure}{\numberline {4.20}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{45}{figure.caption.158}
-\contentsline {figure}{\numberline {4.21}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{46}{figure.caption.159}
-\contentsline {figure}{\numberline {4.22}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measuresd10\relax }}{47}{figure.caption.160}
-\contentsline {figure}{\numberline {4.23}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measuresd10\relax }}{48}{figure.caption.161}
-\contentsline {figure}{\numberline {4.24}{\ignorespaces Correlation between \ensuremath {N_{m}}and the four fitness measuresd10\relax }}{49}{figure.caption.162}
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{39}{figure.caption.151}
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{40}{figure.caption.152}
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Correlation matrix of the four fitness measures in the first generation of dataset d10\relax }}{43}{figure.caption.160}
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{45}{figure.caption.161}
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{46}{figure.caption.162}
+\contentsline {figure}{\numberline {4.20}{\ignorespaces Correlation between \ensuremath {N_{m}}and the four fitness measures in experiment d10\relax }}{47}{figure.caption.163}
+\contentsline {figure}{\numberline {4.21}{\ignorespaces Scatter plots in fitness space showing the grouping of data points when using a GMM with 12 clusters.\relax }}{48}{figure.caption.164}
+\contentsline {figure}{\numberline {4.22}{\ignorespaces XXX\relax }}{48}{figure.caption.166}
+\contentsline {figure}{\numberline {4.23}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{49}{figure.caption.168}
+\contentsline {figure}{\numberline {4.24}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{50}{figure.caption.169}
+\contentsline {figure}{\numberline {4.25}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{51}{figure.caption.170}
+\contentsline {figure}{\numberline {4.26}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}{} and the four fitness measures in experiment d10\relax }}{52}{figure.caption.171}
+\contentsline {figure}{\numberline {4.27}{\ignorespaces Correlation between \ensuremath {N_{m}}{} and the four fitness measures in experiment d10\relax }}{53}{figure.caption.172}
 \addvspace {10\p@ }
 \addvspace {10\p@ }

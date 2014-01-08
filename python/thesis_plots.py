@@ -11,6 +11,7 @@ figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thes
 table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
 import utils
 import os
+import sys
 
 def make_issue_specific_figure_folder(name, dataset):
 	name.replace('/', '')
@@ -224,7 +225,7 @@ def issue_36_kernelPCA(dataset, load_from_file):
 	return reduced_par, labels_all_datapoints, km
 
 
-def issue_82_parameter_evolution(dataset):
+def issue_82_parameter_evolution(dataset, vline_x = []):
 	def get_stats(name, stats):
 		return [getattr(group[name], s)() for s in stats]
 
@@ -247,14 +248,19 @@ def issue_82_parameter_evolution(dataset):
 		make_pretty_generation_plot(folder + 'sctimehorizon_mu.png', generations, [group['sc_timehorizon_mu'].mean()], 'Average of the chartist time horizon distribution mean', ['Chartists'], y_errorbar=[group['sc_timehorizon_mu'].std	()])
 	
 	def d10():
-		make_pretty_generation_plot(folder + 'latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()])
-		make_pretty_generation_plot(folder + 'latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()])
-		make_pretty_generation_plot(folder + 'nAgents.png', generations, [group['ssmm_nAgents'].mean()], 'Average number of agents', ['Market makers'], y_errorbar=[group['ssmm_nAgents'].std()])
+		make_pretty_generation_plot(folder + 'latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()], vline_x = vline_x)
+		make_pretty_generation_plot(folder + 'latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()], vline_x = vline_x)
+		make_pretty_generation_plot(folder + 'nAgents.png', generations, [group['ssmm_nAgents'].mean()], 'Average number of agents', ['Market makers'], y_errorbar=[group['ssmm_nAgents'].std()], vline_x = vline_x)
+
+		make_pretty_generation_plot(folder + 'latpars_mu_median.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean(), group['ssmm_latency_mu'].median(), group['sc_latency_mu'].median()], 'Average latency mean', ['Market makers (mean)', 'Chartists (mean)', 'Market makers (median)', 'Chartists (median)'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std(), None, None])
+		make_pretty_generation_plot(folder + 'latpars_s_median.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean(), group['ssmm_latency_s'].median(), group['sc_latency_s'].median()], 'Average latency std', ['Market makers (mean)', 'Chartists (mean)', 'Market makers (median)', 'Chartists (median)'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std(), None, None])
+		make_pretty_generation_plot(folder + 'nAgents_median.png', generations, [group['ssmm_nAgents'].mean(), group['ssmm_nAgents'].median()], 'Number of agents', ['Market makers (mean)', 'Market makers (median)'], y_errorbar=[group['ssmm_nAgents'].std(), None])
 
 	def d11():
 		make_pretty_generation_plot(folder + 'latpars_s.png', generations, [group['ssmm_latency_s'].mean(), group['sc_latency_s'].mean()], 'Average latency std', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_s'].std(), group['sc_latency_s'].std()])
 		make_pretty_generation_plot(folder + 'latpars_mu.png', generations, [group['ssmm_latency_mu'].mean(), group['sc_latency_mu'].mean()], 'Average latency mean', ['Market makers', 'Chartists'], y_errorbar=[group['ssmm_latency_mu'].std(), group['sc_latency_mu'].std()])
 		make_pretty_generation_plot(folder + 'nAgents.png', generations, [group['sc_nAgents'].mean()], 'Average number of agents', ['Chartists'], y_errorbar=[group['sc_nAgents'].std()])
+
 
 
 	from plotting import make_pretty_generation_plot
@@ -265,18 +271,17 @@ def issue_82_parameter_evolution(dataset):
 	group = all_data.groupby('gen')
 	stats = ['min', 'mean', 'median']
 	
-	make_pretty_generation_plot(folder + 'time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats)
-	make_pretty_generation_plot(folder + 'stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats, y_logscale=True)
-	make_pretty_generation_plot(folder + 'round_stable.png', generations, get_stats('round_stable', stats), 'Round stable', stats, y_logscale=True)
-	make_pretty_generation_plot(folder + 'overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats)
+	make_pretty_generation_plot(folder + 'time_to_reach_new_fundamental.png', generations, get_stats('time_to_reach_new_fundamental', stats), 'Time to reach fundamental after shock', stats, vline_x = vline_x)
+	make_pretty_generation_plot(folder + 'stdev.png', generations, get_stats('stdev', stats), 'Standard deviation of trade prices entering stability margin', stats, y_logscale=True, vline_x=vline_x)
+	make_pretty_generation_plot(folder + 'round_stable.png', generations, get_stats('round_stable', stats), 'Round stable', stats, y_logscale=True, vline_x=vline_x)
+	make_pretty_generation_plot(folder + 'overshoot.png', generations, get_stats('overshoot', stats), 'Overshoot', stats, vline_x=vline_x)
 	eval(dataset)()	
 	
 
-def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold):
-	from plotting import get_pretty_multiline_xy_plot, make_pretty_scatter_plot
+def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold, preloaded_data = None):
+	from plotting import get_pretty_xy_plot, make_pretty_scatter_plot
 	from numpy import where
 	folder = make_issue_specific_figure_folder('101_pars_vs_fits', dataset)
-	#if not eos.mkdir(folder)
 	stats = ['mean', 'median']
 
 	def get_plots_to_make(fitness_types):
@@ -289,13 +294,14 @@ def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold):
 
 	def mkplot(all_data, groupby, plots_to_make):
 		g = all_data.groupby(groupby)
-		x = g.groups.keys()
+		#x = g.groups.keys()
 		s = all_data.sort(groupby)
+		sorted_x, index_order = zip(*sorted(zip(g.groups.keys(), range(len(g.groups.keys())))))
 		for attr, stat in plots_to_make:
 			print groupby, attr, stat
 			y = getattr(g[attr],stat)()
 			filename = '%s%s__vs__%s(%s)'%(folder, groupby, attr, stat)
-			ax, fig = get_pretty_multiline_xy_plot(x, groupby, '%s (%s)'%(attr, stat), filename, g[attr].std()/2, y)
+			ax, fig = get_pretty_xy_plot(sorted_x, y, groupby, '%s (%s)'%(attr, stat), filename, g[attr].std()/2, save_figure = False)
 			filename = '%s%s__vs__%s(%s)_scatter'%(folder, groupby, attr, stat)
 			make_pretty_scatter_plot(s[groupby], s[attr], groupby, '%s (%s)'%(attr, stat), filename, ax=ax, fig=fig)
 	
@@ -303,7 +309,19 @@ def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold):
 		for groupby in groups:
 			mkplot(data, groupby, plots_to_make)
 
-	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
+	
+	folder = make_issue_specific_figure_folder('101_pars_vs_fits', dataset)
+	stats = ['mean', 'median']
+
+	if preloaded_data is None: fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
+	else:
+		try:
+			fit = preloaded_data['fit']
+			par = preloaded_data['par']
+		except KeyError, e:
+			print "Provide dict with keys 'fit' and 'par' containing dataframes for fit and par data"
+			print e
+			sys.exit(1)
 	#o = where(fit.overshoot > overshoot_threshold)[0]
 	not_o = where(fit.overshoot <= overshoot_threshold)[0]
 	all_data = concat([par.iloc[not_o],fit.iloc[not_o]]	,axis=1)
@@ -383,7 +401,7 @@ def issue_103_manually_removing_large_fitness_points(dataset, overshoot_threshol
 	print utils.prettify_table(stats.to_latex(float_format=lambda x: str(round(x,1))), 'LABEL', 'CAPTION')
 	return stats
 
-def issue_108(dataset, n_clusters, overshoot_threshold):
+def issue_108(dataset, n_clusters, overshoot_threshold, load_pickled_labels = False, labels_to_include = []):
 	from numpy import where, repeat, log, random
 	from sklearn.cluster import KMeans
 	from plotting import make_scatter_plot_for_labelled_data
@@ -391,7 +409,10 @@ def issue_108(dataset, n_clusters, overshoot_threshold):
 	from sklearn.mixture import GMM
 	from sklearn.decomposition import PCA
 	from sklearn.preprocessing import scale
-	
+	import cPickle
+	if labels_to_include: labels_to_plot = labels_to_include
+	else: labels_to_plot = range(n_clusters)
+
 	plots_to_make = [
 					{'x_name':'stdev', 'x_function':'log', 'y_name':'round_stable', 'y_function':'log'},
 					{'x_name':'time_to_reach_new_fundamental', 'y_name':'round_stable'},
@@ -403,60 +424,151 @@ def issue_108(dataset, n_clusters, overshoot_threshold):
 	o = where(fit.overshoot > overshoot_threshold)[0]
 	not_o = where(fit.overshoot <= overshoot_threshold)[0]
 	data_to_plot = fit.iloc[not_o]
-	pca = PCA(n_components = 2)
+	pca = PCA(n_components = 3)
 	par_transformed = pca.fit_transform(scale(par.iloc[not_o].astype(float)))
 	par_transformed += random.random(par_transformed.shape)*0.2
-	par_inliers_PCA = DataFrame(par_transformed, columns = ['PC1', 'PC2'])
+	par_inliers_PCA = DataFrame(par_transformed, columns = ['PC1', 'PC2', 'PC3'])
 	
-	
+	"""
 	print 'Component 0:'
 	print map(lambda c, n: '%s=%.3g'%(n, c), pca.components_[0], utils.get_latex_par_names_from_list(par.columns))
 	print 'Component 1:'
 	print map(lambda c, n: '%s=%.3g'%(n, c), pca.components_[1], utils.get_latex_par_names_from_list(par.columns))
-
+	print 'Component 1:'
+	print map(lambda c, n: '%s=%.3g'%(n, c), pca.components_[2], utils.get_latex_par_names_from_list(par.columns))
+	"""
 	colormap = brewer2mpl.get_map('Paired', 'Qualitative', n_clusters, reverse=True)
+
+	def print_pca_components(pca, name):
+		from plotting import plot_pca_components
+		components = DataFrame(pca.components_, columns=utils.get_latex_par_names_from_list(par.columns))
+		filename = folder + 'clustering_%s_%s'%(dataset, name)
+		plot_pca_components(filename=filename, components=components[::-1])
+		components['$\\gamma$'] = pca.explained_variance_ratio_
+		print
+		print utils.prettify_table(components.to_latex(float_format=lambda x: str(round(x,2))), label='table:clustering_%s_%s'%(dataset, name), caption='XXX')
+		print 
+	print_pca_components(pca, 'allclusters')
 
 	def make_tables(clustering_method, name, cluster_labels):
 		fit_inlier_stats = calculate_stats_for_dataframe(fit.iloc[not_o,:], cluster_labels)
 		fit_outlier_stats = calculate_stats_for_dataframe(fit.iloc[o,:], repeat(0, len(o)))
 		fit_mean_table = concat([fit_inlier_stats['Mean'], fit_outlier_stats['Mean']], axis=1)
+		fit_mean_table = fit_mean_table.drop('Count', axis=0)
 		fit_mean_table.index = utils.get_latex_par_names_from_list(fit_mean_table.index)
+		fit_mean_table = fit_mean_table.transpose()
+		
 		par_inlier_stats = calculate_stats_for_dataframe(par.iloc[not_o,:], cluster_labels)
 		par_outlier_stats = calculate_stats_for_dataframe(par.iloc[o,:], repeat(0, len(o)))
 		par_mean_table = concat([par_inlier_stats['Mean'], par_outlier_stats['Mean']], axis=1)
 		par_mean_table.index = utils.get_latex_par_names_from_list(par_mean_table.index)
-		tex = par_mean_table.to_latex(float_format=lambda x: str(round(x,1)))
+		par_mean_table = par_mean_table.transpose()
+		
+		full_table = concat([fit_mean_table, par_mean_table], axis=1)
+		full_table = full_table.sort('overshoot')
+		tex = full_table.to_latex(float_format=lambda x: str(round(x,1)))
 		filename = folder + '%s_%s_%s.tex'%(n_clusters,clustering_method, name)
-		tex = utils.prettify_table(fit_mean_table.to_latex(float_format=lambda x: str(round(x,1))), 'table:fit_gmm_'+name, 'gmm_'+name)
-		tex += utils.prettify_table(par_mean_table.to_latex(float_format=lambda x: str(round(x,1))), 'table:par_kmeans_'+name, 'kmeans_'+name)
+		tex = utils.prettify_table(full_table.to_latex(float_format=lambda x: str(round(x,1))), 'table:fit_gmm_'+name, 'gmm_'+name)
 
 		with open(filename, 'w') as f:
 			f.write(tex)
 
+	#def make_pca_plots():
+
+
 	def make_plots(clustering_method, data_name, labels):
-		for i, plotargs in enumerate(plots_to_make):
-			filename = folder + '%s_%s_%s_fit_%s.png'%(n_clusters, clustering_method, data_name, i)
-			make_scatter_plot_for_labelled_data(data_to_plot, labels=labels, filename=filename, colormap=colormap, legend = True, **plotargs)
-		filename = folder + '%s_%s_%s_par.png'%(n_clusters, clustering_method, data_name)
-		make_scatter_plot_for_labelled_data(par_inliers_PCA, x_name='PC1', y_name='PC2', labels=labels, filename=filename, colormap=colormap, legend = True)
-		filename = folder + '%s_%s_%s_par_omit.png'%(n_clusters, clustering_method, data_name)
-		make_scatter_plot_for_labelled_data(par_inliers_PCA, x_name='PC1', y_name='PC2', labels=labels, filename=filename, colormap=colormap, legend = True, omit_largest=n_clusters-4)
+		
+		if not labels_to_include:
+			for i, plotargs in enumerate(plots_to_make):
+				filename = folder + '%s_%s_%s_fit_%s.png'%(n_clusters, clustering_method, data_name, i)
+				make_scatter_plot_for_labelled_data(data_to_plot, labels=labels, filename=filename, colormap=colormap, legend = True, **plotargs)
+			filename = folder + '%s_%s_%s_par.png'%(n_clusters, clustering_method, data_name)
+			make_scatter_plot_for_labelled_data(par_inliers_PCA, x_name='PC1', y_name='PC2', labels=labels, filename=filename, colormap=colormap, legend = True)
+			filename = folder + '%s_%s_%s_par_omit.png'%(n_clusters, clustering_method, data_name)
+			make_scatter_plot_for_labelled_data(par_inliers_PCA, x_name='PC1', y_name='PC2', labels=labels, filename=filename, colormap=colormap, legend = True, omit_largest=n_clusters-4)
+		else:
+			ltp = '_'.join(map(str, labels_to_plot))
+			filename = folder + '%s_%s_%s_par_%s_pca_1v2.png'%(n_clusters, clustering_method, data_name, ltp)
+			data = par_inliers_PCA[['PC1', 'PC2']]
+			make_scatter_plot_for_labelled_data(data, x_name='PC1', y_name='PC2', labels=labels, filename=filename, colormap=colormap, legend = True, labels_to_plot = labels_to_plot)
+			filename = folder + '%s_%s_%s_par_%s_pca_1v3.png'%(n_clusters, clustering_method, data_name, ltp)
+			data = par_inliers_PCA[['PC1', 'PC3']]
+			make_scatter_plot_for_labelled_data(data, x_name='PC1', y_name='PC3', labels=labels, filename=filename, colormap=colormap, legend = True, labels_to_plot = labels_to_plot)
+			filename = folder + '%s_%s_%s_par_%s_pca_2v3.png'%(n_clusters, clustering_method, data_name, ltp)
+			data = par_inliers_PCA[['PC2', 'PC3']]
+			make_scatter_plot_for_labelled_data(data, x_name='PC2', y_name='PC3', labels=labels, filename=filename, colormap=colormap, legend = True, labels_to_plot = labels_to_plot)
+			
+
+			selective_par = par.iloc[not_o][get_indluded_labels_mask(labels, *labels_to_plot)]
+			selective_labels = labels[get_indluded_labels_mask(labels, *labels_to_include)]
+			pca_selective = PCA(3)
+			selective_par = DataFrame(pca_selective.fit_transform(selective_par), columns = ['PC1', 'PC2', 'PC3'])
+			
+			print_pca_components(pca_selective, ltp)
+
+			filename = folder + '%s_%s_%s_par_%s_pca_1v2_selective.png'%(n_clusters, clustering_method, data_name, ltp)
+			data = selective_par[['PC1', 'PC2']]
+			make_scatter_plot_for_labelled_data(data, x_name='PC1', y_name='PC2', labels=selective_labels, filename=filename, colormap=colormap, legend = True, labels_to_plot = labels_to_plot)
+			filename = folder + '%s_%s_%s_par_%s_pca_1v3_selective.png'%(n_clusters, clustering_method, data_name, ltp)
+			data = selective_par[['PC1', 'PC3']]
+			make_scatter_plot_for_labelled_data(data, x_name='PC1', y_name='PC3', labels=selective_labels, filename=filename, colormap=colormap, legend = True, labels_to_plot = labels_to_plot)
+			filename = folder + '%s_%s_%s_par_%s_pca_2v3_selective.png'%(n_clusters, clustering_method, data_name, ltp)
+			data = selective_par[['PC2', 'PC3']]
+			make_scatter_plot_for_labelled_data(data, x_name='PC2', y_name='PC3', labels=selective_labels, filename=filename, colormap=colormap, legend = True, labels_to_plot = labels_to_plot)
+			#par_data_for_plotting = par.iloc[not_o].copy() + random.random(par.iloc[not_o].shape) * 0.2
+			#filename = folder + '%s_%s_%s_par_latencies.png'%(n_clusters, clustering_method, data_name)
+			#columns = ['ssmm_latency_mu', 'sc_latency_mu']
+			#make_scatter_plot_for_labelled_data(par_data_for_plotting[columns], 'ssmm_latency_mu', 'sc_latency_mu', labels, filename, colormap, legend = True, labels_to_plot = labels_to_plot)
+		
+
+	def get_indluded_labels_mask(labels, *labels_to_include):
+		from numpy import repeat
+		mask = repeat(False, labels.shape)
+		for l in labels_to_include:
+			mask = mask | (labels == l)
+			print mask
+		
+		return mask
 
 	def cluster_and_label(name, data_to_cluster):
+		
 		data_to_cluster = scale(data_to_cluster)
-		km = KMeans(n_clusters=n_clusters)
-		labels = km.fit_predict(data_to_cluster)
-		make_plots('kmm', name, labels)
-		make_tables('kmm', name, labels)
-		gmm = GMM(n_components = n_clusters, covariance_type = 'full')
-		gmm.fit(data_to_cluster)
-		labels = gmm.predict(data_to_cluster)
-		make_plots('gmm', name, labels)
-		make_tables('gmm', name, labels)
+		"""
+		km_labels_store_file = folder + '%s_%s_%s_classifier.pickle'%(n_clusters, 'km', name)
+		if load_pickled_labels:
+			with open(km_labels_store_file, 'rb') as fid:
+				km_labels = cPickle.load(fid)
+		else:
+			km = KMeans(n_clusters=n_clusters)
+			km.fit(data_to_cluster)
+			km_labels = km.predict(data_to_cluster)
+			with open(km_labels_store_file, 'wb') as fid:
+				cPickle.dump(km_labels, fid)
+		make_plots('km', name, km_labels)
+		make_tables('km', name, km_labels)
+		"""
 
+		gmm_labels_store_file = folder + '%s_%s_%s_classifier.pickle'%(n_clusters, 'gmm', name)
+		if load_pickled_labels:
+			with open(gmm_labels_store_file, 'rb') as fid:
+				gmm_labels = cPickle.load(fid)
+		else:
+			gmm = GMM(n_components = n_clusters, covariance_type = 'full')
+			gmm.fit(data_to_cluster)
+			gmm_labels = gmm.predict(data_to_cluster)
+			with open(gmm_labels_store_file, 'wb') as fid:
+				cPickle.dump(gmm_labels, fid)
+		make_plots('gmm', name, gmm_labels)
+		make_tables('gmm', name, gmm_labels)
 
-	data_to_cluster = concat([log(fit['stdev']), log(fit['round_stable']), fit['time_to_reach_new_fundamental']], axis=1).iloc[not_o,:]
-	cluster_and_label('logs_logr_t', data_to_cluster)
+		
+		
+
+		
+		
+
+	#data_to_cluster = concat([log(fit['stdev']), log(fit['round_stable']), fit['time_to_reach_new_fundamental']], axis=1).iloc[not_o,:]
+	#cluster_and_label('logs_logr_t', data_to_cluster)
 	"""
 	data_to_cluster = concat([log(fit['stdev']), log(fit['round_stable'])], axis=1).iloc[not_o,:]
 	cluster_and_label('logs_logr', data_to_cluster, 'stdev', 'round_stable', 'log', 'log')
@@ -492,6 +604,67 @@ def issue_113_make_all_tradeprice_plots():
 		rounds, prices = IO.load_tradeprice_data(data_folder + dataname)
 		make_pretty_tradeprice_plot(rounds, prices, figure_folder + plotname, dpi = 200, figsize=tuple(map(lambda x: x*1, [8,4])), format = 'pdf')
 
+
+
+def issue_115_agent_ratio(ratio_threshold):
+	from numpy import where
+	def run_issue(name, all_fit, all_par):
+		all_par['chartist_per_market_maker'] = all_par.sc_nAgents.astype(float) / all_par.ssmm_nAgents
+		par_to_plot = DataFrame(all_par['chartist_per_market_maker'])
+
+		over_threshold_idx, = where(par_to_plot['chartist_per_market_maker'] > ratio_threshold)
+		print 'Dropping over ratio threshold rows: %s (%s rows)'%(over_threshold_idx, len(over_threshold_idx))
+		par_to_plot = par_to_plot.drop(over_threshold_idx)
+		all_fit = all_fit.drop(over_threshold_idx)
+		issue_101_plot_pars_vs_fitness(name, overshoot_threshold = 10, preloaded_data = {'fit':all_fit, 'par':par_to_plot})
+	
+	fit10, par10, gen10, ids10 = IO.load_pickled_generation_dataframe('d10')
+	fit11, par11, gen11, ids11 = IO.load_pickled_generation_dataframe('d11')
+	
+	par10['sc_nAgents'] = 150
+	par11['ssmm_nAgents'] = 52
+
+	run_issue('d10', fit10, par10)
+	run_issue('d11', fit10, par10)
+
+	all_par = concat([par10, par11])
+	all_fit = concat([fit10, fit11])
+	run_issue('d10_d11',all_fit, all_par)
+
+	
+def test(dataset, overshoot_threshold):
+	from numpy import where, zeros
+	import numpy as np
+	from sklearn.neighbors.kde import KernelDensity
+	folder = make_issue_specific_figure_folder('108 cluster after removing outliers', dataset)
+	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
+	o = where(fit.overshoot > overshoot_threshold)[0]
+	#not_o = where(fit.overshoot <= overshoot_threshold)[0]
+	par = par.drop(o)
+	fit = fit.drop(o)
+	g1 = par.groupby('ssmm_nAgents').groups.keys()
+	g2 = par.groupby('ssmm_latency_mu').groups.keys()
+	#stdev_mean = zeros((len(g1), len(g2)))
+	data = DataFrame(columns=['ssmm_nAgents', 'ssmm_latency_mu', 'stdev_mean'])
+	for a, ssmm_nAgents in enumerate(g1):
+		print ssmm_nAgents
+		for l, ssmm_latency_mu in enumerate(g2):
+			row = dict()
+			try:
+				row['stdev_mean'] = fit[(par['ssmm_latency_mu'] == ssmm_latency_mu) & (par['ssmm_nAgents'] == ssmm_nAgents)]['stdev'].mean()
+				row['ssmm_nAgents'] = ssmm_nAgents
+				row['ssmm_latency_mu'] = ssmm_latency_mu
+				#print row
+				data = data.append(row, ignore_index = True)
+			except TypeError:
+				print "ARGHS"
+
+	X, Y = np.meshgrid(g1.groups.keys(), g2.groups.keys())
+	xy = np.vstack([Y.ravel(), X.ravel()]).T
+	return data
+
+
+
 def plots_for_d3():
 	issue_21_basic_scatter_plots(dataset='d3')
 	issue_101_plot_pars_vs_fitness(dataset='d3')
@@ -500,32 +673,32 @@ def plots_for_d3():
 def plots_for_d9():
 	issue_21_basic_scatter_plots(dataset='d9')
 	issue_82_parameter_evolution(dataset='d9')
-	issue_101_plot_pars_vs_fitness(dataset='d9')
+	issue_101_plot_pars_vs_fitness(dataset='d9', overshoot_threshold=10)
 	issue_103_manually_removing_large_fitness_points(dataset='d9', overshoot_threshold=10)
-	issue_108(dataset='d9', n_clusters=3, overshoot_threshold=10)
-	issue_108(dataset='d9', n_clusters=4, overshoot_threshold=10)
-	issue_108(dataset='d9', n_clusters=8, overshoot_threshold=10)
-	issue_108(dataset='d9', n_clusters=12, overshoot_threshold=10)
+	#issue_108(dataset='d9', n_clusters=3, overshoot_threshold=10)
+	#issue_108(dataset='d9', n_clusters=4, overshoot_threshold=10)
+	#issue_108(dataset='d9', n_clusters=8, overshoot_threshold=10)
+	#issue_108(dataset='d9', n_clusters=12, overshoot_threshold=10)
 
 def plots_for_d10():
 	issue_21_basic_scatter_plots(dataset='d10')
-	issue_82_parameter_evolution(dataset='d10')
-	issue_101_plot_pars_vs_fitness(dataset='d10')
+	issue_82_parameter_evolution(dataset='d10', vline_x = [5, 15,20, 50])
+	issue_101_plot_pars_vs_fitness(dataset='d10', overshoot_threshold=10)
 	issue_103_manually_removing_large_fitness_points(dataset='d10', overshoot_threshold=10)
-	issue_108(dataset='d10', n_clusters=3, overshoot_threshold=10)
-	issue_108(dataset='d10', n_clusters=4, overshoot_threshold=10)
-	issue_108(dataset='d10', n_clusters=8, overshoot_threshold=10)
-	issue_108(dataset='d10', n_clusters=12, overshoot_threshold=10)
+	#issue_108(dataset='d10', n_clusters=3, overshoot_threshold=10)
+	#issue_108(dataset='d10', n_clusters=4, overshoot_threshold=10)
+	#issue_108(dataset='d10', n_clusters=8, overshoot_threshold=10)
+	#issue_108(dataset='d10', n_clusters=12, overshoot_threshold=10)
 
 def plots_for_d11():
 	issue_21_basic_scatter_plots(dataset='d11')
 	issue_82_parameter_evolution(dataset='d11')
-	issue_101_plot_pars_vs_fitness(dataset='d11')
+	issue_101_plot_pars_vs_fitness(dataset='d11', overshoot_threshold=10)
 	issue_103_manually_removing_large_fitness_points(dataset='d11', overshoot_threshold=10)
-	issue_108(dataset='d11', n_clusters=3, overshoot_threshold=10)
-	issue_108(dataset='d11', n_clusters=4, overshoot_threshold=10)
-	issue_108(dataset='d11', n_clusters=8, overshoot_threshold=10)
-	issue_108(dataset='d11', n_clusters=12, overshoot_threshold=10)
+	#issue_108(dataset='d11', n_clusters=3, overshoot_threshold=10)
+	#issue_108(dataset='d11', n_clusters=4, overshoot_threshold=10)
+	#issue_108(dataset='d11', n_clusters=8, overshoot_threshold=10)
+	#issue_108(dataset='d11', n_clusters=12, overshoot_threshold=10)
 
 def remake_make_all_thesis_plots():
 	plots_for_d3()
