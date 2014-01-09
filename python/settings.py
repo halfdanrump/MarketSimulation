@@ -101,7 +101,7 @@ if TEST_MODE:
 
 parameters_in_genes = [
     #'ssmm_nAgents',
-    #'sc_nAgents' ,
+    'sc_nAgents' ,
 
     'ssmm_latency_mu',
     #'ssmm_latency_s',
@@ -120,7 +120,7 @@ parameters_in_genes = [
 
 
 parameter_scaling = OrderedDict({
-    'ssmm_nAgents' : 50,
+    'ssmm_nAgents' : 25,
     'sc_nAgents' : 300,
 
     'ssmm_latency_mu' : 125,
@@ -202,7 +202,7 @@ fitness_weights = OrderedDict({
                     #'longest_interval_within_margin' : 1,
                     'stdev' : -1,
                     #'overshoot' : -1,
-                    'time_to_reach_new_fundamental' : -1,
+                    'time_to_reach_new_fundamental' : 1,
                     #'round_stable' : -1
                     })
 

@@ -81,7 +81,7 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 		print graph_folder + data_id + '.npz'
 		
 		IO.save_tradeprice_data(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.npz')
-		plotting.make_pretty_tradeprice_plot(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.png')
+		plotting.make_pretty_tradeprice_plot(trades['round'], trades['price'], graph_folder + data_id + '.png')
 		#plotting.make_tradeprice_plot(trades['round'], trades['price'], data, parameters, graph_folder + data_id + '.png')
 	else:
 		data_id = None
