@@ -79,15 +79,16 @@
 \contentsline {subsection}{\numberline {4.3.1}Fitness and parameter evolution}{39}{subsection.152}
 \contentsline {subsection}{\numberline {4.3.2}Correlation between fitness measures}{43}{subsection.160}
 \contentsline {subsection}{\numberline {4.3.3}Parameter-fitness correlations}{44}{subsection.162}
-\contentsline {subsection}{\numberline {4.3.4}Clustering}{46}{subsection.172}
-\contentsline {section}{\numberline {4.4}D11}{50}{section.178}
-\contentsline {section}{\numberline {4.5}Hall of fame}{50}{section.184}
+\contentsline {subsubsection}{\numberline {4.3.3.1}Chartist latency and market response time}{44}{subsubsection.164}
+\contentsline {subsection}{\numberline {4.3.4}Clustering}{46}{subsection.171}
+\contentsline {section}{\numberline {4.4}D11}{47}{section.177}
+\contentsline {section}{\numberline {4.5}Hall of fame}{47}{section.183}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Additional tables}{55}{appendix.185}
-\contentsline {section}{\numberline {A.1}Dataset 1}{55}{section.186}
-\contentsline {chapter}{\numberline {B}Third party software}{56}{appendix.187}
-\contentsline {chapter}{\numberline {C}Additional figures}{57}{appendix.188}
-\contentsline {section}{\numberline {C.1}Scatter plots for d10}{57}{section.189}
-\contentsline {section}{\numberline {C.2}Correlation plots of \ensuremath {\lambda _{c, \sigma }}and \ensuremath {\lambda _{m, \sigma }}}{57}{section.194}
+\contentsline {chapter}{\numberline {A}Additional tables}{55}{appendix.184}
+\contentsline {section}{\numberline {A.1}Dataset 1}{55}{section.185}
+\contentsline {chapter}{\numberline {B}Third party software}{56}{appendix.186}
+\contentsline {chapter}{\numberline {C}Additional figures}{57}{appendix.187}
+\contentsline {section}{\numberline {C.1}Scatter plots for d10}{57}{section.188}
+\contentsline {section}{\numberline {C.2}Correlation plots of \ensuremath {\lambda _{c, \sigma }}and \ensuremath {\lambda _{m, \sigma }}}{57}{section.193}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{62}{dummy.197}
+\contentsline {chapter}{Bibliography}{62}{dummy.196}

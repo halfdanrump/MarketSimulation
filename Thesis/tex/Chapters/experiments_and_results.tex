@@ -388,18 +388,21 @@ The first claim made in the previous section was that:
 \setcounter{enumi}{0}
 \item The responsiveness of the market seems to be particularly influenced by latency of the chartists. Slower chartists made the market require more time to respond to the fundamental shock.
 \end{enumerate}
-Looking at figure \ref{fig:d10_parvfit_sclatencymu} this indeed does seem to be the case. The simulations that had faster chartists did actually manage to reach the new fundamental faster than those markets having slow chartists. The average response time for markets in which the chartists had a latency of less than 30 rounds was around 18000 rounds, whereas it was around 25000 rounds with chartists with more than 100 rounds of latency. The market response time is most sensitive in the range $20< \sclatencymu<60$, and does not change much for larger latencies. 
+Looking at figure \ref{fig:d10_parvfit_sclatencymu} this indeed does seem to be the case. The simulations that had faster chartists did actually manage to reach the new fundamental price faster than those markets having slow chartists. The average response time of markets in which the chartists had a latency of less than 30 rounds was around 18000 rounds, whereas it was around 25000 rounds with chartists with more than 100 rounds of latency. The market response time is most sensitive in the range $20< \sclatencymu<60$, and does not change much for larger latencies. 
 
 \begin{enumerate}
 \setcounter{enumi}{1}
-\item The time it takes for the market to become stable depends in particular on the number of market makers and on the latency of the market makers. More but slower market makers seems to make the market settle within the stability margin faster.
+\item The time it takes for the market to become stable depends in particular on the number of market makers and on the latency of the market makers. More and slower market makers seems to make the market settle within the stability margin faster.
 \end{enumerate}
 
 \begin{enumerate}
 \setcounter{enumi}{2}
 \item The overshoot of the market seems to be influenced by all three factors, as did the fluctuations of the traded prices.
 \end{enumerate}
-This seems to be very true when referring to figures \ref{fig:d10_parvfit_sclatencymu_a}, \ref{fig:d10_parvfit_sclatencymu_c} and \ref{fig:d10_parvfit_ssmmnAgents_a} \ref{fig:d10_parvfit_ssmmnAgents_c}
+As figure \ref{fig:d10_parvfit_sclatencymu_a} shows, the overshoot seems to be highly correlated with the latency of the chartists.
+
+
+\ref{fig:d10_parvfit_sclatencymu_c} and \ref{fig:d10_parvfit_ssmmnAgents_a} \ref{fig:d10_parvfit_ssmmnAgents_c}
 
 and somewhat true for
 

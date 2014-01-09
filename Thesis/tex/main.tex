@@ -109,6 +109,15 @@
 \newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{s}}}
 
 
+% % % Agent parameters
+\newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda_c^{#1}}}
+\newcommand*{\scthinkagent}[1]{\ensuremath{T_c^{#1}}}
+\newcommand*{\scordervolume}[1]{\ensuremath{V_c^{#1}}}
+
+\newcommand*{\ssmmlatencyagent}[1]{\ensuremath{\lambda_m^{#1}}}
+\newcommand*{\ssmmthinkagent}[1]{\ensuremath{T_m^{#1}}}
+\newcommand*{\ssmmordervolume}[1]{\ensuremath{V_m^{#1}}}
+
 
 %%% SYMBOLS
 \newcommand{\round}{r}
@@ -303,18 +312,25 @@ $\Median{\textbf{x}}$ & The sample median of vector $\textbf{x}$\\
 \textbf{Symbol} & \textbf{Description}& \textbf{Unit}\\
 \nrounds & Number of simulation rounds & \\
 ***$\lambda$ & Average number of ST orders per round & \\
-\sclatencymu, \sclatencys & Mean and SD parameters of the GD for \hftsc{} latency& \\
-\scnAgents & Number of \hftsc{} agents&\\
-\scthinkmu, \scthinks & Mean and SD parameters of the GD for \hftsc{} thinking time&\\
-\sctimehorizonmu, \sctimehorizons & Mean and SD parameters of the GD for \hftsc{} time horizon&\\
-\sctimehorizons& Standard deviation of the Gaussian distribution for \hftsc{} time horizon&\\
-\scwaitTimeBetweenTradingmu& Mean of the Gaussian distribution for the number of rounds that \hftsc{} agents wait between submitting traders&\\
-\scwaitTimeBetweenTradings& Standard deviation of the Gaussian distribution for the number of rounds that \hftsc{} agents wait between submitting traders&\\
-\ssmmlatencymu& Mean of the Gaussian distribution for \hftmm{} latency&\\
-\ssmmlatencys& Standard deviation of the Gaussian distribution for \hftmm{} latency&\\
-\ssmmnAgents& Number of \hftmm{} agents&\\
-\ssmmthinkmu& Mean of the Gaussian distribution for \hftsc{} thinking time&\\
-\ssmmthinks & Standard deviation of the Gaussian distribution for \hftsc{} thinking time.&\\
+
+\scnAgents & Number of HFT SC agents&\\
+\ssmmnAgents& Number of HFT MM agents&\\
+\sclatencymu, \sclatencys & Mean and SD parameters of the GD for HFT SC latency& \\
+\sclatencyagent{i} & Latency of HFT SC agent $i$ where $\sclatencyagent{i} \sim \mathcal{N}(\sclatencymu, \sclatencys)$ \\
+
+\scthinkmu, \scthinks & Mean and SD parameters of the GD for HFT SC thinking time&\\
+\scthinkagent{i} & Thinking time of HFT SC agent $i$ where $\scthinkagent{i} \sim \mathcal{N}(\scthinkmu, \scthinks)$ \\
+\sctimehorizonmu, \sctimehorizons & Mean and SD parameters of the GD for HFT SC time horizon&\\
+\sctimehorizons& Standard deviation of the Gaussian distribution for HFT SC time horizon&\\
+\scwaitTimeBetweenTradingmu, \scwaitTimeBetweenTradings& Mean and SD of the GD for the HFT chartist wait time&\\
+
+\ssmmlatencymu& Mean and SD of the GD for HFT MM latency&\\
+\ssmmlatencyagent{i} & Latency of HFT MM agent $i$ where $\ssmmlatencyagent{i} \sim \mathcal{N}(\ssmmlatencymu, \ssmmlatencys)$ \\
+\ssmmthinkmu& Mean and SD of the GD for HFT MM thinking time&\\
+\ssmmthinkagent{i} & Thinking time of HFT MM agent $i$ where $\ssmmthinkagent{i} \sim \mathcal{N}(\ssmmthinkmu, \ssmmthinks)$ \\
+
+
+\scordervolume{i}, \ssmmordervolume{i} & Volumes of orders submitted by HFT SC and HFT agents, respectively. 
 }
 
 %----------------------------------------------------------------------------------------
