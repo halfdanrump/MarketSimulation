@@ -26,24 +26,20 @@
 \contentsline {figure}{\numberline {4.13}{\ignorespaces Scatter plot of \ensuremath {f_\text {m}}, \ensuremath {f_\text {s}}and \ensuremath {f_\text {o}}\relax }}{38}{figure.caption.144}
 \contentsline {figure}{\numberline {4.14}{\ignorespaces \relax }}{38}{figure.caption.148}
 \contentsline {figure}{\numberline {4.15}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{40}{figure.caption.151}
-\contentsline {figure}{\numberline {4.16}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{42}{figure.caption.155}
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{41}{figure.caption.155}
 \contentsline {figure}{\numberline {4.17}{\ignorespaces Correlation matrix of the four fitness measures in the first generation of dataset d10\relax }}{44}{figure.caption.161}
-\contentsline {figure}{\numberline {4.18}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{45}{figure.caption.163}
-\contentsline {figure}{\numberline {4.19}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{47}{figure.caption.169}
-\contentsline {figure}{\numberline {4.20}{\ignorespaces Correlation between \ensuremath {N_{m}}and the four fitness measures in experiment d10\relax }}{48}{figure.caption.170}
-\contentsline {figure}{\numberline {4.21}{\ignorespaces Scatter plots in fitness space showing the grouping of data points when using a GMM with 12 clusters.\relax }}{49}{figure.caption.172}
-\contentsline {figure}{\numberline {4.22}{\ignorespaces XXX\relax }}{50}{figure.caption.176}
-\contentsline {figure}{\numberline {4.23}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{50}{figure.caption.178}
-\contentsline {figure}{\numberline {4.24}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{51}{figure.caption.179}
-\contentsline {figure}{\numberline {4.25}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{52}{figure.caption.180}
-\contentsline {figure}{\numberline {4.26}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}{} and the four fitness measures in experiment d10\relax }}{53}{figure.caption.181}
-\contentsline {figure}{\numberline {4.27}{\ignorespaces Correlation between \ensuremath {N_{m}}{} and the four fitness measures in experiment d10\relax }}{54}{figure.caption.182}
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{45}{figure.caption.164}
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Correlation between \ensuremath {N_{m}}and the four fitness measures in experiment d10\relax }}{46}{figure.caption.166}
+\contentsline {figure}{\numberline {4.20}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \mu }}and the four fitness measures in experiment d10\relax }}{48}{figure.caption.171}
+\contentsline {figure}{\numberline {4.21}{\ignorespaces Correlation between \ensuremath {N_{c}}and the four fitness measures in experiment d10\relax }}{49}{figure.caption.174}
+\contentsline {figure}{\numberline {4.22}{\ignorespaces Scatter plots in fitness space showing the grouping of data points when using a GMM with 12 clusters.\relax }}{50}{figure.caption.179}
+\contentsline {figure}{\numberline {4.23}{\ignorespaces XXX\relax }}{51}{figure.caption.183}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {C.1}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {s}}\relax }}{57}{figure.caption.189}
-\contentsline {figure}{\numberline {C.2}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {o}}\relax }}{58}{figure.caption.190}
-\contentsline {figure}{\numberline {C.3}{\ignorespaces Scatter plot of \ensuremath {f_\text {m}}, \ensuremath {f_\text {s}}and \ensuremath {f_\sigma }\relax }}{58}{figure.caption.191}
-\contentsline {figure}{\numberline {C.4}{\ignorespaces Scatter plot of \ensuremath {f_\text {o}}, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {s}}\relax }}{59}{figure.caption.192}
-\contentsline {figure}{\numberline {C.5}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \sigma }}{} and the four fitness measures in experiment d10\relax }}{60}{figure.caption.194}
-\contentsline {figure}{\numberline {C.6}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \sigma }}{} and the four fitness measures in experiment d10\relax }}{61}{figure.caption.195}
+\contentsline {figure}{\numberline {C.1}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {s}}\relax }}{54}{figure.caption.190}
+\contentsline {figure}{\numberline {C.2}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {o}}\relax }}{55}{figure.caption.191}
+\contentsline {figure}{\numberline {C.3}{\ignorespaces Scatter plot of \ensuremath {f_\text {m}}, \ensuremath {f_\text {s}}and \ensuremath {f_\sigma }\relax }}{55}{figure.caption.192}
+\contentsline {figure}{\numberline {C.4}{\ignorespaces Scatter plot of \ensuremath {f_\text {o}}, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {s}}\relax }}{56}{figure.caption.193}
+\contentsline {figure}{\numberline {C.5}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \sigma }}{} and the four fitness measures in experiment d10\relax }}{57}{figure.caption.195}
+\contentsline {figure}{\numberline {C.6}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \sigma }}{} and the four fitness measures in experiment d10\relax }}{58}{figure.caption.196}

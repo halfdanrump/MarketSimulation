@@ -7,8 +7,8 @@
 \contentsline {table}{\numberline {3.3}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained parameters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each parameter.\relax }}{25}{table.caption.99}
 \contentsline {table}{\numberline {3.4}{\ignorespaces This table contains the fitness values for each individual in table \ref {table:example_dataset_parameters}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{26}{table.caption.100}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Mean for each fitness-cluster.\relax }}{48}{table.caption.174}
-\contentsline {table}{\numberline {4.2}{\ignorespaces Standard deviation for each fitness-cluster.\relax }}{49}{table.caption.175}
+\contentsline {table}{\numberline {4.1}{\ignorespaces Mean for each fitness-cluster.\relax }}{50}{table.caption.181}
+\contentsline {table}{\numberline {4.2}{\ignorespaces Standard deviation for each fitness-cluster.\relax }}{51}{table.caption.182}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

@@ -267,7 +267,6 @@ As manually labeling hundreds of thousands of data points is not really an optio
 \section{D10}
 In the previous section, some weak tendencies 
 The scatter plots for \dten{} are somewhat similar to those of \dnine, and they have therefore been placed in appendix \ref{appendix:figures}
-Scatter plots for \dten{} have been included in 
 
 
 
@@ -297,7 +296,7 @@ Figure \ref{fig:d10_evolution_fitness} shows the evolution of the four fitness m
 
 
 
-\subsection{Fitness and parameter evolution}
+\subsection{Fitness and parameter evolution}\label{section:fitness_and_paraeter_evolution}
 Figure \ref{fig:d10_evolution_fitness} show the evolution of the population wide mean, median and minimum statistics for each of the four fitness-measures. 
 \begin{description}
 \item[Model stability]
@@ -333,9 +332,9 @@ The two periods indicated by the shaded squares seem to reflect some sudden chan
 In summary, the genetic algorithm prefers simulations with many, but relatively slow market makers. Apparently simulations with slow chartists also outperformed those with fast chartists, but since the number of HFT chartists was fixed at $\scnAgents = $, this experiment does not reveal how the simulation would perform with more (or less) chartists. It is possible to imagine that the market would perform just as well with a few and fast chartists. Section \ref{section:experiment_11} contains the analysis of an experiment in which the number of chartists were varied. The discussion above can be summarized as follows:
 
 \begin{enumerate}
-\item The responsiveness of the market seems to be particularly influenced by latency of the chartists. Slower chartists made the market require more time to respond to the fundamental shock.
-\item The time it takes for the market to become depends in particular on the number of market makers and on the latency of the market makers. More but slower market makers seems to make the market settle within the stability margin faster.
-\item The overshoot of the market seems to be influenced by all three factors, as did the fluctuations of the traded prices.
+\item The responsiveness of the market is influenced by latency of the chartists. Slower chartists made the market require more time to respond to the fundamental shock.
+\item The time it takes for the market to become in influenced by the number of market makers and on the latency of the market makers. More but slower market makers seems to make the market settle within the stability margin faster.
+\item The overshoot, as well as the average size of the price fluctuations of the market, are both influenced by the latency of both agent types, as well as the number of market makers.
 \item The market was more stable but reacted slowly when the chartists were slower than the market makers.
 \end{enumerate}
 The accuracy of the above analysis is limited as it only looks at population wide statistics at a given point in the duration of the GA. The following section contain an analysis in which the generation to which each data point belongs is considered irrelevant. The analysis will try to confirm each of the four statements above.
@@ -360,11 +359,17 @@ Both \overshoot and \stdev were used for the GA selection, and although these tw
 
  (simulations with a small overshoot also tend to have more stable trade prices), and there work together towards selecting the same type of simulations. \timetoreachnewfundamental and \roundstable both  The same is not the case for \timetoreachnewfundamental and \roundstable, as it possible that a simulation responds quickly to the shock, but does not stay within the stability margin. 
 
+
 \subsection{Parameter-fitness correlations}
 This section will 
 
 Each of the four fitness measures has been plotted against \sclatencymu, \ssmmlatencymu and \ssmmnAgents on figures \ref{fig:d10_parvfit_sclatencymu}, \ref{fig:d10_parvfit_ssmmlatencymu} and \ref{fig:d10_parvfit_ssmmnagents}, respectively. Each green dots are the data of a single simulation. The solid curve shows the estimated conditional mean of the fitness given the parameter, and the error bars show the estimated conditional variance. Figures of the four fitness plotted against \sclatencys and \ssmmlatencys did not reveal anything of interest, but have been included in appendix \ref{AppendixC} for reference.
 
+It is important to keep in mind that the statistics were calculated by conditioning over just a single parameter. As such, it is not possible to deduce anything about the way that the parameters work together. 
+
+
+
+\subsubsection*{Chartist latency}
 \begin{figure}
 	%issue 15
 	\centering
@@ -379,47 +384,40 @@ Each of the four fitness measures has been plotted against \sclatencymu, \ssmmla
 	\caption{Correlation between \sclatencymu and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_sclatencymu}
 \end{figure}
+The list below briefly summarizes the results shown by figure \ref{fig:d10_parvfit_sclatencymu}.
 
-\subsubsection{Chartist latency and market response time}
-Figure \ref{fig:d10_parvfit_sclatencymu} shows 
+Figure \ref{fig:d10_parvfit_sclatencymu_a} shows that \sclatencymu is negatively correlated with \overshoot, such that markets with faster chartists are more likely to have a larger overshoot. Since all simulations with $\overshoot>10$ were considered outliers and therefore removed, the vertical axis is limited to $\overshoot = 10$. Next, figure \ref{fig:d10_parvfit_sclatencymu}  shows that \sclatencymu is negatively correlated with \stdev, such that markets with faster chartists are more likely to have flickering trade prices. 
 
-The first claim made in the previous section was that:
-\begin{enumerate}
-\setcounter{enumi}{0}
-\item The responsiveness of the market seems to be particularly influenced by latency of the chartists. Slower chartists made the market require more time to respond to the fundamental shock.
-\end{enumerate}
-Looking at figure \ref{fig:d10_parvfit_sclatencymu} this indeed does seem to be the case. The simulations that had faster chartists did actually manage to reach the new fundamental price faster than those markets having slow chartists. The average response time of markets in which the chartists had a latency of less than 30 rounds was around 18000 rounds, whereas it was around 25000 rounds with chartists with more than 100 rounds of latency. The market response time is most sensitive in the range $20< \sclatencymu<60$, and does not change much for larger latencies. 
+As for the market responsiveness, it is seen that \sclatencymu is positively correlated with \timetoreachnewfundamental, such that markets with faster agents is more likely to have a shorter response time to the market. Figure \ref{fig:d10_parvfit_sclatencymu_d} confirms that markets with fast chartists did actually manage to reach the new fundamental price faster than those markets having slow chartists. The average response time of markets in which the chartists had a latency of less than 30 rounds was around 18000 rounds, whereas it was around 25000 rounds with chartists with more than 100 rounds of latency. The market response time is most sensitive in the range $20< \sclatencymu<60$, and does not change much for larger latencies. 
 
-\subsubsection{Market maker latency and response time}
+The plots of \overshoot, \stdev and \timetoreachnewfundamental show that predicting the three fitness measures in markets with slow chartists would be more accurate than for markets with fast chartists, as the correlation of \overshoot, \stdev and \timetoreachnewfundamental with \sclatencymu is stronger for larger values of \sclatencymu. 
 
-\begin{enumerate}
-\setcounter{enumi}{1}
-\item The time it takes for the market to become stable depends on the number of market makers and on the latency of the market makers. More and slower market makers seems to make the market settle within the stability margin faster.
-\end{enumerate}
+Figure \ref{fig:d10_parvfit_sclatencymu_b} shows that \sclatencymu is positively correlated with \roundstable, but also that the relationship between \sclatencymu and \roundstable seems highly non-linear. The figure illustrates the binary nature of the stability criteria, that is, that a simulation is either stable or not stable. This causes \roundstable to have a high conditional variance of \roundstable given \sclatencymu in the region $50 < \sclatencymu < 120$, meaning that that prediction of \roundstable from \sclatencymu in this region would not be very accurate. What this means is that the stability of a simulation is highly dependent on factors other than \sclatencymu, when the parameter is within 50 to 120 rounds. When the chartists are faster than 50 rounds, the market is almost always unstable, and when the chartists are slower than 120 rounds the market is almost always stable. 
 
-\subsubsection*{Number of market makers and response time}
-Figure \
-
-\begin{enumerate}
-\setcounter{enumi}{2}
-\item The overshoot of the market seems to be influenced by all three factors, as did the fluctuations of the traded prices.
-\end{enumerate}
-As figure \ref{fig:d10_parvfit_sclatencymu_a} shows, the overshoot seems to be highly correlated with the latency of the chartists.
-
-
-\ref{fig:d10_parvfit_sclatencymu_c} and \ref{fig:d10_parvfit_ssmmnAgents_a} \ref{fig:d10_parvfit_ssmmnAgents_c}
-
-and somewhat true for
-
-\ref{fig:d10_parvfit_ssmmnAgents_a} and \ref{fig:d10_parvfit_ssmmnAgents_c}
+\subsubsection*{Number of market makers}
+\begin{figure}
+	%issue 15
+	\centering
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \overshoot\label{fig:d10_parvfit_ssmmnAgents_a}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__overshoot(mean)_scatter.png}}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \roundstable\label{fig:d10_parvfit_ssmmnAgents_b}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__round_stable(mean)_scatter.png}}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \stdev\label{fig:d10_parvfit_ssmmnAgents_c}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__stdev(mean)_scatter.png}}
+	\subcaptionbox{Correlation between \ssmmnAgents{} and \timetoreachnewfundamental\label{fig:d10_parvfit_ssmmnAgents_d}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
+	\caption{Correlation between \ssmmnAgents and the four fitness measures in experiment \dten}
+	\label{fig:d10_parvfit_ssmmnAgents}
+\end{figure}
+Figure, \ref{fig:d10_parvfit_ssmmlatencymu}, showing the how the number of market makers correlates with the model fitness, is quite similar to figure \ref{fig:d10_parvfit_sclatencymu}. A large number of market makers reduces the overshoot, whereas the virtually always have an overshoot when there are little or no market makers. The same is true for the flickering of the trade prices: few market makers always means flickering prices. A higher number of market makers makes the market less responsive, while fewer market makers makes the market more responsive. Finally, the number of market makers also influences how quickly the market settles within the stability margin, as markets with more market makers become stable faster than markets with few agents. However, figure \ref{fig:d10_parvfit_ssmmlatencymu_b} shows that it sometimes happens that a market with few market makers becomes stable quickly.
 
 \begin{enumerate}
-\setcounter{enumi}{3}
-\item The market was more stable but reacted slowly when the chartists were slower than the market makers.
+\item When the market has fast chartists, it needs more market makers to keep the market stable, but these may be slow.
+\item When the market has fast chartists, the market first of all needs fast market makers to be stable.
+\item A market with few market makers can be stable if the market makers are fast, or if the chartists are slow.
 \end{enumerate}
 
-
-
+\subsubsection*{Market maker latency}
 \begin{figure}
 	%issue 15
 	\centering
@@ -435,21 +433,64 @@ and somewhat true for
 	\label{fig:d10_parvfit_ssmmlatencymu}
 \end{figure}
 
+The market almost never has any overshoot, irregardless 
 
+The tricky thing about this
+
+
+\begin{enumerate}
+\setcounter{enumi}{1}
+\item The time it takes for the market to become stable depends on the number of market makers and on the latency of the market makers. More and slower market makers seems to make the market settle within the stability margin faster.
+\end{enumerate}
+
+
+
+\subsubsection{Number of chartists}
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \overshoot\label{fig:d10_parvfit_ssmmnAgents_a}}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \roundstable\label{fig:d10_parvfit_ssmmnAgents_b}}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \stdev\label{fig:d10_parvfit_ssmmnAgents_c}}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \ssmmnAgents{} and \timetoreachnewfundamental\label{fig:d10_parvfit_ssmmnAgents_d}}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_nAgents__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
-	\caption{Correlation between \ssmmnAgents and the four fitness measures in experiment \dten}
-	\label{fig:d10_parvfit_ssmmnAgents}
+	\subcaptionbox{Correlation between \scnAgents and \overshoot\label{fig:d10_parvfit_scnagents_a}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__overshoot(mean)_scatter.png}}
+	\subcaptionbox{Correlation between \scnAgents and \roundstable\label{fig:d10_parvfit_scnagents_b}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__round_stable(mean)_scatter.png}}
+	\subcaptionbox{Correlation between \scnAgents and \stdev\label{fig:d10_parvfit_scnagents_c}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__stdev(mean)_scatter.png}}
+	\subcaptionbox{Correlation between \scnAgents and \timetoreachnewfundamental\label{fig:d10_parvfit_scnagents_d}}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d11/sc_nAgents__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
+	\caption{Correlation between \scnAgents and the four fitness measures in experiment \dten}
+	\label{fig:d10_parvfit_scnagents}
 \end{figure}
+
+
+
+\subsubsection{Chartist- to market maker ratio}
+
+
+
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item The overshoot of the market seems to be influenced by all three factors, as did the fluctuations of the traded prices.
+\end{enumerate}
+As figure \ref{fig:d10_parvfit_sclatencymu_a} shows, the overshoot seems to be highly correlated with the latency of the chartists.
+
+
+\ref{fig:d10_parvfit_sclatencymu_c} and \ref{fig:d10_parvfit_ssmmnAgents_a} \ref{fig:d10_parvfit_ssmmnAgents_c}
+
+and somewhat true for
+
+\ref{fig:d10_parvfit_ssmmnAgents_a} and \ref{fig:d10_parvfit_ssmmnAgents_c}
+
+
+
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item The market was more stable but reacted slowly when the chartists were slower than the market makers.
+\end{enumerate}
+
+
+
+
 
 
 \subsection{Clustering}
@@ -563,6 +604,8 @@ The point of the clustering is not that all groups should have distinctly differ
 %\[\sclatencymu=0.532, \sclatencys=-0.235, \ssmmlatencymu=0.544, \ssmmlatencys=-0.239, \ssmmnAgents=0.555\]
 
 
+
+\begin{comment}
 \section{D11}\label{section:experiment_9}
 
 \begin{figure}
@@ -641,6 +684,7 @@ The point of the clustering is not that all groups should have distinctly differ
 	\caption{Correlation between \ssmmnAgents{} and the four fitness measures in experiment \deleven}
 	\label{fig:d11_parvfit_scAgents}
 \end{figure}
+\end{comment}
 
 
 \section{Hall of fame}\label{section:hall_of_fame}
