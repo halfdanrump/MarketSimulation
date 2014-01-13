@@ -34,7 +34,7 @@ def run_simulation_for_all_parameter_combinations(parameter_ranges, reps):
 
 
 def run_simulation(parameters, reps, random_path):
-    assert check_parameters(parameters), "Invalid simulation parameters!"
+    #assert check_parameters(parameters), "Invalid simulation parameters!"
 
     processes = list()
     log_folders = IO.get_logfolders(parameters, reps, random_path)

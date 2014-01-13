@@ -23,6 +23,23 @@ In chapter \ref{chapter:experiments_and_results} it was shown that a correlation
 It is possible that this evolution of the parameters is caused by the model being unable to be both fast and stable, but that there exists a trade-off between the two. Even though such a trade-off is not inherent in the model, in may happen to be inevitable when performing a parameter search, simply because the set of parameters causing the model to be both responsive and stable are so few that they are simply too difficult to find. Indeed, as is shown in section \ref{section:hall_of_fame}, no parameters caused the market to be both 
 
 
+\section{Fast market makers and many chartists}
+This combinations seems to drive the market to having overshoot (where's the evidence?)
+
+
+\begin{figure}
+\centering
+\subcaptionbox{Experiment \dnine}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{par_tendencies/all/d10_overshoot_chartist_latency.png}}
+\subcaptionbox{Experiment \dnine}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{par_tendencies/all/d10_overshoot_mm_latency.png}}
+\subcaptionbox{Experiment \dnine}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{par_tendencies/all/d11_overshoot_chartist_latency.png}}
+\subcaptionbox{Experiment \dnine}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{par_tendencies/all/d11_overshoot_mm_latency.png}}
+\caption{Scatter plot of \roundstable against \timetoreachnewfundamental with coloring showing $\log \stdev$ and \overshoot}
+\label{figure:scatter_fitness_inliers_a}
+\end{figure}
+\begin{figure}
+\centering
+
+\end{figure}
 
 \section{Slow and fast trader order balance}
 The market maker strategy is designed such that a market maker can only have a single buy order and a single sell order in place at the market at the same time. When an order submitted by market maker $i$ is filled, it takes \ssmmlatencyagent{i} rounds before the agent is notified of the result. When the market maker receives trade information, it thinks for \ssmmthinkagent{i} rounds, and then submits a new order to the market, which arrives after another \ssmmlatencyagent{i} rounds. Recall that market maker $i$ submits orders with a fixed volume, \ssmmordervolume{i}. The maximum volume that the market maker can move during $n$ rounds is therefore inversely proportional to its latency to the market:

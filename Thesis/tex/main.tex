@@ -32,6 +32,9 @@
 \usepackage{subcaption}
 \usepackage{amsmath}
 \usepackage{verbatim}
+\usepackage{array}
+\newcolumntype{L}{>{\arraybackslash}m{3cm}}
+\newcolumntype{E}{>{\arraybackslash}m{7cm}}
 \hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
 \title{\ttitle} % Defines the thesis title - don't touch this
 
@@ -68,7 +71,7 @@
 \newcommand{\dthree}{d1}
 \newcommand{\dnine}{d9}
 \newcommand{\dten}{d10}
-\newcommand{\deleven}{d10}
+\newcommand{\deleven}{d11}
 
 %%% Consistency commands
 \newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
@@ -109,14 +112,23 @@
 \newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{s}}}
 
 
+\newcommand{\ssmmordervolumemu}{\ensuremath{V_{m,\mu}}}
+\newcommand{\ssmmordervolumes}{\ensuremath{V_{m,\sigma}}}
+\newcommand{\scordervolumemu}{\ensuremath{V_{c, \mu}}}
+\newcommand{\scordervolumes}{\ensuremath{V_{c, \sigma}}}
+
+\newcommand{\scticksbeforereactingmu}{\ensuremath{S_{c, \mu}}}
+\newcommand{\scticksbeforereactings}{\ensuremath{S_{c, \sigma}}}
+\newcommand{\scpriceticksizemu}{\ensuremath{A_{c, \mu}}}
+\newcommand{\scpriceticksizes}{\ensuremath{A_{c, \sigma}}}
 % % % Agent parameters
 \newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda_c^{#1}}}
 \newcommand*{\scthinkagent}[1]{\ensuremath{T_c^{#1}}}
-\newcommand*{\scordervolume}[1]{\ensuremath{V_c^{#1}}}
+\newcommand*{\scordervolumeagent}[1]{\ensuremath{V_c^{#1}}}
 
 \newcommand*{\ssmmlatencyagent}[1]{\ensuremath{\lambda_m^{#1}}}
 \newcommand*{\ssmmthinkagent}[1]{\ensuremath{T_m^{#1}}}
-\newcommand*{\ssmmordervolume}[1]{\ensuremath{V_m^{#1}}}
+\newcommand*{\ssmmordervolumeagent}[1]{\ensuremath{V_m^{#1}}}
 
 
 %%% SYMBOLS
@@ -335,7 +347,7 @@ $\Median{\textbf{x}}$ & The sample median of vector $\textbf{x}$\\
 \ssmmthinkagent{i} & Thinking time of HFT MM agent $i$ where $\ssmmthinkagent{i} \sim \mathcal{N}(\ssmmthinkmu, \ssmmthinks)$ \\
 
 
-\scordervolume{i}, \ssmmordervolume{i} & Volumes of orders submitted by HFT SC and HFT agents, respectively. 
+\scordervolumeagent{i}, \ssmmordervolumeagent{i} & Volumes of orders submitted by HFT SC and HFT agents, respectively. 
 }
 
 %----------------------------------------------------------------------------------------

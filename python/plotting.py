@@ -113,8 +113,27 @@ def get_pretty_xy_plot(x, y, xlabel, ylabel, filename, y_errorbar=None, save_fig
     ax.set_xlabel(pfn(xlabel))
     ax.set_ylabel(pfn(ylabel))
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
-    ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
-    p.plot(ax, x, y, linewidth=2)
+    print "Errorbar: %s"%y_errorbar
+    if y_errorbar is not None: ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
+    p.plot(ax, x, y, linewidth=2,)
+    if save_figure: fig.savefig(filename)
+    return ax, fig
+
+def multiline_xy_plot(x, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True):
+    assert isinstance(ys, list)
+    cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(cmap, alpha=1)
+    fig, ax = plt.subplots(1)    
+    ax.set_xlabel(pfn(xlabel))
+    ax.set_ylabel(pfn(ylabel))
+    ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
+    for i, y in enumerate(ys):
+        #print "Errorbar: %s"%y_errorbar
+        #if y_errorbars is not None: ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
+        print legend_labels[i]
+        p.plot(ax, x, y, linewidth=2, label = legend_labels[i])
+    p.legend(ax, loc=0)
+
     if save_figure: fig.savefig(filename)
     return ax, fig
 
@@ -269,7 +288,6 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     fig.savefig(filename)
 
 def plot_pca_components(filename, components):
-    def dummy(a): return a
     colormap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(colormap, alpha=1)
     fig, ax = plt.subplots(1)
@@ -281,6 +299,52 @@ def plot_pca_components(filename, components):
     ax.set_yticklabels(y_ticklabels)
     fig.savefig(filename)
     return fig, ax
+
+def plot_group_overlap(filename, jaccard_matrix):
+    size = jaccard_matrix.shape[0]
+    colormap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(colormap, alpha=1)
+    fig, ax = plt.subplots(1)
+    masked_jaccard = np.ma.masked_where(np.isnan(jaccard_matrix), jaccard_matrix)
+    p.pcolormesh(fig, ax, masked_jaccard)
+    #ax.imshow(jaccard_matrix, interpolation = 'none')
+    ax.set_xticks([])
+    yticks = np.linspace(size - 0.5, 0.5, size)
+    ax.set_yticks(yticks)
+    y_ticklabels = map(lambda x: 'F%s'%x, range(1,size+1))
+    y_ticklabels.reverse()
+    ax.set_yticklabels(y_ticklabels)
+    ax.set_xticks(yticks)
+    ax.set_xticklabels(y_ticklabels)
+    fig.savefig(filename)
+    return fig, ax
+
+def plot_histogram():
+    import numpy as np
+    import pylab as P
+
+    # The hist() function now has a lot more options
+    #
+
+    #
+    # first create a single histogram
+    #
+    P.figure()
+    mu, sigma = 3, 3
+
+
+    x = abs(np.random.normal(mu, sigma, 100))
+
+    # the histogram of the data with histtype='step'
+    n, bins, patches = P.hist(x, 50, normed=1, histtype='stepfilled')
+    P.setp(patches, 'facecolor', 'g', 'alpha', 0.50)
+
+    # add a line showing the expected distribution
+    y = np.abs(P.normpdf( bins, mu, sigma))
+    l = P.plot(bins, y, 'k--', linewidth=1.5)
+
+    P.show()
+
 """
 def save_line_plot(all_data, prefix, x_axis_name = "", y_axis_name = [""], all_parameters = {}):
     assert x_axis_name in all_data.dtype.names, "x axis parameter not found"

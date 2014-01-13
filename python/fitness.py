@@ -22,6 +22,7 @@ def get_named_stats(data, attribute_names = list()):
 
 
 def evaluate_simulation_results(graph_folder, generation_number, parameters = {}, reps = [0], autorun = False, plot_name = None):
+	print parameters
 	assert parameters, "Please specify a dictionary with par_name:par_value as key:value sets"
 
 	data = empty_data_matrix(len(reps))
@@ -30,7 +31,6 @@ def evaluate_simulation_results(graph_folder, generation_number, parameters = {}
 	simulation_reps_to_run = []
 	random_path = str(randint(0, 2**64))
 	log_folders = IO.get_logfolders(parameters, reps, random_path)
-
 
 	for r in reps:
 		try:
@@ -50,7 +50,6 @@ def evaluate_simulation_results(graph_folder, generation_number, parameters = {}
 
 def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, generation_number, plot_name = None):
 	assert logdata_folder, "Please specify where the logdata is located"
-
 	data = empty_data_matrix(1)
 
 	#ob_round_based = np.genfromtxt(logdata_folder + 'columnLog_roundBased_orderbook(0,0).csv', names=True, dtype=int, delimiter=',', usecols=(1,2))
@@ -75,7 +74,6 @@ def __evaluate_simulation_results(parameters, logdata_folder, graph_folder, gene
 	if 'round_stable' in data_for_failed_simulation.keys():
 		data['round_stable'] = calculate_round_stable(trades['price'], trades['round'], fas)
 
-	
 	if np.random.random() <= PLOT_SAVE_PROB:
 		data_id = 'gen%s_%s_%s'%(generation_number, get_epoch_time(), str(abs(hash(np.random.random()))))
 		print graph_folder + data_id + '.npz'

@@ -7,17 +7,11 @@ from pandas import DataFrame, concat
 #from ppl import Ppl
 import brewer2mpl
 import IO
-figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Figures/'
-table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
+from IO import figure_save_path, table_save_path
 import utils
-import os
 import sys
+from utils import make_issue_specific_figure_folder
 
-def make_issue_specific_figure_folder(name, dataset):
-	name.replace('/', '')
-	folder = '%s%s/%s/'%(figure_save_path, name, dataset)
-	if not os.path.exists(folder): os.makedirs(folder)
-	return folder
 
 def issue_21_basic_scatter_plots(dataset):
 	"""
@@ -614,7 +608,8 @@ def issue_108(dataset, n_clusters, overshoot_threshold, load_pickled_labels = Fa
 	data_to_cluster = fit.iloc[not_o,:]
 	cluster_and_label('all', data_to_cluster)
 	
-	
+	data_to_cluster = concat([log(fit['stdev']), log(fit['round_stable']), fit['time_to_reach_new_fundamental']], axis=1).iloc[not_o,:]
+	cluster_and_label('logs_logr_t', data_to_cluster)
 
 	#fit_mean_table.columns = ['C0', 'C1', 'C3', 'Outliers']
 

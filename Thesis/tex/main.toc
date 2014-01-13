@@ -3,92 +3,25 @@
 \contentsline {chapter}{Acknowledgements}{ii}{dummy.2}
 \vspace {1em}
 \contentsline {chapter}{Contents}{iii}{dummy.3}
-\contentsline {chapter}{List of Figures}{vi}{dummy.5}
-\contentsline {chapter}{List of Tables}{viii}{dummy.7}
-\contentsline {chapter}{Abbreviations}{ix}{dummy.9}
-\contentsline {chapter}{Physical Constants}{x}{dummy.12}
-\contentsline {chapter}{Physical Constants}{xi}{dummy.15}
-\contentsline {chapter}{Symbols}{xii}{dummy.18}
+\contentsline {chapter}{List of Figures}{v}{dummy.5}
+\contentsline {chapter}{List of Tables}{vi}{dummy.7}
+\contentsline {chapter}{Abbreviations}{vii}{dummy.9}
+\contentsline {chapter}{Physical Constants}{viii}{dummy.12}
+\contentsline {chapter}{Physical Constants}{ix}{dummy.15}
+\contentsline {chapter}{Symbols}{x}{dummy.18}
 \vspace {2em}
-\contentsline {chapter}{\numberline {1}High Frequency Trading}{2}{chapter.21}
-\contentsline {section}{\numberline {1.1}Overview of High Frequency Trading}{2}{section.22}
-\contentsline {subsection}{\numberline {1.1.1}}{2}{subsection.23}
-\contentsline {chapter}{\numberline {2}Model}{3}{chapter.24}
-\contentsline {section}{\numberline {2.1}Model}{3}{section.25}
-\contentsline {subsection}{\numberline {2.1.1}Asynchronous vs game theoretic model}{3}{subsection.26}
-\contentsline {subsection}{\numberline {2.1.2}Overall architecture}{3}{subsection.27}
-\contentsline {subsection}{\numberline {2.1.3}Modeling delays}{4}{subsection.28}
-\contentsline {section}{\numberline {2.2}Market components}{4}{section.29}
-\contentsline {subsection}{\numberline {2.2.1}Stocks}{4}{subsection.30}
-\contentsline {subsubsection}{\numberline {2.2.1.1}Fundamental price}{5}{subsubsection.31}
-\contentsline {subsection}{\numberline {2.2.2}Messages}{5}{subsection.33}
-\contentsline {subsubsection}{\numberline {2.2.2.1}Market information}{6}{subsubsection.35}
-\contentsline {subsubsection}{\numberline {2.2.2.2}Orders}{7}{subsubsection.37}
-\contentsline {subsubsection}{\numberline {2.2.2.3}Transaction receipts}{7}{subsubsection.38}
-\contentsline {subsubsection}{\numberline {2.2.2.4}Order cancellations}{8}{subsubsection.39}
-\contentsline {subsection}{\numberline {2.2.3}Order book}{8}{subsection.40}
-\contentsline {subsubsection}{\numberline {2.2.3.1}Price updating}{8}{subsubsection.43}
-\contentsline {subsubsection}{\numberline {2.2.3.2}Order matching}{10}{subsubsection.45}
-\contentsline {subsubsection}{\numberline {2.2.3.3}Empty order book}{10}{subsubsection.47}
-\contentsline {subsection}{\numberline {2.2.4}Market}{10}{subsection.48}
-\contentsline {subsubsection}{\numberline {2.2.4.1}Short selling}{10}{subsubsection.49}
-\contentsline {section}{\numberline {2.3}Agents}{11}{section.51}
-\contentsline {subsection}{\numberline {2.3.1}Slow traders}{12}{subsection.52}
-\contentsline {subsubsection}{\numberline {2.3.1.1}Arrival of orders}{14}{subsubsection.54}
-\contentsline {subsection}{\numberline {2.3.2}Market makers}{14}{subsection.56}
-\contentsline {subsection}{\numberline {2.3.3}HFT Chartists}{15}{subsection.57}
-\contentsline {section}{\numberline {2.4}Simulation rounds}{15}{section.58}
-\contentsline {section}{\numberline {2.5}Implementation}{15}{section.59}
-\contentsline {section}{\numberline {2.6}Overview of model parameters}{15}{section.60}
-\contentsline {section}{\numberline {2.7}Experiments}{15}{section.61}
-\contentsline {chapter}{\numberline {3}Parameter tuning}{16}{chapter.62}
-\contentsline {section}{\numberline {3.1}Motivation and overall procedure}{16}{section.63}
-\contentsline {subsection}{\numberline {3.1.1}Selecting fixed parameters}{18}{subsection.69}
-\contentsline {section}{\numberline {3.2}Inverse simulation with a genetic algorithm}{18}{section.70}
-\contentsline {subsection}{\numberline {3.2.1}Representing parameters as genes}{19}{subsection.77}
-\contentsline {subsection}{\numberline {3.2.2}Model fitness}{19}{subsection.79}
-\contentsline {subsection}{\numberline {3.2.3}Genetic algorithm parameters}{20}{subsection.81}
-\contentsline {subsection}{\numberline {3.2.4}Controlling market behavior}{21}{subsection.83}
-\contentsline {subsection}{\numberline {3.2.5}Filtering parameters}{21}{subsection.85}
-\contentsline {subsection}{\numberline {3.2.6}Handling failed simulations}{21}{subsection.87}
-\contentsline {section}{\numberline {3.3}Applying the genetic algorithm}{23}{section.89}
-\contentsline {subsection}{\numberline {3.3.1}Time complexity}{23}{subsection.90}
-\contentsline {subsection}{\numberline {3.3.2}Experiments: Dividing the search into parts}{24}{subsection.91}
-\contentsline {subsection}{\numberline {3.3.3}Gene pool as data set}{24}{subsection.93}
-\contentsline {subsection}{\numberline {3.3.4}Convergence of parameters}{25}{subsection.101}
-\contentsline {section}{\numberline {3.4}Data analysis tools}{25}{section.102}
-\contentsline {subsection}{\numberline {3.4.1}Data visualization}{26}{subsection.103}
-\contentsline {subsubsection}{\numberline {3.4.1.1}Color toned scatter plots}{26}{subsubsection.104}
-\contentsline {subsection}{\numberline {3.4.2}Preprocessing}{26}{subsection.105}
-\contentsline {subsubsection}{\numberline {3.4.2.1}Handling outliers}{26}{subsubsection.106}
-\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{28}{subsection.111}
-\contentsline {subsubsection}{\numberline {3.4.3.1}GMM}{28}{subsubsection.112}
-\contentsline {chapter}{\numberline {4}Experiments}{29}{chapter.113}
-\contentsline {section}{\numberline {4.1}D3}{29}{section.114}
-\contentsline {subsection}{\numberline {4.1.1}Section summary}{32}{subsection.119}
-\contentsline {section}{\numberline {4.2}D9: Fixing the number of high frequency traders}{33}{section.120}
-\contentsline {subsection}{\numberline {4.2.1}Parameter and fitness evolution}{33}{subsection.121}
-\contentsline {subsection}{\numberline {4.2.2}Visualizing the data set}{33}{subsection.125}
-\contentsline {subsection}{\numberline {4.2.3}Analysing scatter plots}{35}{subsection.129}
-\contentsline {subsubsection}{\numberline {4.2.3.1}\ensuremath {f_\text {m}}vs \ensuremath {f_\sigma }}{35}{subsubsection.130}
-\contentsline {subsubsection}{\numberline {4.2.3.2}\ensuremath {f_\text {m}}vs. \ensuremath {f_\text {s}}}{35}{subsubsection.133}
-\contentsline {subsubsection}{\numberline {4.2.3.3}\ensuremath {f_\sigma }vs. \ensuremath {f_\text {s}}}{37}{subsubsection.142}
-\contentsline {subsection}{\numberline {4.2.4}Looking for parameters causing certain behavior}{38}{subsection.147}
-\contentsline {subsection}{\numberline {4.2.5}Section summary}{39}{subsection.149}
-\contentsline {section}{\numberline {4.3}D10}{39}{section.150}
-\contentsline {subsection}{\numberline {4.3.1}Fitness and parameter evolution}{39}{subsection.152}
-\contentsline {subsection}{\numberline {4.3.2}Correlation between fitness measures}{43}{subsection.160}
-\contentsline {subsection}{\numberline {4.3.3}Parameter-fitness correlations}{44}{subsection.162}
-\contentsline {subsubsection}{\numberline {4.3.3.1}Number of chartists}{47}{subsubsection.173}
-\contentsline {subsubsection}{\numberline {4.3.3.2}Chartist- to market maker ratio}{47}{subsubsection.175}
-\contentsline {subsection}{\numberline {4.3.4}Clustering}{48}{subsection.178}
-\contentsline {section}{\numberline {4.4}Hall of fame}{51}{section.184}
+\contentsline {chapter}{\numberline {1}Experiments}{2}{chapter.21}
+\contentsline {section}{\numberline {1.1}Overview of experiments}{2}{section.22}
+\contentsline {section}{\numberline {1.2}Data distribution}{3}{section.24}
+\contentsline {subsection}{\numberline {1.2.1}Manually grouping simulations by behavior}{4}{subsection.28}
+\contentsline {subsubsection}{\numberline {1.2.1.1}Fast simulations}{8}{subsubsection.33}
+\contentsline {subsubsection}{\numberline {1.2.1.2}\ensuremath {f_\sigma }vs. \ensuremath {f_\text {s}}}{11}{subsubsection.46}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Additional tables}{52}{appendix.185}
-\contentsline {section}{\numberline {A.1}Dataset 1}{52}{section.186}
-\contentsline {chapter}{\numberline {B}Third party software}{53}{appendix.187}
-\contentsline {chapter}{\numberline {C}Additional figures}{54}{appendix.188}
-\contentsline {section}{\numberline {C.1}Scatter plots for d10}{54}{section.189}
-\contentsline {section}{\numberline {C.2}Correlation plots of \ensuremath {\lambda _{c, \sigma }}and \ensuremath {\lambda _{m, \sigma }}}{54}{section.194}
+\contentsline {chapter}{\numberline {A}Additional tables}{12}{appendix.49}
+\contentsline {section}{\numberline {A.1}Dataset 1}{12}{section.50}
+\contentsline {chapter}{\numberline {B}Third party software}{13}{appendix.51}
+\contentsline {chapter}{\numberline {C}Additional figures}{14}{appendix.52}
+\contentsline {section}{\numberline {C.1}Scatter plots for d10}{14}{section.53}
+\contentsline {section}{\numberline {C.2}Correlation plots of \ensuremath {\lambda _{c, \sigma }}and \ensuremath {\lambda _{m, \sigma }}}{14}{section.58}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{59}{dummy.197}
+\contentsline {chapter}{Bibliography}{19}{dummy.61}

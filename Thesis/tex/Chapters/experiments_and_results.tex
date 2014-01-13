@@ -42,7 +42,8 @@ Fixed parameters:
 	\subcaptionbox{Evolution of \ssmmthinkmu and \scthinkmu}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d3/thinkpars_mu.png}}
 	\subcaptionbox{Evolution of \ssmmnAgents and \scnAgents}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d3/nAgents.png}}	\caption{Evolution of time delay parameters common both HFT agent types, and of the number of agents in experiment \dthree}\label{fig:d3_evolution_latpars_nAgents}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{82_generation_plots/d3/nAgents.png}}
+	\caption{Evolution of time delay parameters common both HFT agent types, and of the number of agents in experiment \dthree}\label{fig:d3_evolution_latpars_nAgents}
 \end{figure}
 
 
@@ -131,11 +132,6 @@ In summary, the main problem with this data set was that it contained mostly sim
 \label{figure:d9_scatter_fitness}
 \end{figure}
 
-Scatter plots are probably among the most rudimentary of techniques for data analysis, yet they can be incredibly informative, especially when the data that is visualized is low-dimensional.
-The two plots in figure make two things clear. First of all, extreme values occur in \stdev. Even log scaling does not seem to fix this problem entirely. Second of all, XXXissue109XXX
-
-The high correlation between \stdev and \overshoot can be interpreted in two ways. 
-The sparsity of points with extreme values shows that it rarely
 
 
 \begin{enumerate}
@@ -143,7 +139,6 @@ The sparsity of points with extreme values shows that it rarely
 \item 
 \end{enumerate}
 
-For the purposes of data analysis, the high correlation between \stdev and \overshoot means that it is possible to reduce the number of dimensions in the fitness space from four to three without loosing any significant classification power. This can be done by discarding either \stdev or \overshoot. %, or by using PCA to find the three dimensional projection with the highest variance/
 
 The scatter plots do seem to reveal some structure, the presence of large values in the \stdev feature obscures the nature of this structure, in spite of the logarithmic scaling. The plot showing $\log \stdev$ vs. $\log \roundstable$ is squeezed to the left, and the color grading on the scatter plot for $\log \overshoot$ vs . $\log \stdev$ reveals no variety in the \stdev feature. In an attempt to get some more information out of the scatter plot, data points with a more than 100 \% overshoot (corresponding to $\overshoot > 10$ ) are removed. The resulting scatter plots for the reduced data set are shown and discussed in the section \ref{section:d9_analysing_scatter_plots}.
 
@@ -187,7 +182,7 @@ The line $\timetoreachnewfundamental = \roundstable$ (black dashed line) divides
 \begin{enumerate}
 \item In figure \ref{figure:d9_scatter_fitness_inliers_t_r_logs}, the density of points is slightly higher around the region defined by $\roundstable = \timetoreachnewfundamental$. This is true both for small and large values of \timetoreachnewfundamental and \roundstable. Furthermore, these points all have small values for $\stdev$. The same points can be identified by looking at figure \ref{figure:d9_scatter_fitness_inliers_a}, where a cloud of points lay around the vertical line $\log \stdev \approx -0.6$.
 \begin{enumerate}
-	\item The low \stdev also means that the traded price is stable after entering the stability margin. Furthermore, the simulations represented by these same points are among the ones with the most stable traded prices.
+	\item The low \stdev means that the traded price is stable after entering the stability margin. Furthermore, the simulations represented by these same points are among the ones with the most stable traded prices.
 	%\item Because of the high correlation between \stdev and \overshoot, simulations belonging to this group have little or no overshoot. 
 	\item Since $\timetoreachnewfundamental \approx \roundstable$, the traded does not leave the stability margin once it has entered. This is true for both small and large values of \timetoreachnewfundamental and \roundstable.
 \end{enumerate}

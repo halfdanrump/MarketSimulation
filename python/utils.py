@@ -3,6 +3,7 @@ from settings import default_parameters as defpar, fitness_types
 from IO import load_trade_log_data
 from pandas import DataFrame
 from datetime import datetime
+import os
 
 def get_fundamental_after_shock():
 	return defpar['fundamental_initial_value'] + defpar['fundamental_shock_size']
@@ -44,6 +45,8 @@ def prettify_table(pandas_tex, label, caption):
 def load_test_trade_data(type = 'stable'):
 	return DataFrame(load_trade_log_data('/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/data/for_testing/' + type + '/'))
 
+
+
 def dataframe2latex(dataframe, label, caption):
 	dataframe = dataframe.copy()
 	tex_column_names = get_latex_par_names([dataframe], as_row = True)
@@ -61,7 +64,7 @@ def get_latex_par_names(tables, as_row):
 		names = ', '.join(['\\%s'%g.replace('_', '') for g in df.columns])
 	else:
 		names = ''.join(['\\%s\n'%g.replace('_', '') for g in df.columns])
-	print names
+	#print names
 	return names
 
 def get_latex_par_names_from_list(list_of_names):
@@ -110,3 +113,10 @@ def pfn(name):
 def get_epoch_time():
     td = datetime.now() - datetime.utcfromtimestamp(0)
     return str(int(td.total_seconds() * 10**6))
+
+def make_issue_specific_figure_folder(name, dataset):
+	from IO import figure_save_path
+	name.replace('/', '')
+	folder = '%s%s/%s/'%(figure_save_path, name, dataset)
+	if not os.path.exists(folder): os.makedirs(folder)
+	return folder

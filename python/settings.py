@@ -20,7 +20,7 @@ SAVE_DATA_USED_FOR_PLOTTING = True
 if TEST_MODE:
     PLOT_SAVE_PROB = 1
 else:
-    PLOT_SAVE_PROB = 0.02
+    PLOT_SAVE_PROB = 0.02 
 
 if TEST_MODE:
     ga_reps = range(2)
@@ -63,13 +63,13 @@ default_parameters = {
     'fundamental_shock_size' : -10,
     'fundamental_shock_round' : 10000,
 
-    'ssmm_nAgents' : 25,
+    'ssmm_nAgents' : 40,
     'sc_nAgents' : 0,
 
     'ssmm_latency_mu' : 50,
     'ssmm_latency_s' : 20,
-    'ssmm_think_mu' : 50,
-    'ssmm_think_s' : 20,
+    'ssmm_think_mu' : 1,
+    'ssmm_think_s' : 0,
     'sc_latency_mu' : 50,
     'sc_latency_s' : 20,
     'sc_think_mu' : 1,
@@ -104,7 +104,7 @@ parameters_in_genes = [
     'sc_nAgents' ,
 
     'ssmm_latency_mu',
-    #'ssmm_latency_s',
+    'ssmm_latency_s',
     #'ssmm_think_mu',
     #'ssmm_think_s',
     #'sc_latency_mu',
@@ -194,7 +194,7 @@ data_for_failed_simulation = {
                     'stdev' : 10**6,
                     #'overshoot' : 10**6,
                     'time_to_reach_new_fundamental' : 10**6,
-                    #'round_stable' : 10**6
+                    'round_stable' : 10**6
                     }
 
 
@@ -203,7 +203,7 @@ fitness_weights = OrderedDict({
                     'stdev' : -1,
                     #'overshoot' : -1,
                     'time_to_reach_new_fundamental' : 1,
-                    #'round_stable' : -1
+                    'round_stable' : -1
                     })
 
 fitness_types = {
@@ -211,7 +211,7 @@ fitness_types = {
                     'stdev' : float,
                     #'overshoot' : int,
                     'time_to_reach_new_fundamental' : int,
-                    #'round_stable' : int
+                    'round_stable' : int
                     }
 
 

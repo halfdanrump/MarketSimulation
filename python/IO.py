@@ -19,6 +19,9 @@ dataset_paths = {
     'd10d11' : '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/merged_data/d10d11/'
 }
 
+figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Figures/'
+table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
+raw_data_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/raw_data/'
 
 def check_simulation_complete(full_simulation_log_path):
     try:
