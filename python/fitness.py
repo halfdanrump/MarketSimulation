@@ -22,7 +22,7 @@ def get_named_stats(data, attribute_names = list()):
 
 
 def evaluate_simulation_results(graph_folder, generation_number, parameters = {}, reps = [0], autorun = False, plot_name = None):
-	print parameters
+	#print parameters
 	assert parameters, "Please specify a dictionary with par_name:par_value as key:value sets"
 
 	data = empty_data_matrix(len(reps))

@@ -95,7 +95,7 @@ def load_all_generations_as_DataFrame(folder_name, drop_invalid_individuals=True
     
     if drop_invalid_individuals:
         i, = np.where(all_fit['overshoot'] >= 10**6)
-        invalid_individuals = concat([all_par.iloc[i,:], all_fit.iloc[i,:]], axis=1)
+        invalid_individuals = all_par.iloc[i,:]
         print "Number of discarded individuals: %s"%len(i)
         all_par = all_par.drop(i)
         all_par = all_par.reset_index(drop=True)
@@ -106,7 +106,7 @@ def load_all_generations_as_DataFrame(folder_name, drop_invalid_individuals=True
         try:
             all_ids = all_ids.drop(i)
             all_ids = all_ids.reset_index(drop=True)
-            invalid_individuals = concat([invalid_individuals, all_ids.iloc[i,:]])
+            #invalid_individuals = concat([invalid_individuals, all_ids.iloc[i,:]])
         except Exception:
             pass
         

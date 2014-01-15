@@ -330,15 +330,16 @@ def plot_histogram():
     # first create a single histogram
     #
     P.figure()
-    mu, sigma = 3, 3
+    mu, sigma = 40, 35
 
 
-    x = abs(np.random.normal(mu, sigma, 100))
+    x = abs(np.random.normal(mu, sigma, 1000000))
 
     # the histogram of the data with histtype='step'
-    n, bins, patches = P.hist(x, 50, normed=1, histtype='stepfilled')
+    n, bins, patches = P.hist(x, 100, normed=1, histtype='stepfilled')
     P.setp(patches, 'facecolor', 'g', 'alpha', 0.50)
-
+    P.vlines(np.mean(x), 0, max(n))
+    P.vlines(np.median(x), 0, max(n))
     # add a line showing the expected distribution
     y = np.abs(P.normpdf( bins, mu, sigma))
     l = P.plot(bins, y, 'k--', linewidth=1.5)

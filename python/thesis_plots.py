@@ -452,7 +452,7 @@ def issue_108(dataset, n_clusters, overshoot_threshold, load_pickled_labels = Fa
 	print 'Component 1:'
 	print map(lambda c, n: '%s=%.3g'%(n, c), pca.components_[2], utils.get_latex_par_names_from_list(par.columns))
 	"""
-	colormap = brewer2mpl.get_map('Paired', 'Qualitative', n_clusters, reverse=True)
+	
 
 	def print_pca_components(pca, name):
 		from plotting import plot_pca_components
@@ -499,7 +499,7 @@ def issue_108(dataset, n_clusters, overshoot_threshold, load_pickled_labels = Fa
 
 
 	def make_plots(clustering_method, data_name, labels):
-		
+		colormap = brewer2mpl.get_map('Paired', 'Qualitative', n_clusters, reverse=True)
 		if not labels_to_include:
 			for i, plotargs in enumerate(plots_to_make):
 				filename = folder + '%s_%s_%s_fit_%s.png'%(n_clusters, clustering_method, data_name, i)
@@ -580,7 +580,7 @@ def issue_108(dataset, n_clusters, overshoot_threshold, load_pickled_labels = Fa
 			gmm_labels = gmm.predict(data_to_cluster)
 			with open(gmm_labels_store_file, 'wb') as fid:
 				cPickle.dump(gmm_labels, fid)
-		make_plots('gmm', name, gmm_labels)
+		#make_plots('gmm', name, gmm_labels)
 		make_tables('gmm', name, gmm_labels)
 
 		

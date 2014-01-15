@@ -20,7 +20,7 @@ SAVE_DATA_USED_FOR_PLOTTING = True
 if TEST_MODE:
     PLOT_SAVE_PROB = 1
 else:
-    PLOT_SAVE_PROB = 0.02 
+    PLOT_SAVE_PROB = 1
 
 if TEST_MODE:
     ga_reps = range(2)

@@ -1,5 +1,5 @@
 import utils
-from pandas import concat
+from pandas import concat, DataFrame
 import IO
 from numpy import where
 import brewer2mpl
@@ -44,7 +44,7 @@ def d9_diagional_points(n_centers = 100):
 	std_frame = concat(map(lambda x: getattr(x, 'std')(), list_of_dataframes), axis=1).transpose()
 	for parameter in mean_frame.columns:
 		filename = folder + parameter + '.png'
-		print mean_frame[parameter]
+		#print mean_frame[parameter]
 		y1 = mean_frame[parameter] - std_frame[parameter]
 		y2 = mean_frame[parameter] + std_frame[parameter]
 		ax, fig = get_pretty_xy_plot(x=centers_to_calculate, y=mean_frame[parameter], xlabel='Time to reach new fundamental', ylabel=parameter, filename = filename, save_figure = False)
@@ -102,11 +102,12 @@ def apply_filters(dataset, return_masks = False):
 		cond4 = fit.round_stable < 75000
 		return cond1 & cond2 & cond3 & cond4
 
-	def filter9(stdev_sensitivity_threshold = 0.1):
-		cond1 = fit.stdev > np.exp(-0.5) - stdev_sensitivity_threshold
-		cond2 = fit.stdev < np.exp(-0.5) + stdev_sensitivity_threshold
+	def filter9(stdev_sensitivity_threshold = 0.2):
+		cond1 = np.log(fit.stdev) > -0.5 - stdev_sensitivity_threshold
+		cond2 = np.log(fit.stdev) < -0.5 + stdev_sensitivity_threshold
 		cond3 = fit.time_to_reach_new_fundamental > 25000
-		return cond1 & cond2 & cond3
+		cond4 = fit.round_stable > 80000
+		return cond1 & cond2 & cond3 & cond4
 
 	def calculate_jaccard(masks):
 		from itertools import combinations
@@ -202,10 +203,74 @@ def faster_mm_many_chartists():
 	filename = folder + 'd10_overshoot_chartist_latency.png'
 	mkplot(filename = filename, line_parameter='ssmm_nAgents', intervals_for_lines = [0, 50, 100], range_parameter='sc_latency_mu', fitness_type='overshoot', legend_caption = '# market makers', xlabel = 'Average chartist latency', ylabel = 'Average model overshoot')
 
+	filename = folder + 'd10_overshoot_ssmm_nAgents.png'
+	mkplot(filename = filename, line_parameter='ssmm_latency_mu', intervals_for_lines = [0, 20, 40, 60], range_parameter='ssmm_nAgents', fitness_type='overshoot', legend_caption = 'ssmm latency', xlabel = 'Average # market makers', ylabel = 'Average model overshoot')
 
 
+	par, fit, ids, invalid_inds = IO.load_all_generations_as_DataFrame('/Users/halfdan/raw_data/d10/generations/')
+	par = invalid_inds[par.columns]
+	fit = invalid_inds[fit.columns]
+	filename = folder + 'd10_overshoot_ssmm_nAgents_invalid.png'
+	mkplot(filename = filename, line_parameter='ssmm_latency_mu', intervals_for_lines = [0, 20, 40, 60], range_parameter='ssmm_nAgents', fitness_type='overshoot', legend_caption = 'ssmm latency', xlabel = 'Average # market makers', ylabel = 'Average model overshoot')
 
 
+def collect_filter_individuals_and_replot(action):
+	import os, shutil
+	from IO import figure_save_path
+	from plotting import make_pretty_tradeprice_plot
+	masks = apply_filters('d11', return_masks = True)
+	fit, par, gen, ids = IO.load_pickled_generation_dataframe('d11')
+	# Give proper column name
+	ids.columns = ['id', 'gen']
+	raw_data_path = '/Users/halfdan/raw_data/d11/graphs/'
+	graph_save_dir = figure_save_path + 'filter_graphs/'
+	n_graphs_to_copy = 10
 
+	def replot(mask, subfolder_name, f = 0):
+		try:
+			in_mask = ids[mask]
+			has_tuple = in_mask['id'].map(lambda x: isinstance(x, tuple))
+			in_mask = in_mask[has_tuple]
+		
+			indexes = range(len(in_mask))
+			np.random.shuffle(indexes)
+			
+			
+			names = map(lambda x: x[0], in_mask.iloc[indexes[0:n_graphs_to_copy]]['id'].values)
+			#print 'names'
+			#print names
+			paths = map(lambda x: '%s%s'%(raw_data_path, x), names)
+			#graph_paths = map(lambda x: '%s.png'%x, paths)
+			data_paths = map(lambda x: '%s.npz'%x, paths)
+			all_data = map(lambda x: np.load(x).items()[0][1].item(), data_paths)
+			directory = '%s%s%s/'%(graph_save_dir, subfolder_name, f)
+			parameters = DataFrame(columns = par.columns)
+			if not os.path.exists(directory): os.makedirs(directory)
+			for path, data, name in zip(paths, all_data, names):
+				print data.keys()
+				rounds = data['rounds']
+				prices = data['tradePrice']
+				filename = directory + name + '.png'
+				parameters = parameters.append(data['parameters'], ignore_index=True)
+				#print 'Replotting market with pars: %s'%data['parameters']
+				make_pretty_tradeprice_plot(rounds, prices, filename)
+			return parameters
+			
+			#for path, graph, name in zip(paths, graph_paths, names):
+			#	pass
+			#	#print 'copy %s to %s'%(graph, directory + name + '.png')
+			#	#shutil.copyfile(graph, directory + name + '.png')
+		except IndexError:
+			pass
 
-
+	graph_cond = ids.id != ()
+	if action == 'filter':
+		for f, m in enumerate(masks):	
+			filter_mask = m & graph_cond
+			replot(filter_mask, action, f)
+	elif action == 'large_overshoot':
+		m = fit.overshoot > 10
+		m = m & graph_cond
+		return replot(m, action)
+	else:
+		print 'Doing nothing'
