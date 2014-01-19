@@ -221,17 +221,17 @@ def faster_mm_many_chartists():
 	mkplot(filename = filename, line_parameter='ssmm_latency_mu', intervals_for_lines = [0, 20, 40, 60], range_parameter='ssmm_nAgents', fitness_type='overshoot', legend_caption = 'ssmm latency', xlabel = 'Average # market makers', ylabel = 'Average model overshoot')
 
 
-def collect_filter_individuals_and_replot(action):
+def collect_filter_individuals_and_replot(action, n_graphs_to_copy = 10):
 	import os, shutil
 	from IO import figure_save_path
 	from plotting import make_pretty_tradeprice_plot
-	masks = apply_filters('d11', return_masks = True)
+	
 	fit, par, gen, ids = IO.load_pickled_generation_dataframe('d11')
+	masks,filters = apply_filters(fit)
 	# Give proper column name
 	ids.columns = ['id', 'gen']
 	raw_data_path = '/Users/halfdan/raw_data/d11/graphs/'
 	graph_save_dir = figure_save_path + 'filter_graphs/'
-	n_graphs_to_copy = 10
 
 	def replot(mask, subfolder_name, f = 0):
 		try:
@@ -242,31 +242,33 @@ def collect_filter_individuals_and_replot(action):
 			indexes = range(len(in_mask))
 			np.random.shuffle(indexes)
 			
-			
-			names = map(lambda x: x[0], in_mask.iloc[indexes[0:n_graphs_to_copy]]['id'].values)
+			if n_graphs_to_copy == 'all':
+				n_copy = len(indexes) - 1
+			else:
+				n_copy = n_graphs_to_copy
+			names = map(lambda x: x[0], in_mask.iloc[indexes[0:n_copy]]['id'].values)
 			#print 'names'
 			#print names
 			paths = map(lambda x: '%s%s'%(raw_data_path, x), names)
-			#graph_paths = map(lambda x: '%s.png'%x, paths)
+			graph_paths = map(lambda x: '%s.png'%x, paths)
 			data_paths = map(lambda x: '%s.npz'%x, paths)
-			all_data = map(lambda x: np.load(x).items()[0][1].item(), data_paths)
+			#all_data = map(lambda x: np.load(x).items()[0][1].item(), data_paths)
 			directory = '%s%s%s/'%(graph_save_dir, subfolder_name, f)
 			parameters = DataFrame(columns = par.columns)
 			if not os.path.exists(directory): os.makedirs(directory)
-			for path, data, name in zip(paths, all_data, names):
-				print data.keys()
+			for path, data_path, name in zip(paths, data_paths, names):
+				data = np.load(data_path).items()[0][1].item()
 				rounds = data['rounds']
 				prices = data['tradePrice']
 				filename = directory + name + '.png'
 				parameters = parameters.append(data['parameters'], ignore_index=True)
-				#print 'Replotting market with pars: %s'%data['parameters']
+				print 'Replotting market with pars: %s'%data['parameters']
 				make_pretty_tradeprice_plot(rounds, prices, filename)
 			return parameters
 			
-			#for path, graph, name in zip(paths, graph_paths, names):
-			#	pass
-			#	#print 'copy %s to %s'%(graph, directory + name + '.png')
-			#	#shutil.copyfile(graph, directory + name + '.png')
+			for path, graph, name in zip(paths, graph_paths, names):
+				print 'copy %s to %s'%(graph, directory + name + '.png')
+				shutil.copyfile(graph, directory + name + '.png')
 		except IndexError:
 			pass
 
@@ -277,7 +279,12 @@ def collect_filter_individuals_and_replot(action):
 			replot(filter_mask, action, f)
 			graph_save_dir += 'filter/'
 	elif action == 'large_overshoot':
-		m = fit.overshoot > 10
+		m = fit.overshoot > 25
+		m = m & graph_cond
+		graph_save_dir += 'large_overshoot/'
+		return replot(m, action)
+	elif action == 'no_response':
+		m = fit.overshoot == 10**6
 		m = m & graph_cond
 		graph_save_dir += 'large_overshoot/'
 		return replot(m, action)
@@ -285,7 +292,7 @@ def collect_filter_individuals_and_replot(action):
 		print 'Doing nothing'
 
 
-def faster_mm_makes_worse_markets():
+def faster_mm_makes_worse_markets(dataset):
 	from plotting import multiline_xy_plot
 	from utils import make_issue_specific_figure_folder
 	def get_mmlat_mask(l, u): 
@@ -308,66 +315,133 @@ def faster_mm_makes_worse_markets():
 	
 	def zip_to_tuples(r): return zip(r[:-1], r[1::])
 
-	ssmmlatencyrange = range(100)
+	ssmmlatencyrange = range(80)
 	sclatencyrange = range(100)
 
-	#f,p,g, i=IO.load_pickled_generation_dataframe('d11')
-
-	f, p = utils.load_d10d11()
-
-	folder = make_issue_specific_figure_folder('faster_mm_makes_worse_markets', 'd11')
-	for fitness in f.columns:
-		filename = folder + fitness + '_mmlatency.png'
-		xlabel = 'Market maker latency'
-		ylabel = fitness
-		legend_labels = list()
-		ys = list()
-
-		for nsc_lower, nsc_upper in zip_to_tuples(range(0,150,25)):
-			nchartist_mask = get_nchartist_mask(nsc_lower, nsc_upper)	
-			means = get_ssmmlatencyrange_mean(nchartist_mask, ssmmlatencyrange, nsc_lower = nsc_lower)
-			ys.append(means[fitness])
-			legend_labels.append('%s <= # SC < %s'%(nsc_lower, nsc_upper))
-		multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)
-
-		filename = folder + fitness + '_sclatency.png'
-		xlabel = 'Chartist latency'
-		legend_labels = list()
-		ys = list()
-		for nsc_lower, nsc_upper in zip_to_tuples(range(0,150,25)):
-			nchartist_mask = get_nchartist_mask(nsc_lower, nsc_upper)	
-			means = get_sclatencyrange_mean(nchartist_mask, sclatencyrange, nsc_lower = nsc_lower)
-			ys.append(means[fitness])
-			legend_labels.append('%s <= # SC < %s'%(nsc_lower, nsc_upper))
-		multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)
 	
-	f,p,g, i=IO.load_pickled_generation_dataframe('d10')
-	folder = make_issue_specific_figure_folder('faster_mm_makes_worse_markets', 'd10')
-	for fitness in f.columns:
-		filename = folder + fitness + '_mmlatency.png'
-		xlabel = 'Market maker latency'
-		ylabel = fitness
-		legend_labels = list()
-		ys = list()
-		for nmm_lower, nmm_upper in zip_to_tuples(range(0,150,25)):
-			n_mm_mask = get_nmm_mask(nmm_lower, nmm_upper)	
-			means = get_ssmmlatencyrange_mean(n_mm_mask, ssmmlatencyrange, nsc_lower = nsc_lower)
-			ys.append(means[fitness])
-			legend_labels.append('%s <= # MM < %s'%(nmm_lower, nmm_upper))
-		multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)
 
-		filename = folder + fitness + '_sclatency.png'
-		xlabel = 'Chartist latency'
-		ylabel = fitness
-		legend_labels = list()
-		ys = list()
-		for nmm_lower, nmm_upper in zip_to_tuples(range(0,150,25)):
-			n_mm_mask = get_nmm_mask(nmm_lower, nmm_upper)	
-			means = get_sclatencyrange_mean(n_mm_mask, sclatencyrange, nsc_lower = nsc_lower)
-			ys.append(means[fitness])
-			legend_labels.append('%s <= # MM < %s'%(nmm_lower, nmm_upper))
-		multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)		
+	if dataset == 'd10d11':
+		f, p = utils.load_d10d11()
+	else:
+		f,p,g, i=IO.load_pickled_generation_dataframe(dataset_name=dataset)
 
+	folder = make_issue_specific_figure_folder('faster_mm_makes_worse_markets', dataset)
+	try:
+		for fitness in f.columns:
+			filename = folder + fitness + '_SC_mmlatency.png'
+			xlabel = 'Market maker latency'
+			ylabel = fitness
+			legend_labels = list()
+			ys = list()
+			for nsc_lower, nsc_upper in zip_to_tuples(np.linspace(0,500,6)):
+				nchartist_mask = get_nchartist_mask(nsc_lower, nsc_upper)	
+				means = get_ssmmlatencyrange_mean(nchartist_mask, ssmmlatencyrange, nsc_lower = nsc_lower)
+				ys.append(means[fitness])
+				legend_labels.append('%s <= # SC < %s'%(nsc_lower, nsc_upper))
+			multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)
+
+			filename = folder + fitness + '_SC_sclatency.png'
+			xlabel = 'Chartist latency'
+			legend_labels = list()
+			ys = list()
+			for nsc_lower, nsc_upper in zip_to_tuples(np.linspace(0,500,6)):
+				nchartist_mask = get_nchartist_mask(nsc_lower, nsc_upper)	
+				means = get_sclatencyrange_mean(nchartist_mask, sclatencyrange, nsc_lower = nsc_lower)
+				ys.append(means[fitness])
+				legend_labels.append('%s <= # SC < %s'%(nsc_lower, nsc_upper))
+			multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)
+	except AttributeError:
+		pass
+
+	try:	
+		for fitness in f.columns:
+			filename = folder + fitness + '_MM_mmlatency.png'
+			xlabel = 'Market maker latency'
+			ylabel = fitness
+			legend_labels = list()
+			ys = list()
+			for nmm_lower, nmm_upper in zip_to_tuples(range(0,150,25)):
+				n_mm_mask = get_nmm_mask(nmm_lower, nmm_upper)	
+				means = get_ssmmlatencyrange_mean(n_mm_mask, ssmmlatencyrange, nsc_lower = nsc_lower)
+				ys.append(means[fitness])
+				legend_labels.append('%s <= # MM < %s'%(nmm_lower, nmm_upper))
+			multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)
+
+			filename = folder + fitness + '_MM_sclatency.png'
+			xlabel = 'Chartist latency'
+			ylabel = fitness
+			legend_labels = list()
+			ys = list()
+			for nmm_lower, nmm_upper in zip_to_tuples(range(0,150,25)):
+				n_mm_mask = get_nmm_mask(nmm_lower, nmm_upper)	
+				means = get_sclatencyrange_mean(n_mm_mask, sclatencyrange, nsc_lower = nsc_lower)
+				ys.append(means[fitness])
+				legend_labels.append('%s <= # MM < %s'%(nmm_lower, nmm_upper))
+			multiline_xy_plot(means.index, ys, xlabel, ylabel, legend_labels, filename, y_errorbars=None, save_figure = True)		
+	except AttributeError:
+		pass
+
+
+
+def latency_vs_fitness_with_lines_for_agent_ratio(dataset):
+	from plotting import multiline_xy_plot
+	from utils import make_issue_specific_figure_folder
+	def get_ssmmlat_mask(l, u): 
+		return (p.ssmm_latency_mu > l) & (p.ssmm_latency_mu < u)
+
+	def get_sclat_mask(l, u): 
+		return (p.sc_latency_mu > l) & (p.sc_latency_mu < u)
+
+	def zip_to_tuples(r): return zip(r[:-1], r[1::])
+
+
+	def calc_and_plot(ratio_direction):	
+		for fitness in f.columns:
+			ssmm_ys = list()
+			sc_ys = list()
+			legend_labels = list()
+			for ratio_lower, ratio_upper in zip_to_tuples(ratio_range):
+				ratio_mask = (ratio_lower < p.ratio) & (p.ratio < ratio_upper)
+				ssmm_lat_range = concat(map(lambda l: f[get_ssmmlat_mask(l,l+20) & ratio_mask].mean(), ssmmlatencyrange), axis=1).transpose()
+				ssmm_ys.append(ssmm_lat_range[fitness])
+				sc_lat_range = concat(map(lambda l: f[get_sclat_mask(l,l+20) & ratio_mask].mean(), sclatencyrange), axis=1).transpose()
+				sc_ys.append(sc_lat_range[fitness])
+				legend_labels.append('%s <= %s < %s'%(round(ratio_lower,1), ratio_direction, round(ratio_upper,1)))
+			filename = '%s_%s_%s_mmlatency.png'%(folder, ratio_direction, fitness)
+			multiline_xy_plot(ssmm_lat_range.index, ssmm_ys, xlabel = 'Market maker latency', ylabel = fitness, legend_labels = legend_labels, filename = filename)
+			filename = '%s_%s_%s_sclatency.png'%(folder, ratio_direction, fitness)
+			multiline_xy_plot(sc_lat_range.index, sc_ys, xlabel = 'Chartist latency', ylabel = fitness, legend_labels = legend_labels, filename = filename)
+
+
+	ssmmlatencyrange = range(100)
+	sclatencyrange = range(100)
+	
+	folder = make_issue_specific_figure_folder('latency_vs_fitness_with_lines_for_agent_ratio', dataset)
+	
+	if dataset == 'd10d11':
+		f, p = utils.load_d10d11()
+	else:
+		f,p,g, i=IO.load_pickled_generation_dataframe(dataset_name=dataset)
+		if 'dataset' == 'd10':
+			p['sc_nAgents'] = 150
+		elif 'dataset' == 'd11':
+			p['ssmm_nAgents'] = 52
+	
+	#nssmm_mask = p.ssmm_nAgents > 50
+	#f = f[nssmm_mask]
+	#p = p[nssmm_mask]
+
+	p['ratio'] = p['sc_nAgents'].astype(float) / p['ssmm_nAgents']
+	ratio_range = np.linspace(0,3,6)
+	calc_and_plot('c2m')
+
+	p['ratio'] = p['ssmm_nAgents'].astype(float) / p['sc_nAgents']
+	ratio_range = [0,0.01, 0.2,0.35,0.6,1]
+	calc_and_plot('m2c')
+	
+			#concat(map(lambda l: f[get_mmlat_mask(l,l+20) & agent_mask].mean(), ssmmlatencyrange), axis=1).transpose()
+			#means = means.append(f[mask].mean()[fitness], ignore_index=True)
+	
 
 def agent_ratio_to_latency_ratio(n_ar_bins = 10, n_lr_bins = 10, dataset = 'd10d11'):
 	from plotting import plot_image_matrix
@@ -383,8 +457,12 @@ def agent_ratio_to_latency_ratio(n_ar_bins = 10, n_lr_bins = 10, dataset = 'd10d
 	inf_mask = agent_ratio != np.inf
 
 	agent_ratio_mask = (agent_ratio < 5)
-	latency_ratio_mask = (latency_ratio > 0) & (latency_ratio < 10)
+	latency_ratio_mask = (latency_ratio > 0) & (latency_ratio < 5)
 	
+	#nsc_mask = par.sc_nAgents > 0
+	#nssmm_mask = (20 < par.ssmm_nAgents) & (par.ssmm_nAgents < 50)
+
+	#total_mask = inf_mask & agent_ratio_mask & latency_ratio_mask & nsc_mask & nssmm_mask
 	total_mask = inf_mask & agent_ratio_mask & latency_ratio_mask
 	par = par[total_mask]
 	fit = fit[total_mask]
@@ -410,7 +488,7 @@ def agent_ratio_to_latency_ratio(n_ar_bins = 10, n_lr_bins = 10, dataset = 'd10d
 			test[i][j] = j
 	x_ticklabels = map(lambda x: round(x,1), lr_histbins)
 	y_ticklabels = map(lambda x: round(x,1), ar_histbins)
-	plot_image_matrix(folder + 'overshoot.png', np.log(overshoot_mean), x_ticklabels, y_ticklabels)
+	plot_image_matrix(folder + 'overshoot.png', overshoot_mean, x_ticklabels, y_ticklabels)
 	plot_image_matrix(folder + 'stdev.png', stdev_mean, x_ticklabels, y_ticklabels)
 	plot_image_matrix(folder + 'time_to_reach_new_fundamental.png', timeto_mean, x_ticklabels, y_ticklabels)
 	plot_image_matrix(folder + 'round_stable.png', roundstable_mean, x_ticklabels, y_ticklabels)
