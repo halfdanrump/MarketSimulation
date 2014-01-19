@@ -65,7 +65,7 @@
 \newcommand{\Varcluster}[2]{\mathrm{Var}_\text{C#2}[#1]}
 \newcommand{\Covcluster}[2]{\mathrm{Cov}_\text{C#2}[#1]}
 
-
+\newcommand{\Efilter}[2]{\mathrm{E}_\text{F{#2}}[#1]}
 
 % % % DATASETS
 \newcommand{\dthree}{d1}
@@ -87,7 +87,35 @@
 \newcommand{\hftmm}{HFT market maker}
 \newcommand{\hftsc}{HFT market chartist}
 
+% % % Agent parameters
+\newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda^c_{#1}}}
+\newcommand*{\scthinkagent}[1]{\ensuremath{T^c_{#1}}}
+\newcommand*{\scordervolumeagent}[1]{\ensuremath{V^c_{#1}}}
+\newcommand{\sctimehorizonagent}[1]{\ensuremath{H^c_{#1}}}
+\newcommand{\scwaitTimeBetweenTradingagent}[1]{\ensuremath{W^c_{#1}}}
+\newcommand{\scticksbeforereactingagent}[1]{\ensuremath{S^c_{#1}}}
+\newcommand{\scpriceticksizeagent}[1]{\ensuremath{A^c_{#1}}}
+
+\newcommand{\scticksbeforereactingmu}{\ensuremath{S_{c, \mu}}}
+\newcommand{\scticksbeforereactings}{\ensuremath{S_{c, \sigma}}}
+\newcommand{\scpriceticksizemu}{\ensuremath{A_{c, \mu}}}
+\newcommand{\scpriceticksizes}{\ensuremath{A_{c, \sigma}}}
+
+
+
+\newcommand*{\ssmmlatencyagent}[1]{\ensuremath{\lambda_m^{#1}}}
+\newcommand*{\ssmmthinkagent}[1]{\ensuremath{T_m^{#1}}}
+\newcommand*{\ssmmordervolumeagent}[1]{\ensuremath{V_m^{#1}}}
+\newcommand*{\ssmmminspreadagent}[1]{\ensuremath{\theta_{#1}}}
+
 \newcommand{\Count}{\ensuremath{\text{Count}}}
+\newcommand{\marketmaker}[1][]{\ensuremath{\text{MM}_{#1}}}
+\newcommand{\chartist}[1][]{\ensuremath{\text{SC}_{#1}}}
+\newcommand{\marketmakercyclelength}[1][]{\ensuremath{l_{\text{MM}, {#1}}}}
+
+
+
+
 
 
 %%% MODEL PARAMETERS
@@ -106,10 +134,15 @@
 \newcommand{\ssmmnAgents}{\ensuremath{N_{m}}}
 \newcommand{\ssmmthinkmu}{\ensuremath{T_{m, \mu}}}
 \newcommand{\ssmmthinks}{\ensuremath{T_{m, \sigma}}}
+
+
 \newcommand{\overshoot}{\ensuremath{f_\text{o}}}
-\newcommand{\roundstable}{\ensuremath{f_\text{m}}}
+\newcommand{\roundstable}{\ensuremath{f_\text{s}}}
 \newcommand{\stdev}{\ensuremath{f_\sigma}}
-\newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{s}}}
+\newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{t}}}
+
+\newcommand{\ratioagents}{\ensuremath{\rho_\text{A}}}
+\newcommand{\ratiolatency}{\ensuremath{\rho_\lambda}}
 
 
 \newcommand{\ssmmordervolumemu}{\ensuremath{V_{m,\mu}}}
@@ -117,28 +150,28 @@
 \newcommand{\scordervolumemu}{\ensuremath{V_{c, \mu}}}
 \newcommand{\scordervolumes}{\ensuremath{V_{c, \sigma}}}
 
-\newcommand{\scticksbeforereactingmu}{\ensuremath{S_{c, \mu}}}
-\newcommand{\scticksbeforereactings}{\ensuremath{S_{c, \sigma}}}
-\newcommand{\scpriceticksizemu}{\ensuremath{A_{c, \mu}}}
-\newcommand{\scpriceticksizes}{\ensuremath{A_{c, \sigma}}}
-% % % Agent parameters
-\newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda_c^{#1}}}
-\newcommand*{\scthinkagent}[1]{\ensuremath{T_c^{#1}}}
-\newcommand*{\scordervolumeagent}[1]{\ensuremath{V_c^{#1}}}
-
-\newcommand*{\ssmmlatencyagent}[1]{\ensuremath{\lambda_m^{#1}}}
-\newcommand*{\ssmmthinkagent}[1]{\ensuremath{T_m^{#1}}}
-\newcommand*{\ssmmordervolumeagent}[1]{\ensuremath{V_m^{#1}}}
-
-
 %%% SYMBOLS
-\newcommand{\round}{r}
+\newcommand{\round}[1][]{\ensuremath{t{#1}}}
 \newcommand{\delay}{\ensuremath{p^m}}
 \newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
 \newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
 \newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
 \newcommand{\pmatch}{\ensuremath{p^m}}
 \newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
+
+
+% % % % Market related symbols
+\newcommand{\currentprice}{\ensuremath{p_c}}
+\newcommand{\bestbidprice}[1]{\ensuremath{B_{#1}}}
+\newcommand{\bestaskprice}[1]{\ensuremath{A_{#1}}}
+\newcommand{\askprice}{\ensuremath{p_{a}}}
+\newcommand{\bidprice}{\ensuremath{p_{b}}}
+
+
+% % % Fundamental symbols
+\newcommand{\fundamentalprice}[1][]{\ensuremath{F_{#1}}}
+\newcommand{\fundamentalshock}{\ensuremath{\eta}}
+\newcommand{\fundamentalshocktime}{\ensuremath{\round{_\eta}}}
 
 \newcommand{\smargin}{\ensuremath{m_\text{stable}}}
 \newcommand{\fas}{\ensuremath{p_\text{fas}}}
@@ -200,13 +233,17 @@
 
 \abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
 
-The study found that having agents which are orders of magnitude faster than human traders is not in itself a problem. By simulating the advent of bad news as an instantaneous decrement of the stock price, it was found the fast algorithmic traders did provide the market with some benefits, such as a reduce responsible time to the shock, a smoother descent of the traded to the 
+XXXX NOT DONE YET XXX
 
-However, it was also found that
-making the market more stable, and by increasing the responsiveness of the market after a 
+This work proposes a model in which multiple heterogeneous agents use time delayed price information to trade an imaginary financial instrument in a market with a continuous double auction. The main innovation of the model is that, just as in the real world, trading agents do not have access to the market information at the same point in time, which means that the agents generally trade on different information. The model contains agent models of slow human traders using a noisy fundamentalist strategy, and high speed software traders using market maker and chartist strategies. Slow traders base their trading decisions on market information which has been delayed several seconds, while the fast traders observe the market with much smaller delays ranging between a few millisecons to a few hundred milliseconds. By containing agents of such different speeds, the model is relevant to the ongoing discussion of the pros and cons of high frequency trading in financial markets. 
 
-It was also found that 
-}
+The model simulates the market events in the minutes after the advent of bad news represented by sudden negative shock to the fundamental stock price, and does so with a time resolution high enough to register events that unfold from millisecond to millisecond. A genetic algorithm is used to search for model parameters that cause the market to be stable, and parameters that cause the market to crash. Analysis of the results shows that a moderate level of high speed trading activity is not in itself problematic. In fact, high speed market makers are found to reduce price flickering, while high speed chartists are found to decrease the time required for the market to respond to changes in the fundamental price. However, the market is found to respond unfavorably to a large presence of fast traders. First of all, a large presence of fast market makers causes the market to respond sluggishly to the shock, leading to a prolonged disparity between the traded price and the true fundamental price. Secondly, a large presence of fast chartists causes increased flickering of the traded price. Finally it is found that flash-crashes can occur in markets in which ratio of the number of chartists to the number of market makers is high, while at the same time the market makers are faster than the chartists. These results are interesting, as they show both benefits and dangers of having markets where fast computer algorithms trade side by side with human traders.
+
+
+
+
+
+
 
 \clearpage % Start a new page
 
@@ -271,20 +308,21 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \listofconstants{ll} % Include a list of Physical Constants (a four column table)
 {
 Term & Explanation\\
-ask price & \\
-bid price & \\
-fitness & \\
-fundamental & \\
-limit order &\\
+ask price & The price of a sell order\\
+bid price & The price of a buy order\\
+model fitnesses & The quantitative measures summarizing how the model behaves \\
+fundamental price & The underlying ``true'' value of the stock\\
+limit order & Order which is not \\
 market order &\\
-liquidity & \\
+liquidity & The \\
 match & When a sell order and a bu order happen to have the same listed price, they are said to match\\
 order book & \\
+order volume & \\
 partial match & Two orders which match, but have different volumes.\\
 share & A fraction of ownership of an asset, such as a stock \\
 spread & \\
 standing order & A market order registered at an order book and waiting for a matching order \\
-tick & \\
+tick & The smallest possible price change of the stock\\
 volatility &\\
 }
 
@@ -312,8 +350,12 @@ $\Median{\textbf{x}}$ & The sample median of vector $\textbf{x}$\\
 \pmatch & Match price, i.e., the price at which a trade is executed\\
 \fund & Fundamental price at round \round\\
 \fas & Fundamental price after shock \\
-\smargin & Size in ticks of the stability margin around each side of \fas
+\smargin & Size in ticks of the stability margin around each side of \fas \\
+
+\ratioagents & Ratio between the number of chartists and the number of market makers: $\ratioagents = \frac{\scnAgents}{\ssmmnAgents}$ \\
+\ratiolatency & Ratio between the latency of chartists and the latency of market makers: $\ratiolatency = \frac{\sclatencymu}{\ssmmlatencymu}$
 }
+
 
 %----------------------------------------------------------------------------------------
 %	PARAMETERS
@@ -373,14 +415,17 @@ $\Median{\textbf{x}}$ & The sample median of vector $\textbf{x}$\\
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
 
-FOREWORD
+PREFACE
 As such, this project turned out to be just as much about software engineering as 
-%\input{Chapters/introduction}
+The work presented in this thesis was the final project in
+\input{Chapters/introduction}
 %\input{Chapters/high_frequency_trading}
-%\input{Chapters/model}
-%\input{Chapters/parameter_tuning_and_analysis_tools}
+\input{Chapters/model}
+\input{Chapters/parameter_tuning_and_analysis_tools}
 %\input{Chapters/experiments_and_results}
 \input{Chapters/results_new}
+%\input{Chapters/conclusions}
+\input{Chapters/discussion}
 %\input{Chapters/summary_and_discussion} 
 %\input{Chapters/conclusion} 
 
