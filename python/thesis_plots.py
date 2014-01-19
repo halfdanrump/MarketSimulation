@@ -296,8 +296,7 @@ def issue_82_parameter_evolution(dataset, vline_x = []):
 def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold, preloaded_data = None):
 	from plotting import get_pretty_xy_plot, make_pretty_scatter_plot
 	from numpy import where
-	folder = make_issue_specific_figure_folder('101_pars_vs_fits', dataset)
-	stats = ['mean', 'median']
+
 
 	def get_plots_to_make(fitness_types):
 		plots_to_make = list()
@@ -326,9 +325,21 @@ def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold, preloaded_data 
 
 	
 	folder = make_issue_specific_figure_folder('101_pars_vs_fits', dataset)
-	stats = ['mean', 'median']
+	stats = ['mean']
 
-	if preloaded_data is None: fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
+	if dataset == 'd10d11':
+		f, p = utils.load_d10d11()
+	else:
+		f,p,g, i=IO.load_pickled_generation_dataframe(dataset_name=dataset)
+		if 'dataset' == 'd10':
+			p['sc_nAgents'] = 150
+		elif 'dataset' == 'd11':
+			p['ssmm_nAgents'] = 52
+
+	
+
+	if preloaded_data is None: 
+		fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
 	else:
 		try:
 			fit = preloaded_data['fit']
@@ -338,8 +349,14 @@ def issue_101_plot_pars_vs_fitness(dataset, overshoot_threshold, preloaded_data 
 			print e
 			sys.exit(1)
 	#o = where(fit.overshoot > overshoot_threshold)[0]
-	not_o = where(fit.overshoot <= overshoot_threshold)[0]
-	all_data = concat([par.iloc[not_o],fit.iloc[not_o]]	,axis=1)
+	#not_o = where(fit.overshoot <= overshoot_threshold)[0]
+
+	mask = fit.overshoot <= overshoot_threshold
+	#print where(mask)[0]
+	#print not_o
+	#if dataset =='d11': mask = mask & (par.sc_nAgents < 50)
+
+	all_data = concat([par[mask],fit[mask]]	,axis=1)
 	plots_to_make = get_plots_to_make(fit.columns)
 	run_analysis(par.columns, all_data, plots_to_make)
 
@@ -729,7 +746,7 @@ def remake_make_all_thesis_plots():
 	plots_for_d10()
 	plots_for_d11()
 	issue_113_make_all_tradeprice_plots()
-	
+		
 	
 
 	

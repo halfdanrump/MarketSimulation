@@ -120,3 +120,14 @@ def make_issue_specific_figure_folder(name, dataset):
 	folder = '%s%s/%s/'%(figure_save_path, name, dataset)
 	if not os.path.exists(folder): os.makedirs(folder)
 	return folder
+
+def load_d10d11():
+	import IO
+	from pandas import concat
+	fit10, par10, gen10, ids10 = IO.load_pickled_generation_dataframe('d10')
+	fit11, par11, gen11, ids11 = IO.load_pickled_generation_dataframe('d11')
+	par10['sc_nAgents'] = 150
+	par11['ssmm_nAgents'] = 52
+	par = concat([par10, par11])
+	fit = concat([fit10, fit11])
+	return fit, par
