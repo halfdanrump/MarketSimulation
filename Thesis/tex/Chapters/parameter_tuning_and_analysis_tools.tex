@@ -1,6 +1,8 @@
 % Chapter 1
 
-\chapter{Parameter tuning} % Main chapter title
+\chapter{Searching model behavior} % Main chapter title
+
+
 
 \lhead{Chapter XXX. \emph{XXX}} % This is for the header on each page - perhaps a shortened title
 	
@@ -42,13 +44,14 @@ The main parameters of interest are the ones that control the latency and speed 
 
 \begin{description}
 	%issue 16
-	\item [\nrounds] Due to the computational cost of running the simulation for a large number of rounds, the the number of rounds is fixed at $10^5$ for all experiments.
-	\item [Order volumes] As with most of the other agent parameters, the 
+	\item [Number of rounds] Due to the computational cost of running the simulation for a large number of rounds, the the number of rounds is fixed at $10^5$ for all experiments.
+	\item [Order volumes] 
+	\item[Slow trader parameters]
+	\item[Agent start portfolio]
+	\item[Order book initialization]
 \end{description}
 
 The remaining model parameters will either be fixed for each experiment, or varied by the genetic algorithm. 
-
-
 
 
 
@@ -77,8 +80,7 @@ A set of parameters is represented by an individual, $i$, consisting gene for ea
 g_{i,j} \sim \mathcal{U}(0,1)
 \end{equation}
 
-
-Some of the model parameters are integers, such as \ssmmnAgents{} and \scnAgents{}, and these are rounded after being scaled and before they are passed to the simulation.
+Some of the model parameters are integers, such as \ssmmnAgents{} and \scnAgents{}, and these are rounded after being scaled, and before they are passed to the simulation.
 
 
 
@@ -86,11 +88,21 @@ Some of the model parameters are integers, such as \ssmmnAgents{} and \scnAgents
 
 
 \subsection{Model fitness}\label{section:simulation_fitness}
-
+XXX NOT FINISHED YET. 
 In order to use inverse simulation, it is necessary to decide on how to measure the quality of an instance of the simulation. In this work, the overall goal is to examine which parameter values cause the market to be stable, and which cause it to be unstable. 
 
 
-Another interesting point is the speed with which the market responds to the shock to the fundamental price, and which parameters influence this property. Furthermore, we are interested in investigating whether or not 
+Another interesting point is the speed with which the market responds to the shock to the fundamental price, and which parameters influence this property.  
+
+\subsubsection{Market overshoot}
+XXX
+\subsubsection{Trade price stability}
+XXX
+\subsubsection{Market response time}
+XXXX
+\subsubsection{Market tendency to stay new the new fundamental}
+XXX
+
 
 \begin{itemize}
 \item 'fit
@@ -99,13 +111,13 @@ Another interesting point is the speed with which the market responds to the sho
 In particular the parameters controlling various time delays are of interest. 
 The search space of the parameters is very large, which makes an exhaustive search impossible.
 To this end, four fitness measures were defined.
-The balance between the number 
+
 Several parameters influence the number of orders submitted by the high frequency traders.
 
 \begin{description}
-\item[\roundstable < \timetoreachnewfundamental] This happens when the traded price never leaves the stability margin after reaching the new fundamental price. Note however that this case does not necessarily mean that the prices do not flicker. 
-\item[\roundstable > \timetoreachnewfundamental] This happens when the traded price leaves the stability margin once or more after reaching the new fundamental. The traded price can be close to the fundamental, but flickers in and out of the stability margin as on Figure \ref{figure:tradeprice_exaples_fitness_a} shows an example where the trade price fairly stable and with no overshoot, leading to good (low) \stdev and \overshoot fitness values to be assigned to the parameters. However, even though the traded prices are mostly within the stability margin, occasional flickers out of the margin causes the simulation to score a bad (high) \roundstable fitness. Note also that \timetoreachnewfundamental is undefined in this case. 
-\item[\roundstable = \timetoreachnewfundamental] This happens if a trade is executed at price $\smargin - \fas < \pmatch < \smargin + \fas$, and another trade is executed at price $\pmatch = \fas$ in the same round. 
+\item[$\roundstable < \timetoreachnewfundamental$] This happens when the traded price never leaves the stability margin after reaching the new fundamental price. Note however that this case does not necessarily mean that the prices do not flicker. 
+\item[$\roundstable > \timetoreachnewfundamental$] This happens when the traded price leaves the stability margin once or more after reaching the new fundamental. The traded price can be close to the fundamental, but flickers in and out of the stability margin as on Figure \ref{figure:tradeprice_exaples_fitness_a} shows an example where the trade price fairly stable and with no overshoot, leading to good (low) \stdev and \overshoot fitness values to be assigned to the parameters. However, even though the traded prices are mostly within the stability margin, occasional flickers out of the margin causes the simulation to score a bad (high) \roundstable fitness. Note also that \timetoreachnewfundamental is undefined in this case. 
+\item[$\roundstable = \timetoreachnewfundamental$] This happens if a trade is executed at price $\smargin - \fas < \pmatch < \smargin + \fas$, and another trade is executed at price $\pmatch = \fas$ in the same round. 
 \end{description}
 
 \begin{figure}
@@ -119,11 +131,9 @@ Several parameters influence the number of orders submitted by the high frequenc
 \label{figure:tradeprice_exaples_fitness}
 \end{figure}
 
-\begin{description}
-\item[\overshoot]
-\end{description}
+}
 
-It is possible for a simulation to be considered stable even before
+
 
 \subsection{Genetic algorithm parameters}\label{section:ga_parameters}
 Although this is a basic version of genetic algorithm, using it correctly is not necessarily easy, as was encountered. First of all, the parameters for the genetic algorithm itself must be established. The larger and more complex the search space, the more resources the search will require, since the evaluating the fitness function (i.e., the running the simulation) will have to be done a larger number of times. 
@@ -136,8 +146,7 @@ Table \ref{table:genetic_algorithm_parameters} presents an overview of the param
 	\centering
 	\begin{tabular}{l|l}
 		Parameter & Assignment\\\hline
-		Number of generations & 200 to 1000\\
-		Number of individuals & 100 to 1000\\
+		Number of individuals & 200\\
 		Cross-over points & 2\\
 		Tournament size & 3\\
 		Mutation probability & 0.1\\
@@ -148,24 +157,32 @@ Table \ref{table:genetic_algorithm_parameters} presents an overview of the param
 \end{table}
 
 
-\subsection{Controlling market behavior}
-The four fitness measures defined in section \ref{section:simulation_fitness} make it possible to specify the type of market behaviour that is favoured by the genetic algorithm. gives 16 combinatinos for how to optimize the model. 
+\subsection{Optimizing towards desired behavior}
+XXX WRITE MORE.
+The four fitness measures defined in section \ref{section:simulation_fitness} make it possible to specify the type of market behavior that is likely to be selected by the genetic algorithm. 
 
 First of all, we are interested in establishing which parameters cause the market to return to a stable state after the fundamental price has incurred a shock
 
+
+
 \begin{table}
-\begin{tabular}{c|c}
-\textbf{Parameter} & \textbf{Range}\\
-\ssmmnAgents & \\
-\scnAgents & 
+\centering
+\begin{tabular}{l|cccc}
+\toprule
+{} & \overshoot & \roundstable & \stdev &\timetoreachnewfundamental \\
+\midrule
+Overall stable market & $\min$ & $\min$ & $\min$ & $\min$\\
+Crash & $\max$ &-&-& -\\
+\bottomrule
 \end{tabular}
-\caption{Overview of experiments}
-\label{table:optimization_goals}
+\caption{Optimization criteria for different types of market behavior}
 \end{table}
+
 
 
 \subsection{Filtering parameters}\label{section:filtering_parameters}
 As mentioned earlier, it is not enough simply to define a fitness function which assigns high values to parameters causing realistic behavior. In addition, it is important to discard parameters which obviously do not correspond to a realistic setting. Imagine that the simulation scores high fitness values when executed without any market makers. Since it is known that real markets do in fact contain market makers, nothing can be inferred from such a result. Indeed this might be a consequence of poorly designed fitness measures, but since it is easier to use domain specific knowledge to filter out the unrealistic parameters
+
 
 \begin{figure}[htbp]
 	\centering
@@ -242,9 +259,8 @@ Tables \ref{table:example_dataset_parameters} and \ref{table:example_dataset_fit
 \label{table:example_dataset_fitnesses}
 \end{table}
 
-\subsection{Convergence of parameters}
 
-\section{Data analysis tools}\label{section:data_analysis_techniques}
+\section{Data analysis}\label{section:data_analysis_techniques}
 Using inverse simulation merely creates a lot of data. This data has to be analyzed before any 
 
 Data normalization
@@ -260,6 +276,8 @@ The two plots in figure make two things clear. First of all, extreme values occu
 
 
 \subsection{Preprocessing}
+
+
 
 \subsubsection{Handling outliers}
 The term outliers is often used as a label for data which is considered ``invalid'' in the sense that is not a product of the true data generation process, but  due to various sources of noise. In this report, data that was caused by failing simulations corresponds to the usual understanding of outliers. However, as was already explained in section \ref{section:failed_simulations}, data from such simulations are never included in \datamatrixpar{} and \datamatrixfit{} to begin with. Instead, outliers in this report refer to entries in \datamatrixpar{} and \datamatrixfit{}  deviate significantly from the majority of the data points by having extreme values.
