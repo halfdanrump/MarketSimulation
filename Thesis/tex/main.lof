@@ -1,14 +1,41 @@
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces Scatter plots of fitness measures in experiment d9. \relax }}{5}{figure.caption.25}
-\contentsline {figure}{\numberline {1.2}{\ignorespaces Scatter plot of \ensuremath {f_\text {m}}against \ensuremath {f_\text {s}}with coloring showing $\qopname \relax o{log}\ensuremath {f_\sigma }$ and \ensuremath {f_\text {o}}\relax }}{6}{figure.caption.26}
-\contentsline {figure}{\numberline {1.3}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$ against \ensuremath {f_\text {s}}with coloring showing $\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {o}}\relax }}{7}{figure.caption.27}
-\contentsline {figure}{\numberline {1.4}{\ignorespaces Jaccard index between the sets of data points extracted by each filter\relax }}{10}{figure.caption.35}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces \relax }}{8}{figure.caption.30}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces \relax }}{10}{figure.caption.35}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces When an agent wants to submit an order it has to go through several steps of interaction with the market. The process is comparable to how real traders communicate with markets via a network, such as the Internet.\relax }}{11}{figure.caption.37}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces \relax }}{13}{figure.caption.45}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces The HFT agent submits a sell order for 100 stocks, and another agent submits a price-matching buy order which fills the sell order. Before the transaction receipt reaches the seller, the seller decides to cancel the order, and submit another order at a different price. When the transaction receipt reaches the seller, the agent promptly sends out a cancellation of its second sell order, as it knows it cannot fulfill the order. However, before the cancellation reaches the market, a third agent fills the sell order, and a receipt is send to the seller who ends up being short.\relax }}{15}{figure.caption.50}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces \textbf {Motivatoin for tuning:} the two\relax }}{25}{figure.caption.75}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath {N_{m}}= \ensuremath {N_{c}}= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{30}{figure.caption.101}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Color toned scatter plots of \ensuremath {f_\text {t}}, \ensuremath {f_\sigma }and \ensuremath {f_\text {s}}taken from dataset d1after applying log-scaling and manually removing outliers\relax }}{37}{figure.caption.124}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Correlation matrix of the four fitness measures in the first generation of dataset d10\relax }}{40}{figure.caption.131}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{42}{figure.caption.134}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{43}{figure.caption.137}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Evolution of the four fitness measures in experiment d9\relax }}{45}{figure.caption.143}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{46}{figure.caption.144}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Evolution of the four fitness measures in experiment d11\relax }}{47}{figure.caption.146}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Evolution of the model parameters in experiment d11\relax }}{48}{figure.caption.147}
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Correlation between \ensuremath {N_{m}}and the four fitness measures in experiment d10\relax }}{49}{figure.caption.150}
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Correlation between \ensuremath {\lambda _{m, \mu }}{} and fitness values (fixed \ensuremath {N_{c}}, variable \ensuremath {N_{m}})\relax }}{50}{figure.caption.153}
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Relation between \ensuremath {N_{m}}, \ensuremath {\lambda _{m, \mu }}, and the model fitness when the number of chartists was fixed to $\ensuremath {N_{c}}= 150 agents$. Due to missing data, some of the curves are not complete.\relax }}{51}{figure.caption.154}
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Correlation between \ensuremath {\lambda _{m, \mu }}{} and fitness values (fixed \ensuremath {N_{m}}, variable \ensuremath {N_{c}})\relax }}{52}{figure.caption.156}
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Relation between \ensuremath {N_{m}}, \ensuremath {\lambda _{m, \mu }}, and the model fitness when the number of market makers was fixed to $\ensuremath {N_{m}}= 52$ agents.\relax }}{53}{figure.caption.157}
+\contentsline {figure}{\numberline {3.16}{\ignorespaces Correlation between \ensuremath {N_{c}}and the four fitness measures when $\ensuremath {N_{m}}= 52$ (experiment d11)\relax }}{54}{figure.caption.159}
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Correlation between chartist latency and fitness values (fixed \ensuremath {N_{c}}, variable \ensuremath {N_{m}})\relax }}{55}{figure.caption.162}
+\contentsline {figure}{\numberline {3.18}{\ignorespaces Relation between \ensuremath {N_{m}}, \ensuremath {\lambda _{c, \mu }}, and the model fitness when the number of chartists was fixed to $\ensuremath {N_{c}}= 150 agents$. Due to missing data, some of the curves are not complete.\relax }}{56}{figure.caption.163}
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Correlation between chartist latency and fitness values (fixed \ensuremath {N_{m}}, variable \ensuremath {N_{c}})\relax }}{57}{figure.caption.165}
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Relation between \ensuremath {N_{c}}, \ensuremath {\lambda _{c, \mu }}, and the model fitness when the number of market makers was fixed to $\ensuremath {N_{m}}= 52$ agents.\relax }}{58}{figure.caption.166}
+\contentsline {figure}{\numberline {3.21}{\ignorespaces Correlations between \ensuremath {\rho _\text {A}}and the fitness values when $\ensuremath {N_{c}}= 150$\relax }}{59}{figure.caption.168}
+\contentsline {figure}{\numberline {3.22}{\ignorespaces Correlations between \ensuremath {\rho _\text {A}}and the fitness values when $\ensuremath {N_{m}}= 52$\relax }}{60}{figure.caption.169}
+\contentsline {figure}{\numberline {3.23}{\ignorespaces Scatter plots of fitness measures in experiment d9. \relax }}{61}{figure.caption.171}
+\contentsline {figure}{\numberline {3.24}{\ignorespaces Scatter plot of \ensuremath {f_\text {s}}against \ensuremath {f_\text {t}}with coloring showing $\qopname \relax o{log}\ensuremath {f_\sigma }$ and \ensuremath {f_\text {o}}\relax }}{62}{figure.caption.172}
+\contentsline {figure}{\numberline {3.25}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$ against \ensuremath {f_\text {t}}with coloring showing $\ensuremath {f_\text {s}}$ and \ensuremath {f_\text {o}}\relax }}{63}{figure.caption.173}
+\contentsline {figure}{\numberline {3.26}{\ignorespaces Jaccard index between the sets of data points extracted by each filter\relax }}{64}{figure.caption.181}
+\contentsline {figure}{\numberline {3.27}{\ignorespaces Scatter plots in fitness space showing the grouping of data points when using a GMM with 12 clusters.\relax }}{67}{figure.caption.189}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.28}{\ignorespaces Two examples of market crashes\relax }}{73}{figure.caption.203}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {C.1}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {s}}\relax }}{14}{figure.caption.54}
-\contentsline {figure}{\numberline {C.2}{\ignorespaces Scatter plot of $\qopname \relax o{log}\ensuremath {f_\sigma }$, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {o}}\relax }}{15}{figure.caption.55}
-\contentsline {figure}{\numberline {C.3}{\ignorespaces Scatter plot of \ensuremath {f_\text {m}}, \ensuremath {f_\text {s}}and \ensuremath {f_\sigma }\relax }}{15}{figure.caption.56}
-\contentsline {figure}{\numberline {C.4}{\ignorespaces Scatter plot of \ensuremath {f_\text {o}}, $\qopname \relax o{log}\ensuremath {f_\text {m}}$ and \ensuremath {f_\text {s}}\relax }}{16}{figure.caption.57}
-\contentsline {figure}{\numberline {C.5}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \sigma }}{} and the four fitness measures in experiment d10\relax }}{17}{figure.caption.59}
-\contentsline {figure}{\numberline {C.6}{\ignorespaces Correlation between \ensuremath {\lambda _{c, \sigma }}{} and the four fitness measures in experiment d10\relax }}{18}{figure.caption.60}
