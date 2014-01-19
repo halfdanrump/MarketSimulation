@@ -132,7 +132,7 @@ def multiline_xy_plot(x, ys, xlabel, ylabel, legend_labels, filename, y_errorbar
         #if y_errorbars is not None: ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
         print legend_labels[i]
         p.plot(ax, x, y, linewidth=2, label = legend_labels[i])
-    p.legend(ax, loc=0)
+    p.legend(ax, loc=0, frameon = False)
 
     if save_figure: fig.savefig(filename)
     return ax, fig
@@ -297,6 +297,28 @@ def plot_pca_components(filename, components):
     ax.set_yticks(yticks)
     y_ticklabels = map(lambda x: 'PCA %s'%x, range(len(components)))
     ax.set_yticklabels(y_ticklabels)
+    fig.savefig(filename)
+    return fig, ax
+
+def plot_image_matrix(filename, jaccard_matrix, x_ticklabels = None, y_ticklabels = None):
+    colormap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(colormap, alpha=1)
+    fig, ax = plt.subplots(1)
+    masked_jaccard = np.ma.masked_where(np.isnan(jaccard_matrix), jaccard_matrix)
+    p.pcolormesh(fig, ax, masked_jaccard)
+    print x_ticklabels
+    print y_ticklabels
+    #ax.imshow(jaccard_matrix, interpolation = 'none')
+    #ax.set_xticks([])
+    yticks = range(jaccard_matrix.shape[0]+1)
+    xticks = range(jaccard_matrix.shape[1]+1)
+    ax.set_yticks(yticks)
+    ax.set_xticks(xticks)
+    #x_ticklabels.reverse()
+    ax.set_yticklabels(y_ticklabels)
+    ax.set_xticklabels(x_ticklabels)
+    ax.set_ylabel('Chartist to market maker ratio')
+    ax.set_xlabel('Chartist to market latency maker ratio')
     fig.savefig(filename)
     return fig, ax
 
