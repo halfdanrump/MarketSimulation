@@ -221,13 +221,14 @@ def faster_mm_many_chartists():
 	mkplot(filename = filename, line_parameter='ssmm_latency_mu', intervals_for_lines = [0, 20, 40, 60], range_parameter='ssmm_nAgents', fitness_type='overshoot', legend_caption = 'ssmm latency', xlabel = 'Average # market makers', ylabel = 'Average model overshoot')
 
 
-def collect_filter_individuals_and_replot(action, n_graphs_to_copy = 10):
+def collect_filter_individuals_and_replot(dataset, action, n_graphs_to_copy = 10, masks = None):
 	import os, shutil
 	from IO import figure_save_path
 	from plotting import make_pretty_tradeprice_plot
 	
-	fit, par, gen, ids = IO.load_pickled_generation_dataframe('d11')
-	masks,filters = apply_filters(fit)
+	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
+	if not masks: 
+		masks,filters = apply_filters(fit)
 	# Give proper column name
 	ids.columns = ['id', 'gen']
 	raw_data_path = '/Users/halfdan/raw_data/d11/graphs/'
@@ -288,6 +289,10 @@ def collect_filter_individuals_and_replot(action, n_graphs_to_copy = 10):
 		m = m & graph_cond
 		graph_save_dir += 'large_overshoot/'
 		return replot(m, action)
+	elif action == 'slow_simulations':
+		mask = fit.time_to_reach_new_fundamental > 50000
+		graph_save_dir += 'slow_simulations/'
+		replot(mask, action)
 	else:
 		print 'Doing nothing'
 

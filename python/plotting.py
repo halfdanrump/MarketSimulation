@@ -318,7 +318,7 @@ def plot_image_matrix(filename, jaccard_matrix, x_ticklabels = None, y_ticklabel
     ax.set_yticklabels(y_ticklabels)
     ax.set_xticklabels(x_ticklabels)
     ax.set_ylabel('Chartist to market maker ratio')
-    ax.set_xlabel('Chartist to market latency maker ratio')
+    ax.set_xlabel('Chartist latency to market maker latency ratio')
     fig.savefig(filename)
     return fig, ax
 
