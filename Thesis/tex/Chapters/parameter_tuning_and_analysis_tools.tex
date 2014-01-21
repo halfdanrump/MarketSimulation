@@ -1,6 +1,6 @@
 % Chapter 1
 
-\chapter{Searching model behavior} % Main chapter title
+\part{Searching model behavior} % Main chapter title
 
 
 
@@ -102,7 +102,7 @@ where $\tradeprice{T}{\min}$ is the price of the order traded at the lowest pric
 \begin{equation}
 \tradeprice{n}{\min} = \min \big\{\tradeprice{n}{1},\ \tradeprice{n}{2}, \hdots,\ \tradeprice{n}{K}\big\}
 \end{equation}
-If the trade price never reaches the new fundamental, \timetoreachnewfundamental is undefined.
+If the trade price never reaches the new fundamental, \timetoreachnewfundamental{} is undefined.
 
 
 \subsubsection{Market overshoot}
@@ -138,17 +138,18 @@ To give the reader a more intuitive idea of how the fitness measures summarize t
 \begin{figure}
 \centering
 \subcaptionbox{Stable within margin}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/a_stable_within_margin.png}}
 \subcaptionbox{Within margin, but with flickering}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/b_flicker_but_mostly_within_margin.png}}
 \subcaptionbox{Flickering on the edge of margin}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/c_flickering_on_margin.png}}
 \subcaptionbox{Never reach fundamental}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/d_never_reach_fundamental.png}}
 \subcaptionbox{Stabilize under fundamental}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/e_stable_under_fundamental.png}}
 \subcaptionbox{Market crash}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/f_crash.png}}
+\caption{asdasd}
 \label{figure:typical_fitness_cases}
 \end{figure}
 %In particular the parameters controlling various time delays are of interest. 
@@ -235,13 +236,17 @@ As mentioned earlier, it is not enough simply to define a fitness function which
 \end{figure}
 
 
+\begin{comment}
 \subsection{Handling failed simulations}\label{section:failed_simulations}
+
 \input{Partials/no_reaction.tex}
 
 Some parameters cause the simulation to act in strange ways, and even crash in some cases. For instance, the the order book becomes empty, the simulation throws an exception and terminates. Similarly, if the best \bid/\ask prices drops to zero, the simulation exits. As such 
 
 The most common odd phenomenon was the market 
 
+
+\end{comment}
 
 \section{Applying the genetic algorithm}
 Applying the genetic algorithm to produce markets with desirable behavior turned out to be more difficult that one could have hoped for. First of all, the high computational costs was a hurdle. 

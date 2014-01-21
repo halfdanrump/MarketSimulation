@@ -1,0 +1,14 @@
+\contentsline {table}{\numberline {1}{\ignorespaces TABLE ILLUSTRATING ORDER BOOK\relax }}{15}
+\contentsline {table}{\numberline {2}{\ignorespaces Overview of parameters used in the genetic algorithm\relax }}{31}
+\contentsline {table}{\numberline {3}{\ignorespaces Optimization criteria for different types of market behavior\relax }}{32}
+\contentsline {table}{\numberline {4}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained parameters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each parameter.\relax }}{35}
+\contentsline {table}{\numberline {5}{\ignorespaces This table contains the fitness values for each individual in table 4\hbox {}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{36}
+\contentsline {table}{\numberline {6}{\ignorespaces Overview of datasets\relax }}{41}
+\contentsline {table}{\numberline {7}{\ignorespaces Filter IDs and fitness-regions\relax }}{71}
+\contentsline {table}{\numberline {8}{\ignorespaces XXX\relax }}{72}
+\contentsline {table}{\numberline {9}{\ignorespaces XXX\relax }}{72}
+\contentsline {table}{\numberline {10}{\ignorespaces XXX\relax }}{73}
+\contentsline {table}{\numberline {11}{\ignorespaces Cluster means (d10)\relax }}{75}
+\contentsline {table}{\numberline {12}{\ignorespaces Cluster standard deviations (d10)\relax }}{76}
+\contentsline {table}{\numberline {13}{\ignorespaces Cluster means (d11)\relax }}{76}
+\contentsline {table}{\numberline {14}{\ignorespaces Cluster standard deviations (d11)\relax }}{77}

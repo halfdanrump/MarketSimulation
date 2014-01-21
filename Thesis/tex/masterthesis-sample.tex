@@ -1,0 +1,218 @@
+\documentclass[12pt,a4j,twoside]{article}
+
+\usepackage{masterthesis-e}
+
+%\graphicspath{{Figures/}} % Specifies the directory where pictures are stored
+\usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' }
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{array}
+\newcolumntype{L}{>{\arraybackslash}m{3cm}}
+\newcolumntype{E}{>{\arraybackslash}m{7cm}}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\graphicspath{{Figures/}}
+
+
+
+%----------------------------------------------------------------------------------------
+%	MY OWN COMMANDS
+%----------------------------------------------------------------------------------------
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+
+
+\newcommand{\E}[1]{\mathrm{E}_\text{p}[#1]}
+\newcommand{\Var}[1]{\mathrm{Var}_\text{p}[#1]}
+\newcommand{\Cov}[1]{\mathrm{Cov}_\text{p}[#1]}
+\newcommand{\Median}[1]{\mathrm{M}_\text{p}[#1]}
+
+\newcommand{\Ecluster}[2]{\mathrm{E}_\text{C{#2}}[#1]}
+\newcommand{\Varcluster}[2]{\mathrm{Var}_\text{C#2}[#1]}
+\newcommand{\Covcluster}[2]{\mathrm{Cov}_\text{C#2}[#1]}
+
+\newcommand{\Efilter}[2]{\mathrm{E}_\text{F{#2}}[#1]}
+
+% % % DATASETS
+\newcommand{\dthree}{d1}
+\newcommand{\dnine}{d9}
+\newcommand{\dten}{d10}
+\newcommand{\deleven}{d11}
+
+%%% Consistency commands
+\newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
+\newcommand{\nrounds}{\spa{N}{r}}
+
+\newcommand{\datamatrixpar}[1][]{\ensuremath{\boldsymbol{P}_{#1}}}
+\newcommand{\datamatrixfit}[1][]{\ensuremath{\boldsymbol{F}_{#1}}}
+\newcommand{\individuallength}{\ensuremath{\mathcal{L}_i}}
+\newcommand{\fitnesslength}{\ensuremath{\mathcal{L}_f}}
+\newcommand{\datasetNpoints}{\ensuremath{N}}
+
+
+\newcommand{\hftmm}{HFT market maker}
+\newcommand{\hftsc}{HFT market chartist}
+
+% % % Agent parameters
+\newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda^c_{#1}}}
+\newcommand*{\scthinkagent}[1]{\ensuremath{T^c_{#1}}}
+\newcommand*{\scordervolumeagent}[1]{\ensuremath{V^c_{#1}}}
+\newcommand{\sctimehorizonagent}[1]{\ensuremath{H^c_{#1}}}
+\newcommand{\scwaitTimeBetweenTradingagent}[1]{\ensuremath{W^c_{#1}}}
+\newcommand{\scticksbeforereactingagent}[1]{\ensuremath{S^c_{#1}}}
+\newcommand{\scpriceticksizeagent}[1]{\ensuremath{A^c_{#1}}}
+
+\newcommand{\scticksbeforereactingmu}{\ensuremath{S_{c, \mu}}}
+\newcommand{\scticksbeforereactings}{\ensuremath{S_{c, \sigma}}}
+\newcommand{\scpriceticksizemu}{\ensuremath{A_{c, \mu}}}
+\newcommand{\scpriceticksizes}{\ensuremath{A_{c, \sigma}}}
+
+
+
+\newcommand*{\ssmmlatencyagent}[1]{\ensuremath{\lambda_m^{#1}}}
+\newcommand*{\ssmmthinkagent}[1]{\ensuremath{T_m^{#1}}}
+\newcommand*{\ssmmordervolumeagent}[1]{\ensuremath{V_m^{#1}}}
+\newcommand*{\ssmmminspreadagent}[1]{\ensuremath{\theta_{#1}}}
+
+\newcommand{\Count}{\ensuremath{\text{Count}}}
+\newcommand{\marketmaker}[1][]{\ensuremath{\text{MM}_{#1}}}
+\newcommand{\chartist}[1][]{\ensuremath{\text{SC}_{#1}}}
+\newcommand{\marketmakercyclelength}[1][]{\ensuremath{l_{\text{MM}, {#1}}}}
+
+
+
+
+
+
+%%% MODEL PARAMETERS
+
+\newcommand{\sclatencymu}{\ensuremath{\lambda_{c, \mu}}}
+\newcommand{\sclatencys}{\ensuremath{\lambda_{c, \sigma}}} 
+\newcommand{\scnAgents}{\ensuremath{N_{c}}} 
+\newcommand{\scthinkmu}{\ensuremath{T_{c, \mu}}}
+\newcommand{\scthinks}{\ensuremath{T_{c, \sigma}}}
+\newcommand{\sctimehorizonmu}{\ensuremath{H_{c, \mu}}}
+\newcommand{\sctimehorizons}{\ensuremath{H_{c, \sigma}}}
+\newcommand{\scwaitTimeBetweenTradingmu}{\ensuremath{W_{c, \mu}}}
+\newcommand{\scwaitTimeBetweenTradings}{\ensuremath{W_{c, \sigma}}}
+\newcommand{\ssmmlatencymu}{\ensuremath{\lambda_{m, \mu}}}
+\newcommand{\ssmmlatencys}{\ensuremath{\lambda_{m, \sigma}}}
+\newcommand{\ssmmnAgents}{\ensuremath{N_{m}}}
+\newcommand{\ssmmthinkmu}{\ensuremath{T_{m, \mu}}}
+\newcommand{\ssmmthinks}{\ensuremath{T_{m, \sigma}}}
+
+
+% % % FITNESS MEASURES
+
+\newcommand{\overshoot}{\ensuremath{f_\text{o}}}
+\newcommand{\roundstable}{\ensuremath{f_\text{s}}}
+\newcommand{\stdev}{\ensuremath{f_\sigma}}
+\newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{t}}}
+
+\newcommand{\ratioagents}{\ensuremath{\rho_\text{A}}}
+\newcommand{\ratiolatency}{\ensuremath{\rho_\lambda}}
+
+
+\newcommand{\ssmmordervolumemu}{\ensuremath{V_{m,\mu}}}
+\newcommand{\ssmmordervolumes}{\ensuremath{V_{m,\sigma}}}
+\newcommand{\scordervolumemu}{\ensuremath{V_{c, \mu}}}
+\newcommand{\scordervolumes}{\ensuremath{V_{c, \sigma}}}
+
+%%% SYMBOLS
+\newcommand{\round}[1][]{\ensuremath{t_{#1}}}
+\newcommand{\delay}{\ensuremath{p^m}}
+\newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
+\newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
+\newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
+\newcommand{\pmatch}{\ensuremath{p^m}}
+\newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
+
+
+% % % % Market related symbols
+\newcommand{\currentprice}{\ensuremath{p_c}}
+\newcommand{\bestbidprice}[1]{\ensuremath{B_{#1}}}
+\newcommand{\bestaskprice}[1]{\ensuremath{A_{#1}}}
+\newcommand{\askprice}{\ensuremath{p^a}}
+\newcommand{\bidprice}{\ensuremath{p^b}}
+\newcommand{\tradeprice}[2]{\ensuremath{p^t_{#2}(#1)}}
+
+
+% % % Fundamental symbols
+\newcommand{\fundamentalprice}[1][]{\ensuremath{F_{#1}}}
+\newcommand{\fundamentalshocksize}{\ensuremath{\eta}}
+\newcommand{\fundamentalaftershock}{\ensuremath{\eta}}
+\newcommand{\fundamentalshocktime}{\ensuremath{\round{_\eta}}}
+
+\newcommand{\smargin}{\ensuremath{m_\text{stable}}}
+\newcommand{\fas}{\ensuremath{p_\text{fas}}}
+
+%%% OTHER COMMANDS
+\newcommand{\ask}{ask}
+\newcommand{\bid}{bid}
+
+
+
+
+
+
+
+\title{Modelling and analysis of a financial market with slow and fast trading agents acting on time-delayed market information}{5}%5 means the distance between title line and name line.
+%\etitle{no title}
+\author{Halfdan~Rump}
+\studentid{Your Student ID}
+\university{Waseda University}%
+\faculty{School of Fundamental Science and Engineering}%
+\department{Department of Computer Science and Engineerring}
+\type{Master's Thesis}
+\schoolyear{2013}%School Year
+\hizuke{February 5, 2014}%submission date
+\advisor{Prof.~Toshiharu~Sugawara}%your advisor
+ 
+\begin{document}
+
+\maketitle
+\begin{abstract}
+This work proposes a model in which multiple heterogeneous agents use time delayed price information to trade an imaginary financial instrument in a market with a continuous double auction. The main innovation of the model is that, just as in the real world, trading agents do not have access to the market information at the same point in time, which means that the agents generally trade on different information. The model contains agent models of slow human traders using a noisy fundamentalist strategy, and high speed software traders using market maker and chartist strategies. Slow traders base their trading decisions on market information which has been delayed several seconds, while the fast traders observe the market with much smaller delays ranging between a few millisecons to a few hundred milliseconds. By containing agents of such different speeds, the model is relevant to the ongoing discussion of the pros and cons of high frequency trading in financial markets. 
+
+The model simulates the market events in the minutes after the advent of bad news represented by sudden negative shock to the fundamental stock price, and does so with a time resolution high enough to register events that unfold from millisecond to millisecond. A genetic algorithm is used to search for model parameters that cause the market to be stable, and parameters that cause the market to crash. Analysis of the results shows that a moderate level of high speed trading activity is not in itself problematic. In fact, high speed market makers are found to reduce price flickering, while high speed chartists are found to decrease the time required for the market to respond to changes in the fundamental price. However, the market is found to respond unfavorably to a large presence of fast traders. First of all, a large presence of fast market makers causes the market to respond sluggishly to the shock, leading to a prolonged disparity between the traded price and the true fundamental price. Secondly, a large presence of fast chartists causes increased flickering of the traded price. Finally it is found that flash-crashes can occur in markets in which ratio of the number of chartists to the number of market makers is high, while at the same time the market makers are faster than the chartists. These results are interesting, as they show both benefits and dangers of having markets where fast computer algorithms trade side by side with human traders.
+
+\end{abstract}
+%\vspace*{1cm}\par
+
+\newpage
+%\lhead{\emph{Contents}} % Set the left side page header to "Contents"
+\tableofcontents % Write out the Table of Contents
+
+
+\newpage
+\lhead{\emph{List of Figures}} % Set the left side page header to "List of Figures"
+\listoffigures % Write out the List of Figures
+
+\newpage
+\lhead{\emph{List of Tables}} % Set the left side page header to "List of Tables"
+\listoftables % Write out the List of Tables
+
+\newpage
+\lhead{\emph{Introduction}}
+\input{Chapters/introduction}
+\newpage
+\lhead{\emph{Model}}
+\input{Chapters/model}
+
+\newpage
+\lhead{\emph{XXX}}
+\input{Chapters/parameter_tuning_and_analysis_tools}
+
+\newpage
+\lhead{\emph{XXX}}
+\input{Chapters/results_new}
+
+\newpage
+\lhead{\emph{XXX}}
+\input{Chapters/discussion}
+ 
+ 
+ \end{document}
+
+

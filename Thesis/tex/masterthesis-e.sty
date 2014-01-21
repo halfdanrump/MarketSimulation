@@ -1,0 +1,149 @@
+% masterthesis-e.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Style file for Master Degree Graduation paper (for Win and Mac)
+%    Written by Toshiharu Sugawara
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% How to use this stype file
+%
+%  \documentstyle[12pt,a4j,twoside]{article}
+%  \usepackage{masterthesis-e}
+%
+%  \title{English Title}{space-length} %default space length is 5cm
+%  \etitle{} %do not use
+%  \author{Your~Name}
+%  \studentid{Your Student ID}
+%  \university{Waseda University}%
+%  \faculty{School of Fundamental Science and Engineering}%
+%  \department{Department of Computer Science and Engineerring}
+%  \type{Master Thesis}
+%  \schoolyear{2013}%School Year
+%  \submssiondate{February 5, 2014}%submission date
+%  \advisor{Prof.~Toshiharu~Sugawara}%your advisor
+%
+%  \begin{document}
+%  \maketitle
+%  \section{***}
+%  ...
+%  \end{document}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% A4 (210 x 297 mm)
+\setlength{\voffset}{-1in}
+\setlength{\hoffset}{-1in}
+\setlength{\headheight}{5mm}
+\setlength{\headsep}{5mm}
+\setlength{\topmargin}{20mm}
+\setlength{\oddsidemargin}{25mm}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\textwidth}{160mm}
+\setlength{\textheight}{225mm}
+\setlength{\footskip}{13mm}
+
+%% 
+\setlength{\abovecaptionskip}{10pt}
+\setlength{\belowcaptionskip}{-5pt}
+\setlength{\floatsep}{30pt}
+\setlength{\textfloatsep}{40pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\title#1#2{\def\@title{#1}\relax\def\tskip{\vspace{#2cm}}}
+\def\university#1{\def\@university{#1}}
+\def\faculty#1{\def\@faculty{#1}}
+\def\department#1{\def\@department{#1}}
+\def\etitle#1{\def\@etitle{#1}}
+\def\advisor#1{\def\@advisor{#1}}
+\def\nendo#1{\def\@nendo{#1}}
+\def\schoolyear#1{\nendo{}}
+\def\studentid#1{\def\@studentid{#1}}
+\def\hizuke#1{\def\@hizuke{#1}}
+\def\submssiondate#1{\hizuke{#1}}
+\def\type#1{\def\@type{#1}}
+\def\email#1{\def\@email{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\maketitle}{\par
+ \begingroup
+  \if@twocolumn
+    \ifnum \col@number=\@ne \@maketitle
+    \else \twocolumn[\@maketitle]%
+    \fi
+  \else
+    \newpage
+    \global\@topnum\z@   
+    \@maketitle
+  \fi
+\endgroup
+
+\global\let\maketitle\relax
+\global\let\p@thanks\relax
+\global\let\@thanks\@empty
+\global\let\@author\@empty
+\global\let\@date\@empty
+\global\let\@title\@empty
+\global\let\title\relax
+\global\let\author\relax
+\global\let\date\relax
+\global\let\and\relax
+}
+
+\def\@maketitle{%
+\newpage\null
+\vskip 2em%
+\begin{center}%
+  \thispagestyle{empty}\vspace{3mm}{\LARGE \@nendo \@type\\[3cm]}%
+  {\Huge\@title \tskip\par}%
+  {\LARGE\@author\\[1cm]}%
+  {\Large \@department\\ \@faculty\\ \@university\\[1cm]
+\begin{tabular}{l p{1cm} l}%
+  Student ID & & \@studentid\\[5mm]%
+  Date of Submission & & \@hizuke\\[5mm]%
+  Advisor & & \@advisor\\[5mm]%
+\end{tabular}}%
+\end{center}%
+   \cleardoublepage%
+   \pagenumbering{roman}\setcounter{page}{1}%
+   \tableofcontents%
+   \cleardoublepage%
+   \setlength{\baselineskip}{18pt}%
+   \pagenumbering{arabic}\setcounter{page}{1}%
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\Hline{\noalign{\hrule height 0.4mm}} %%% thick \hline
+\def\slashbr{%
+ \bgroup\catcode '57=\active\@slashbr}
+{\catcode '57=\active
+ \gdef\@slashbr#1{%
+  \def/{\linebreak[0]\char'57
+	\linebreak[0]}#1\egroup}}
+
+
+%%%% Initialization 
+\title{title}{5} %second arg is the distance between title and your name
+\author{}
+\date{}
+\etitle{}
+\author{Halfdan~Rump}
+\studentid{Your Student ID}
+\university{Waseda University}%
+\faculty{School of Fundamental Science and Engineering}%
+\department{Department of Computer Science and Engineerring}
+\type{Master Thesis}
+\schoolyear{2013}%School Year
+\submssiondate{February 5, 2014}%submission date
+\advisor{Prof.~Toshiharu~Sugawara}%your advisor
+
+
+\email{}
+\usepackage{fancyhdr}
+\pagestyle{fancy}%
+\rhead[]{\leftmark}
+\lhead[\leftmark]{}
+\cfoot{\thepage}
+%%% End of LaTeX style file

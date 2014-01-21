@@ -3,104 +3,40 @@
 \contentsline {chapter}{Acknowledgements}{iii}{dummy.2}
 \vspace {1em}
 \contentsline {chapter}{Contents}{iv}{dummy.3}
-\contentsline {chapter}{List of Figures}{vii}{dummy.5}
-\contentsline {chapter}{List of Tables}{ix}{dummy.7}
-\contentsline {chapter}{Abbreviations}{x}{dummy.9}
-\contentsline {chapter}{Physical Constants}{xi}{dummy.12}
-\contentsline {chapter}{Physical Constants}{xii}{dummy.15}
-\contentsline {chapter}{Symbols}{xiii}{dummy.18}
+\contentsline {chapter}{List of Figures}{vi}{dummy.5}
+\contentsline {chapter}{List of Tables}{vii}{dummy.7}
+\contentsline {chapter}{Abbreviations}{viii}{dummy.9}
+\contentsline {chapter}{Physical Constants}{ix}{dummy.12}
+\contentsline {chapter}{Physical Constants}{x}{dummy.15}
+\contentsline {chapter}{Symbols}{xi}{dummy.18}
 \vspace {2em}
-\contentsline {chapter}{\numberline {1}Background}{2}{chapter.21}
-\contentsline {section}{\numberline {1.1}Introduction}{2}{section.22}
-\contentsline {section}{\numberline {1.2}Related work}{4}{section.25}
-\contentsline {chapter}{\numberline {2}Model}{7}{chapter.26}
-\contentsline {section}{\numberline {2.1}Model}{7}{section.27}
-\contentsline {subsection}{\numberline {2.1.1}Overall architecture}{7}{subsection.28}
-\contentsline {subsection}{\numberline {2.1.2}Modeling delays}{7}{subsection.29}
-\contentsline {section}{\numberline {2.2}Auction type}{8}{section.31}
-\contentsline {section}{\numberline {2.3}Model components}{8}{section.32}
-\contentsline {subsection}{\numberline {2.3.1}Stocks}{8}{subsection.33}
-\contentsline {subsection}{\numberline {2.3.2}Messages}{9}{subsection.34}
-\contentsline {subsubsection}{\numberline {2.3.2.1}Market information}{9}{subsubsection.36}
-\contentsline {subsubsection}{\numberline {2.3.2.2}Orders}{10}{subsubsection.38}
-\contentsline {subsubsection}{\numberline {2.3.2.3}Transaction receipts}{12}{subsubsection.39}
-\contentsline {subsubsection}{\numberline {2.3.2.4}Order cancellations}{12}{subsubsection.40}
-\contentsline {subsection}{\numberline {2.3.3}Order book}{12}{subsection.41}
-\contentsline {subsubsection}{\numberline {2.3.3.1}Price updating}{13}{subsubsection.44}
-\contentsline {subsubsection}{\numberline {2.3.3.2}Order matching}{14}{subsubsection.46}
-\contentsline {subsection}{\numberline {2.3.4}Market}{14}{subsection.48}
-\contentsline {subsubsection}{\numberline {2.3.4.1}Short selling}{14}{subsubsection.49}
-\contentsline {section}{\numberline {2.4}Agents}{15}{section.51}
-\contentsline {subsection}{\numberline {2.4.1}Slow traders}{16}{subsection.52}
-\contentsline {subsubsection}{\numberline {2.4.1.1}Order arrival}{17}{subsubsection.56}
-\contentsline {subsection}{\numberline {2.4.2}HFT Market makers}{18}{subsection.59}
-\contentsline {subsubsection}{\numberline {2.4.2.1}Strategy outline}{18}{subsubsection.60}
-\contentsline {subsubsection}{\numberline {2.4.2.2}Parameterization}{19}{subsubsection.61}
-\contentsline {subsubsection}{\numberline {2.4.2.3}Price determination}{19}{subsubsection.62}
-\contentsline {subsubsection}{\numberline {2.4.2.4}Decision cycle}{20}{subsubsection.66}
-\contentsline {subsection}{\numberline {2.4.3}HFT Chartists}{21}{subsection.68}
-\contentsline {subsubsection}{\numberline {2.4.3.1}Strategy outline}{21}{subsubsection.69}
-\contentsline {subsubsection}{\numberline {2.4.3.2}Parameterization}{22}{subsubsection.70}
-\contentsline {subsubsection}{\numberline {2.4.3.3}Strategy evaluation}{22}{subsubsection.71}
-\contentsline {section}{\numberline {2.5}Simulation rounds}{23}{section.72}
-\contentsline {chapter}{\numberline {3}Searching model behavior}{24}{chapter.73}
-\contentsline {section}{\numberline {3.1}Motivation and overall procedure}{24}{section.74}
-\contentsline {subsection}{\numberline {3.1.1}Selecting fixed parameters}{26}{subsection.80}
-\contentsline {section}{\numberline {3.2}Inverse simulation with a genetic algorithm}{26}{section.81}
-\contentsline {subsection}{\numberline {3.2.1}Representing parameters as genes}{27}{subsection.88}
-\contentsline {subsection}{\numberline {3.2.2}Model fitness}{27}{subsection.90}
-\contentsline {subsubsection}{\numberline {3.2.2.1}Market response time}{27}{subsubsection.91}
-\contentsline {subsubsection}{\numberline {3.2.2.2}Market overshoot}{28}{subsubsection.94}
-\contentsline {subsubsection}{\numberline {3.2.2.3}Price flickering}{28}{subsubsection.96}
-\contentsline {subsection}{\numberline {3.2.3}Genetic algorithm parameters}{29}{subsection.100}
-\contentsline {subsection}{\numberline {3.2.4}Optimizing towards desired behavior}{30}{subsection.102}
-\contentsline {subsection}{\numberline {3.2.5}Filtering parameters}{30}{subsection.104}
-\contentsline {subsection}{\numberline {3.2.6}Handling failed simulations}{31}{subsection.106}
-\contentsline {section}{\numberline {3.3}Applying the genetic algorithm}{32}{section.108}
-\contentsline {subsection}{\numberline {3.3.1}Time complexity}{32}{subsection.109}
-\contentsline {subsection}{\numberline {3.3.2}Experiments: Dividing the search into parts}{33}{subsection.110}
-\contentsline {subsection}{\numberline {3.3.3}Gene pool as data set}{34}{subsection.112}
-\contentsline {section}{\numberline {3.4}Data analysis}{34}{section.120}
-\contentsline {subsection}{\numberline {3.4.1}Data visualization}{34}{subsection.121}
-\contentsline {subsubsection}{\numberline {3.4.1.1}Color toned scatter plots}{35}{subsubsection.122}
-\contentsline {subsection}{\numberline {3.4.2}Preprocessing}{36}{subsection.123}
-\contentsline {subsubsection}{\numberline {3.4.2.1}Handling outliers}{36}{subsubsection.124}
-\contentsline {subsection}{\numberline {3.4.3}Clustering algorithms}{38}{subsection.129}
-\contentsline {subsubsection}{\numberline {3.4.3.1}GMM}{38}{subsubsection.130}
-\contentsline {chapter}{Experiments}{39}{chapter*.131}
-\contentsline {section}{\numberline {3.5}Overview of experiments}{39}{section.132}
-\contentsline {subsection}{\numberline {3.5.1}Correlation between fitness measures}{40}{subsection.134}
-\contentsline {section}{\numberline {3.6}Fitness and parameter evolution}{42}{section.136}
-\contentsline {subsection}{\numberline {3.6.1}Variable number of market makers}{42}{subsection.137}
-\contentsline {subsection}{\numberline {3.6.2}Fixed number of chartists and market makers}{46}{subsection.146}
-\contentsline {subsection}{\numberline {3.6.3}Variable number of chartists}{47}{subsection.149}
-\contentsline {section}{\numberline {3.7}Parameter and fitness correlation}{48}{section.152}
-\contentsline {subsection}{\numberline {3.7.1}Number of market makers}{49}{subsection.153}
-\contentsline {subsection}{\numberline {3.7.2}Market maker latency}{50}{subsection.155}
-\contentsline {subsubsection}{\numberline {3.7.2.1}Fixing the number of market makers}{51}{subsubsection.159}
-\contentsline {subsection}{\numberline {3.7.3}Number of chartists}{52}{subsection.162}
-\contentsline {subsection}{\numberline {3.7.4}Chartist latency}{53}{subsection.164}
-\contentsline {subsection}{\numberline {3.7.5}Chartist to market maker ratio}{56}{subsection.171}
-\contentsline {section}{\numberline {3.8}Grouping models by behavior}{56}{section.174}
-\contentsline {subsection}{\numberline {3.8.1}Manually grouping simulations by behavior}{58}{subsection.178}
-\contentsline {subsubsection}{\numberline {3.8.1.1}Fast simulations}{61}{subsubsection.183}
-\contentsline {subsection}{\numberline {3.8.2}Clustering with mixture of Gaussians}{67}{subsection.192}
-\contentsline {section}{\numberline {3.9}Summary of results}{68}{section.199}
-\contentsline {chapter}{Discussion}{71}{chapter*.200}
-\contentsline {section}{\numberline {3.10}Benefits of fast traders}{71}{section.201}
-\contentsline {subsection}{\numberline {3.10.1}Fast market makers reduce price flickering}{71}{subsection.202}
-\contentsline {section}{\numberline {3.11}Agent strategies market crashes}{71}{section.203}
-\contentsline {subsection}{\numberline {3.11.1}Frequency of crashes}{73}{subsection.208}
-\contentsline {subsection}{\numberline {3.11.2}Agent speed and market crashes}{74}{subsection.210}
-\contentsline {section}{\numberline {3.12}Market makers causing the stock to be over-valued }{74}{section.211}
-\contentsline {section}{\numberline {3.13}title}{74}{section.212}
-\contentsline {section}{\numberline {3.14}Co-location}{75}{section.213}
-\contentsline {section}{\numberline {3.15}Strategy crowding}{75}{section.214}
-\contentsline {section}{\numberline {3.16}Future work}{75}{section.215}
+\contentsline {chapter}{\numberline {1}Searching model behavior}{2}{chapter.21}
+\contentsline {section}{\numberline {1.1}Motivation and overall procedure}{2}{section.22}
+\contentsline {subsection}{\numberline {1.1.1}Selecting fixed parameters}{4}{subsection.28}
+\contentsline {section}{\numberline {1.2}Inverse simulation with a genetic algorithm}{4}{section.29}
+\contentsline {subsection}{\numberline {1.2.1}Representing parameters as genes}{5}{subsection.36}
+\contentsline {subsection}{\numberline {1.2.2}Model fitness}{5}{subsection.38}
+\contentsline {subsubsection}{\numberline {1.2.2.1}Market response time}{5}{subsubsection.39}
+\contentsline {subsubsection}{\numberline {1.2.2.2}Market overshoot}{6}{subsubsection.42}
+\contentsline {subsubsection}{\numberline {1.2.2.3}Price flickering}{6}{subsubsection.44}
+\contentsline {subsection}{\numberline {1.2.3}Configuring with genetic algorithm}{7}{subsection.52}
+\contentsline {subsection}{\numberline {1.2.4}Optimizing towards desired behavior}{9}{subsection.54}
+\contentsline {subsection}{\numberline {1.2.5}Filtering parameters}{10}{subsection.56}
+\contentsline {section}{\numberline {1.3}Applying the genetic algorithm}{10}{section.58}
+\contentsline {subsection}{\numberline {1.3.1}Time complexity}{11}{subsection.59}
+\contentsline {subsection}{\numberline {1.3.2}Experiments: Dividing the search into parts}{12}{subsection.60}
+\contentsline {subsection}{\numberline {1.3.3}Gene pool as data set}{12}{subsection.62}
+\contentsline {section}{\numberline {1.4}Data analysis}{14}{section.70}
+\contentsline {subsection}{\numberline {1.4.1}Data visualization}{14}{subsection.71}
+\contentsline {subsubsection}{\numberline {1.4.1.1}Color toned scatter plots}{14}{subsubsection.72}
+\contentsline {subsection}{\numberline {1.4.2}Preprocessing}{14}{subsection.73}
+\contentsline {subsubsection}{\numberline {1.4.2.1}Handling outliers}{14}{subsubsection.74}
+\contentsline {subsection}{\numberline {1.4.3}Clustering algorithms}{16}{subsection.79}
+\contentsline {subsubsection}{\numberline {1.4.3.1}GMM}{16}{subsubsection.80}
 \vspace {2em}
-\contentsline {chapter}{Additional tables}{76}{appendix*.216}
-\contentsline {section}{\numberline {.1}Dataset 1}{76}{section.217}
-\contentsline {chapter}{Third party software}{77}{appendix*.218}
-\contentsline {chapter}{Additional figures}{78}{appendix*.219}
+\contentsline {chapter}{\numberline {A}Additional tables}{17}{appendix.81}
+\contentsline {section}{\numberline {A.1}Dataset 1}{17}{section.82}
+\contentsline {chapter}{\numberline {B}Third party software}{18}{appendix.83}
+\contentsline {chapter}{\numberline {C}Additional figures}{19}{appendix.84}
 \vspace {2em}
-\contentsline {chapter}{Bibliography}{79}{dummy.220}
+\contentsline {chapter}{Bibliography}{20}{dummy.85}
