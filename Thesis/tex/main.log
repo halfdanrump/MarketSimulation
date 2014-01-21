@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  19 JAN 2014 22:58
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  20 JAN 2014 16:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -775,12 +775,12 @@ LaTeX Info: Redefining \nameref on input line 41.
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 207.
+LaTeX Font Info:    Try loading font information for U+msa on input line 209.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 207.
+LaTeX Font Info:    Try loading font information for U+msb on input line 209.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -844,7 +844,7 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
  Physical Constants
 ------------------------------------------------------------------------------
 
-Overfull \hbox (147.48787pt too wide) in alignment at lines 327--327
+Overfull \hbox (147.48787pt too wide) in alignment at lines 329--329
  [] [] 
  []
 
@@ -857,7 +857,7 @@ Overfull \hbox (147.48787pt too wide) in alignment at lines 327--327
  Physical Constants
 ------------------------------------------------------------------------------
 
-Overfull \hbox (57.13397pt too wide) in alignment at lines 357--357
+Overfull \hbox (57.13397pt too wide) in alignment at lines 359--359
  [] [] 
  []
 
@@ -870,7 +870,7 @@ Overfull \hbox (57.13397pt too wide) in alignment at lines 357--357
  Symbols
 ------------------------------------------------------------------------------
 
-Overfull \hbox (49.21063pt too wide) in alignment at lines 393--393
+Overfull \hbox (49.21063pt too wide) in alignment at lines 395--395
  [] [] [] [] 
  []
 
@@ -905,7 +905,7 @@ n input line 12.
 
 [7
 
-] <Figures/Electron.pdf, id=792, 398.3386pt x 284.52756pt>
+] <Figures/Electron.pdf, id=786, 398.3386pt x 284.52756pt>
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
@@ -977,70 +977,70 @@ Package natbib Warning: Citation `genetic1' on page 26 undefined on input line
 Package natbib Warning: Citation `genetic2' on page 26 undefined on input line 
 74.
 
-[26] [27]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 108.
+[26] [27] [28]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 140.
 
  (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 108.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 140.
 
-<Figures/issue_113_tradeprice_plots/all/low_stdev_but_not_stable.png, id=984, 5
+<Figures/issue_113_tradeprice_plots/all/low_stdev_but_not_stable.png, id=989, 5
 78.16pt x 289.08pt>
 File: Figures/issue_113_tradeprice_plots/all/low_stdev_but_not_stable.png Graph
 ic file (type png)
 
 <use Figures/issue_113_tradeprice_plots/all/low_stdev_but_not_stable.png>
 Package pdftex.def Info: Figures/issue_113_tradeprice_plots/all/low_stdev_but_n
-ot_stable.png used on input line 126.
+ot_stable.png used on input line 158.
 (pdftex.def)             Requested size: 208.73653pt x 104.36865pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 126--126
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 158--158
  [][] 
  []
 
 
-<Figures/issue_113_tradeprice_plots/all/low_stdev_and_stable.png, id=986, 578.1
+<Figures/issue_113_tradeprice_plots/all/low_stdev_and_stable.png, id=991, 578.1
 6pt x 289.08pt>
 File: Figures/issue_113_tradeprice_plots/all/low_stdev_and_stable.png Graphic f
 ile (type png)
 
 <use Figures/issue_113_tradeprice_plots/all/low_stdev_and_stable.png>
 Package pdftex.def Info: Figures/issue_113_tradeprice_plots/all/low_stdev_and_s
-table.png used on input line 128.
+table.png used on input line 160.
 (pdftex.def)             Requested size: 208.73653pt x 104.36865pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 128--128
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 160--160
  [][] 
  []
 
 
-<Figures/issue_113_tradeprice_plots/all/high_stdev_but_stable.png, id=987, 578.
+<Figures/issue_113_tradeprice_plots/all/high_stdev_but_stable.png, id=992, 578.
 16pt x 289.08pt>
 File: Figures/issue_113_tradeprice_plots/all/high_stdev_but_stable.png Graphic 
 file (type png)
 
 <use Figures/issue_113_tradeprice_plots/all/high_stdev_but_stable.png>
 Package pdftex.def Info: Figures/issue_113_tradeprice_plots/all/high_stdev_but_
-stable.png used on input line 130.
+stable.png used on input line 162.
 (pdftex.def)             Requested size: 208.73653pt x 104.36865pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 130--130
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 162--162
  [][] 
  []
 
-[28] [29 <./Figures/issue_113_tradeprice_plots/all/low_stdev_but_not_stable.png
+[29] [30 <./Figures/issue_113_tradeprice_plots/all/low_stdev_but_not_stable.png
 > <./Figures/issue_113_tradeprice_plots/all/low_stdev_and_stable.png> <./Figure
 s/issue_113_tradeprice_plots/all/high_stdev_but_stable.png>]
 File: Figures/Electron.pdf Graphic file (type pdf)
 
 <use Figures/Electron.pdf>
-Package pdftex.def Info: Figures/Electron.pdf used on input line 189.
+Package pdftex.def Info: Figures/Electron.pdf used on input line 221.
 (pdftex.def)             Requested size: 398.33762pt x 284.52686pt.
  (./Partials/no_reaction.tex
 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figure
-s/test/gen0_1387987146731556L.png, id=1005, 578.16pt x 433.62pt>
+s/test/gen0_1387987146731556L.png, id=1009, 578.16pt x 433.62pt>
 File: /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_f
 igures/test/gen0_1387987146731556L.png Graphic file (type png)
 
@@ -1064,7 +1064,7 @@ Underfull \hbox (badness 2384) in paragraph at lines 1--1
 
 
 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figure
-s/test/gen0_1387987146764027L.png, id=1006, 578.16pt x 433.62pt>
+s/test/gen0_1387987146764027L.png, id=1010, 578.16pt x 433.62pt>
 File: /Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_f
 igures/test/gen0_1387987146764027L.png Graphic file (type png)
 
@@ -1086,104 +1086,104 @@ m/it/10 ^^U[]$\OT1/cmr/m/n/10 =17, $\OML/cmm/m/it/10 ^^U[]$\OT1/cmr/m/n/10 =21,
  $\OML/cmm/m/it/10 ^^U[]$\OT1/cmr/m/n/10 =17, 
  []
 
-[30]) [31 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_
-for_figures/test/gen0_1387987146731556L.png> </Users/halfdan/Dropbox/Waseda/Res
-earch/MarketSimulation/Thesis/data_for_figures/test/gen0_1387987146764027L.png>
-]
+) [31] [32 </Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data
+_for_figures/test/gen0_1387987146731556L.png> </Users/halfdan/Dropbox/Waseda/Re
+search/MarketSimulation/Thesis/data_for_figures/test/gen0_1387987146764027L.png
+>]
 
-LaTeX Warning: Reference `chapter:results_and_discussion' on page 32 undefined 
-on input line 235.
-
-
-LaTeX Warning: Reference `section:experiments_overview' on page 32 undefined on
- input line 235.
+LaTeX Warning: Reference `chapter:results_and_discussion' on page 33 undefined 
+on input line 267.
 
 
-LaTeX Warning: Reference `results_and_discussion' on page 32 undefined on input
- line 235.
+LaTeX Warning: Reference `section:experiments_overview' on page 33 undefined on
+ input line 267.
 
-[32] (./Tables/example_dataset_parameters.tex)
-Overfull \hbox (3.47867pt too wide) in paragraph at lines 1--251
+
+LaTeX Warning: Reference `results_and_discussion' on page 33 undefined on input
+ line 267.
+
+[33] (./Tables/example_dataset_parameters.tex)
+Overfull \hbox (3.47867pt too wide) in paragraph at lines 1--283
  [][] 
  []
 
-(./Tables/example_dataset_fitnesses.tex) [33] [34] [35]
+(./Tables/example_dataset_fitnesses.tex) [34] [35]
 
-Package caption Warning: \label without proper \caption on input line 298.
+Package caption Warning: \label without proper \caption on input line 330.
 See the caption package documentation for explanation.
 
 
 LaTeX Warning: Reference `figure:scatter_log_transform' on page 36 undefined on
- input line 291.
+ input line 323.
 
-<Figures/21_scatter_plots/d3/f.png, id=1057, 578.16pt x 433.62pt>
+[36] <Figures/21_scatter_plots/d3/f.png, id=1062, 578.16pt x 433.62pt>
 File: Figures/21_scatter_plots/d3/f.png Graphic file (type png)
 
 <use Figures/21_scatter_plots/d3/f.png>
 Package pdftex.def Info: Figures/21_scatter_plots/d3/f.png used on input line 3
-00.
+32.
 (pdftex.def)             Requested size: 208.73653pt x 156.553pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 300--300
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 332--332
  [][] 
  []
 
-<Figures/21_scatter_plots/d3/g.png, id=1058, 578.16pt x 433.62pt>
+<Figures/21_scatter_plots/d3/g.png, id=1063, 578.16pt x 433.62pt>
 File: Figures/21_scatter_plots/d3/g.png Graphic file (type png)
 
 <use Figures/21_scatter_plots/d3/g.png>
 Package pdftex.def Info: Figures/21_scatter_plots/d3/g.png used on input line 3
-02.
+34.
 (pdftex.def)             Requested size: 208.73653pt x 156.553pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 302--302
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 334--334
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d3/a.png, id=1059, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d3/a.png, id=1064, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d3/a.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d3/a.png>
 Package pdftex.def Info: Figures/103_scatter_manual_outlier/d3/a.png used on in
-put line 304.
+put line 336.
 (pdftex.def)             Requested size: 208.73653pt x 156.553pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 304--304
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 336--336
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d3/b.png, id=1060, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d3/b.png, id=1065, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d3/b.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d3/b.png>
 Package pdftex.def Info: Figures/103_scatter_manual_outlier/d3/b.png used on in
-put line 306.
+put line 338.
 (pdftex.def)             Requested size: 208.73653pt x 156.553pt.
 
-Overfull \hbox (4.17244pt too wide) in paragraph at lines 306--306
+Overfull \hbox (4.17244pt too wide) in paragraph at lines 338--338
  [][] 
  []
 
 
-Underfull \hbox (badness 1701) in paragraph at lines 300--307
+Underfull \hbox (badness 1701) in paragraph at lines 332--339
 [][] []
  []
 
-) (./Chapters/results_new.tex [36] [37 <./Figures/21_scatter_plots/d3/f.png> <.
-/Figures/21_scatter_plots/d3/g.png> <./Figures/103_scatter_manual_outlier/d3/a.
-png> <./Figures/103_scatter_manual_outlier/d3/b.png>]
+) (./Chapters/results_new.tex [37 <./Figures/21_scatter_plots/d3/f.png> <./Figu
+res/21_scatter_plots/d3/g.png> <./Figures/103_scatter_manual_outlier/d3/a.png> 
+<./Figures/103_scatter_manual_outlier/d3/b.png>] [38]
 ------------------------------------------------------------------------------
  3 Experiments
 ------------------------------------------------------------------------------
 
-LaTeX Warning: Reference `chapter:ga' on page 38 undefined on input line 5.
+LaTeX Warning: Reference `chapter:ga' on page 39 undefined on input line 5.
 
 
 Overfull \hbox (2.71823pt too wide) in paragraph at lines 12--13
 []
  []
 
-[38
+[39
 
 ]
 Overfull \hbox (1.23509pt too wide) in paragraph at lines 15--16
@@ -1259,8 +1259,8 @@ File: Figures/Electron.pdf Graphic file (type pdf)
 <use Figures/Electron.pdf>
 Package pdftex.def Info: Figures/Electron.pdf used on input line 42.
 (pdftex.def)             Requested size: 292.22987pt x 208.74535pt.
- [39] [40]
-<Figures/82_generation_plots/d10/round_stable.png, id=1093, 578.16pt x 433.62pt
+ [40] [41]
+<Figures/82_generation_plots/d10/round_stable.png, id=1097, 578.16pt x 433.62pt
 >
 File: Figures/82_generation_plots/d10/round_stable.png Graphic file (type png)
  <use Figures/82_generation_plots/d10/round_stable.png>
@@ -1273,7 +1273,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 67--67
  []
 
 
-<Figures/82_generation_plots/d10/time_to_reach_new_fundamental.png, id=1094, 57
+<Figures/82_generation_plots/d10/time_to_reach_new_fundamental.png, id=1098, 57
 8.16pt x 433.62pt>
 File: Figures/82_generation_plots/d10/time_to_reach_new_fundamental.png Graphic
  file (type png)
@@ -1287,7 +1287,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 69--69
  [][] 
  []
 
-<Figures/82_generation_plots/d10/stdev.png, id=1095, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d10/stdev.png, id=1099, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d10/stdev.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d10/stdev.png>
@@ -1299,7 +1299,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 71--71
  [][] 
  []
 
-<Figures/82_generation_plots/d10/overshoot.png, id=1096, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d10/overshoot.png, id=1100, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d10/overshoot.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d10/overshoot.png>
@@ -1311,10 +1311,10 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 73--73
  [][] 
  []
 
-[41] [42 <./Figures/82_generation_plots/d10/round_stable.png> <./Figures/82_gen
+[42] [43 <./Figures/82_generation_plots/d10/round_stable.png> <./Figures/82_gen
 eration_plots/d10/time_to_reach_new_fundamental.png> <./Figures/82_generation_p
 lots/d10/stdev.png> <./Figures/82_generation_plots/d10/overshoot.png>]
-<Figures/82_generation_plots/d10/latpars_mu.png, id=1122, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d10/latpars_mu.png, id=1126, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d10/latpars_mu.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d10/latpars_mu.png>
@@ -1326,7 +1326,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 97--97
  [][] 
  []
 
-<Figures/82_generation_plots/d10/latpars_s.png, id=1123, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d10/latpars_s.png, id=1127, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d10/latpars_s.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d10/latpars_s.png>
@@ -1338,7 +1338,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 99--99
  [][] 
  []
 
-<Figures/82_generation_plots/d10/nAgents.png, id=1124, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d10/nAgents.png, id=1128, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d10/nAgents.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d10/nAgents.png>
@@ -1350,14 +1350,14 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 101--101
  [][] 
  []
 
-[43 <./Figures/82_generation_plots/d10/latpars_mu.png> <./Figures/82_generation
+[44 <./Figures/82_generation_plots/d10/latpars_mu.png> <./Figures/82_generation
 _plots/d10/latpars_s.png> <./Figures/82_generation_plots/d10/nAgents.png>]
 
-LaTeX Warning: Reference `section:experiment_11' on page 44 undefined on input 
+LaTeX Warning: Reference `section:experiment_11' on page 45 undefined on input 
 line 116.
 
-[44]
-<Figures/82_generation_plots/d9/round_stable.png, id=1143, 578.16pt x 433.62pt>
+[45]
+<Figures/82_generation_plots/d9/round_stable.png, id=1147, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d9/round_stable.png Graphic file (type png)
 <use Figures/82_generation_plots/d9/round_stable.png>
 Package pdftex.def Info: Figures/82_generation_plots/d9/round_stable.png used o
@@ -1369,7 +1369,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 132--132
  []
 
 
-<Figures/82_generation_plots/d9/time_to_reach_new_fundamental.png, id=1144, 578
+<Figures/82_generation_plots/d9/time_to_reach_new_fundamental.png, id=1148, 578
 .16pt x 433.62pt>
 File: Figures/82_generation_plots/d9/time_to_reach_new_fundamental.png Graphic 
 file (type png)
@@ -1383,7 +1383,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 134--134
  [][] 
  []
 
-<Figures/82_generation_plots/d9/stdev.png, id=1145, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d9/stdev.png, id=1149, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d9/stdev.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d9/stdev.png>
@@ -1395,7 +1395,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 136--136
  [][] 
  []
 
-<Figures/82_generation_plots/d9/overshoot.png, id=1146, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d9/overshoot.png, id=1150, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d9/overshoot.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d9/overshoot.png>
@@ -1407,7 +1407,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 138--138
  [][] 
  []
 
-<Figures/82_generation_plots/d9/latpars_mu.png, id=1147, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d9/latpars_mu.png, id=1151, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d9/latpars_mu.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d9/latpars_mu.png>
@@ -1420,7 +1420,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 148--148
  []
 
 
-<Figures/82_generation_plots/d9/thinkpars_mu.png, id=1148, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d9/thinkpars_mu.png, id=1152, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d9/thinkpars_mu.png Graphic file (type png)
 <use Figures/82_generation_plots/d9/thinkpars_mu.png>
 Package pdftex.def Info: Figures/82_generation_plots/d9/thinkpars_mu.png used o
@@ -1432,7 +1432,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 150--150
  []
 
 
-<Figures/82_generation_plots/d9/sctimehorizon_mu.png, id=1149, 578.16pt x 433.6
+<Figures/82_generation_plots/d9/sctimehorizon_mu.png, id=1153, 578.16pt x 433.6
 2pt>
 File: Figures/82_generation_plots/d9/sctimehorizon_mu.png Graphic file (type pn
 g)
@@ -1446,7 +1446,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 152--152
  []
 
 
-<Figures/82_generation_plots/d9/scwaittime_mu.png, id=1150, 578.16pt x 433.62pt
+<Figures/82_generation_plots/d9/scwaittime_mu.png, id=1154, 578.16pt x 433.62pt
 >
 File: Figures/82_generation_plots/d9/scwaittime_mu.png Graphic file (type png)
  <use Figures/82_generation_plots/d9/scwaittime_mu.png>
@@ -1458,13 +1458,13 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 154--154
  [][] 
  []
 
-[45 <./Figures/82_generation_plots/d9/round_stable.png> <./Figures/82_generatio
+[46 <./Figures/82_generation_plots/d9/round_stable.png> <./Figures/82_generatio
 n_plots/d9/time_to_reach_new_fundamental.png> <./Figures/82_generation_plots/d9
-/stdev.png> <./Figures/82_generation_plots/d9/overshoot.png>] [46 <./Figures/82
+/stdev.png> <./Figures/82_generation_plots/d9/overshoot.png>] [47 <./Figures/82
 _generation_plots/d9/latpars_mu.png> <./Figures/82_generation_plots/d9/thinkpar
 s_mu.png> <./Figures/82_generation_plots/d9/sctimehorizon_mu.png> <./Figures/82
 _generation_plots/d9/scwaittime_mu.png>]
-<Figures/82_generation_plots/d11/round_stable.png, id=1171, 578.16pt x 433.62pt
+<Figures/82_generation_plots/d11/round_stable.png, id=1175, 578.16pt x 433.62pt
 >
 File: Figures/82_generation_plots/d11/round_stable.png Graphic file (type png)
  <use Figures/82_generation_plots/d11/round_stable.png>
@@ -1477,7 +1477,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 169--169
  []
 
 
-<Figures/82_generation_plots/d11/time_to_reach_new_fundamental.png, id=1172, 57
+<Figures/82_generation_plots/d11/time_to_reach_new_fundamental.png, id=1176, 57
 8.16pt x 433.62pt>
 File: Figures/82_generation_plots/d11/time_to_reach_new_fundamental.png Graphic
  file (type png)
@@ -1491,7 +1491,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 171--171
  [][] 
  []
 
-<Figures/82_generation_plots/d11/stdev.png, id=1173, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d11/stdev.png, id=1177, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d11/stdev.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d11/stdev.png>
@@ -1503,7 +1503,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 173--173
  [][] 
  []
 
-<Figures/82_generation_plots/d11/overshoot.png, id=1174, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d11/overshoot.png, id=1178, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d11/overshoot.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d11/overshoot.png>
@@ -1516,7 +1516,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 175--175
  []
 
 
-<Figures/82_generation_plots/d11/latpars_mu.png, id=1175, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d11/latpars_mu.png, id=1179, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d11/latpars_mu.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d11/latpars_mu.png>
@@ -1528,7 +1528,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 185--185
  [][] 
  []
 
-<Figures/82_generation_plots/d11/latpars_s.png, id=1176, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d11/latpars_s.png, id=1180, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d11/latpars_s.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d11/latpars_s.png>
@@ -1540,7 +1540,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 187--187
  [][] 
  []
 
-<Figures/82_generation_plots/d11/nAgents.png, id=1177, 578.16pt x 433.62pt>
+<Figures/82_generation_plots/d11/nAgents.png, id=1181, 578.16pt x 433.62pt>
 File: Figures/82_generation_plots/d11/nAgents.png Graphic file (type png)
 
 <use Figures/82_generation_plots/d11/nAgents.png>
@@ -1554,7 +1554,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 189--189
 
 
 <Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__overshoot(mean)_scatter.png, id
-=1178, 578.16pt x 433.62pt>
+=1182, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__overshoot(mean)_scatter.pn
 g Graphic file (type png)
 
@@ -1570,7 +1570,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 212--212
 
 
 <Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__round_stable(mean)_scatter.png,
- id=1179, 578.16pt x 433.62pt>
+ id=1183, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__round_stable(mean)_scatter
 .png Graphic file (type png)
 
@@ -1586,7 +1586,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 214--214
 
 
 <Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__stdev(mean)_scatter.png, id=118
-0, 578.16pt x 433.62pt>
+4, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__stdev(mean)_scatter.png Gr
 aphic file (type png)
 
@@ -1601,7 +1601,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 216--216
 
 
 <Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__time_to_reach_new_fundamental(m
-ean)_scatter.png, id=1181, 578.16pt x 433.62pt>
+ean)_scatter.png, id=1185, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_nAgents__vs__time_to_reach_new_fundamen
 tal(mean)_scatter.png Graphic file (type png)
 
@@ -1615,18 +1615,18 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 218--218
  [][] 
  []
 
-[47 <./Figures/82_generation_plots/d11/round_stable.png> <./Figures/82_generati
+[48 <./Figures/82_generation_plots/d11/round_stable.png> <./Figures/82_generati
 on_plots/d11/time_to_reach_new_fundamental.png> <./Figures/82_generation_plots/
-d11/stdev.png> <./Figures/82_generation_plots/d11/overshoot.png>] [48 <./Figure
+d11/stdev.png> <./Figures/82_generation_plots/d11/overshoot.png>] [49 <./Figure
 s/82_generation_plots/d11/latpars_mu.png> <./Figures/82_generation_plots/d11/la
-tpars_s.png> <./Figures/82_generation_plots/d11/nAgents.png>] [49 <./Figures/10
+tpars_s.png> <./Figures/82_generation_plots/d11/nAgents.png>] [50 <./Figures/10
 1_pars_vs_fits/d10/ssmm_nAgents__vs__overshoot(mean)_scatter.png> <./Figures/10
 1_pars_vs_fits/d10/ssmm_nAgents__vs__round_stable(mean)_scatter.png> <./Figures
 /101_pars_vs_fits/d10/ssmm_nAgents__vs__stdev(mean)_scatter.png> <./Figures/101
 _pars_vs_fits/d10/ssmm_nAgents__vs__time_to_reach_new_fundamental(mean)_scatter
 .png>]
 <Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__overshoot(mean)_scatter.png,
- id=1209, 578.16pt x 433.62pt>
+ id=1213, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__overshoot(mean)_scatter
 .png Graphic file (type png)
 
@@ -1642,7 +1642,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 234--234
 
 
 <Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__round_stable(mean)_scatter.p
-ng, id=1210, 578.16pt x 433.62pt>
+ng, id=1214, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__round_stable(mean)_scat
 ter.png Graphic file (type png)
 
@@ -1658,7 +1658,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 236--236
 
 
 <Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__stdev(mean)_scatter.png, id=
-1211, 578.16pt x 433.62pt>
+1215, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__stdev(mean)_scatter.png
  Graphic file (type png)
 
@@ -1673,7 +1673,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 238--238
 
 
 <Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__time_to_reach_new_fundamenta
-l(mean)_scatter.png, id=1212, 578.16pt x 433.62pt>
+l(mean)_scatter.png, id=1216, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__time_to_reach_new_funda
 mental(mean)_scatter.png Graphic file (type png)
 
@@ -1688,7 +1688,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 240--240
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d10/overshoot_MM_mmlatency.png, id=1213,
+<Figures/faster_mm_makes_worse_markets/d10/overshoot_MM_mmlatency.png, id=1217,
  578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/overshoot_MM_mmlatency.png Grap
 hic file (type png)
@@ -1704,7 +1704,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 258--258
 
 
 <Figures/faster_mm_makes_worse_markets/d10/round_stable_MM_mmlatency.png, id=12
-14, 578.16pt x 433.62pt>
+18, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/round_stable_MM_mmlatency.png G
 raphic file (type png)
 
@@ -1718,7 +1718,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 260--260
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d10/stdev_MM_mmlatency.png, id=1215, 578
+<Figures/faster_mm_makes_worse_markets/d10/stdev_MM_mmlatency.png, id=1219, 578
 .16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/stdev_MM_mmlatency.png Graphic 
 file (type png)
@@ -1734,7 +1734,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 262--262
 
 
 <Figures/faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_mml
-atency.png, id=1216, 578.16pt x 433.62pt>
+atency.png, id=1220, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_M
 M_mmlatency.png Graphic file (type png)
 
@@ -1750,7 +1750,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 264--264
 
 
 <Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__overshoot(mean)_scatter.png,
- id=1218, 578.16pt x 433.62pt>
+ id=1222, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__overshoot(mean)_scatter
 .png Graphic file (type png)
 
@@ -1766,7 +1766,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 280--280
 
 
 <Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__round_stable(mean)_scatter.p
-ng, id=1219, 578.16pt x 433.62pt>
+ng, id=1223, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__round_stable(mean)_scat
 ter.png Graphic file (type png)
 
@@ -1782,7 +1782,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 282--282
 
 
 <Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__stdev(mean)_scatter.png, id=
-1220, 578.16pt x 433.62pt>
+1224, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__stdev(mean)_scatter.png
  Graphic file (type png)
 
@@ -1797,7 +1797,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 284--284
 
 
 <Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__time_to_reach_new_fundamenta
-l(mean)_scatter.png, id=1221, 578.16pt x 433.62pt>
+l(mean)_scatter.png, id=1225, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/ssmm_latency_mu__vs__time_to_reach_new_funda
 mental(mean)_scatter.png Graphic file (type png)
 
@@ -1812,7 +1812,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 286--286
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_mmlatency.png, id=1222,
+<Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_mmlatency.png, id=1226,
  578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_mmlatency.png Grap
 hic file (type png)
@@ -1828,7 +1828,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 296--296
 
 
 <Figures/faster_mm_makes_worse_markets/d11/round_stable_SC_mmlatency.png, id=12
-23, 578.16pt x 433.62pt>
+27, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/round_stable_SC_mmlatency.png G
 raphic file (type png)
 
@@ -1842,7 +1842,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 298--298
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d11/stdev_SC_mmlatency.png, id=1224, 578
+<Figures/faster_mm_makes_worse_markets/d11/stdev_SC_mmlatency.png, id=1228, 578
 .16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/stdev_SC_mmlatency.png Graphic 
 file (type png)
@@ -1858,7 +1858,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 300--300
 
 
 <Figures/faster_mm_makes_worse_markets/d11/time_to_reach_new_fundamental_SC_mml
-atency.png, id=1225, 578.16pt x 433.62pt>
+atency.png, id=1229, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/time_to_reach_new_fundamental_S
 C_mmlatency.png Graphic file (type png)
 
@@ -1874,7 +1874,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 302--302
 
 
 <Figures/101_pars_vs_fits/d11/sc_nAgents__vs__overshoot(mean)_scatter.png, id=1
-226, 578.16pt x 433.62pt>
+230, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_nAgents__vs__overshoot(mean)_scatter.png 
 Graphic file (type png)
 
@@ -1889,7 +1889,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 313--313
 
 
 <Figures/101_pars_vs_fits/d11/sc_nAgents__vs__round_stable(mean)_scatter.png, i
-d=1227, 578.16pt x 433.62pt>
+d=1231, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_nAgents__vs__round_stable(mean)_scatter.p
 ng Graphic file (type png)
 
@@ -1904,7 +1904,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 315--315
  []
 
 
-<Figures/101_pars_vs_fits/d11/sc_nAgents__vs__stdev(mean)_scatter.png, id=1228,
+<Figures/101_pars_vs_fits/d11/sc_nAgents__vs__stdev(mean)_scatter.png, id=1232,
  578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_nAgents__vs__stdev(mean)_scatter.png Grap
 hic file (type png)
@@ -1920,7 +1920,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 317--317
 
 
 <Figures/101_pars_vs_fits/d11/sc_nAgents__vs__time_to_reach_new_fundamental(mea
-n)_scatter.png, id=1229, 578.16pt x 433.62pt>
+n)_scatter.png, id=1233, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_nAgents__vs__time_to_reach_new_fundamenta
 l(mean)_scatter.png Graphic file (type png)
 
@@ -1934,25 +1934,25 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 319--319
  [][] 
  []
 
-[50 <./Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__overshoot(mean)_scatte
+[51 <./Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__overshoot(mean)_scatte
 r.png> <./Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__round_stable(mean)_
 scatter.png> <./Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__stdev(mean)_s
 catter.png> <./Figures/101_pars_vs_fits/d10/ssmm_latency_mu__vs__time_to_reach_
-new_fundamental(mean)_scatter.png>] [51 <./Figures/faster_mm_makes_worse_market
+new_fundamental(mean)_scatter.png>] [52 <./Figures/faster_mm_makes_worse_market
 s/d10/overshoot_MM_mmlatency.png> <./Figures/faster_mm_makes_worse_markets/d10/
 round_stable_MM_mmlatency.png> <./Figures/faster_mm_makes_worse_markets/d10/std
 ev_MM_mmlatency.png> <./Figures/faster_mm_makes_worse_markets/d10/time_to_reach
-_new_fundamental_MM_mmlatency.png>] [52 <./Figures/101_pars_vs_fits/d11/ssmm_la
+_new_fundamental_MM_mmlatency.png>] [53 <./Figures/101_pars_vs_fits/d11/ssmm_la
 tency_mu__vs__overshoot(mean)_scatter.png> <./Figures/101_pars_vs_fits/d11/ssmm
 _latency_mu__vs__round_stable(mean)_scatter.png> <./Figures/101_pars_vs_fits/d1
 1/ssmm_latency_mu__vs__stdev(mean)_scatter.png> <./Figures/101_pars_vs_fits/d11
 /ssmm_latency_mu__vs__time_to_reach_new_fundamental(mean)_scatter.png>]
-[53 <./Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_mmlatency.png> <.
+[54 <./Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_mmlatency.png> <.
 /Figures/faster_mm_makes_worse_markets/d11/round_stable_SC_mmlatency.png> <./Fi
 gures/faster_mm_makes_worse_markets/d11/stdev_SC_mmlatency.png> <./Figures/fast
 er_mm_makes_worse_markets/d11/time_to_reach_new_fundamental_SC_mmlatency.png>]
 <Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__overshoot(mean)_scatter.png, i
-d=1269, 578.16pt x 433.62pt>
+d=1273, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__overshoot(mean)_scatter.p
 ng Graphic file (type png)
 
@@ -1968,7 +1968,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 353--353
 
 
 <Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__round_stable(mean)_scatter.png
-, id=1270, 578.16pt x 433.62pt>
+, id=1274, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__round_stable(mean)_scatte
 r.png Graphic file (type png)
 
@@ -1984,7 +1984,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 355--355
 
 
 <Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__stdev(mean)_scatter.png, id=12
-71, 578.16pt x 433.62pt>
+75, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__stdev(mean)_scatter.png G
 raphic file (type png)
 
@@ -1999,7 +1999,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 357--357
 
 
 <Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__time_to_reach_new_fundamental(
-mean)_scatter.png, id=1272, 578.16pt x 433.62pt>
+mean)_scatter.png, id=1276, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__time_to_reach_new_fundame
 ntal(mean)_scatter.png Graphic file (type png)
 
@@ -2014,7 +2014,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 359--359
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d10/overshoot_MM_sclatency.png, id=1273,
+<Figures/faster_mm_makes_worse_markets/d10/overshoot_MM_sclatency.png, id=1277,
  578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/overshoot_MM_sclatency.png Grap
 hic file (type png)
@@ -2030,7 +2030,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 368--368
 
 
 <Figures/faster_mm_makes_worse_markets/d10/round_stable_MM_sclatency.png, id=12
-74, 578.16pt x 433.62pt>
+78, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/round_stable_MM_sclatency.png G
 raphic file (type png)
 
@@ -2044,7 +2044,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 370--370
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d10/stdev_MM_sclatency.png, id=1275, 578
+<Figures/faster_mm_makes_worse_markets/d10/stdev_MM_sclatency.png, id=1279, 578
 .16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/stdev_MM_sclatency.png Graphic 
 file (type png)
@@ -2060,7 +2060,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 372--372
 
 
 <Figures/faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_scl
-atency.png, id=1276, 578.16pt x 433.62pt>
+atency.png, id=1280, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_M
 M_sclatency.png Graphic file (type png)
 
@@ -2076,7 +2076,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 374--374
 
 
 <Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__overshoot(mean)_scatter.png, i
-d=1277, 578.16pt x 433.62pt>
+d=1281, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__overshoot(mean)_scatter.p
 ng Graphic file (type png)
 
@@ -2092,7 +2092,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 388--388
 
 
 <Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__round_stable(mean)_scatter.png
-, id=1278, 578.16pt x 433.62pt>
+, id=1282, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__round_stable(mean)_scatte
 r.png Graphic file (type png)
 
@@ -2108,7 +2108,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 390--390
 
 
 <Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__stdev(mean)_scatter.png, id=12
-79, 578.16pt x 433.62pt>
+83, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__stdev(mean)_scatter.png G
 raphic file (type png)
 
@@ -2123,7 +2123,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 392--392
 
 
 <Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__time_to_reach_new_fundamental(
-mean)_scatter.png, id=1280, 578.16pt x 433.62pt>
+mean)_scatter.png, id=1284, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__time_to_reach_new_fundame
 ntal(mean)_scatter.png Graphic file (type png)
 
@@ -2138,7 +2138,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 394--394
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_sclatency.png, id=1281,
+<Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_sclatency.png, id=1285,
  578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/overshoot_SC_sclatency.png Grap
 hic file (type png)
@@ -2154,7 +2154,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 403--403
 
 
 <Figures/faster_mm_makes_worse_markets/d11/round_stable_SC_sclatency.png, id=12
-82, 578.16pt x 433.62pt>
+86, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/round_stable_SC_sclatency.png G
 raphic file (type png)
 
@@ -2168,7 +2168,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 405--405
  []
 
 
-<Figures/faster_mm_makes_worse_markets/d11/stdev_SC_sclatency.png, id=1283, 578
+<Figures/faster_mm_makes_worse_markets/d11/stdev_SC_sclatency.png, id=1287, 578
 .16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/stdev_SC_sclatency.png Graphic 
 file (type png)
@@ -2184,7 +2184,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 407--407
 
 
 <Figures/faster_mm_makes_worse_markets/d11/time_to_reach_new_fundamental_SC_scl
-atency.png, id=1284, 578.16pt x 433.62pt>
+atency.png, id=1288, 578.16pt x 433.62pt>
 File: Figures/faster_mm_makes_worse_markets/d11/time_to_reach_new_fundamental_S
 C_sclatency.png Graphic file (type png)
 
@@ -2200,7 +2200,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 409--409
 
 
 <Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__overshoot(mean)_sc
-atter.png, id=1288, 578.16pt x 433.62pt>
+atter.png, id=1292, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__overshoot(mea
 n)_scatter.png Graphic file (type png)
 
@@ -2216,7 +2216,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 426--426
 
 
 <Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__round_stable(mean)
-_scatter.png, id=1289, 578.16pt x 433.62pt>
+_scatter.png, id=1293, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__round_stable(
 mean)_scatter.png Graphic file (type png)
 
@@ -2232,7 +2232,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 428--428
 
 
 <Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__stdev(mean)_scatte
-r.png, id=1290, 578.16pt x 433.62pt>
+r.png, id=1294, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__stdev(mean)_s
 catter.png Graphic file (type png)
 
@@ -2248,7 +2248,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 430--430
 
 
 <Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__time_to_reach_new_
-fundamental(mean)_scatter.png, id=1291, 578.16pt x 433.62pt>
+fundamental(mean)_scatter.png, id=1295, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d10/chartist_per_market_maker__vs__time_to_reach
 _new_fundamental(mean)_scatter.png Graphic file (type png)
 
@@ -2262,18 +2262,18 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 432--432
  [][] 
  []
 
-[54 <./Figures/101_pars_vs_fits/d11/sc_nAgents__vs__overshoot(mean)_scatter.png
+[55 <./Figures/101_pars_vs_fits/d11/sc_nAgents__vs__overshoot(mean)_scatter.png
 > <./Figures/101_pars_vs_fits/d11/sc_nAgents__vs__round_stable(mean)_scatter.pn
 g> <./Figures/101_pars_vs_fits/d11/sc_nAgents__vs__stdev(mean)_scatter.png> <./
 Figures/101_pars_vs_fits/d11/sc_nAgents__vs__time_to_reach_new_fundamental(mean
 )_scatter.png>]
 
-LaTeX Warning: Reference `fig:parvfit_ratio' on page 55 undefined on input line
+LaTeX Warning: Reference `fig:parvfit_ratio' on page 56 undefined on input line
  436.
 
 
 <Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__overshoot(mean)_sc
-atter.png, id=1301, 578.16pt x 433.62pt>
+atter.png, id=1305, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__overshoot(mea
 n)_scatter.png Graphic file (type png)
 
@@ -2289,7 +2289,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 442--442
 
 
 <Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__round_stable(mean)
-_scatter.png, id=1302, 578.16pt x 433.62pt>
+_scatter.png, id=1306, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__round_stable(
 mean)_scatter.png Graphic file (type png)
 
@@ -2305,7 +2305,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 444--444
 
 
 <Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__stdev(mean)_scatte
-r.png, id=1303, 578.16pt x 433.62pt>
+r.png, id=1307, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__stdev(mean)_s
 catter.png Graphic file (type png)
 
@@ -2321,7 +2321,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 446--446
 
 
 <Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__time_to_reach_new_
-fundamental(mean)_scatter.png, id=1304, 578.16pt x 433.62pt>
+fundamental(mean)_scatter.png, id=1308, 578.16pt x 433.62pt>
 File: Figures/101_pars_vs_fits/d11/chartist_per_market_maker__vs__time_to_reach
 _new_fundamental(mean)_scatter.png Graphic file (type png)
 
@@ -2335,7 +2335,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 448--448
  [][] 
  []
 
-<Figures/21_scatter_plots/d9/d.png, id=1306, 578.16pt x 433.62pt>
+<Figures/21_scatter_plots/d9/d.png, id=1310, 578.16pt x 433.62pt>
 File: Figures/21_scatter_plots/d9/d.png Graphic file (type png)
 
 <use Figures/21_scatter_plots/d9/d.png>
@@ -2347,7 +2347,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 465--465
  [][] 
  []
 
-<Figures/21_scatter_plots/d9/c.png, id=1307, 578.16pt x 433.62pt>
+<Figures/21_scatter_plots/d9/c.png, id=1311, 578.16pt x 433.62pt>
 File: Figures/21_scatter_plots/d9/c.png Graphic file (type png)
 
 <use Figures/21_scatter_plots/d9/c.png>
@@ -2359,7 +2359,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 467--467
  [][] 
  []
 
-<Figures/21_scatter_plots/d9/b.png, id=1308, 578.16pt x 433.62pt>
+<Figures/21_scatter_plots/d9/b.png, id=1312, 578.16pt x 433.62pt>
 File: Figures/21_scatter_plots/d9/b.png Graphic file (type png)
 
 <use Figures/21_scatter_plots/d9/b.png>
@@ -2372,19 +2372,19 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 469--469
  []
 
 
-LaTeX Warning: Reference `figure:scatter_fitness_inliers_b' on page 55 undefine
+LaTeX Warning: Reference `figure:scatter_fitness_inliers_b' on page 56 undefine
 d on input line 473.
 
-[55 <./Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__overshoot(mean)_scatter.
+[56 <./Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__overshoot(mean)_scatter.
 png> <./Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__round_stable(mean)_scat
 ter.png> <./Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__stdev(mean)_scatter
 .png> <./Figures/101_pars_vs_fits/d10/sc_latency_mu__vs__time_to_reach_new_fund
-amental(mean)_scatter.png>] [56 <./Figures/faster_mm_makes_worse_markets/d10/ov
+amental(mean)_scatter.png>] [57 <./Figures/faster_mm_makes_worse_markets/d10/ov
 ershoot_MM_sclatency.png> <./Figures/faster_mm_makes_worse_markets/d10/round_st
 able_MM_sclatency.png> <./Figures/faster_mm_makes_worse_markets/d10/stdev_MM_sc
 latency.png> <./Figures/faster_mm_makes_worse_markets/d10/time_to_reach_new_fun
 damental_MM_sclatency.png>]
-<Figures/103_scatter_manual_outlier/d9/f.png, id=1327, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d9/f.png, id=1331, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d9/f.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d9/f.png>
@@ -2396,7 +2396,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 479--479
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d9/j.png, id=1328, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d9/j.png, id=1332, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d9/j.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d9/j.png>
@@ -2408,7 +2408,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 480--480
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d10/f.png, id=1329, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d10/f.png, id=1333, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d10/f.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d10/f.png>
@@ -2420,7 +2420,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 481--481
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d10/j.png, id=1330, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d10/j.png, id=1334, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d10/j.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d10/j.png>
@@ -2432,7 +2432,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 482--482
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d11/f.png, id=1331, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d11/f.png, id=1335, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d11/f.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d11/f.png>
@@ -2444,7 +2444,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 483--483
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d11/j.png, id=1332, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d11/j.png, id=1336, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d11/j.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d11/j.png>
@@ -2456,7 +2456,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 484--484
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d9/h.png, id=1333, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d9/h.png, id=1337, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d9/h.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d9/h.png>
@@ -2468,7 +2468,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 491--491
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d9/k.png, id=1334, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d9/k.png, id=1338, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d9/k.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d9/k.png>
@@ -2480,7 +2480,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 492--492
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d10/h.png, id=1335, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d10/h.png, id=1339, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d10/h.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d10/h.png>
@@ -2492,7 +2492,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 493--493
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d10/k.png, id=1336, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d10/k.png, id=1340, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d10/k.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d10/k.png>
@@ -2504,7 +2504,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 494--494
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d11/h.png, id=1337, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d11/h.png, id=1341, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d11/h.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d11/h.png>
@@ -2516,7 +2516,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 495--495
  [][] 
  []
 
-<Figures/103_scatter_manual_outlier/d11/k.png, id=1338, 578.16pt x 433.62pt>
+<Figures/103_scatter_manual_outlier/d11/k.png, id=1342, 578.16pt x 433.62pt>
 File: Figures/103_scatter_manual_outlier/d11/k.png Graphic file (type png)
 
 <use Figures/103_scatter_manual_outlier/d11/k.png>
@@ -2528,26 +2528,26 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 496--496
  [][] 
  []
 
-[57 <./Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__overshoot(mean)_scatter.
+[58 <./Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__overshoot(mean)_scatter.
 png> <./Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__round_stable(mean)_scat
 ter.png> <./Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__stdev(mean)_scatter
 .png> <./Figures/101_pars_vs_fits/d11/sc_latency_mu__vs__time_to_reach_new_fund
-amental(mean)_scatter.png>] [58 <./Figures/faster_mm_makes_worse_markets/d11/ov
+amental(mean)_scatter.png>] [59 <./Figures/faster_mm_makes_worse_markets/d11/ov
 ershoot_SC_sclatency.png> <./Figures/faster_mm_makes_worse_markets/d11/round_st
 able_SC_sclatency.png> <./Figures/faster_mm_makes_worse_markets/d11/stdev_SC_sc
 latency.png> <./Figures/faster_mm_makes_worse_markets/d11/time_to_reach_new_fun
-damental_SC_sclatency.png>] [59 <./Figures/101_pars_vs_fits/d10/chartist_per_ma
+damental_SC_sclatency.png>] [60 <./Figures/101_pars_vs_fits/d10/chartist_per_ma
 rket_maker__vs__overshoot(mean)_scatter.png> <./Figures/101_pars_vs_fits/d10/ch
 artist_per_market_maker__vs__round_stable(mean)_scatter.png> <./Figures/101_par
 s_vs_fits/d10/chartist_per_market_maker__vs__stdev(mean)_scatter.png> <./Figure
 s/101_pars_vs_fits/d10/chartist_per_market_maker__vs__time_to_reach_new_fundame
-ntal(mean)_scatter.png>] [60 <./Figures/101_pars_vs_fits/d11/chartist_per_marke
+ntal(mean)_scatter.png>] [61 <./Figures/101_pars_vs_fits/d11/chartist_per_marke
 t_maker__vs__overshoot(mean)_scatter.png> <./Figures/101_pars_vs_fits/d11/chart
 ist_per_market_maker__vs__round_stable(mean)_scatter.png> <./Figures/101_pars_v
 s_fits/d11/chartist_per_market_maker__vs__stdev(mean)_scatter.png> <./Figures/1
 01_pars_vs_fits/d11/chartist_per_market_maker__vs__time_to_reach_new_fundamenta
 l(mean)_scatter.png>]
-<Figures/manual_filtering/d9/group_overlap.png, id=1383, 578.16pt x 433.62pt>
+<Figures/manual_filtering/d9/group_overlap.png, id=1387, 578.16pt x 433.62pt>
 File: Figures/manual_filtering/d9/group_overlap.png Graphic file (type png)
 
 <use Figures/manual_filtering/d9/group_overlap.png>
@@ -2555,7 +2555,7 @@ Package pdftex.def Info: Figures/manual_filtering/d9/group_overlap.png used on
 input line 527.
 (pdftex.def)             Requested size: 133.59444pt x 100.19365pt.
 
-<Figures/manual_filtering/d10/group_overlap.png, id=1384, 578.16pt x 433.62pt>
+<Figures/manual_filtering/d10/group_overlap.png, id=1388, 578.16pt x 433.62pt>
 File: Figures/manual_filtering/d10/group_overlap.png Graphic file (type png)
 
 <use Figures/manual_filtering/d10/group_overlap.png>
@@ -2563,20 +2563,20 @@ Package pdftex.def Info: Figures/manual_filtering/d10/group_overlap.png used on
  input line 528.
 (pdftex.def)             Requested size: 133.59444pt x 100.19365pt.
 
-<Figures/manual_filtering/d11/group_overlap.png, id=1385, 578.16pt x 433.62pt>
+<Figures/manual_filtering/d11/group_overlap.png, id=1389, 578.16pt x 433.62pt>
 File: Figures/manual_filtering/d11/group_overlap.png Graphic file (type png)
 
 <use Figures/manual_filtering/d11/group_overlap.png>
 Package pdftex.def Info: Figures/manual_filtering/d11/group_overlap.png used on
  input line 529.
 (pdftex.def)             Requested size: 133.59444pt x 100.19365pt.
- [61 <./Figures/21_scatter_plots/d9/d.png> <./Figures/21_scatter_plots/d9/c.png
-> <./Figures/21_scatter_plots/d9/b.png>] [62 <./Figures/103_scatter_manual_outl
+ [62 <./Figures/21_scatter_plots/d9/d.png> <./Figures/21_scatter_plots/d9/c.png
+> <./Figures/21_scatter_plots/d9/b.png>] [63 <./Figures/103_scatter_manual_outl
 ier/d9/f.png> <./Figures/103_scatter_manual_outlier/d9/j.png> <./Figures/103_sc
 atter_manual_outlier/d10/f.png> <./Figures/103_scatter_manual_outlier/d10/j.png
 > <./Figures/103_scatter_manual_outlier/d11/f.png> <./Figures/103_scatter_manua
 l_outlier/d11/j.png>]
-[63 <./Figures/103_scatter_manual_outlier/d9/h.png> <./Figures/103_scatter_manu
+[64 <./Figures/103_scatter_manual_outlier/d9/h.png> <./Figures/103_scatter_manu
 al_outlier/d9/k.png> <./Figures/103_scatter_manual_outlier/d10/h.png> <./Figure
 s/103_scatter_manual_outlier/d10/k.png> <./Figures/103_scatter_manual_outlier/d
 11/h.png> <./Figures/103_scatter_manual_outlier/d11/k.png>]
@@ -2604,7 +2604,7 @@ Package caption Warning: \label without proper \caption on input line 602.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `table:manual_filtering_d9' on page 64 undefined on in
+LaTeX Warning: Reference `table:manual_filtering_d9' on page 65 undefined on in
 put line 652.
 
 
@@ -2612,7 +2612,7 @@ Package caption Warning: \label without proper \caption on input line 625.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `table:manual_filtering_d10' on page 64 undefined on i
+LaTeX Warning: Reference `table:manual_filtering_d10' on page 65 undefined on i
 nput line 652.
 
 
@@ -2620,7 +2620,7 @@ Package caption Warning: \label without proper \caption on input line 648.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `table:manual_filtering_d11' on page 64 undefined on i
+LaTeX Warning: Reference `table:manual_filtering_d11' on page 65 undefined on i
 nput line 652.
 
 
@@ -2628,23 +2628,23 @@ Package caption Warning: \label without proper \caption on input line 528.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `figure:jaccard_index_b' on page 64 undefined on input
+LaTeX Warning: Reference `figure:jaccard_index_b' on page 65 undefined on input
  line 654.
 
-[64 <./Figures/manual_filtering/d9/group_overlap.png> <./Figures/manual_filteri
+[65 <./Figures/manual_filtering/d9/group_overlap.png> <./Figures/manual_filteri
 ng/d10/group_overlap.png> <./Figures/manual_filtering/d11/group_overlap.png>]
-[65]
+[66]
 
-LaTeX Warning: Reference `table:fit_gmm_all_mean' on page 66 undefined on input
+LaTeX Warning: Reference `table:fit_gmm_all_mean' on page 67 undefined on input
  line 662.
 
 
-LaTeX Warning: Reference `table:fit_gmm_all_std' on page 66 undefined on input 
+LaTeX Warning: Reference `table:fit_gmm_all_std' on page 67 undefined on input 
 line 662.
 
 
 <Figures/manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_f
-it_0.png, id=1437, 578.16pt x 433.62pt>
+it_0.png, id=1441, 578.16pt x 433.62pt>
 File: Figures/manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_
 all_fit_0.png Graphic file (type png)
 
@@ -2660,7 +2660,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 669--669
 
 
 <Figures/manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_f
-it_1.png, id=1438, 578.16pt x 433.62pt>
+it_1.png, id=1442, 578.16pt x 433.62pt>
 File: Figures/manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_
 all_fit_1.png Graphic file (type png)
 
@@ -2676,7 +2676,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 670--670
 
 
 <Figures/manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_f
-it_2.png, id=1439, 578.16pt x 433.62pt>
+it_2.png, id=1443, 578.16pt x 433.62pt>
 File: Figures/manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_
 all_fit_2.png Graphic file (type png)
 
@@ -2690,27 +2690,27 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 671--671
  [][] 
  []
 
-[66]
+[67]
 Overfull \hbox (0.64003pt too wide) in paragraph at lines 686--706
  [][] 
  []
 
-) (./Chapters/discussion.tex [67 <./Figures/manually_selected/108_cluster_after
+) (./Chapters/discussion.tex [68 <./Figures/manually_selected/108_cluster_after
 _removing_outliers/d10/12_gmm_all_fit_0.png> <./Figures/manually_selected/108_c
 luster_after_removing_outliers/d10/12_gmm_all_fit_1.png> <./Figures/manually_se
-lected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_2.png>] [68]
-[69]
+lected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_2.png>] [69]
+[70]
 ------------------------------------------------------------------------------
  3 Discussion
 ------------------------------------------------------------------------------
 
-LaTeX Warning: Reference `fig:d11_parvfit_scAgents' on page 70 undefined on inp
+LaTeX Warning: Reference `fig:d11_parvfit_scAgents' on page 71 undefined on inp
 ut line 12.
 
-[70
+[71
 
-] [71]
-<Figures/manually_selected/crashes/shouganai.png, id=1472, 578.16pt x 433.62pt>
+] [72]
+<Figures/manually_selected/crashes/shouganai.png, id=1476, 578.16pt x 433.62pt>
 File: Figures/manually_selected/crashes/shouganai.png Graphic file (type png)
 <use Figures/manually_selected/crashes/shouganai.png>
 Package pdftex.def Info: Figures/manually_selected/crashes/shouganai.png used o
@@ -2722,7 +2722,7 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 38--38
  []
 
 
-<Figures/manually_selected/crashes/slow_but_crash.png, id=1473, 578.16pt x 433.
+<Figures/manually_selected/crashes/slow_but_crash.png, id=1477, 578.16pt x 433.
 62pt>
 File: Figures/manually_selected/crashes/slow_but_crash.png Graphic file (type p
 ng)
@@ -2735,46 +2735,46 @@ Overfull \hbox (4.17244pt too wide) in paragraph at lines 40--40
  [][] 
  []
 
-[72] [73 <./Figures/manually_selected/crashes/shouganai.png> <./Figures/manuall
-y_selected/crashes/slow_but_crash.png>]) (./Appendices/AppendixA.tex [74]
+[73] [74 <./Figures/manually_selected/crashes/shouganai.png> <./Figures/manuall
+y_selected/crashes/slow_but_crash.png>]) (./Appendices/AppendixA.tex [75]
 ------------------------------------------------------------------------------
   Additional tables
 ------------------------------------------------------------------------------
-) (./Appendices/AppendixB.tex [75
+) (./Appendices/AppendixB.tex [76
 
 ]
 ------------------------------------------------------------------------------
   Third party software
 ------------------------------------------------------------------------------
-) (./Appendices/AppendixC.tex [76
+) (./Appendices/AppendixC.tex [77
 
 ]
 ------------------------------------------------------------------------------
   Additional figures
 ------------------------------------------------------------------------------
-) [77
+) [78
 
 ]
 ------------------------------------------------------------------------------
  Bibliography
 ------------------------------------------------------------------------------
-(./main.bbl) [78
+(./main.bbl) [79
 
 
 ]
 
 Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 503.
-[79
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 505.
+[80
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 503.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 505.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 503.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 503.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 505.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 505.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: B72A1B682FB9EFD1FB72F6AC8F2DAAFA;19212.
+(rerunfilecheck)             Checksum: 798D2BD41B28455ECD2981616E10E863;18807.
 
 
 LaTeX Warning: There were undefined references.
@@ -2782,16 +2782,16 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 503.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 505.
  ) 
 Here is how much of TeX's memory you used:
- 12250 strings out of 493488
- 199776 string characters out of 3141326
- 290571 words of memory out of 3000000
- 14897 multiletter control sequences out of 15000+200000
+ 12258 strings out of 493488
+ 199889 string characters out of 3141326
+ 290656 words of memory out of 3000000
+ 14900 multiletter control sequences out of 15000+200000
  20132 words of font info for 75 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 49i,13n,45p,1822b,589s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 49i,13n,45p,1822b,591s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -2817,10 +2817,10 @@ t/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2012/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2012/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2012/texmf-dist/f
 onts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on main.pdf (94 pages, 9393734 bytes).
+Output written on main.pdf (95 pages, 9399181 bytes).
 PDF statistics:
- 1670 PDF objects out of 1728 (max. 8388607)
- 1321 compressed objects within 14 object streams
- 322 named destinations out of 1000 (max. 500000)
- 1332 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1676 PDF objects out of 1728 (max. 8388607)
+ 1326 compressed objects within 14 object streams
+ 327 named destinations out of 1000 (max. 500000)
+ 1324 words of extra memory for PDF output out of 10000 (max. 10000000)
 

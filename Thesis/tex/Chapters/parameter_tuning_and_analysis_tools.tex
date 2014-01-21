@@ -47,8 +47,8 @@ The main parameters of interest are the ones that control the latency and speed 
 	\item [Number of rounds] Due to the computational cost of running the simulation for a large number of rounds, the the number of rounds is fixed at $10^5$ for all experiments.
 	\item [Order volumes] 
 	\item[Slow trader parameters]
-	\item[Agent start portfolio]
-	\item[Order book initialization]
+	\item[Agent start portfolio] All HFT traders start with a fixed amount of cash and a fixed number of shares in their portfolio.
+	\item[Order book initialization] In all simulations, the order book is initialized with $10**5 $ orders with prices sampled from the distribution $\mathcal{N}(\fundamentalprice{0}, 10**2)$ and volumes sampled  from $\mathcal{N}(20, 5)$.
 \end{description}
 
 The remaining model parameters will either be fixed for each experiment, or varied by the genetic algorithm. 
@@ -74,7 +74,7 @@ In this work, a genetic algorithm was used to search the parameter space. The al
 Mutation and crossover are the operators responsible for generating variation in the population, while the selection is responsible for propagating promising individuals to future generation where they might be improved. Several possible methods of performing each of these three steps exist in the literature (see\cite{genetic1}, \cite{genetic2}), and section \ref{section:ga_parameters} briefly covers the method and parameters of the genetic algorithm.
 
 \subsection{Representing parameters as genes}
-Since the choice of mutation and crossover operators depends on the nature of the genes, the first step towards utilizing to search the model parameters is to decide on how to encode the parameters as individuals. 
+Since the choice of mutation and crossover operators depends on the nature of the genes, the first step towards utilizing the genetic algorithm to search the model parameters is to decide on how to encode the parameters as individuals. 
 A set of parameters is represented by an individual, $i$, consisting gene for each parameter, represented by a floating point $g_{i,j}$, where $j$ denotes the index of the parameter. When the population is initialized, each $g_{i,j}$ is drawn from a uniform distributed in the range $g_j \in [0;1]$:
 \begin{equation}
 g_{i,j} \sim \mathcal{U}(0,1)
@@ -89,31 +89,75 @@ Some of the model parameters are integers, such as \ssmmnAgents{} and \scnAgents
 
 \subsection{Model fitness}\label{section:simulation_fitness}
 XXX NOT FINISHED YET. 
-In order to use inverse simulation, it is necessary to decide on how to measure the quality of an instance of the simulation. In this work, the overall goal is to examine which parameter values cause the market to be stable, and which cause it to be unstable. 
+In order to use inverse simulation, it is necessary to decide on how to measure the quality of an instance of the simulation. In this work, the overall goal is to examine which parameter values cause the market to be stable, and which cause it to be unstable. In order to do this, four fitness measures were defined as below. Each of the fitness measures are designed to reflect different properties of the simulation, but some correlation between the measures were found. This is discussed in section \ref{section:correlation_fitness}.
 
+\subsubsection{Market response time}
+After the negative shock to the fundamental price, the slow fundamentalists will start submitting orders at lower prices, thus creating a force that drives that traded price towards the new price. The number of rounds that elapse before the asset is traded at the new fundamental  can be thought of as the response time of the market and this property of the market is interesting for a few reasons. If a market has a slow response time, it means that the asset is traded for more than it is worth for a longer of period of time. 
 
-Another interesting point is the speed with which the market responds to the shock to the fundamental price, and which parameters influence this property.  
+The response time is denoted \timetoreachnewfundamental{} and is calculated as follows:
+\begin{equation}\label{eq:timetoreachnewfundamental}
+\timetoreachnewfundamental = \arg\min_T \big\{ \tradeprice{T}{\min}\big\},\ \forall n > \fundamentalshocktime
+\end{equation}
+where $\tradeprice{T}{\min}$ is the price of the order traded at the lowest price in round $n$:
+\begin{equation}
+\tradeprice{n}{\min} = \min \big\{\tradeprice{n}{1},\ \tradeprice{n}{2}, \hdots,\ \tradeprice{n}{K}\big\}
+\end{equation}
+If the trade price never reaches the new fundamental, \timetoreachnewfundamental is undefined.
+
 
 \subsubsection{Market overshoot}
-XXX
-\subsubsection{Trade price stability}
-XXX
-\subsubsection{Market response time}
-XXXX
-\subsubsection{Market tendency to stay new the new fundamental}
-XXX
+In some markets the traded price never becomes smaller than $\fundamentalaftershock$, while in other markets the share price overshoots the new fundamental by being traded at prices lower than \fundamentalaftershock. In the case that $\fundamentalshocksize < 0$, the overshoot reflects an under-valuation of the stock.
+
+The market overshoot is calculated as the number of ticks between the traded price and the fundamental price, in any of the rounds following the round in which the stock is traded at price $\tradeprice{n}{i} = \fundamentalprice{\eta}$ for the first time, denoted $\round{F}$: 
+\begin{equation}\label{eq:overshoot}
+\overshoot = \lvert\ \max \tradeprice{n}{i}\ \rvert, \ \forall i,\ n > \round{F}
+\end{equation}
+\overshoot{} does not measure the time duration of the under-evaluation. 
+
+\subsubsection{Price flickering}
+This fitness measure reflects how much the traded price fluctuates by calculating the standard deviation of the prices of all trades executed after $\round{F}$:
+\begin{equation}\label{eq:stdev}
+\stdev = \sum\limits_{n = \round{F}}^{\nrounds}  \sum\limits_{i=1}^{N_n} \frac{\big(\bar{p}_n - \tradeprice{n}{i}\big)^2}{N_n}
+\end{equation}
+where $N_j$ is the number of transactions in round $j$, and $\bar{p}_n$ is the average traded price in round $n$.
 
 
-\begin{itemize}
-\item 'fit
-\item Are there certain parameter combinations which cause the market to behave in certain ways. S
-\end{itemize}
-In particular the parameters controlling various time delays are of interest. 
-The search space of the parameters is very large, which makes an exhaustive search impossible.
-To this end, four fitness measures were defined.
 
-Several parameters influence the number of orders submitted by the high frequency traders.
+\subsubsection*{Time to stabilize}
+The margin of two ticks sets a fairly strict requirement for when a simulation is considered stable, as a flicker of just a few ticks 
+\begin{equation}\label{eq:roundstable}
+\arg \min \forall 
+\end{equation}
 
+Figure XXX illustrated how the four fitness measures are calculated, while figure XXX gives four examples and lists the respective fitness values calculated for each simulation.
+
+
+
+\subsubsection*{Typical cases}
+To give the reader a more intuitive idea of how the fitness measures summarize the model behavior, figure \ref{figure:typical_fitness_cases} gives six examples of some fairly common patterns.
+\begin{figure}
+\centering
+\subcaptionbox{Stable within margin}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+\subcaptionbox{Within margin, but with flickering}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+\subcaptionbox{Flickering on the edge of margin}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+\subcaptionbox{Never reach fundamental}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+\subcaptionbox{Stabilize under fundamental}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+\subcaptionbox{Market crash}
+[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{}
+\label{figure:typical_fitness_cases}
+\end{figure}
+%In particular the parameters controlling various time delays are of interest. 
+%The search space of the parameters is very large, which makes an exhaustive search impossible.
+%To this end, four fitness measures were defined.
+
+%Several parameters influence the number of orders submitted by the high frequency traders.
+
+\subsubsection*{Relationship between \timetoreachnewfundamental{} and \roundstable}
 \begin{description}
 \item[$\roundstable < \timetoreachnewfundamental$] This happens when the traded price never leaves the stability margin after reaching the new fundamental price. Note however that this case does not necessarily mean that the prices do not flicker. 
 \item[$\roundstable > \timetoreachnewfundamental$] This happens when the traded price leaves the stability margin once or more after reaching the new fundamental. The traded price can be close to the fundamental, but flickers in and out of the stability margin as on Figure \ref{figure:tradeprice_exaples_fitness_a} shows an example where the trade price fairly stable and with no overshoot, leading to good (low) \stdev and \overshoot fitness values to be assigned to the parameters. However, even though the traded prices are mostly within the stability margin, occasional flickers out of the margin causes the simulation to score a bad (high) \roundstable fitness. Note also that \timetoreachnewfundamental is undefined in this case. 
@@ -131,11 +175,9 @@ Several parameters influence the number of orders submitted by the high frequenc
 \label{figure:tradeprice_exaples_fitness}
 \end{figure}
 
-}
 
 
-
-\subsection{Genetic algorithm parameters}\label{section:ga_parameters}
+\subsection{Configuring with genetic algorithm}\label{section:ga_parameters}
 Although this is a basic version of genetic algorithm, using it correctly is not necessarily easy, as was encountered. First of all, the parameters for the genetic algorithm itself must be established. The larger and more complex the search space, the more resources the search will require, since the evaluating the fitness function (i.e., the running the simulation) will have to be done a larger number of times. 
 
 

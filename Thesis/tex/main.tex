@@ -75,7 +75,7 @@
 
 %%% Consistency commands
 \newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
-\newcommand{\nrounds}{\spa{n}{rounds}}
+\newcommand{\nrounds}{\spa{N}{r}}
 
 \newcommand{\datamatrixpar}[1][]{\ensuremath{\boldsymbol{P}_{#1}}}
 \newcommand{\datamatrixfit}[1][]{\ensuremath{\boldsymbol{F}_{#1}}}
@@ -151,7 +151,7 @@
 \newcommand{\scordervolumes}{\ensuremath{V_{c, \sigma}}}
 
 %%% SYMBOLS
-\newcommand{\round}[1][]{\ensuremath{t{#1}}}
+\newcommand{\round}[1][]{\ensuremath{t_{#1}}}
 \newcommand{\delay}{\ensuremath{p^m}}
 \newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
 \newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
@@ -164,13 +164,15 @@
 \newcommand{\currentprice}{\ensuremath{p_c}}
 \newcommand{\bestbidprice}[1]{\ensuremath{B_{#1}}}
 \newcommand{\bestaskprice}[1]{\ensuremath{A_{#1}}}
-\newcommand{\askprice}{\ensuremath{p_{a}}}
-\newcommand{\bidprice}{\ensuremath{p_{b}}}
+\newcommand{\askprice}{\ensuremath{p^a}}
+\newcommand{\bidprice}{\ensuremath{p^b}}
+\newcommand{\tradeprice}[2]{\ensuremath{p^t_{#2}(#1)}}
 
 
 % % % Fundamental symbols
 \newcommand{\fundamentalprice}[1][]{\ensuremath{F_{#1}}}
-\newcommand{\fundamentalshock}{\ensuremath{\eta}}
+\newcommand{\fundamentalshocksize}{\ensuremath{\eta}}
+\newcommand{\fundamentalaftershock}{\ensuremath{\eta}}
 \newcommand{\fundamentalshocktime}{\ensuremath{\round{_\eta}}}
 
 \newcommand{\smargin}{\ensuremath{m_\text{stable}}}
