@@ -21,8 +21,8 @@ dataset_paths = {
 
 figure_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Figures/'
 table_save_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/tex/Tables/'
-raw_data_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/raw_data/'
-
+#raw_data_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/raw_data/'
+raw_data_path = '/Users/halfdan/raw_data/'
 def check_simulation_complete(full_simulation_log_path):
     try:
         with open(full_simulation_log_path + 'finished.txt'): 
@@ -143,8 +143,7 @@ def load_tradeprice_data_with_parameters(filename):
     return rounds, prices, fit, par
 
 def pickle_generation_data(dataset_name):
-    dataset_path = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/datasets/'    
-    par, fit, ids, invalids = load_all_generations_as_DataFrame(dataset_path + 'raw_data/%s/generations/'%dataset_name)
+    par, fit, ids, invalids = load_all_generations_as_DataFrame(raw_data_path + '%s/generations/'%dataset_name)
     try:
         os.mkdir(dataset_paths[dataset_name])
     except OSError:
@@ -152,12 +151,13 @@ def pickle_generation_data(dataset_name):
     par.to_pickle(dataset_paths[dataset_name] + 'pars.pandas')
     fit.to_pickle(dataset_paths[dataset_name] + 'fits.pandas')
     ids.to_pickle(dataset_paths[dataset_name] + 'ids.pandas')
+    invalids.to_pickle(dataset_paths[dataset_name] + 'invalids.pandas')
 
-    shutil.copy(dataset_path + 'raw_data/%s/settings.py'%dataset_name, '%s/settings.py'%dataset_paths[dataset_name])
+    shutil.copy(raw_data_path + '%s/settings.py'%dataset_name, '%s/settings.py'%dataset_paths[dataset_name])
 
     
 
-def load_pickled_generation_dataframe(dataset_name):
+def load_pickled_generation_dataframe(dataset_name, return_invalids = False):
     datapath = dataset_paths[dataset_name]
     #par = pandas.read_pickle(datapath + 'pars.pandas')
     fit_data = read_pickle(datapath + 'fits.pandas')
@@ -175,7 +175,17 @@ def load_pickled_generation_dataframe(dataset_name):
         ids = None
         print "No file containing simulation data identifiers was found."
 
-    return fit_data, par_data, gen, ids
+    try:
+        invalids = read_pickle(datapath + 'invalids.pandas')
+    except IOError:
+        invalids = None
+        print "No file containing invalid simulations were found"
+
+    ### BAD BAD BAD!!
+    if return_invalids:
+        return invalids
+    else:
+        return fit_data, par_data, gen, ids
 
 def merge_and_store_dataset(new_dataset_name, datasets, fill_values):
     assert isinstance(fill_values, list)
