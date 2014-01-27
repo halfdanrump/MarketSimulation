@@ -64,6 +64,8 @@ class Ppl:
         # change the text colors also to the almost black
         mpl.rcParams['text.color'] = self.almost_black
 
+        plt.rc('text', usetex=True)
+        plt.rc('font', family='serif')
     def set_colormap(self, colormap):
         self.colormap = colormap
         self.set2 = colormap.mpl_colors

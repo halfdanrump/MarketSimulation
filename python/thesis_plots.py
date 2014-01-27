@@ -669,7 +669,7 @@ def issue_115_agent_ratio(ratio_threshold):
 
 	all_par = concat([par10, par11])
 	all_fit = concat([fit10, fit11])
-	run_issue('d10_d11',all_fit, all_par)
+	run_issue('d10d11',all_fit, all_par)
 
 	
 def test(dataset, overshoot_threshold):
@@ -703,6 +703,103 @@ def test(dataset, overshoot_threshold):
 	xy = np.vstack([Y.ravel(), X.ravel()]).T
 	return data
 
+
+
+def issue_126_chartist_strategy():
+	from settings import default_parameters as dp
+	import ppl as Ppp
+	import pandas
+	import matplotlib.pyplot as pp
+	import brewer2mpl
+	folder = make_issue_specific_figure_folder('agent_strategies', 'chartist')
+	datapath = '/Users/halfdan/Dropbox/Waseda/Research/MarketSimulation/Thesis/data_for_figures/chartist_strategy/gen0_1387502533563458.npz'	
+	rounds, prices = IO.load_tradeprice_data(datapath)
+	colors = brewer2mpl.get_map('Set1', 'qualitative', 9).mpl_colors
+	pp.rc('text', usetex= True)
+	pp.rc('font', family = 'serif')
+	pp.rc('font', size = 14)
+	
+	def mkplot(filename, ma_width = 5000, tbr = 1):
+		pp.figure()
+		pp.plot(rounds, prices, alpha=0.5, color=colors[0])
+		rolling_mean = pandas.rolling_mean(prices, ma_width)
+		pp.plot(rounds,rolling_mean, linewidth=2, color='black')
+		pp.fill_between(rounds, rolling_mean-tbr, rolling_mean+tbr, color='gray', alpha=0.5, linewidth=0)
+		pp.xlabel('Time (rounds)')
+		pp.ylabel('Price (ticks)')
+		pp.legend(['Price of trades', 'Chartist moving average'])
+		pp.text(50000, 9995, '$H_c = %s$ (rounds)\n $\gamma_c = %s$ (ticks)'%(ma_width, tbr), fontsize = 16)
+		print folder + filename
+		pp.savefig(folder + filename)
+	
+	mkplot('a.png', 5000, 1)
+	mkplot('b.png', 5000, 2)
+	mkplot('c.png', 10000, 1)
+	mkplot('d.png', 10000, 2)
+	mkplot('e.png', 1000, 1)
+	mkplot('f.png', 1000, 2)
+	mkplot('g.png', 15000, 1)
+	mkplot('h.png', 15000, 2)
+
+	return rounds, prices
+	
+def issue_127_marketmaker_plots():
+	from settings import default_parameters as dp
+	import ppl as Ppp
+	import pandas
+	import matplotlib.pyplot as pp
+	import brewer2mpl
+	folder = make_issue_specific_figure_folder('agent_strategies', 'marketmaker')
+	colors = brewer2mpl.get_map('Set1', 'qualitative', 9).mpl_colors
+	pp.rc('text', usetex= True)
+	pp.rc('font', family = 'serif')
+	pp.rc('font', size = 14)
+
+	def plot_step(val_before_step, stepsize, time_of_step, xmax = 14, **kwargs):
+		pp.hlines(y=val_before_step, xmin=0, xmax=time_of_step, **kwargs)
+		pp.vlines(x=time_of_step, ymin=val_before_step, ymax=val_before_step + stepsize, **kwargs)
+		return pp.hlines(y=val_before_step + stepsize, xmin=time_of_step, xmax=xmax, **kwargs)
+
+	pp.figure()
+	pp.xlabel('Time (rounds)')
+	pp.ylabel('Price (ticks)')
+	mm_delay=6
+	pp.ylim(3,22)
+	c1=plot_step(8, -3, 5, color='green', linewidth=3, alpha=0.5)
+	c2=plot_step(12, 3, 2, color='blue', linewidth=3, alpha=0.5)
+	c3=plot_step(8, -3, 5+mm_delay, color='green', linewidth=3, linestyle='dashed')
+	c4=plot_step(12, 3, 2+mm_delay, color='blue', linewidth=3, linestyle='dashed')
+	pp.text(2, 16, '$\lambda = %s$'%mm_delay, fontsize = 20)
+	pp.legend([c1,c2,c3,c4],['Best buy price', 'Best sell price', 'Agent buy price', 'Agent sell price'])
+	pp.savefig(folder + 'a.png')
+
+	pp.figure()
+	pp.xlabel('Time (rounds)')
+	pp.ylabel('Price (ticks)')
+	mm_delay=6
+	pp.ylim(8,25)
+	c3=plot_step(18, -3, 5, color='blue', linewidth=3, alpha=0.5)
+	c4=plot_step(10, 3, 5, color='green', linewidth=3, alpha=0.5)
+	c1=plot_step(18, -2, 5+mm_delay, color='blue', linewidth=3, linestyle='dashed')
+	c2=plot_step(10, 2, 5+mm_delay, color='green', linewidth=3, linestyle='dashed')
+	pp.text(2, 21, '$\lambda = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
+	pp.legend([c1,c2,c3,c4],['Best sell price', 'Best buy price', 'Agent sell price', 'Agent buy price'])
+	pp.savefig(folder + 'b.png')
+
+	pp.figure()
+	pp.xlabel('Time (rounds)')
+	pp.ylabel('Price (ticks)')
+	mm_delay=6
+	pp.ylim(8,25)
+	c1=plot_step(18, -3, 10, color='blue', linewidth=3, alpha=0.5, xmax=20)
+	c2=plot_step(10, 3, 2, color='green', linewidth=3, alpha=0.5, xmax=20)
+	c3=plot_step(18, -1, 10+mm_delay, color='blue', linewidth=3, linestyle='dashed', xmax=20)
+	c4=plot_step(10, 3, 2+mm_delay, color='green', linewidth=3, linestyle='dashed', xmax=20)
+	#pp.fill_between([0,8],[10,10],[14,14], color='red', alpha=0.3, linewidth=0)
+	pp.fill_between([8,20],[13,13],[17,17], color='red', alpha=0.3, linewidth=0)
+	pp.text(2, 22, '$\lambda = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
+	pp.legend([c1,c2,c3,c4],['Best sell price', 'Best buy price', 'Agent sell price', 'Agent buy price'])
+	pp.savefig(folder + 'c.png')
 
 
 def plots_for_d3():
@@ -740,13 +837,16 @@ def plots_for_d11():
 	#issue_108(dataset='d11', n_clusters=8, overshoot_threshold=10)
 	#issue_108(dataset='d11', n_clusters=12, overshoot_threshold=10)
 
+def run_others():
+	issue_115_agent_ratio(ratio_threshold=5)
+
 def remake_make_all_thesis_plots():
 	plots_for_d3()
 	plots_for_d9()
 	plots_for_d10()
 	plots_for_d11()
 	issue_113_make_all_tradeprice_plots()
-		
+	run_others()	
 	
 
 	

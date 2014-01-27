@@ -5,6 +5,48 @@ from pandas import DataFrame
 from datetime import datetime
 import os
 
+latex_dict = {
+				'stdev' : r'$f_\sigma$',
+                'overshoot' : r'$f_\text{o}$',
+                'time_to_reach_new_fundamental' : r'$f_t$',
+                'round_stable' : r'$f_\text{t}$',
+                'fundamental_initial_value' : 10000,
+			    'fundamental_shock_size' : -10,
+			    'fundamental_shock_round' : 10000,
+			    'ssmm_nAgents' : r'$N_{m}$',
+			    'sc_nAgents' : r'$N_{m}$',
+
+			    'ssmm_latency_mu' : r'$\lambda_{m, \mu}$',
+			    'ssmm_latency_s' : r'$\lambda_{m, \sigma}$',
+			    'ssmm_think_mu' : r'$\tau_{m, \mu}$',
+			    'ssmm_think_s' : r'$\tau_{m, \sigma}$',
+			    'sc_latency_mu' : r'$\lambda_{c, \mu}$',
+			    'sc_latency_s' : r'$\lambda_{c, \sigma}$',
+			    'sc_think_mu' : r'$\tau_{c, \mu}$',
+			    'sc_think_s' : r'$\tau_{c, \sigma}$',
+			    
+			    'ssmm_spread_mu' : 4,
+			    'ssmm_spread_s' : 2,
+			    'ssmm_ordervol_mu' : 100,
+			    'ssmm_ordervol_s' : 5,
+			    'ssmm_orderlength_mu' : 500,
+			    'ssmm_orderlength_s' : 200,
+			    
+			    'sc_timehorizon_mu' : 5000,
+			    'sc_timehorizon_s' : 2000,
+			    'sc_ticksBeforeReacting_mu' : 2,
+			    'sc_ticksBeforeReacting_s' : 5,
+			    'sc_priceTickSize_mu' : 3,
+			    'sc_priceTickSize_s' : 2,
+			    'sc_ordervol_mu' : 10,
+			    'sc_ordervol_s' : 3,
+			    'sc_waitTimeBetweenTrading_mu' : 50,
+			    'sc_waitTimeBetweenTrading_s' : 20,
+
+			    'ratio_c2m' : r'$\frac{N_{c}}{N_{m}}$',
+			    'ratio_m2c' : r'$\frac{N_{m}}{N_{c}}$'
+                }
+
 def get_fundamental_after_shock():
 	return defpar['fundamental_initial_value'] + defpar['fundamental_shock_size']
 
@@ -131,3 +173,6 @@ def load_d10d11():
 	par = concat([par10, par11])
 	fit = concat([fit10, fit11])
 	return fit, par
+
+def format_as_latex_parameter(parameter):
+	return latex_dict[parameter]

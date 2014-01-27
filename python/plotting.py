@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import textwrap
-
+from pandas import DataFrame
 import settings
 import gc
 from utils import get_fundamental_after_shock, pfn
@@ -12,8 +12,13 @@ from ppl import Ppl
 #import string
 import pandas
 from numpy import log
+from utils import format_as_latex_parameter as fl
 
 errorbar_color=brewer2mpl.get_map('Set1', 'qualitative', 9).mpl_colors[8]
+
+#fitness_latex = DataFrame({
+#    'time_to_reach_new_fundamental' : '$f_\\text{t}$'
+#})
 
 def how_to_make_plot():
 
