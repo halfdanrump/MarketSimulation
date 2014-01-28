@@ -24,4 +24,13 @@ Thesis/data_for_tradeprice_plots/
 gaiyousyo-form copy.doc
 Thesis/data_for_tradeprice_plots/
 python/ipython_log.py
-Thesis/tex/masterthesis-sample.aux Thesis/tex/masterthesis-sample.bbl Thesis/tex/masterthesis-sample.blg Thesis/tex/masterthesis-sample.lof Thesis/tex/masterthesis-sample.log Thesis/tex/masterthesis-sample.lot Thesis/tex/masterthesis-sample.out Thesis/tex/masterthesis-sample.pdf Thesis/tex/masterthesis-sample.synctex.gz Thesis/tex/masterthesis-sample.toc
+#Thesis/tex/masterthesis-sample.aux Thesis/tex/masterthesis-sample.bbl Thesis/tex/masterthesis-sample.blg Thesis/tex/masterthesis-sample.lof Thesis/tex/masterthesis-sample.log Thesis/tex/masterthesis-sample.lot Thesis/tex/masterthesis-sample.out Thesis/tex/masterthesis-sample.pdf Thesis/tex/masterthesis-sample.synctex.gz Thesis/tex/masterthesis-sample.toc
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.gz
