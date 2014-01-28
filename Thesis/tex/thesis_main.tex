@@ -32,6 +32,9 @@
 \newcommand{\Varcluster}[2]{\mathrm{Var}_\text{C#2}[#1]}
 \newcommand{\Covcluster}[2]{\mathrm{Cov}_\text{C#2}[#1]}
 
+\newcommand{\meanpopulation}[1]{\mathrm{E}_\text{p}[#1]}
+\newcommand{\varpopulation}[1]{\mathrm{E}_\text{p}[#1]}
+
 \newcommand{\Efilter}[2]{\mathrm{E}_\text{F{#2}}[#1]}
 
 % % % DATASETS
@@ -55,19 +58,13 @@
 \newcommand{\hftsc}{HFT market chartist}
 
 % % % Agent parameters
-\newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda^c_{#1}}}
-\newcommand*{\scthinkagent}[1]{\ensuremath{T^c_{#1}}}
-\newcommand*{\scordervolumeagent}[1]{\ensuremath{V^c_{#1}}}
-\newcommand{\sctimehorizonagent}[1]{\ensuremath{H^c_{#1}}}
-\newcommand{\scwaitTimeBetweenTradingagent}[1]{\ensuremath{W^c_{#1}}}
-\newcommand{\scticksbeforereactingagent}[1]{\ensuremath{S^c_{#1}}}
-\newcommand{\scpriceticksizeagent}[1]{\ensuremath{A^c_{#1}}}
-
-\newcommand{\scticksbeforereactingmu}{\ensuremath{S_{c, \mu}}}
-\newcommand{\scticksbeforereactings}{\ensuremath{S_{c, \sigma}}}
-\newcommand{\scpriceticksizemu}{\ensuremath{A_{c, \mu}}}
-\newcommand{\scpriceticksizes}{\ensuremath{A_{c, \sigma}}}
-
+\newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda_c^{#1}}}
+\newcommand*{\scthinkagent}[1]{\ensuremath{T_c^{#1}}}
+\newcommand*{\scordervolumeagent}[1]{\ensuremath{V_c^{#1}}}
+\newcommand*{\sctimehorizonagent}[1]{\ensuremath{H_c^{#1}}}
+\newcommand*{\scwaitTimeBetweenTradingagent}[1]{\ensuremath{W_c^{#1}}}
+\newcommand*{\scticksbeforereactingagent}[1]{\ensuremath{\gamma_c^{#1}}}
+\newcommand*{\scpriceticksizeagent}[1]{\ensuremath{A_c^{#1}}}
 
 
 \newcommand*{\ssmmlatencyagent}[1]{\ensuremath{\lambda_m^{#1}}}
@@ -75,10 +72,10 @@
 \newcommand*{\ssmmordervolumeagent}[1]{\ensuremath{V_m^{#1}}}
 \newcommand*{\ssmmminspreadagent}[1]{\ensuremath{\theta_{#1}}}
 
-\newcommand{\Count}{\ensuremath{\text{Count}}}
-\newcommand{\marketmaker}[1][]{\ensuremath{\text{MM}_{#1}}}
-\newcommand{\chartist}[1][]{\ensuremath{\text{SC}_{#1}}}
-\newcommand{\marketmakercyclelength}[1][]{\ensuremath{l_{\text{MM}, {#1}}}}
+\newcommand*{\Count}{\ensuremath{\text{Count}}}
+\newcommand*{\marketmaker}[1]{\ensuremath{\text{MM}_{#1}}}
+\newcommand*{\chartist}[1]{\ensuremath{\text{SC}_{#1}}}
+\newcommand*{\marketmakercyclelength}[1]{\ensuremath{l_{\text{MM}, #1}}}
 
 
 
@@ -86,70 +83,86 @@
 
 
 %%% MODEL PARAMETERS
+\newcommand{\avrstorders}{\ensuremath{\lambda}}
 
-\newcommand{\sclatencymu}{\ensuremath{\lambda_{c, \mu}}}
-\newcommand{\sclatencys}{\ensuremath{\lambda_{c, \sigma}}} 
-\newcommand{\scnAgents}{\ensuremath{N_{c}}} 
-\newcommand{\scthinkmu}{\ensuremath{T_{c, \mu}}}
-\newcommand{\scthinks}{\ensuremath{T_{c, \sigma}}}
-\newcommand{\sctimehorizonmu}{\ensuremath{H_{c, \mu}}}
-\newcommand{\sctimehorizons}{\ensuremath{H_{c, \sigma}}}
-\newcommand{\scwaitTimeBetweenTradingmu}{\ensuremath{W_{c, \mu}}}
-\newcommand{\scwaitTimeBetweenTradings}{\ensuremath{W_{c, \sigma}}}
-\newcommand{\ssmmlatencymu}{\ensuremath{\lambda_{m, \mu}}}
-\newcommand{\ssmmlatencys}{\ensuremath{\lambda_{m, \sigma}}}
-\newcommand{\ssmmnAgents}{\ensuremath{N_{m}}}
-\newcommand{\ssmmthinkmu}{\ensuremath{T_{m, \mu}}}
-\newcommand{\ssmmthinks}{\ensuremath{T_{m, \sigma}}}
 
+\newcommand*{\sclatencymu}{\ensuremath{\lambda_{c, \mu}}}
+\newcommand*{\sclatencys}{\ensuremath{\lambda_{c, \sigma}}} 
+\newcommand*{\scnAgents}{\ensuremath{N_{c}}} 
+\newcommand*{\scthinkmu}{\ensuremath{\tau_{c, \mu}}}
+\newcommand*{\scthinks}{\ensuremath{\tau_{c, \sigma}}}
+\newcommand*{\sctimehorizonmu}{\ensuremath{H_{c, \mu}}}
+\newcommand*{\sctimehorizons}{\ensuremath{H_{c, \sigma}}}
+\newcommand*{\scwaitTimeBetweenTradingmu}{\ensuremath{W_{c, \mu}}}
+\newcommand*{\scwaitTimeBetweenTradings}{\ensuremath{W_{c, \sigma}}}
+\newcommand*{\scticksbeforereactingmu}{\ensuremath{\gamma_{c, \mu}}}
+\newcommand*{\scticksbeforereactings}{\ensuremath{\gamma_{c, \sigma}}}
+\newcommand*{\scpriceticksizemu}{\ensuremath{\alpha_{c, \mu}}}
+\newcommand*{\scpriceticksizes}{\ensuremath{\alpha_{c, \sigma}}}
+
+
+\newcommand*{\ssmmnAgents}{\ensuremath{N_{m}}}
+\newcommand*{\ssmmlatencymu}{\ensuremath{\lambda_{m, \mu}}}
+\newcommand*{\ssmmlatencys}{\ensuremath{\lambda_{m, \sigma}}}
+\newcommand*{\ssmmthinkmu}{\ensuremath{\tau_{m, \mu}}}
+\newcommand*{\ssmmthinks}{\ensuremath{\tau_{m, \sigma}}}
+\newcommand*{\ssmmminspreadmu}{\ensuremath{\theta_{m, \mu}}}
+\newcommand*{\ssmmminspreads}{\ensuremath{\theta_{m, \sigma}}}
+
+\newcommand*{\storderarrivalrate}{\ensuremath{\xi_\text{ST}}}
+\newcommand*{\stlatency}{\ensuremath{\lambda_\text{ST}}}
+\newcommand*{\stnoise}{\ensuremath{\epsilon_\text{ST}}}
+\newcommand*{\stnoisemu}{\ensuremath{\mu_\epsilon}}
+\newcommand*{\stnoises}{\ensuremath{\sigma_\epsilon}}
 
 % % % FITNESS MEASURES
 
-\newcommand{\overshoot}{\ensuremath{f_\text{o}}}
-\newcommand{\roundstable}{\ensuremath{f_\text{s}}}
-\newcommand{\stdev}{\ensuremath{f_\sigma}}
-\newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{t}}}
+\newcommand*{\overshoot}{\ensuremath{f_\text{o}}}
+\newcommand*{\roundstable}{\ensuremath{f_\text{s}}}
+\newcommand*{\stdev}{\ensuremath{f_\sigma}}
+\newcommand*{\timetoreachnewfundamental}{\ensuremath{f_\text{t}}}
 
-\newcommand{\ratioagents}{\ensuremath{\rho_\text{A}}}
-\newcommand{\ratiolatency}{\ensuremath{\rho_\lambda}}
+\newcommand*{\ratioagents}{\ensuremath{\rho_\text{A}}}
+\newcommand*{\ratiolatency}{\ensuremath{\rho_\lambda}}
 
 
-\newcommand{\ssmmordervolumemu}{\ensuremath{V_{m,\mu}}}
-\newcommand{\ssmmordervolumes}{\ensuremath{V_{m,\sigma}}}
-\newcommand{\scordervolumemu}{\ensuremath{V_{c, \mu}}}
-\newcommand{\scordervolumes}{\ensuremath{V_{c, \sigma}}}
+\newcommand*{\ssmmordervolumemu}{\ensuremath{V_{m,\mu}}}
+\newcommand*{\ssmmordervolumes}{\ensuremath{V_{m,\sigma}}}
+\newcommand*{\scordervolumemu}{\ensuremath{V_{c, \mu}}}
+\newcommand*{\scordervolumes}{\ensuremath{V_{c, \sigma}}}
 
 %%% SYMBOLS
-\newcommand{\round}[1][]{\ensuremath{t_{#1}}}
-\newcommand{\delay}{\ensuremath{p^m}}
-\newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
-\newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
-\newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
-\newcommand{\pmatch}{\ensuremath{p^m}}
-\newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
+\newcommand*{\round}[1]{\ensuremath{t_{#1}}}
+\newcommand*{\delay}{\ensuremath{p^m}}
+\newcommand*{\spread}[1]{\ensuremath{s_{#1}}}
+%\newcommand*{\pask}[1][]{\ensuremath{p^a_{#1}}}
+%\newcommand*{\pbid}[1][]{\ensuremath{p^b_{#1}}}
+%\newcommand*{\pmatch}{\ensuremath{p^m}}
+%\newcommand*{\fund}[1][]{\ensuremath{f_{#1}}}
 
 
 % % % % Market related symbols
-\newcommand{\currentprice}{\ensuremath{p_c}}
-\newcommand{\bestbidprice}[1]{\ensuremath{B_{#1}}}
-\newcommand{\bestaskprice}[1]{\ensuremath{A_{#1}}}
-\newcommand{\askprice}{\ensuremath{p^a}}
-\newcommand{\bidprice}{\ensuremath{p^b}}
-\newcommand{\tradeprice}[2]{\ensuremath{p^t_{#2}(#1)}}
+\newcommand*{\currentprice}{\ensuremath{p_c}}
+\newcommand*{\bestbidprice}[1]{\ensuremath{B_{#1}}}
+\newcommand*{\bestaskprice}[1]{\ensuremath{A_{#1}}}
+%\newcommand*{\askprice}{\ensuremath{p^a}}
+%\newcommand*{\bidprice}{\ensuremath{p^b}}
+\newcommand*{\tradeprice}[2]{\ensuremath{p^t_{#2}(#1)}}
 
 
 % % % Fundamental symbols
-\newcommand{\fundamentalprice}[1][]{\ensuremath{F_{#1}}}
-\newcommand{\fundamentalshocksize}{\ensuremath{\eta}}
-\newcommand{\fundamentalaftershock}{\ensuremath{\eta}}
-\newcommand{\fundamentalshocktime}{\ensuremath{\round{_\eta}}}
+\newcommand*{\fundamentalprice}[1]{\ensuremath{F_{{#1}}}}
+\newcommand*{\fundamentalpricetest}[1]{F_{{#1}}}
+\newcommand*{\fundamentalshocksize}{\ensuremath{\eta}}
+\newcommand*{\fundamentalaftershock}{\ensuremath{\eta}}
+\newcommand*{\fundamentalshocktime}{\ensuremath{\round{_\eta}}}
 
-\newcommand{\smargin}{\ensuremath{m_\text{stable}}}
-\newcommand{\fas}{\ensuremath{p_\text{fas}}}
+\newcommand*{\smargin}{\ensuremath{m_\text{stable}}}
+\newcommand*{\fas}{\ensuremath{p_\text{fas}}}
 
 %%% OTHER COMMANDS
-\newcommand{\ask}{ask}
-\newcommand{\bid}{bid}
+\newcommand*{\ask}{ask}
+\newcommand*{\bid}{bid}
 
 
 
@@ -160,7 +173,7 @@
 \title{Modelling and analysis of a financial market with slow and fast trading agents acting on time-delayed market information}{5}%5 means the distance between title line and name line.
 %\etitle{no title}
 \author{Halfdan~Rump}
-\studentid{Your Student ID}
+\studentid{5115BG02-1}
 \university{Waseda University}%
 \faculty{School of Fundamental Science and Engineering}%
 \department{Department of Computer Science and Engineerring}
@@ -200,18 +213,22 @@ The model simulates the market events in the minutes after the advent of bad new
 \lhead{\emph{Model}}
 \input{Chapters/model}
 
-\newpage
-\lhead{\emph{XXX}}
-\input{Chapters/parameter_tuning_and_analysis_tools}
 
-\newpage
-\lhead{\emph{XXX}}
-\input{Chapters/results_new}
+%\newpage
+%\lhead{\emph{XXX}}
+%\input{Chapters/parameter_tuning_and_analysis_tools}
 
-\newpage
-\lhead{\emph{XXX}}
-\input{Chapters/discussion}
+%\newpage
+%\lhead{\emph{XXX}}
+%\input{Chapters/results_new}
+
+%\newpage
+%\lhead{\emph{XXX}}
+%\input{Chapters/discussion}
  
+ 
+\bibliography{biblography}{}
+\bibliographystyle{plain}
  
  \end{document}
 
