@@ -270,8 +270,8 @@ Figure \ref{figure:marketmaker_strategy} shows three simple examples of how the 
 
 In the first case, the spread increases, and the market updates its own prices to follow the increasing spread. In round two to eight, the market maker is selling at a price of 13 ticks, while the best market sell price is two ticks higher at 15 ticks. This means that the delay causes the market maker to momentarily sell at sub-optimal prices, and hence would makes 2 ticks less of profit per share if its order is filled before the market makers new order reaches the market. 
 
-In the second example, the spread decreases, and the market maker updates??? again its prices to a lower spread in order to stay competitive. In this case, the delay in the market maker's ability to react to the market events causes the market maker to momentarily be less competitive than possible, causing a risk of losing trades. 
-
+In the second example, the spread decreases, and the market maker updates its prices to a lower spread in order to stay competitive. In this case, the delay in the market maker's ability to react to the market events causes the market maker to momentarily be less competitive than possible, causing a risk of losing trades. 
+ 
 In the third and fourth examples, the minimum spread parameter \ssmmminspreadagent{} is seen to force the market maker to trade at sub-optimal prices, as the spread narrows below four ticks.
 
 \begin{figure}

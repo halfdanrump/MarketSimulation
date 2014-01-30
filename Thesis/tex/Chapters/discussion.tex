@@ -7,27 +7,28 @@
 In 
 
 \section{Market makers causing overvaluation of the stock}
-As was shown by the results, overvaluation occurred more frequently when the market had a high proportion of market makers. Furthermore, 
+In the previous part it was shown that overvaluation, that is, a discrepancy between the fundamental price and the traded price of the stock occurred in some markets. 
+
+
+occurred more frequently when the market had a high proportion of market makers
 
 As was shown in figure XXX, both an increased number of market makers and market makers with lower latencies tended to push the market towards responding slower to the change in the fundamental price. A slower response means that a discrepancy between the traded price and the true fundamental price persists for longer. In the case of a negative shock ($\fundamentalshocksize < 0$), the fundamental price will be lower than the traded price, which is the same as saying that the stock is overvalued.
 
 While this does not pose a problem in the current market model, it is easy to see how such an inefficiency can be exploited. In the current market model, the fast traders do not know the fundamental price, and therefore have no concept of the true value of the stock. Instead the fast traders trade only by observing the order book, whereas it is the slow traders who know the funamental. However, if a fast trader also knew the fundamental price he could explots. This is exactly what the agents in \cite did, and in this work we have shown that the presence of fast market makers make the scenario assumed in that work more likely to happen
 
-Furthermore, we speculate thatthat this prolonging of the overvaluation is not only due to the nature of the market making strategy, but due to the the market making strategy being used by traders \textit{who are very fast}. When the market makers are very fast, their behavior will be more alike, since they act on almost the same information, and hence their aggregate behavior will combine into a consistent force that has a strong influence on the market. 
+Furthermore, we speculate that this prolonging of the overvaluation is not only due to the nature of the market making strategy, but due to the the market making strategy being used by traders \textit{who are very fast}. When the market makers are very fast, their behavior will be more alike, since they act on almost the same information, and hence their aggregate behavior will combine into a consistent force that has a strong influence on the market. 
 be more consistent than if the market makers are slow, simply because the market making strategy is simple 
 
 Generally, the results make it possible to conclude that, if each agent strategy can be said to have a particular way of influencing the market causing what may be dubbed ``agent consistent dynamics'', reducing the latency of the agents caused  resulted in this tendency to become stronger.
 
 
 
-\section{Agent strategies market crashes}
-
+\section{Market crashes}
+The results showed that the model is capable of reproducing fast market crashes, also known as flash-crashes. This section offers an explanation of what causes such crashes to occur.
 
 It is somewhat intuitive that HFT chartists should be suspected of having an influence on the market such that the market become more likely to crash. The results did indeed confirm this, as it was shown that a negative correlation exists between the number of chartists active in the market, and the size of the overshoot (see figure \ref{fig:d11_parvfit_scAgents}). 
 
-It is conceivable that the market makers also contribute to the market crashing, since the market makers also ignore the true fundamental price. Indeed, the results showed that the market does not crash from having fast chartists alone. The results also showed that the market will not crash from having only fast market makers either. Instead, both types of fast traders were required to make the market crash. The following text will provide an explanation as to why this is so.
-
-It was found that markets containing no market makers will almost never crash. Without the presence of market makers, even a market saturated with chartists will eventually return to the fundamental price, as the force of the initial downtrend created by the fundamentalists dissipates. 
+It is conceivable that the market makers also contribute to the market crashing, since the market makers also ignore the true fundamental price. Indeed, the results showed that the market does not crash from having fast chartists alone. The results also showed that the market will not crash from having only fast market makers either. Instead, both types of fast traders were required to make the market crash. The following text will provide an explanation as to why this is so. It was found that markets containing no market makers will almost never crash. Without the presence of market makers, even a market saturated with chartists will eventually return to the fundamental price, as the force of the initial downtrend created by the fundamentalists dissipates. 
 
 
 \subsubsection*{Case with no fast traders}
@@ -60,17 +61,10 @@ On the other side of the order book, the best buy price starts to drop as the se
 
 Crashes did not occur often particularly. Even during experiment \deleven, in which the genetic algorithm ended up prioritizing the market response times, and generate a large number of genes with many chartists and very fast market makers, the market had an overshoot of over 25 tick in just less than 0.2\% of the cases\footnote{The simulation was run around $4\cdot 10^5$ times, and 7989 of these had $\overshoot > 25$}. In experiment \dten, not a single case of markets with an overshoot of over 17 ticks was generated. 
 
-XXX ADD A SMALL DISCUSSION OF HOW OFTEN CRASHES OCCUR IN REAL MARKETS
+
 
 \subsection{Agent speed and market crashes}
 XXX INSERT DATA THAT SHOWS THAT CRASHING MARKETS HAD FASTER AGENTS THAN NON CRASHING MARKETS
-
-
-\section{Market makers causing the stock to be over-valued }
-XXX NOT FINISHED. COLLECT EVIDENCE
-This temporary over-evaluation of the assert is on the expense of Hence, the 
-
-in \cite{}, the authors discussed the scenario in which a disparity between the this scenario and 
 
 
 \section{title}
