@@ -2,8 +2,22 @@
 
 \section{Benefits of fast traders}
 
+
 \subsection{Fast market makers reduce price flickering}
 In 
+
+\section{Market makers causing overvaluation of the stock}
+As was shown by the results, overvaluation occurred more frequently when the market had a high proportion of market makers. Furthermore, 
+
+As was shown in figure XXX, both an increased number of market makers and market makers with lower latencies tended to push the market towards responding slower to the change in the fundamental price. A slower response means that a discrepancy between the traded price and the true fundamental price persists for longer. In the case of a negative shock ($\fundamentalshocksize < 0$), the fundamental price will be lower than the traded price, which is the same as saying that the stock is overvalued.
+
+While this does not pose a problem in the current market model, it is easy to see how such an inefficiency can be exploited. In the current market model, the fast traders do not know the fundamental price, and therefore have no concept of the true value of the stock. Instead the fast traders trade only by observing the order book, whereas it is the slow traders who know the funamental. However, if a fast trader also knew the fundamental price he could explots. This is exactly what the agents in \cite did, and in this work we have shown that the presence of fast market makers make the scenario assumed in that work more likely to happen
+
+Furthermore, we speculate thatthat this prolonging of the overvaluation is not only due to the nature of the market making strategy, but due to the the market making strategy being used by traders \textit{who are very fast}. When the market makers are very fast, their behavior will be more alike, since they act on almost the same information, and hence their aggregate behavior will combine into a consistent force that has a strong influence on the market. 
+be more consistent than if the market makers are slow, simply because the market making strategy is simple 
+
+Generally, the results make it possible to conclude that, if each agent strategy can be said to have a particular way of influencing the market causing what may be dubbed ``agent consistent dynamics'', reducing the latency of the agents caused  resulted in this tendency to become stronger.
+
 
 
 \section{Agent strategies market crashes}

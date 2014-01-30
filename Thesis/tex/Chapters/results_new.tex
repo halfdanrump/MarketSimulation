@@ -201,10 +201,11 @@ Market makers become slower and the chartists become faster. At the same time, t
 \end{itemize}
 
 
-\section{Parameter and fitness correlation}
-This section contains several figures which illustrate how the model fitness varies with the model parameters. In the figures showing the data from experiment \deleven, simulations with $\overshoot>10$ are removed in order to make the figures easier to interpret.
+\section{Population-wide parameter/fitness correlations}
+This section contains several figures which illustrate how the model fitness varies with the model parameters. In the figures showing the data from experiment \deleven, simulations with $\overshoot>10$ are removed in order to make the figures easier to interpret. In the following, the notation $\meanpopulation{\cdot}$ is used for the population wide average of a model parameter of fitness measure. For instance, $\meanpopulation{\overshoot}$ is the average market overshoot, where the average is calculated over the total population of individuals that ever lived in the genetic algorithm.
 
 \subsection{Number of market makers}
+The number of market makers was kept fixed in experiments \dnine{} and \deleven, but was varied in experiment \dten.
 \begin{figure}
 	%issue 15
 	\centering
@@ -219,14 +220,29 @@ This section contains several figures which illustrate how the model fitness var
 	\caption{Correlation between \ssmmnAgents and the four fitness measures in experiment \dten}
 	\label{fig:d10_parvfit_ssmmnAgents}
 \end{figure}
-Figure \ref{fig:d10_parvfit_ssmmnAgents} shows how the number of market makers correlates with the model fitness in experiment \dten. It is clear that a large number of market makers reduces the overshoot, whereas the market virtually always have an overshoot when there are little or no market makers. The same is true for the trade prices flicker: few market makers always means flickering prices. A higher number of market makers makes the market less responsive, while fewer market makers makes the market more responsive. Finally, the number of market makers also influences how quickly the market settles within the stability margin, as markets with more market makers become stable faster than markets with few agents. 
+Figure \ref{fig:d10_parvfit_ssmmnAgents} shows how the number of market makers correlates with the model fitness in experiment \dten. Evidently a large number of market makers reduces the overshoot, whereas the market virtually always have an overshoot when there are few or no market makers. The same is true for the trade prices flicker: few market makers always means flickering prices. A higher number of market makers cause the market to be less responsive, while fewer market makers have the opposite effect. Finally, the number of market makers also influences how quickly the market settles within the stability margin, as markets with more market makers become stable faster than markets with few agents. Table \ref{table:ssmmnagents_quantiles} shows the average fitness values for models where the number of market maker agents was respectively below and above the first ($q_{1}$) and ninth ($q_{9}$) 10-quantiles in the dataset.  The two quantiles were at $q_{1} =46 $ and $q_{9} = 136$. It is seen that the market containing a large number of market makers (more than 136) had a much smaller overshoot, less flickering prices, a slower response time, and stayed within the stability margin faster, compared to the markets with a low (less than 46) number of market makers.
+
+\begin{table}
+\centering
+\begin{tabular}{lrr}
+\toprule
+\dten &       $\ssmmnAgents < q_{1}$ &       $\ssmmnAgents > q_{9}$ \\
+\midrule
+\overshoot                     &     7.5 &     0.8 \\
+\roundstable                  & 89876.2 & 18546.9 \\
+\stdev              &     1.6 &     0.6 \\
+\timetoreachnewfundamental & 12590.5 & 19832.1 \\
+\bottomrule
+\end{tabular}
+\caption{Average fitness values for the market with the top 10\% highest and 10\% lowest number of market makers}
+\label{table:ssmmnagents_quantiles}
+\end{table}
 
 \subsection{Market maker latency}
-
+The parameters controlling the market maker latency was varied in experiments \dnine, \dten{} and \deleven. However, since the data from \dnine{} turned out to be too noise due to the large number of parameters included in the search, only data from \dten{} and \deleven{} was used. 
 
 \subsubsection*{Fixing the number of chartists}
-In experiment \dten, the number of chartists was kept fixed at $\scnAgents = 150$, while \ssmmnAgents was varied by the GA. In this case, the \ssmmlatencymu is found to be somewhat correlated with the fitness measures as illustrated on figure \ref{fig:d10_parvfit_ssmmlatencymu}. Especially for $\ssmmlatencymu > 50$, the data seems to be consistent, as the error bars showing the standard deviation of the data are small in this region. However, for $\ssmmlatencymu < 50$, the model behavior is no longer predictable by using \ssmmlatencymu alone. Figure \ref{fig:faster_mm_makes_worse_markets/d10/MM_mmlatency} sheds light on the reason as to why this is, as it shows that even though the market maker latency does influence the market, the effect is secondary to that of the number of agents. For instance, when the market contains less than 25 market makers, all four fitness measures are more or less unchanged shown by the nearly flat red curves. As the number of market makers grow, so does the importance of how fast they are. The average overshoot and the average time to catch up to the new fundamental only change slighly, even with over 100 market makers (yellow line). On the other hand, the average price flickering and the average number of rounds it takes for the market to settle within the stability margin both change significantly with the market maker speed for $\ssmmnAgents > 50$.
-
+In experiment \dten, the number of chartists was kept fixed at $\scnAgents = 150$, while \ssmmnAgents was varied by the GA. In this case, the \ssmmlatencymu is found to be somewhat correlated with the fitness measures as illustrated on figure \ref{fig:d10_parvfit_ssmmlatencymu}. Especially for $\ssmmlatencymu > 50$, the data seems to be consistent, as the error bars showing the standard deviation of the data are small in this region. However, for $\ssmmlatencymu < 50$, the model behavior is no longer predictable by using \ssmmlatencymu alone. Figure \ref{fig:faster_mm_makes_worse_markets/d10/MM_mmlatency} shows line plots of the four fitness measures plotted against \ssmmlatencymu. Each line shows the average fitness of markets in which the number of market makers is in a limited range as shown in the legend. The figure shows that even though the market maker latency does influence the market, the effect is secondary to that of the number of agents. For instance, when the market contains less than 25 market makers, all four fitness measures are more or less unchanged, as is evident by the nearly flat red curves. As the number of market makers grow, so does the importance of how fast they are. The average overshoot and the average time to catch up to the new fundamental only change slightly, even with over 100 market makers (yellow line). On the other hand, the average price flickering and the average number of rounds it takes for the market to settle within the stability margin both change significantly with the market maker speed for $\ssmmnAgents > 50$. In summary, figure \ref{fig:faster_mm_makes_worse_markets/d10/MM_mmlatency} shows that in a market with only a few market makers, these agents have little influence no matter how fast they are. As the number of market makers grow, so does the collective force of all the market makers, and so does the importance of how slow or fast these agents are. 
 \begin{figure}
 	%issue 15
 	\centering
@@ -241,15 +257,37 @@ In experiment \dten, the number of chartists was kept fixed at $\scnAgents = 150
 	\caption{Correlation between \ssmmlatencymu{} and fitness values (fixed \scnAgents, variable \ssmmnAgents)}
 	\label{fig:d10_parvfit_ssmmlatencymu}
 \end{figure}
+Although the influence of $\ssmmlatencymu$ depends on $\ssmmnAgents$, 
+. $q_{1}$ and $q_{1}$ 
+\begin{table}
+\centering
+\begin{tabular}{lrr}
+\toprule
+\dten &       $\ssmmlatencymu < q_{1}$ &       $\ssmmlatencymu > q_{9}$ \\
+\midrule
+\overshoot                     &     5.6 &     0.9 \\
+\roundstable                  & 85927.9 & 18329.3 \\
+\stdev                         &     1.4 &     0.6 \\
+\timetoreachnewfundamental & 16649.4 & 18795.3 \\
+\bottomrule
+\end{tabular}
+\hspace*{0.4in}
+\begin{tabular}{lrr}
+\toprule
+\deleven &       $\ssmmlatencymu < q_{1}$ &       $\ssmmlatencymu > q_{9}$ \\
+\midrule
+\overshoot                     &    14.2 &     1.7 \\
+\roundstable                  & 81379.2 & 26153.0 \\
+\stdev                         &     3.6 &     1.0 \\
+\timetoreachnewfundamental & 15856.2 & 18107.4 \\
+\bottomrule
+\end{tabular}
+\caption{Average fitness values for the market with the top 10\% highest and 10\% lowest number of market makers}
+\label{table:ssmmlatencymu_quantiles}
+\end{table}
 
-\begin{comment}
-\begin{enumerate}
-\item When the market has fast chartists, it needs more market makers to keep the market stable, but these may be slow.
-\item When the market has fast chartists, the market first of all needs fast market makers to be stable.
-\item A market with few market makers can be stable if the market makers are fast, or if the chartists are slow.
-\end{enumerate}
-\end{comment}
 
+The next section will examine how the market behaves with respect to how many chartists are active in the market, and with respect to the latency of the chartists.
 
 \begin{figure}
 	%issue 15
@@ -266,7 +304,6 @@ In experiment \dten, the number of chartists was kept fixed at $\scnAgents = 150
 	\label{fig:faster_mm_makes_worse_markets/d10/MM_mmlatency}
 \end{figure}
 
-In summary, figure \ref{fig:faster_mm_makes_worse_markets/d10/MM_mmlatency} shows that in a market with only a few market makers, these agents have little influence no matter how fast they are. As the number of market makers grow, so does the collective force of all the market makers, and so does the importance of how slow or fast these agents are. The next section will examine how the market behaves with respect to how many chartists are active in the market, and with respect to the latency of the chartists.
 
 
 
@@ -458,7 +495,7 @@ The above observations about how the number of agents influence the stability an
 
 
 \section{Grouping models by behavior}
-This section is be concerned with trying to tie various patterns of model behavior to different regions in the parameter space. The quickest way to get an idea of how the data generated by the simulations is distributed is to make scatter plots. The data of the model fitness is four-dimensional, requiring twelve plots to visualize all combinations. However, since \overshoot is discrete with a small range of values, it is not suitable for a scatter plot. Furthermore, some scatter plots are not useful for interpretation if they do not show any structure in the data. Figure \ref{figure:d9_scatter_fitness} shows three scatter plots which were found to best illustrate the structure of the dataset from \dnine. Note also that coloring each point corresponding to its value in one dimension makes it possible to show how the data is distributed in three dimensions.
+This section is be concerned with trying to tie various patterns of model behavior to different regions in the parameter space. The quickest way to get an idea of how the data generated by the simulations is distributed is to make scatter plots. Scatter plots are probably among the most rudimentary of techniques for data analysis, yet they can be incredibly informative, especially when the data that is visualized is low-dimensional. The data of the model fitness is four-dimensional, requiring twelve plots to visualize all combinations. However, since \overshoot is discrete with a small range of values, it is not suitable for a scatter plot. Furthermore, some scatter plots are not useful for interpretation if they do not show any structure in the data. Figure \ref{figure:d9_scatter_fitness} shows three scatter plots which were found to best illustrate the structure of the dataset from \dnine. Note also that coloring each point corresponding to its value in one dimension makes it possible to show how the data is distributed in three dimensions.
 \begin{figure}
 \centering
 \subcaptionbox{$\log \stdev$ vs. $\log \roundstable$ vs. \timetoreachnewfundamental}
@@ -498,10 +535,20 @@ First of all, it is seen that while the data is distributed similarly in the thr
 \label{figure:d9_scatter_fitness_inliers_b}
 \end{figure}
 
+
+
 \subsection{Manually grouping simulations by behavior}\label{section:manually_grouping_simulations}
 Table \ref{table:manual_filtering} contains an overview of the named criteria used for roughly grouping simulations into different types of behavior. The following text contains the reasoning for why each of these groups are interesting.
 
 In figure \ref{figure:scatter_fitness_inliers_a}, the black dashed lines at $\timetoreachnewfundamental = \roundstable$ divide each plot into region A, (upper left triangle) and region B (lower right triangle). Region A contains the fitness-points of the simulations which are counted as stable \textit{after} they reach the new fundamental, and region B contain those that become stable before. 
+
+The description below provides a brief summary of which simulations belong in the two regions.
+\begin{description}
+\item[$\roundstable < \timetoreachnewfundamental$] This happens when the traded price never leaves the stability margin after reaching the new fundamental price. Note however that this case does not necessarily mean that the prices do not flicker. 
+\item[$\roundstable > \timetoreachnewfundamental$] This happens when the traded price leaves the stability margin once or more after reaching the new fundamental. The traded price can be close to the fundamental, but flickers in and out of the stability margin as on Figure \ref{figure:tradeprice_exaples_fitness_a} shows an example where the trade price fairly stable and with no overshoot, leading to good (low) \stdev and \overshoot fitness values to be assigned to the parameters. However, even though the traded prices are mostly within the stability margin, occasional flickers out of the margin causes the simulation to score a bad (high) \roundstable fitness. Note also that \timetoreachnewfundamental is undefined in this case. 
+\item[$\roundstable = \timetoreachnewfundamental$] This happens if a trade is executed at price $\smargin - \fas < \pmatch < \smargin + \fas$, and another trade is executed at price $\pmatch = \fas$ in the same round. 
+\end{description}
+
 
 \subsubsection*{Fast and stable simulations with flickering prices}
 The points in the lower left corner in are those which quickly reached the new fundamental price, and quickly because stable, leading those simulations to be assigned low \timetoreachnewfundamental and \roundstable fitness-values. These points are extracted by using filter F1 (see table \ref{table:manual_filtering})
@@ -653,6 +700,7 @@ Tables \ref{table:manual_filtering_d9}, \ref{table:manual_filtering_d10} and \re
  
 When the number of chartists were fixed as in experiment \dten, the simulations with overshoot (picked out by filter F6) has an average overshot of $\Efilter{6}{\overshoot} = 4.1$ ticks. These markets had comparatively few, but fast market makers ($\Efilter{6}{\ssmmnAgents} = 67.1$ and $\Efilter{6}{\ssmmlatencymu}$), and fast chartists ($\Efilter{6}{\sclatencymu} = 78.3$). Figure \ref{figure:jaccard_index_b} shows that F7 and F8 mostly contain points that are also contained in F6. Both F7 and F8 a lower average overshoot, and this is caused by the markets to have slower chartists, and fewer, slower market makers. When the number of chartists were varied as in experiment \deleven{} (and with a constant of $\ssmmnAgents=52$ market makers), the average latency of the chartists $\Efilter{6}{\sclatencymu}$ did not differ from the other groups. Instead, the biggest difference was that markets with overshoot on average had a high number of chartists. As for the market maker latency, it was smaller than any of the other groups. On the the other hand, markets with no overshoot on average had a large number of marker makers when \scnAgents is fixed to $\scnAgents = 150$, although the market makers were not particularly fast. Markets with no overshoot also had the lowest average number of chartists among the nine groups.
 
+\subsection{Using clustering algorithms to group markets by behavior}\label{section:clustering}
 
 \subsection{Clustering with mixture of Gaussians}
 In this section, the focus is shifted from looking at population wide statistics to analysis sub-groups within each population. Whereas the previous sections showed that there do indeed exist statistical relationships between the latency of the agents and the behavior of the model, each discovered correlation was calculated over the entire population. Although the correlations reveal overall tendencies of the model behavior when changing a single parameter, little can be said about how the various parameters interact to determine model behavior. For instance, even though prediction of, say a negative correlation between \timetoreachnewfundamental was \sclatencymu was found, there might be configurations of the model in which faster chartists were actually beneficial to the market. 
@@ -724,6 +772,7 @@ Due to the high latency of the slow traders, any order submitted by a slow trade
 
  \end{comment}
 
+\begin{comment}
 \begin{table}
  \centering
  \begin{tabular}{l|rrrr|rrrrr|r}
@@ -748,7 +797,7 @@ Outliers  &         0.8 &           0.6 &     0.3 &                      2691.9 
  \label{table:d10_gmm_std}
  \caption{Cluster standard deviations (\dten)}
  \end{table}
-
+\end{comment}
 
 \begin{table}
  \centering
@@ -775,7 +824,7 @@ Outliers  &        40.5 &       89951 &     9.9 &                     10434.7 & 
  \caption{Cluster means (\deleven)}
  \end{table}
  
- 
+ \begin{comment}
  \begin{table}
   \centering
   \begin{tabular}{l|rrrr|rrrrr|r}
@@ -801,13 +850,48 @@ Outliers  &        40.5 &       89951 &     9.9 &                     10434.7 & 
   \label{table:d11_gmm_std}
   \caption{Cluster standard deviations (\deleven)}
   \end{table}
+ \end{comment}
+
 
  
 
 XXX CONSIDER MOVING SOME OF THE TABLES TO THE APPENDIX?
 
 \section{Summary of results}
-XXX NOT FINISHED
+The results showed that both types of HFT agents influence the market in positive and negative ways. This section contains a summary of the results.
+
+
+ Analysis of the results showed that a moderate amount of high speed trading activity was not in itself problematic.
+\begin{itemize}
+\item Market makers have a stabilizing effect on the markets and make the market more robust
+
+\item High speed chartists influence the market so as to decrease the duration of the period of time in which the stock price stock price is overvalued by reducing the time required for the price to return to the new fundamental price after the negative shock. 
+\item Crashes never occur in markets with only fast market makers or fast chartists, no matter how many agents are active and how fast they are. Even markets with 
+
+In fact, the markets that had the fastest and most stable response to the shock had both several fast chartists and fast market makers. However, it was found that flash-crashes could occur in markets in which  the number of chartists was four times or greater that of the number of market makers. Furthermore, crashes occurred four times more often when the chartists were faster than the market makers.
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+The results were analysed while focussing on the market dynamics caused by the aggregate actions of all the traders. High speed market makers were found to reduce price flickering, confirming the results of [Wang]. 
+
+
+
+On the negative side, the market was found to respond unfavorably to a large presence of fast traders.  First of all, a large presence of very fast market makers pushed the market towards responding sluggishly to the shock, leading to the stock being traded at a price higher than the fundamental price. Secondly, a large presence of fast chartists caused increased flickering of the traded price. 
+	
+	
+	 Lastly, the analysis discovered indications that strategy crowding could occur when the fast traders had narrowly distributed latencies causing them to act simultaneously on the same information, but a verfification of this would require further experiments. These results add to the current debate on computerized high frequency trading as they show both benefits and dangers of having markets where fast computer algorithms trade side by side with human traders.
+
+
+
+Market makers were found to 
 
 
 

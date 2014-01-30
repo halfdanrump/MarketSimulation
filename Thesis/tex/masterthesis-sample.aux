@@ -1,343 +1,78 @@
 \relax 
-\@writefile{toc}{\contentsline {part}{I\hspace  {1em}Background}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{6}}
+\@writefile{toc}{\contentsline {part}{I\hspace  {1em}Introduction}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Background}{5}}
 \citation{chiWang}
 \citation{theImpactOfHeterogenous}
 \citation{financialBlackSwans}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Related work}{7}}
-\newlabel{section_relatedWork}{{2}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related work}{6}}
+\newlabel{section_relatedWork}{{2}{6}}
 \citation{highFrequencyTrading}
 \citation{evaluationOfAutomated}
 \citation{riseOfComputerizedTrading}
 \citation{anEcologicalPerspective}
 \citation{financialBlackSwans}
 \citation{strategicLiquiditySupply}
-\@writefile{toc}{\contentsline {part}{II\hspace  {1em}Model}{10}}
-\newlabel{chapter:model}{{II}{10}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Model}{10}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Overall architecture}{10}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Modeling delays}{10}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Auction type}{10}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Model components}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \relax }}{11}}
+\citation{keylist}
+\citation{ecological}
+\citation{keylist}
+\citation{}
+\citation{}
+\@writefile{toc}{\contentsline {part}{II\hspace  {1em}Model}{9}}
+\newlabel{chapter:model}{{II}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Model overview}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Simulation rounds}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Diagram of the market model. Agents (blue and red nodes) have a various distances to the market (green node), as indicated by the different lengths of the edges.\relax }}{11}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:agents_and_market}{{1}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Stocks}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Messages}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \relax }}{12}}
-\newlabel{fig:information_exchange}{{2}{12}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Market information}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces When an agent wants to submit an order it has to go through several steps of interaction with the market. The process is comparable to how real traders communicate with markets via a network, such as the Internet.\relax }}{13}}
-\newlabel{fig:information_exchange}{{3}{13}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Orders}{13}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Transaction receipts}{14}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.4}Order cancellations}{14}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces TABLE ILLUSTRATING ORDER BOOK\relax }}{15}}
-\newlabel{table:example_order_book}{{1}{15}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Order book}{15}}
-\newlabel{equation:spread_definition}{{1}{15}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Price updating}{15}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2}Order matching}{15}}
-\newlabel{section:order_matching}{{5.3.2}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \relax }}{16}}
-\newlabel{fig:within_round_price_fluctuations}{{4}{16}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Market}{16}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.1}Short selling}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The HFT agent submits a sell order for 100 stocks, and another agent submits a price-matching buy order which fills the sell order. Before the transaction receipt reaches the seller, the seller decides to cancel the order, and submit another order at a different price. When the transaction receipt reaches the seller, the agent promptly sends out a cancellation of its second sell order, as it knows it cannot fulfill the order. However, before the cancellation reaches the market, a third agent fills the sell order, and a receipt is send to the seller who ends up being short.\relax }}{17}}
-\newlabel{fig:short_selling}{{5}{17}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Agents}{17}}
-\newlabel{section:agents}{{6}{17}}
-\citation{chiWang}
-\citation{theImpactOfHeterogenous}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Slow traders}{18}}
-\newlabel{section:slow_traders}{{6.1}{18}}
-\citation{strategicLiquiditySupply}
-\citation{}
-\newlabel{eq:slow_trader_price_determination}{{2}{19}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Order arrival}{19}}
-\newlabel{eq:poisson_distribution}{{3}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}HFT Market makers}{19}}
-\newlabel{section:market_maker}{{6.2}{19}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Strategy outline}{20}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}Parameterization}{20}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.3}Price determination}{20}}
-\newlabel{eq_bothSidePriceUpdate}{{7}{21}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.4}Decision cycle}{21}}
-\newlabel{section_tradeCycles}{{6.2.4}{21}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}HFT Chartists}{22}}
-\newlabel{section:hft_chartist}{{6.3}{22}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.1}Strategy outline}{22}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.2}Parameterization}{23}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.3}Strategy evaluation}{23}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Simulation rounds}{23}}
-\@writefile{toc}{\contentsline {part}{III\hspace  {1em}Searching model behavior}{25}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Motivation and overall procedure}{25}}
-\newlabel{subfig:unrealistic_behavior}{{6a}{26}}
-\newlabel{sub@subfig:unrealistic_behavior}{{a}{26}}
-\newlabel{subfig:unrealistic_parameters}{{6b}{26}}
-\newlabel{sub@subfig:unrealistic_parameters}{{b}{26}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \textbf  {Motivatoin for tuning:} the two\relax }}{26}}
-\newlabel{fig:tuning_motivation}{{6}{26}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Selecting fixed parameters}{26}}
-\citation{genetic1}
-\citation{genetic2}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Inverse simulation with a genetic algorithm}{27}}
-\newlabel{section:genetic_algorithm}{{9}{27}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Representing parameters as genes}{27}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Model fitness}{28}}
-\newlabel{section:simulation_fitness}{{9.2}{28}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.2.1}Market response time}{28}}
-\newlabel{eq:timetoreachnewfundamental}{{10}{28}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.2.2}Market overshoot}{28}}
-\newlabel{eq:overshoot}{{12}{28}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.2.3}Price flickering}{28}}
-\newlabel{eq:stdev}{{13}{28}}
-\newlabel{eq:roundstable}{{14}{29}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Configuring with genetic algorithm}{29}}
-\newlabel{section:ga_parameters}{{9.3}{29}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces asdasd\relax }}{30}}
-\newlabel{figure:typical_fitness_cases}{{7}{30}}
-\newlabel{figure:tradeprice_exaples_fitness_a}{{8a}{31}}
-\newlabel{sub@figure:tradeprice_exaples_fitness_a}{{a}{31}}
-\newlabel{figure:tradeprice_exaples_fitness_b}{{8b}{31}}
-\newlabel{sub@figure:tradeprice_exaples_fitness_b}{{b}{31}}
-\newlabel{figure:tradeprice_exaples_fitness_c}{{8c}{31}}
-\newlabel{sub@figure:tradeprice_exaples_fitness_c}{{c}{31}}
-\newlabel{figure:tradeprice_exaples_fitness}{{\caption@xref {figure:tradeprice_exaples_fitness}{ on input line 176}}{31}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Overview of parameters used in the genetic algorithm\relax }}{31}}
-\newlabel{table:genetic_algorithm_parameters}{{2}{31}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Optimization criteria for different types of market behavior\relax }}{32}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.4}Optimizing towards desired behavior}{32}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.5}Filtering parameters}{32}}
-\newlabel{section:filtering_parameters}{{9.5}{32}}
-\@writefile{toc}{\contentsline {section}{\numberline {10}Applying the genetic algorithm}{32}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.1}Time complexity}{32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath  {N_{m}}= \ensuremath  {N_{c}}= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{33}}
-\newlabel{fig:no_marketmakers}{{8}{33}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.2}Experiments: Dividing the search into parts}{34}}
-\newlabel{section:datasets_introduction}{{10.2}{34}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces An example data matrix containing the parameters of ten individuals who lived sometime during the execution of the genetic algorithm. In this case, each individual contained parameters for the number of HFT agents, as well as the latency and thinking time parameters. Hence, the data matrix has a column for each parameter.\relax }}{35}}
-\newlabel{table:example_dataset_parameters}{{4}{35}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.3}Gene pool as data set}{35}}
-\newlabel{section:gene_pool_as_data_set}{{10.3}{35}}
-\@writefile{toc}{\contentsline {section}{\numberline {11}Data analysis}{35}}
-\newlabel{section:data_analysis_techniques}{{11}{35}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces This table contains the fitness values for each individual in table 4\hbox {}. Note that, in order to increase the reliability of the fitness measure of an individual, the recorded fitness-values are the average of the fitness-values obtained by evaluating each individual ten times\relax }}{36}}
-\newlabel{table:example_dataset_fitnesses}{{5}{36}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {11.1}Data visualization}{36}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {11.1.1}Color toned scatter plots}{36}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {11.2}Preprocessing}{36}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {11.2.1}Handling outliers}{36}}
-\newlabel{figure:scatter_log_transform}{{\caption@xref {figure:scatter_log_transform}{ on input line 345}}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Color toned scatter plots of \ensuremath  {f_\text  {t}}, \ensuremath  {f_\sigma }and \ensuremath  {f_\text  {s}}taken from dataset d1after applying log-scaling and manually removing outliers\relax }}{38}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {11.3}Clustering algorithms}{39}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {11.3.1}GMM}{39}}
-\@writefile{toc}{\contentsline {part}{IV\hspace  {1em}Experiments}{40}}
-\newlabel{chapter:experiments_and_results}{{IV}{40}}
-\@writefile{toc}{\contentsline {section}{\numberline {12}Overview of experiments}{40}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Overview of datasets\relax }}{41}}
-\newlabel{table:datasets_overview}{{6}{41}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {12.1}Correlation between fitness measures}{41}}
-\newlabel{section:correlation_fitness}{{12.1}{41}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Correlation matrix of the four fitness measures in the first generation of dataset d10\relax }}{42}}
-\newlabel{figure:d10_fitness_correlation}{{10}{42}}
-\newlabel{fig:d10_evolution_fitness_a}{{11a}{43}}
-\newlabel{sub@fig:d10_evolution_fitness_a}{{a}{43}}
-\newlabel{fig:d10_evolution_fitness_b}{{11b}{43}}
-\newlabel{sub@fig:d10_evolution_fitness_b}{{b}{43}}
-\newlabel{fig:d10_evolution_fitness_c}{{11c}{43}}
-\newlabel{sub@fig:d10_evolution_fitness_c}{{c}{43}}
-\newlabel{fig:d10_evolution_fitness_d}{{11d}{43}}
-\newlabel{sub@fig:d10_evolution_fitness_d}{{d}{43}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Evolution of the four fitness measures in experiment d10\relax }}{43}}
-\newlabel{fig:d10_evolution_fitness}{{11}{43}}
-\@writefile{toc}{\contentsline {section}{\numberline {13}Fitness and parameter evolution}{43}}
-\newlabel{section:fitness_and_paraeter_evolution}{{13}{43}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {13.1}Variable number of market makers}{43}}
-\newlabel{fig:d10_evolution_parameters_a}{{12a}{45}}
-\newlabel{sub@fig:d10_evolution_parameters_a}{{a}{45}}
-\newlabel{fig:d10_evolution_parameters_b}{{12b}{45}}
-\newlabel{sub@fig:d10_evolution_parameters_b}{{b}{45}}
-\newlabel{fig:d10_evolution_parameters_c}{{12c}{45}}
-\newlabel{sub@fig:d10_evolution_parameters_c}{{c}{45}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{45}}
-\newlabel{fig:d10_evolution_parameters}{{12}{45}}
-\newlabel{fig:d9_evolution_fitness_a}{{13a}{47}}
-\newlabel{sub@fig:d9_evolution_fitness_a}{{a}{47}}
-\newlabel{fig:d9_evolution_fitness_b}{{13b}{47}}
-\newlabel{sub@fig:d9_evolution_fitness_b}{{b}{47}}
-\newlabel{fig:d9_evolution_fitness_c}{{13c}{47}}
-\newlabel{sub@fig:d9_evolution_fitness_c}{{c}{47}}
-\newlabel{fig:d9_evolution_fitness_d}{{13d}{47}}
-\newlabel{sub@fig:d9_evolution_fitness_d}{{d}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Evolution of the four fitness measures in experiment d9\relax }}{47}}
-\newlabel{fig:d9_evolution_fitness}{{13}{47}}
-\newlabel{fig:d9_evolution_parameters_a}{{14a}{48}}
-\newlabel{sub@fig:d9_evolution_parameters_a}{{a}{48}}
-\newlabel{fig:d9_evolution_parameters_b}{{14b}{48}}
-\newlabel{sub@fig:d9_evolution_parameters_b}{{b}{48}}
-\newlabel{fig:d9_evolution_parameters_c}{{14c}{48}}
-\newlabel{sub@fig:d9_evolution_parameters_c}{{c}{48}}
-\newlabel{fig:d9_evolution_parameters_d}{{14d}{48}}
-\newlabel{sub@fig:d9_evolution_parameters_d}{{d}{48}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Evolution of the model parameters in experiment d10\relax }}{48}}
-\newlabel{fig:d9_evolution_parameters}{{14}{48}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {13.2}Fixed number of chartists and market makers}{49}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {13.3}Variable number of chartists}{49}}
-\@writefile{toc}{\contentsline {section}{\numberline {14}Parameter and fitness correlation}{49}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {14.1}Number of market makers}{49}}
-\newlabel{fig:d11_evolution_fitness_a}{{15a}{50}}
-\newlabel{sub@fig:d11_evolution_fitness_a}{{a}{50}}
-\newlabel{fig:d11_evolution_fitness_b}{{15b}{50}}
-\newlabel{sub@fig:d11_evolution_fitness_b}{{b}{50}}
-\newlabel{fig:d11_evolution_fitness_c}{{15c}{50}}
-\newlabel{sub@fig:d11_evolution_fitness_c}{{c}{50}}
-\newlabel{fig:d11_evolution_fitness_d}{{15d}{50}}
-\newlabel{sub@fig:d11_evolution_fitness_d}{{d}{50}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Evolution of the four fitness measures in experiment d11\relax }}{50}}
-\newlabel{fig:d11_evolution_fitness}{{15}{50}}
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Evolution of the model parameters in experiment d11\relax }}{51}}
-\newlabel{fig:d11_evolution_parameters}{{16}{51}}
-\newlabel{fig:d10_parvfit_ssmmnAgents_a}{{17a}{52}}
-\newlabel{sub@fig:d10_parvfit_ssmmnAgents_a}{{a}{52}}
-\newlabel{fig:d10_parvfit_ssmmnAgents_b}{{17b}{52}}
-\newlabel{sub@fig:d10_parvfit_ssmmnAgents_b}{{b}{52}}
-\newlabel{fig:d10_parvfit_ssmmnAgents_c}{{17c}{52}}
-\newlabel{sub@fig:d10_parvfit_ssmmnAgents_c}{{c}{52}}
-\newlabel{fig:d10_parvfit_ssmmnAgents_d}{{17d}{52}}
-\newlabel{sub@fig:d10_parvfit_ssmmnAgents_d}{{d}{52}}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Correlation between \ensuremath  {N_{m}}and the four fitness measures in experiment d10\relax }}{52}}
-\newlabel{fig:d10_parvfit_ssmmnAgents}{{17}{52}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {14.2}Market maker latency}{53}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {14.2.1}Fixing the number of market makers}{53}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {14.3}Number of chartists}{53}}
-\newlabel{fig:d10_parvfit_ssmmlatencymu_a}{{18a}{54}}
-\newlabel{sub@fig:d10_parvfit_ssmmlatencymu_a}{{a}{54}}
-\newlabel{fig:d10_parvfit_ssmmlatencymu_b}{{18b}{54}}
-\newlabel{sub@fig:d10_parvfit_ssmmlatencymu_b}{{b}{54}}
-\newlabel{fig:d10_parvfit_ssmmlatencymu_c}{{18c}{54}}
-\newlabel{sub@fig:d10_parvfit_ssmmlatencymu_c}{{c}{54}}
-\newlabel{fig:d10_parvfit_ssmmlatencymu_d}{{18d}{54}}
-\newlabel{sub@fig:d10_parvfit_ssmmlatencymu_d}{{d}{54}}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Correlation between \ensuremath  {\lambda _{m, \mu }}{} and fitness values (fixed \ensuremath  {N_{c}}, variable \ensuremath  {N_{m}})\relax }}{54}}
-\newlabel{fig:d10_parvfit_ssmmlatencymu}{{18}{54}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/overshoot_MM_mmlatency}{{19a}{55}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/overshoot_MM_mmlatency}{{a}{55}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/round_stable_MM_mmlatency}{{19b}{55}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/round_stable_MM_mmlatency}{{b}{55}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/stdev_MM_mmlatency}{{19c}{55}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/stdev_MM_mmlatency}{{c}{55}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_mmlatency}{{19d}{55}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_mmlatency}{{d}{55}}
-\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Relation between \ensuremath  {N_{m}}, \ensuremath  {\lambda _{m, \mu }}, and the model fitness when the number of chartists was fixed to $\ensuremath  {N_{c}}= 150 agents$. Due to missing data, some of the curves are not complete.\relax }}{55}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/MM_mmlatency}{{19}{55}}
-\newlabel{fig:d11_parvfit_ssmmlatencymu_a}{{20a}{56}}
-\newlabel{sub@fig:d11_parvfit_ssmmlatencymu_a}{{a}{56}}
-\newlabel{fig:d11_parvfit_ssmmlatencymu_b}{{20b}{56}}
-\newlabel{sub@fig:d11_parvfit_ssmmlatencymu_b}{{b}{56}}
-\newlabel{fig:d11_parvfit_ssmmlatencymu_c}{{20c}{56}}
-\newlabel{sub@fig:d11_parvfit_ssmmlatencymu_c}{{c}{56}}
-\newlabel{fig:d11_parvfit_ssmmlatencymu_d}{{20d}{56}}
-\newlabel{sub@fig:d11_parvfit_ssmmlatencymu_d}{{d}{56}}
-\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Correlation between \ensuremath  {\lambda _{m, \mu }}{} and fitness values (fixed \ensuremath  {N_{m}}, variable \ensuremath  {N_{c}})\relax }}{56}}
-\newlabel{fig:d11_parvfit_ssmmlatencymu}{{20}{56}}
-\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Relation between \ensuremath  {N_{m}}, \ensuremath  {\lambda _{m, \mu }}, and the model fitness when the number of market makers was fixed to $\ensuremath  {N_{m}}= 52$ agents.\relax }}{57}}
-\newlabel{fig:faster_mm_makes_worse_markets/d11/SC_mmlatency}{{21}{57}}
-\newlabel{fig:d11_parvfit_scnagents_a}{{22a}{58}}
-\newlabel{sub@fig:d11_parvfit_scnagents_a}{{a}{58}}
-\newlabel{fig:d11_parvfit_scnagents_b}{{22b}{58}}
-\newlabel{sub@fig:d11_parvfit_scnagents_b}{{b}{58}}
-\newlabel{fig:d11_parvfit_scnagents_c}{{22c}{58}}
-\newlabel{sub@fig:d11_parvfit_scnagents_c}{{c}{58}}
-\newlabel{fig:d11_parvfit_scnagents_d}{{22d}{58}}
-\newlabel{sub@fig:d11_parvfit_scnagents_d}{{d}{58}}
-\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Correlation between \ensuremath  {N_{c}}and the four fitness measures when $\ensuremath  {N_{m}}= 52$ (experiment d11)\relax }}{58}}
-\newlabel{fig:d11_parvfit_scnagents}{{22}{58}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {14.4}Chartist latency}{59}}
-\newlabel{fig:d10_parvfit_sclatencymu_a}{{23a}{60}}
-\newlabel{sub@fig:d10_parvfit_sclatencymu_a}{{a}{60}}
-\newlabel{fig:d10_parvfit_sclatencymu_b}{{23b}{60}}
-\newlabel{sub@fig:d10_parvfit_sclatencymu_b}{{b}{60}}
-\newlabel{fig:d10_parvfit_sclatencymu_c}{{23c}{60}}
-\newlabel{sub@fig:d10_parvfit_sclatencymu_c}{{c}{60}}
-\newlabel{fig:d10_parvfit_sclatencymu_d}{{23d}{60}}
-\newlabel{sub@fig:d10_parvfit_sclatencymu_d}{{d}{60}}
-\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Correlation between chartist latency and fitness values (fixed \ensuremath  {N_{c}}, variable \ensuremath  {N_{m}})\relax }}{60}}
-\newlabel{fig:d10_parvfit_sclatencymu}{{23}{60}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/overshoot_MM_sclatency}{{24a}{61}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/overshoot_MM_sclatency}{{a}{61}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/round_stable_MM_sclatency}{{24b}{61}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/round_stable_MM_sclatency}{{b}{61}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/stdev_MM_sclatency}{{24c}{61}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/stdev_MM_sclatency}{{c}{61}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_sclatency}{{24d}{61}}
-\newlabel{sub@fig:faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_sclatency}{{d}{61}}
-\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces Relation between \ensuremath  {N_{m}}, \ensuremath  {\lambda _{c, \mu }}, and the model fitness when the number of chartists was fixed to $\ensuremath  {N_{c}}= 150 agents$. Due to missing data, some of the curves are not complete.\relax }}{61}}
-\newlabel{fig:faster_mm_makes_worse_markets/d10/MM_sclatency}{{24}{61}}
-\newlabel{fig:d11_parvfit_sclatencymu_a}{{25a}{62}}
-\newlabel{sub@fig:d11_parvfit_sclatencymu_a}{{a}{62}}
-\newlabel{fig:d11_parvfit_sclatencymu_b}{{25b}{62}}
-\newlabel{sub@fig:d11_parvfit_sclatencymu_b}{{b}{62}}
-\newlabel{fig:d11_parvfit_sclatencymu_c}{{25c}{62}}
-\newlabel{sub@fig:d11_parvfit_sclatencymu_c}{{c}{62}}
-\newlabel{fig:d11_parvfit_sclatencymu_d}{{25d}{62}}
-\newlabel{sub@fig:d11_parvfit_sclatencymu_d}{{d}{62}}
-\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces Correlation between chartist latency and fitness values (fixed \ensuremath  {N_{m}}, variable \ensuremath  {N_{c}})\relax }}{62}}
-\newlabel{fig:d11_parvfit_sclatencymu}{{25}{62}}
-\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces Relation between \ensuremath  {N_{c}}, \ensuremath  {\lambda _{c, \mu }}, and the model fitness when the number of market makers was fixed to $\ensuremath  {N_{m}}= 52$ agents.\relax }}{63}}
-\newlabel{fig:faster_mm_makes_worse_markets/d11/SC_sclatency}{{26}{63}}
-\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces Correlations between \ensuremath  {\rho _\text  {A}}and the fitness values when $\ensuremath  {N_{c}}= 150$\relax }}{64}}
-\newlabel{fig:parvfit_ratio_d10}{{27}{64}}
-\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces Correlations between \ensuremath  {\rho _\text  {A}}and the fitness values when $\ensuremath  {N_{m}}= 52$\relax }}{65}}
-\newlabel{fig:parvfit_ratio_d11}{{28}{65}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {14.5}Chartist to market maker ratio}{65}}
-\@writefile{toc}{\contentsline {section}{\numberline {15}Grouping models by behavior}{65}}
-\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces Scatter plots of fitness measures in experiment d9. \relax }}{66}}
-\newlabel{figure:d9_scatter_fitness}{{29}{66}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {15.1}Manually grouping simulations by behavior}{67}}
-\newlabel{section:manually_grouping_simulations}{{15.1}{67}}
-\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces Scatter plot of \ensuremath  {f_\text  {s}}against \ensuremath  {f_\text  {t}}with coloring showing $\qopname  \relax o{log}\ensuremath  {f_\sigma }$ and \ensuremath  {f_\text  {o}}\relax }}{68}}
-\newlabel{figure:scatter_fitness_inliers_a}{{30}{68}}
-\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces Scatter plot of $\qopname  \relax o{log}\ensuremath  {f_\sigma }$ against \ensuremath  {f_\text  {t}}with coloring showing $\ensuremath  {f_\text  {s}}$ and \ensuremath  {f_\text  {o}}\relax }}{69}}
-\newlabel{figure:d9_scatter_fitness_inliers_b}{{31}{69}}
-\newlabel{figure:jaccard_index_a}{{\caption@xref {figure:jaccard_index_a}{ on input line 527}}{70}}
-\newlabel{figure:jaccard_index_b}{{\caption@xref {figure:jaccard_index_b}{ on input line 528}}{70}}
-\newlabel{figure:jaccard_index_c}{{\caption@xref {figure:jaccard_index_c}{ on input line 529}}{70}}
-\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces Jaccard index between the sets of data points extracted by each filter\relax }}{70}}
-\newlabel{figure:jaccard_index}{{32}{70}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {15.1.1}Fast simulations}{70}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Filter IDs and fitness-regions\relax }}{71}}
-\newlabel{table:manual_filtering}{{7}{71}}
-\newlabel{table:manual_filtering_d9}{{\caption@xref {table:manual_filtering_d9}{ on input line 602}}{72}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces XXX\relax }}{72}}
-\newlabel{table:manual_filtering_d10}{{\caption@xref {table:manual_filtering_d10}{ on input line 625}}{72}}
-\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces XXX\relax }}{72}}
-\newlabel{table:manual_filtering_d11}{{\caption@xref {table:manual_filtering_d11}{ on input line 648}}{73}}
-\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces XXX\relax }}{73}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {15.2}Clustering with mixture of Gaussians}{73}}
-\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces Scatter plots in fitness space showing the grouping of data points when using a GMM with 12 clusters.\relax }}{74}}
-\newlabel{fig:d10_scatter_clusters}{{33}{74}}
-\newlabel{table:d10_gmm_mean}{{\caption@xref {table:d10_gmm_mean}{ on input line 705}}{75}}
-\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Cluster means (d10)\relax }}{75}}
-\@writefile{toc}{\contentsline {section}{\numberline {16}Summary of results}{75}}
-\newlabel{table:d10_gmm_std}{{\caption@xref {table:d10_gmm_std}{ on input line 748}}{76}}
-\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Cluster standard deviations (d10)\relax }}{76}}
-\newlabel{table:d11_gmm_mean}{{\caption@xref {table:d11_gmm_mean}{ on input line 774}}{76}}
-\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Cluster means (d11)\relax }}{76}}
-\newlabel{table:d11_gmm_std}{{\caption@xref {table:d11_gmm_std}{ on input line 801}}{77}}
-\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Cluster standard deviations (d11)\relax }}{77}}
-\@writefile{toc}{\contentsline {part}{V\hspace  {1em}Discussion}{77}}
-\newlabel{chapter:discussion}{{V}{77}}
-\@writefile{toc}{\contentsline {section}{\numberline {17}Benefits of fast traders}{77}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {17.1}Fast market makers reduce price flickering}{77}}
-\@writefile{toc}{\contentsline {section}{\numberline {18}Agent strategies market crashes}{77}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {18.1}Frequency of crashes}{79}}
-\citation{}
-\@writefile{lof}{\contentsline {figure}{\numberline {34}{\ignorespaces Two examples of market crashes\relax }}{80}}
-\newlabel{}{{34}{80}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {18.2}Agent speed and market crashes}{80}}
-\@writefile{toc}{\contentsline {section}{\numberline {19}Market makers causing the stock to be over-valued }{80}}
-\@writefile{toc}{\contentsline {section}{\numberline {20}title}{80}}
-\@writefile{toc}{\contentsline {section}{\numberline {21}Co-location}{80}}
-\@writefile{toc}{\contentsline {section}{\numberline {22}Strategy crowding}{81}}
-\@writefile{toc}{\contentsline {section}{\numberline {23}Future work}{81}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}The stock and its prices}{12}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Example of an order book in the price range near the best buy/sell prices\relax }}{13}}
+\newlabel{table:orderbook_example}{{1}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Order book}{13}}
+\newlabel{equation:spread_definition}{{1}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Price updating}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Order matching}{14}}
+\newlabel{section:order_matching}{{3.3.2}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Messages}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \relax }}{15}}
+\newlabel{fig:information_exchange}{{2}{15}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}Market information}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces When an agent wants to submit an order it has to go through several steps of interaction with the market. The process is comparable to how real traders communicate with markets via a network, such as the Internet.\relax }}{16}}
+\newlabel{fig:information_exchange}{{3}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Orders}{17}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.3}Transaction receipts}{17}}
+\citation{foucault2012news}
+\citation{hoffmann2012dynamic}
+\citation{mcinish2012strategic}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.4}Order cancellations}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Market rules for short selling}{18}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Agents}{18}}
+\newlabel{section:agents}{{4}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The HFT agent submits a sell order for 100 stocks, and another agent submits a price-matching buy order which fills the sell order. Before the transaction receipt reaches the seller, the seller decides to cancel the order, and submit another order at a different price. When the transaction receipt reaches the seller, the agent promptly sends out a cancellation of its second sell order, as it knows it cannot fulfill the order. However, before the cancellation reaches the market, a third agent fills the sell order, and a receipt is send to the seller who ends up being short.\relax }}{19}}
+\newlabel{fig:short_selling}{{4}{19}}
+\citation{chiwang2013investigating}
+\citation{chiarella2009impact}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Slow traders}{20}}
+\newlabel{section:slow_traders}{{4.1}{20}}
+\citation{cincotti2006waiting}
+\citation{amihud1980dealership}
+\citation{amihud1980dealership}
+\citation{herding}
+\newlabel{eq:slow_trader_price_determination}{{6}{22}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Order arrival}{22}}
+\newlabel{eq:poisson_distribution}{{7}{22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}HFT Market makers}{22}}
+\newlabel{section:market_maker}{{4.2}{22}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Strategy outline}{22}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Parameterization}{23}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Price determination}{23}}
+\newlabel{eq_bothSidePriceUpdate}{{10}{23}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Decision cycle}{24}}
+\newlabel{section_tradeCycles}{{4.2.4}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Examples illustrating the how the market maker updates its prices\relax }}{25}}
+\newlabel{figure:marketmaker_strategy}{{5}{25}}
+\citation{izumi2009evaluation}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}HFT Chartists}{26}}
+\newlabel{section:hft_chartist}{{4.3}{26}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Strategy outline}{26}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Parameterization}{27}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}Strategy evaluation}{27}}

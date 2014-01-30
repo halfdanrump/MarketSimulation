@@ -1,86 +1,28 @@
-\contentsline {part}{I\hspace {1em}Background}{6}
-\contentsline {section}{\numberline {1}Introduction}{6}
-\contentsline {section}{\numberline {2}Related work}{7}
-\contentsline {part}{II\hspace {1em}Model}{10}
-\contentsline {section}{\numberline {3}Model}{10}
-\contentsline {subsection}{\numberline {3.1}Overall architecture}{10}
-\contentsline {subsection}{\numberline {3.2}Modeling delays}{10}
-\contentsline {section}{\numberline {4}Auction type}{10}
-\contentsline {section}{\numberline {5}Model components}{10}
-\contentsline {subsection}{\numberline {5.1}Stocks}{11}
-\contentsline {subsection}{\numberline {5.2}Messages}{12}
-\contentsline {subsubsection}{\numberline {5.2.1}Market information}{12}
-\contentsline {subsubsection}{\numberline {5.2.2}Orders}{13}
-\contentsline {subsubsection}{\numberline {5.2.3}Transaction receipts}{14}
-\contentsline {subsubsection}{\numberline {5.2.4}Order cancellations}{14}
-\contentsline {subsection}{\numberline {5.3}Order book}{15}
-\contentsline {subsubsection}{\numberline {5.3.1}Price updating}{15}
-\contentsline {subsubsection}{\numberline {5.3.2}Order matching}{15}
-\contentsline {subsection}{\numberline {5.4}Market}{16}
-\contentsline {subsubsection}{\numberline {5.4.1}Short selling}{16}
-\contentsline {section}{\numberline {6}Agents}{17}
-\contentsline {subsection}{\numberline {6.1}Slow traders}{18}
-\contentsline {subsubsection}{\numberline {6.1.1}Order arrival}{19}
-\contentsline {subsection}{\numberline {6.2}HFT Market makers}{19}
-\contentsline {subsubsection}{\numberline {6.2.1}Strategy outline}{20}
-\contentsline {subsubsection}{\numberline {6.2.2}Parameterization}{20}
-\contentsline {subsubsection}{\numberline {6.2.3}Price determination}{20}
-\contentsline {subsubsection}{\numberline {6.2.4}Decision cycle}{21}
-\contentsline {subsection}{\numberline {6.3}HFT Chartists}{22}
-\contentsline {subsubsection}{\numberline {6.3.1}Strategy outline}{22}
-\contentsline {subsubsection}{\numberline {6.3.2}Parameterization}{23}
-\contentsline {subsubsection}{\numberline {6.3.3}Strategy evaluation}{23}
-\contentsline {section}{\numberline {7}Simulation rounds}{23}
-\contentsline {part}{III\hspace {1em}Searching model behavior}{25}
-\contentsline {section}{\numberline {8}Motivation and overall procedure}{25}
-\contentsline {subsection}{\numberline {8.1}Selecting fixed parameters}{26}
-\contentsline {section}{\numberline {9}Inverse simulation with a genetic algorithm}{27}
-\contentsline {subsection}{\numberline {9.1}Representing parameters as genes}{27}
-\contentsline {subsection}{\numberline {9.2}Model fitness}{28}
-\contentsline {subsubsection}{\numberline {9.2.1}Market response time}{28}
-\contentsline {subsubsection}{\numberline {9.2.2}Market overshoot}{28}
-\contentsline {subsubsection}{\numberline {9.2.3}Price flickering}{28}
-\contentsline {subsection}{\numberline {9.3}Configuring with genetic algorithm}{29}
-\contentsline {subsection}{\numberline {9.4}Optimizing towards desired behavior}{32}
-\contentsline {subsection}{\numberline {9.5}Filtering parameters}{32}
-\contentsline {section}{\numberline {10}Applying the genetic algorithm}{32}
-\contentsline {subsection}{\numberline {10.1}Time complexity}{32}
-\contentsline {subsection}{\numberline {10.2}Experiments: Dividing the search into parts}{34}
-\contentsline {subsection}{\numberline {10.3}Gene pool as data set}{35}
-\contentsline {section}{\numberline {11}Data analysis}{35}
-\contentsline {subsection}{\numberline {11.1}Data visualization}{36}
-\contentsline {subsubsection}{\numberline {11.1.1}Color toned scatter plots}{36}
-\contentsline {subsection}{\numberline {11.2}Preprocessing}{36}
-\contentsline {subsubsection}{\numberline {11.2.1}Handling outliers}{36}
-\contentsline {subsection}{\numberline {11.3}Clustering algorithms}{39}
-\contentsline {subsubsection}{\numberline {11.3.1}GMM}{39}
-\contentsline {part}{IV\hspace {1em}Experiments}{40}
-\contentsline {section}{\numberline {12}Overview of experiments}{40}
-\contentsline {subsection}{\numberline {12.1}Correlation between fitness measures}{41}
-\contentsline {section}{\numberline {13}Fitness and parameter evolution}{43}
-\contentsline {subsection}{\numberline {13.1}Variable number of market makers}{43}
-\contentsline {subsection}{\numberline {13.2}Fixed number of chartists and market makers}{49}
-\contentsline {subsection}{\numberline {13.3}Variable number of chartists}{49}
-\contentsline {section}{\numberline {14}Parameter and fitness correlation}{49}
-\contentsline {subsection}{\numberline {14.1}Number of market makers}{49}
-\contentsline {subsection}{\numberline {14.2}Market maker latency}{53}
-\contentsline {subsubsection}{\numberline {14.2.1}Fixing the number of market makers}{53}
-\contentsline {subsection}{\numberline {14.3}Number of chartists}{53}
-\contentsline {subsection}{\numberline {14.4}Chartist latency}{59}
-\contentsline {subsection}{\numberline {14.5}Chartist to market maker ratio}{65}
-\contentsline {section}{\numberline {15}Grouping models by behavior}{65}
-\contentsline {subsection}{\numberline {15.1}Manually grouping simulations by behavior}{67}
-\contentsline {subsubsection}{\numberline {15.1.1}Fast simulations}{70}
-\contentsline {subsection}{\numberline {15.2}Clustering with mixture of Gaussians}{73}
-\contentsline {section}{\numberline {16}Summary of results}{75}
-\contentsline {part}{V\hspace {1em}Discussion}{77}
-\contentsline {section}{\numberline {17}Benefits of fast traders}{77}
-\contentsline {subsection}{\numberline {17.1}Fast market makers reduce price flickering}{77}
-\contentsline {section}{\numberline {18}Agent strategies market crashes}{77}
-\contentsline {subsection}{\numberline {18.1}Frequency of crashes}{79}
-\contentsline {subsection}{\numberline {18.2}Agent speed and market crashes}{80}
-\contentsline {section}{\numberline {19}Market makers causing the stock to be over-valued }{80}
-\contentsline {section}{\numberline {20}title}{80}
-\contentsline {section}{\numberline {21}Co-location}{80}
-\contentsline {section}{\numberline {22}Strategy crowding}{81}
-\contentsline {section}{\numberline {23}Future work}{81}
+\contentsline {part}{I\hspace {1em}Introduction}{5}
+\contentsline {section}{\numberline {1}Background}{5}
+\contentsline {section}{\numberline {2}Related work}{6}
+\contentsline {part}{II\hspace {1em}Model}{9}
+\contentsline {section}{\numberline {3}Model overview}{9}
+\contentsline {subsection}{\numberline {3.1}Simulation rounds}{10}
+\contentsline {subsection}{\numberline {3.2}The stock and its prices}{12}
+\contentsline {subsection}{\numberline {3.3}Order book}{13}
+\contentsline {subsubsection}{\numberline {3.3.1}Price updating}{13}
+\contentsline {subsubsection}{\numberline {3.3.2}Order matching}{14}
+\contentsline {subsection}{\numberline {3.4}Messages}{14}
+\contentsline {subsubsection}{\numberline {3.4.1}Market information}{15}
+\contentsline {subsubsection}{\numberline {3.4.2}Orders}{17}
+\contentsline {subsubsection}{\numberline {3.4.3}Transaction receipts}{17}
+\contentsline {subsubsection}{\numberline {3.4.4}Order cancellations}{18}
+\contentsline {subsection}{\numberline {3.5}Market rules for short selling}{18}
+\contentsline {section}{\numberline {4}Agents}{18}
+\contentsline {subsection}{\numberline {4.1}Slow traders}{20}
+\contentsline {subsubsection}{\numberline {4.1.1}Order arrival}{22}
+\contentsline {subsection}{\numberline {4.2}HFT Market makers}{22}
+\contentsline {subsubsection}{\numberline {4.2.1}Strategy outline}{22}
+\contentsline {subsubsection}{\numberline {4.2.2}Parameterization}{23}
+\contentsline {subsubsection}{\numberline {4.2.3}Price determination}{23}
+\contentsline {subsubsection}{\numberline {4.2.4}Decision cycle}{24}
+\contentsline {subsection}{\numberline {4.3}HFT Chartists}{26}
+\contentsline {subsubsection}{\numberline {4.3.1}Strategy outline}{26}
+\contentsline {subsubsection}{\numberline {4.3.2}Parameterization}{27}
+\contentsline {subsubsection}{\numberline {4.3.3}Strategy evaluation}{27}

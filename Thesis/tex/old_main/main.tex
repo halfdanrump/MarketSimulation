@@ -1,0 +1,514 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Masters/Doctoral Thesis 
+% LaTeX Template
+% Version 1.41 (9/9/13)
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original authors:
+% Steven Gunn 
+% http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/
+% and
+% Sunil Patel
+% http://www.sunilpatel.co.uk/thesis-template/
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% Note: % Make sure to edit document variables in the Thesis.cls file
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt, a4paper, oneside]{Thesis} % Paper size, default font size and one-sided paper
+
+\graphicspath{{Figures/}} % Specifies the directory where pictures are stored
+
+\usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' }
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{array}
+\newcolumntype{L}{>{\arraybackslash}m{3cm}}
+\newcolumntype{E}{>{\arraybackslash}m{7cm}}
+\hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
+\title{\ttitle} % Defines the thesis title - don't touch this
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\setstretch{1.3} % Line spacing of 1.3
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{} % Clears all page headers and footers
+\rhead{\thepage} % Sets the right side header to show the page number
+\lhead{} % Clears the left side page header
+
+\pagestyle{fancy} % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % New command to make the lines in the title page
+
+%----------------------------------------------------------------------------------------
+%	MY OWN COMMANDS
+%----------------------------------------------------------------------------------------
+\newcommand{\E}[1]{\mathrm{E}_\text{p}[#1]}
+\newcommand{\Var}[1]{\mathrm{Var}_\text{p}[#1]}
+\newcommand{\Cov}[1]{\mathrm{Cov}_\text{p}[#1]}
+\newcommand{\Median}[1]{\mathrm{M}_\text{p}[#1]}
+
+\newcommand{\Ecluster}[2]{\mathrm{E}_\text{C{#2}}[#1]}
+\newcommand{\Varcluster}[2]{\mathrm{Var}_\text{C#2}[#1]}
+\newcommand{\Covcluster}[2]{\mathrm{Cov}_\text{C#2}[#1]}
+
+\newcommand{\Efilter}[2]{\mathrm{E}_\text{F{#2}}[#1]}
+
+% % % DATASETS
+\newcommand{\dthree}{d1}
+\newcommand{\dnine}{d9}
+\newcommand{\dten}{d10}
+\newcommand{\deleven}{d11}
+
+%%% Consistency commands
+\newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
+\newcommand{\nrounds}{\spa{N}{r}}
+
+\newcommand{\datamatrixpar}[1][]{\ensuremath{\boldsymbol{P}_{#1}}}
+\newcommand{\datamatrixfit}[1][]{\ensuremath{\boldsymbol{F}_{#1}}}
+\newcommand{\individuallength}{\ensuremath{\mathcal{L}_i}}
+\newcommand{\fitnesslength}{\ensuremath{\mathcal{L}_f}}
+\newcommand{\datasetNpoints}{\ensuremath{N}}
+
+
+\newcommand{\hftmm}{HFT market maker}
+\newcommand{\hftsc}{HFT market chartist}
+
+% % % Agent parameters
+\newcommand*{\sclatencyagent}[1]{\ensuremath{\lambda^c_{#1}}}
+\newcommand*{\scthinkagent}[1]{\ensuremath{T^c_{#1}}}
+\newcommand*{\scordervolumeagent}[1]{\ensuremath{V^c_{#1}}}
+\newcommand{\sctimehorizonagent}[1]{\ensuremath{H^c_{#1}}}
+\newcommand{\scwaitTimeBetweenTradingagent}[1]{\ensuremath{W^c_{#1}}}
+\newcommand{\scticksbeforereactingagent}[1]{\ensuremath{S^c_{#1}}}
+\newcommand{\scpriceticksizeagent}[1]{\ensuremath{A^c_{#1}}}
+
+\newcommand{\scticksbeforereactingmu}{\ensuremath{S_{c, \mu}}}
+\newcommand{\scticksbeforereactings}{\ensuremath{S_{c, \sigma}}}
+\newcommand{\scpriceticksizemu}{\ensuremath{A_{c, \mu}}}
+\newcommand{\scpriceticksizes}{\ensuremath{A_{c, \sigma}}}
+
+
+
+\newcommand*{\ssmmlatencyagent}[1]{\ensuremath{\lambda_m^{#1}}}
+\newcommand*{\ssmmthinkagent}[1]{\ensuremath{T_m^{#1}}}
+\newcommand*{\ssmmordervolumeagent}[1]{\ensuremath{V_m^{#1}}}
+\newcommand*{\ssmmminspreadagent}[1]{\ensuremath{\theta_{#1}}}
+
+\newcommand{\Count}{\ensuremath{\text{Count}}}
+\newcommand{\marketmaker}[1][]{\ensuremath{\text{MM}_{#1}}}
+\newcommand{\chartist}[1][]{\ensuremath{\text{SC}_{#1}}}
+\newcommand{\marketmakercyclelength}[1][]{\ensuremath{l_{\text{MM}, {#1}}}}
+
+
+
+
+
+
+%%% MODEL PARAMETERS
+
+\newcommand{\sclatencymu}{\ensuremath{\lambda_{c, \mu}}}
+\newcommand{\sclatencys}{\ensuremath{\lambda_{c, \sigma}}} 
+\newcommand{\scnAgents}{\ensuremath{N_{c}}} 
+\newcommand{\scthinkmu}{\ensuremath{T_{c, \mu}}}
+\newcommand{\scthinks}{\ensuremath{T_{c, \sigma}}}
+\newcommand{\sctimehorizonmu}{\ensuremath{H_{c, \mu}}}
+\newcommand{\sctimehorizons}{\ensuremath{H_{c, \sigma}}}
+\newcommand{\scwaitTimeBetweenTradingmu}{\ensuremath{W_{c, \mu}}}
+\newcommand{\scwaitTimeBetweenTradings}{\ensuremath{W_{c, \sigma}}}
+\newcommand{\ssmmlatencymu}{\ensuremath{\lambda_{m, \mu}}}
+\newcommand{\ssmmlatencys}{\ensuremath{\lambda_{m, \sigma}}}
+\newcommand{\ssmmnAgents}{\ensuremath{N_{m}}}
+\newcommand{\ssmmthinkmu}{\ensuremath{T_{m, \mu}}}
+\newcommand{\ssmmthinks}{\ensuremath{T_{m, \sigma}}}
+
+
+\newcommand{\overshoot}{\ensuremath{f_\text{o}}}
+\newcommand{\roundstable}{\ensuremath{f_\text{s}}}
+\newcommand{\stdev}{\ensuremath{f_\sigma}}
+\newcommand{\timetoreachnewfundamental}{\ensuremath{f_\text{t}}}
+
+\newcommand{\ratioagents}{\ensuremath{\rho_\text{A}}}
+\newcommand{\ratiolatency}{\ensuremath{\rho_\lambda}}
+
+
+\newcommand{\ssmmordervolumemu}{\ensuremath{V_{m,\mu}}}
+\newcommand{\ssmmordervolumes}{\ensuremath{V_{m,\sigma}}}
+\newcommand{\scordervolumemu}{\ensuremath{V_{c, \mu}}}
+\newcommand{\scordervolumes}{\ensuremath{V_{c, \sigma}}}
+
+%%% SYMBOLS
+\newcommand{\round}[1][]{\ensuremath{t_{#1}}}
+\newcommand{\delay}{\ensuremath{p^m}}
+\newcommand*{\spread}[1][]{\ensuremath{s_{\round #1}}}
+\newcommand*{\pask}[1][]{\ensuremath{p^a_{\round #1}}}
+\newcommand*{\pbid}[1][]{\ensuremath{p^b_{\round #1}}}
+\newcommand{\pmatch}{\ensuremath{p^m}}
+\newcommand*{\fund}[1][]{\ensuremath{f_{\round #1}}}
+
+
+% % % % Market related symbols
+\newcommand{\currentprice}{\ensuremath{p_c}}
+\newcommand{\bestbidprice}[1]{\ensuremath{B_{#1}}}
+\newcommand{\bestaskprice}[1]{\ensuremath{A_{#1}}}
+\newcommand{\askprice}{\ensuremath{p^a}}
+\newcommand{\bidprice}{\ensuremath{p^b}}
+\newcommand{\tradeprice}[2]{\ensuremath{p^t_{#2}(#1)}}
+
+
+% % % Fundamental symbols
+\newcommand{\fundamentalprice}[1][]{\ensuremath{F_{#1}}}
+\newcommand{\fundamentalshocksize}{\ensuremath{\eta}}
+\newcommand{\fundamentalaftershock}{\ensuremath{\eta}}
+\newcommand{\fundamentalshocktime}{\ensuremath{\round{_\eta}}}
+
+\newcommand{\smargin}{\ensuremath{m_\text{stable}}}
+\newcommand{\fas}{\ensuremath{p_\text{fas}}}
+
+%%% OTHER COMMANDS
+\newcommand{\ask}{ask}
+\newcommand{\bid}{bid}
+
+% PDF meta-data
+\hypersetup{pdftitle={\ttitle}}
+\hypersetup{pdfsubject=\subjectname}
+\hypersetup{pdfauthor=\authornames}
+\hypersetup{pdfkeywords=\keywordnames}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+\begin{center}
+
+\textsc{\LARGE \univname}\\[1.5cm] % University name
+\textsc{\Large Master's Thesis}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle}\\[0.4cm] % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+ 
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author: Halfdan Rump}\\
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor: Prof. Toshiharu Sugawara} \\
+\end{flushright}
+\end{minipage}\\[3cm]
+ 
+\large \textit{A thesis submitted in fulfilment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
+\textit{in the}\\[0.4cm]
+\groupname\\\deptname\\[2cm] % Research group name and department name
+ 
+{\large \today}\\[4cm] % Date
+%\includegraphics{Logo} % University/department logo - uncomment to place it
+ 
+\vfill
+\end{center}
+
+\end{titlepage}
+
+
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+
+\addtotoc{Abstract} % Add the "Abstract" page entry to the Contents
+
+\abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+
+XXXX NOT DONE YET XXX
+
+This work proposes a model in which multiple heterogeneous agents use time delayed price information to trade an imaginary financial instrument in a market with a continuous double auction. The main innovation of the model is that, just as in the real world, trading agents do not have access to the market information at the same point in time, which means that the agents generally trade on different information. The model contains agent models of slow human traders using a noisy fundamentalist strategy, and high speed software traders using market maker and chartist strategies. Slow traders base their trading decisions on market information which has been delayed several seconds, while the fast traders observe the market with much smaller delays ranging between a few millisecons to a few hundred milliseconds. By containing agents of such different speeds, the model is relevant to the ongoing discussion of the pros and cons of high frequency trading in financial markets. 
+
+The model simulates the market events in the minutes after the advent of bad news represented by sudden negative shock to the fundamental stock price, and does so with a time resolution high enough to register events that unfold from millisecond to millisecond. A genetic algorithm is used to search for model parameters that cause the market to be stable, and parameters that cause the market to crash. Analysis of the results shows that a moderate level of high speed trading activity is not in itself problematic. In fact, high speed market makers are found to reduce price flickering, while high speed chartists are found to decrease the time required for the market to respond to changes in the fundamental price. However, the market is found to respond unfavorably to a large presence of fast traders. First of all, a large presence of fast market makers causes the market to respond sluggishly to the shock, leading to a prolonged disparity between the traded price and the true fundamental price. Secondly, a large presence of fast chartists causes increased flickering of the traded price. Finally it is found that flash-crashes can occur in markets in which ratio of the number of chartists to the number of market makers is high, while at the same time the market makers are faster than the chartists. These results are interesting, as they show both benefits and dangers of having markets where fast computer algorithms trade side by side with human traders.
+
+
+
+
+
+
+
+\clearpage % Start a new page
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENTS
+%----------------------------------------------------------------------------------------
+
+\setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+\acknowledgements{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+
+The acknowledgements and the people to thank go here, don't forget to include your project advisor\ldots
+}
+\clearpage % Start a new page
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+
+\pagestyle{fancy} % The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+\lhead{\emph{Contents}} % Set the left side page header to "Contents"
+\tableofcontents % Write out the Table of Contents
+
+\lhead{\emph{List of Figures}} % Set the left side page header to "List of Figures"
+\listoffigures % Write out the List of Figures
+
+\lhead{\emph{List of Tables}} % Set the left side page header to "List of Tables"
+\listoftables % Write out the List of Tables
+
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+
+
+\clearpage % Start a new page
+
+\setstretch{1.5} % Set the line spacing to 1.5, this makes the following tables easier to read
+
+\lhead{\emph{Abbreviations}} % Set the left side page header to "Abbreviations"
+\listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
+{
+\textbf{HFT} & \textbf{H}igh \textbf{F}requency \textbf{T}rader \\
+\textbf{ST} & \textbf{S}low \textbf{T}rader\\
+\textbf{OB} & \textbf{O}rder \textbf{B}ook \\
+\textbf{MM} & \textbf{M}arket \textbf{M}aker \\
+\textbf{SD} & \textbf{S}tandard \textbf{D}eviation \\
+\textbf{GD} & \textbf{G}aussian \textbf{D}istribution \\
+\textbf{GMM} & \textbf{G}aussian \textbf{M}ixture \textbf{M}odel \\
+\textbf{GA} & \textbf{G}enetic  \textbf{A}lgorithm \\
+%\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+}
+
+%----------------------------------------------------------------------------------------
+%	Glossary
+%----------------------------------------------------------------------------------------
+
+\clearpage % Start a new page
+
+\lhead{\emph{Glossary}} % Set the left side page header to "Physical Constants"
+
+\listofconstants{ll} % Include a list of Physical Constants (a four column table)
+{
+Term & Explanation\\
+ask price & The price of a sell order\\
+bid price & The price of a buy order\\
+model fitnesses & The quantitative measures summarizing how the model behaves \\
+fundamental price & The underlying ``true'' value of the stock\\
+limit order & Order which is not \\
+market order &\\
+liquidity & The \\
+market depth & \\
+match & When a sell order and a bu order happen to have the same listed price, they are said to match\\
+order book & \\
+order volume & \\
+partial match & Two orders which match, but have different volumes.\\
+share & A fraction of ownership of an asset, such as a stock \\
+spread & \\
+standing order & A market order registered at an order book and waiting for a matching order \\
+tick & The smallest possible price change of the stock\\
+volatility &\\
+}
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	Symbols
+%----------------------------------------------------------------------------------------
+
+\clearpage % Start a new page
+
+\lhead{\emph{Symbols and notation}} % Set the left side page header to "Physical Constants"
+
+\listofconstants{ll} % Include a list of Physical Constants (a four column table)
+{
+$\E{\textbf{x}}$ & The sample mean of vector $\textbf{x}$\\
+$\Var{\textbf{x}}$ & The sampe variance of vector $\textbf{x}$ \\
+$\Cov{\textbf{x}, \textbf{y}}$ & The sample covariance between vector $\textbf{x}$ and $\textbf{y}$\\
+$\Median{\textbf{x}}$ & The sample median of vector $\textbf{x}$\\
+\delay & Time delay in rounds from agent $i$ to market $j$. Note that $\tau_{i,j} = \tau_{j,i}$.\\
+\spread & Spread at the end of round $t$\\
+\pask & The lowest \ask price in the order book at the end of round \round\\
+\pbid & The highest \bid price in the order book at the end of round \round\\
+\pmatch & Match price, i.e., the price at which a trade is executed\\
+\fund & Fundamental price at round \round\\
+\fas & Fundamental price after shock \\
+\smargin & Size in ticks of the stability margin around each side of \fas \\
+\delta & Losely used to designate a time delay the length of which will be clear from the context.
+
+\ratioagents & Ratio between the number of chartists and the number of market makers: $\ratioagents = \frac{\scnAgents}{\ssmmnAgents}$ \\
+\ratiolatency & Ratio between the latency of chartists and the latency of market makers: $\ratiolatency = \frac{\sclatencymu}{\ssmmlatencymu}$
+}
+
+
+%----------------------------------------------------------------------------------------
+%	PARAMETERS
+%----------------------------------------------------------------------------------------
+
+\clearpage % Start a new page
+
+\lhead{\emph{Model parameters}} % Set the left side page header to "Symbols"
+
+\listofnomenclature{llll} % Include a list of Symbols (a three column table)
+{
+\label{list_of_parameters}
+\textbf{Symbol} & \textbf{Description}& \textbf{Unit}\\
+\nrounds & Number of simulation rounds & \\
+***$\lambda$ & Average number of ST orders per round & \\
+
+\scnAgents & Number of HFT SC agents&\\
+\ssmmnAgents& Number of HFT MM agents&\\
+\sclatencymu, \sclatencys & Mean and SD parameters of the GD for HFT SC latency& \\
+\sclatencyagent{i} & Latency of HFT SC agent $i$ where $\sclatencyagent{i} \sim \lvert \mathcal{N}(\sclatencymu, \sclatencys) \rvert$ \\
+
+\scthinkmu, \scthinks & Mean and SD parameters of the GD for HFT SC thinking time&\\
+\scthinkagent{i} & Thinking time of HFT SC agent $i$ where $\scthinkagent{i} \sim \lvert \mathcal{N}(\scthinkmu, \scthinks) \rvert$ \\
+\sctimehorizonmu, \sctimehorizons & Mean and SD parameters of the GD for HFT SC time horizon&\\
+\sctimehorizons& Standard deviation of the Gaussian distribution for HFT SC time horizon&\\
+\scwaitTimeBetweenTradingmu, \scwaitTimeBetweenTradings& Mean and SD of the GD for the HFT chartist wait time&\\
+
+\ssmmlatencymu& Mean and SD of the GD for HFT MM latency&\\
+\ssmmlatencyagent{i} & Latency of HFT MM agent $i$ where $\ssmmlatencyagent{i} \sim \lvert \mathcal{N}(\ssmmlatencymu, \ssmmlatencys) \rvert$ \\
+\ssmmthinkmu& Mean and SD of the GD for HFT MM thinking time&\\
+\ssmmthinkagent{i} & Thinking time of HFT MM agent $i$ where $\ssmmthinkagent{i} \sim \lvert \mathcal{N}(\ssmmthinkmu, \ssmmthinks) \rvert$ \\
+
+
+\scordervolumeagent{i}, \ssmmordervolumeagent{i} & Volumes of orders submitted by HFT SC and HFT agents, respectively. \\
+\storderarrivalrate{} and $\kappa_n$& The rate parameter of the Poisson process for the number of slow trader orders in each round $\kappa_n$: $\kappa_n \sim Pois(\storderarrivalrate)$\\
+\stnoise, \stnoisemu{} and \stnoises & Parameters for the noise part of the slow trader estimate of the fundamental price: $\stnoise \sim \mathcal{N}(\stnoisemu, \stnoises)$\\
+\stlatency, \stlatencymu{} and \stlatencys & Delay with which the slow trader observes the fundamental: $\stlatency \sim \lvert \mathcal{N}(\stlatencymu, \stlatencymu) \rvert$
+
+
+}
+
+%----------------------------------------------------------------------------------------
+%	DEDICATION
+%----------------------------------------------------------------------------------------
+
+\setstretch{1.3} % Return the line spacing back to 1.3
+
+\pagestyle{empty} % Page style needs to be empty for this page
+
+\dedicatory{For/Dedicated to/To my\ldots} % Dedication text
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{fancy} % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+PREFACE
+As such, this project turned out to be just as much about software engineering as 
+The work presented in this thesis was the final project in
+%\input{Chapters/introduction}
+%\input{Chapters/high_frequency_trading}
+%\input{Chapters/model}
+\input{Chapters/parameter_tuning_and_analysis_tools}
+%\input{Chapters/experiments_and_results}
+%\input{Chapters/results_new}
+
+%\input{Chapters/discussion}
+
+
+%\input{Chapters/summary_and_discussion} 
+%\input{Chapters/conclusion} 
+%\input{Chapters/conclusions}
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%----------------------------------------------------------------------------------------
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+\input{Appendices/AppendixA}
+\input{Appendices/AppendixB}
+\input{Appendices/AppendixC}
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\backmatter
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\label{Bibliography}
+
+\lhead{\emph{Bibliography}} % Change the page header to say "Bibliography"
+
+\bibliographystyle{unsrtnat} % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+
+\bibliography{Bibliography} % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+\begin{thebibliography}{99}
+
+
+
+\bibitem{chiWang} Chi Wang, Kiyoshi Izumi, Takanobu Mizuta and Shinobu Yoshimura:
+``Investigating the Impact of Trading Frequencies of Market Makers: a Multi-agent Simulation Approach''
+ \textit{SICE Journal of Control Measurement, and System Integration, Vol. 4, No. 1, pp. 001-005, January 2011}.
+
+\bibitem{riseOfComputerizedTrading} Michael J. McGowan:
+``The Rise of Computerized High Frequency Trading: Use and Controversies'',
+\textit{2010 Duke L. \& Tech. Rev., 2010}.
+
+\bibitem{strategicLiquiditySupply} Thomas McInish and James Upson:
+``Strategic Liquidity Supply in a Market with Fast and Slow Traders'',
+\textit{Available at SSRN 1924991 (2012)}.
+
+\bibitem{financialBlackSwans} Niel Johnson, Guannan Zhao, Eric Hunsader, Jing Meng, Amith Ravindar, Spencer Carran and Brian Tivnan: 
+``Financial Black Swans Driven by Ultrafast Machine Ecology'', \textit{Available at SSRN (2012)}.
+
+\bibitem{evaluationOfAutomated}
+Kiyoshii Izumi, Kiyoshi, Fujio Toriumi, and Hiroki Matsui: ``Evaluation of automated-trading strategies using an artificial market'', \textit{Neurocomputing 72.16 (2009): 3469-3476}.
+
+\bibitem{theImpactOfHeterogenous}
+Chiarella, Carl, Giulia Iori, and Josep Perelló:
+``The impact of heterogeneous trading rules on the limit order book and order flows''
+\textit{Journal of Economic Dynamics and Control 33.3 (2009): 525-537}.
+
+\bibitem{highFrequencyTrading}
+Peter Gomber, Björn Arndt, Marco Lutat, Tim Uhle:
+``High-frequency trading.'' 
+\textit{Available at SSRN 1858626 (2011)}.
+
+\bibitem{anEcologicalPerspective}
+J. Doyne Farmer and Spyros Skouras:
+``An ecological perspective on the future of computer trading''
+\textit{Quantitative Finance 13.3 (2013): 325-346.}
+
+\end{thebibliography}
+
+\end{document}  

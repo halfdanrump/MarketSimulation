@@ -3,45 +3,51 @@
 \usepackage{masterthesis-e}
 
 %\graphicspath{{Figures/}} % Specifies the directory where pictures are stored
-\usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' }
+%\usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' }
 \usepackage{subcaption}
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{verbatim}
 \usepackage{array}
-\newcolumntype{L}{>{\arraybackslash}m{3cm}}
-\newcolumntype{E}{>{\arraybackslash}m{7cm}}
+
 \usepackage{graphicx}
 \usepackage{booktabs}
+\bibliographystyle{plain}
 
 \graphicspath{{Figures/}}
 
 
-
+\newcolumntype{L}{>{\arraybackslash}m{3cm}}
+\newcolumntype{E}{>{\arraybackslash}m{7cm}}
 %----------------------------------------------------------------------------------------
 %	MY OWN COMMANDS
 %----------------------------------------------------------------------------------------
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
 
 
-\newcommand{\E}[1]{\mathrm{E}_\text{p}[#1]}
-\newcommand{\Var}[1]{\mathrm{Var}_\text{p}[#1]}
-\newcommand{\Cov}[1]{\mathrm{Cov}_\text{p}[#1]}
-\newcommand{\Median}[1]{\mathrm{M}_\text{p}[#1]}
+\newcommand*{\E}[1]{\mathrm{E}_\mathcal{P}[#1]}
+\newcommand*{\Var}[1]{\mathrm{Var}_\mathcal{P}[#1]}
+\newcommand*{\Cov}[1]{\mathrm{Cov}_\mathcal{P}[#1]}
+\newcommand*{\Median}[1]{\mathrm{M}_\mathcal{P}[#1]}
 
-\newcommand{\Ecluster}[2]{\mathrm{E}_\text{C{#2}}[#1]}
-\newcommand{\Varcluster}[2]{\mathrm{Var}_\text{C#2}[#1]}
-\newcommand{\Covcluster}[2]{\mathrm{Cov}_\text{C#2}[#1]}
+\newcommand*{\Ecluster}[2]{\mathrm{E}_{\mathcal{C}{#2}}[#1]}
+\newcommand*{\Varcluster}[2]{\ensuremath{\mathrm{Var}_{\mathcal{C}{#2}}[#1]}}
+%\newcommand{\Covcluster}[2]{\mathrm{Cov}_\text{C#2}[#1]}
 
-\newcommand{\meanpopulation}[1]{\mathrm{E}_\text{p}[#1]}
-\newcommand{\varpopulation}[1]{\mathrm{E}_\text{p}[#1]}
+\newcommand*{\meanpopulation}[1]{\mathrm{E}_\text{p}[#1]}
+%\newcommand*{\varpopulation}[1]{\mathrm{E}_\text{p}[#1]}
 
-\newcommand{\Efilter}[2]{\mathrm{E}_\text{F{#2}}[#1]}
+
+\newcommand*{\Efilter}[2]{\ensuremath{\mathrm{E}_{\mathcal{F}{#2}}[#1]}}
 
 % % % DATASETS
-\newcommand{\dthree}{d1}
-\newcommand{\dnine}{d9}
-\newcommand{\dten}{d10}
-\newcommand{\deleven}{d11}
+\newcommand*{\dthree}{\ensuremath{\mathcal{D}_3}}
+\newcommand*{\dnine}{\ensuremath{\mathcal{D}_9}}
+\newcommand*{\dten}{\ensuremath{\mathcal{D}_{10}}}
+\newcommand*{\deleven}{\ensuremath{\mathcal{D}_{11}}}
+%\newcommand*{\dnine}{d9}
+%\newcommand*{\dten}{d10}
+%\newcommand*{\deleven}{d11}
 
 %%% Consistency commands
 \newcommand{\spa}[2]{\ensuremath{ \texttt{#1}_\texttt{#2} }}
@@ -75,7 +81,7 @@
 \newcommand*{\Count}{\ensuremath{\text{Count}}}
 \newcommand*{\marketmaker}[1]{\ensuremath{\text{MM}_{#1}}}
 \newcommand*{\chartist}[1]{\ensuremath{\text{SC}_{#1}}}
-\newcommand*{\marketmakercyclelength}[1]{\ensuremath{l_{\text{MM}, #1}}}
+\newcommand*{\marketmakercyclelength}[1]{\ensuremath{l^{#1}_{\text{MM}}}}
 
 
 
@@ -137,7 +143,7 @@
 \newcommand*{\spread}[1]{\ensuremath{s_{#1}}}
 %\newcommand*{\pask}[1][]{\ensuremath{p^a_{#1}}}
 %\newcommand*{\pbid}[1][]{\ensuremath{p^b_{#1}}}
-%\newcommand*{\pmatch}{\ensuremath{p^m}}
+\newcommand*{\pmatch}{\ensuremath{p_\text{match}}}
 %\newcommand*{\fund}[1][]{\ensuremath{f_{#1}}}
 
 
@@ -155,7 +161,7 @@
 \newcommand*{\fundamentalpricetest}[1]{F_{{#1}}}
 \newcommand*{\fundamentalshocksize}{\ensuremath{\eta}}
 \newcommand*{\fundamentalaftershock}{\ensuremath{\eta}}
-\newcommand*{\fundamentalshocktime}{\ensuremath{\round{_\eta}}}
+\newcommand*{\fundamentalshocktime}{\ensuremath{\round{T_\eta}}}
 
 \newcommand*{\smargin}{\ensuremath{m_\text{stable}}}
 \newcommand*{\fas}{\ensuremath{p_\text{fas}}}
@@ -186,7 +192,7 @@
 
 \maketitle
 \begin{abstract}
-This work proposes a model in which multiple heterogeneous agents use time delayed price information to trade an imaginary financial instrument in a market with a continuous double auction. The main innovation of the model is that, just as in the real world, trading agents do not have access to the market information at the same point in time, which means that the agents generally trade on different information. The model contains agent models of slow human traders using a noisy fundamentalist strategy, and high speed software traders using market maker and chartist strategies. Slow traders base their trading decisions on market information which has been delayed several seconds, while the fast traders observe the market with much smaller delays ranging between a few millisecons to a few hundred milliseconds. By containing agents of such different speeds, the model is relevant to the ongoing discussion of the pros and cons of high frequency trading in financial markets. 
+This work proposes a model in which multiple heterogeneous agents use time delayed price information to trade an imaginary financial instrument in a market with a continuous double auction. The main innovation of the model is that, just as in the real world, trading agents do not have access to the market information at the same point in time, which means that the agents generally trade on different information. The model contains agent models of slow human traders using a noisy fundamentalist strategy, and high speed software traders using market maker and chartist strategies. Slow traders base their trading decisions on market information which has been delayed several seconds, while the fast traders observe the market with much smaller delays ranging between a few milliseconds to a few hundred milliseconds. By containing agents of such different speeds, the model is relevant to the ongoing discussion of the pros and cons of high frequency trading in financial markets. 
 
 The model simulates the market events in the minutes after the advent of bad news represented by sudden negative shock to the fundamental stock price, and does so with a time resolution high enough to register events that unfold from millisecond to millisecond. A genetic algorithm is used to search for model parameters that cause the market to be stable, and parameters that cause the market to crash. Analysis of the results shows that a moderate level of high speed trading activity is not in itself problematic. In fact, high speed market makers are found to reduce price flickering, while high speed chartists are found to decrease the time required for the market to respond to changes in the fundamental price. However, the market is found to respond unfavorably to a large presence of fast traders. First of all, a large presence of fast market makers causes the market to respond sluggishly to the shock, leading to a prolonged disparity between the traded price and the true fundamental price. Secondly, a large presence of fast chartists causes increased flickering of the traded price. Finally it is found that flash-crashes can occur in markets in which ratio of the number of chartists to the number of market makers is high, while at the same time the market makers are faster than the chartists. These results are interesting, as they show both benefits and dangers of having markets where fast computer algorithms trade side by side with human traders.
 
@@ -206,30 +212,30 @@ The model simulates the market events in the minutes after the advent of bad new
 \lhead{\emph{List of Tables}} % Set the left side page header to "List of Tables"
 \listoftables % Write out the List of Tables
 
-\newpage
-\lhead{\emph{Introduction}}
-\input{Chapters/introduction}
-\newpage
-\lhead{\emph{Model}}
-\input{Chapters/model}
+%\newpage
+%\lhead{\emph{Introduction}}
+%\input{Chapters/introduction}
+%\newpage
+%\lhead{\emph{Model}}
+%\input{Chapters/model}
 
 
 %\newpage
 %\lhead{\emph{XXX}}
 %\input{Chapters/parameter_tuning_and_analysis_tools}
 
-%\newpage
-%\lhead{\emph{XXX}}
-%\input{Chapters/results_new}
+\newpage
+\lhead{\emph{XXX}}
+\input{Chapters/results_new}
 
-%\newpage
-%\lhead{\emph{XXX}}
-%\input{Chapters/discussion}
- 
- 
-\bibliography{biblography}{}
-\bibliographystyle{plain}
- 
+\newpage
+\lhead{\emph{XXX}}
+\input{Chapters/discussion}
+
+
+
+\newpage
+\bibliography{references}
+\nocite{*}
  \end{document}
-
 
