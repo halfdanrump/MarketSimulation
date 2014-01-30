@@ -11,6 +11,7 @@ from IO import figure_save_path, table_save_path
 import utils
 import sys
 from utils import make_issue_specific_figure_folder
+import numpy as np
 
 
 def issue_21_basic_scatter_plots(dataset):
@@ -642,7 +643,8 @@ def issue_113_make_all_tradeprice_plots():
 	figure_folder = make_issue_specific_figure_folder('issue_113_tradeprice_plots', 'all')
 	for dataname, plotname in mapping.items():
 		rounds, prices = IO.load_tradeprice_data(data_folder + dataname)
-		make_pretty_tradeprice_plot(rounds, prices, figure_folder + plotname, dpi = 200, figsize=tuple(map(lambda x: x*1, [8,4])), format = 'pdf')
+		#make_pretty_tradeprice_plot(rounds, prices, figure_folder + plotname, dpi = 200, figsize=tuple(map(lambda x: x*1, [8,4])), format = 'pdf')
+		make_pretty_tradeprice_plot(rounds, prices, figure_folder + plotname, dpi = 200, format = 'pdf')
 
 
 
@@ -671,10 +673,34 @@ def issue_115_agent_ratio(ratio_threshold):
 	all_fit = concat([fit10, fit11])
 	run_issue('d10d11',all_fit, all_par)
 
+def issue_118_fitness_corelation_matrix(dataset):
+	import IO
+	from plotting import plot_correlation_matrix
+	from utils import format_as_latex_parameter as fl
+	folder = make_issue_specific_figure_folder('fitness_correlation', dataset)
+	f,p,g, i=IO.load_pickled_generation_dataframe(dataset)
+	mask = f.overshoot < 5
+	c = np.corrcoef(f[mask].transpose())
+	labels = map(fl, f.columns)
+	plot_correlation_matrix(folder + 'correlation_matrix.png', c, labels)
+
+def issue_130_overvaluation_scatter():
+	from plotting import make_scatter_plot_for_labelled_data
+	folder = make_issue_specific_figure_folder('issue_130_overvaluation_scatter', 'd10')
+	colormap = brewer2mpl.get_map('RdBu', 'Diverging', 11, reverse=True)
+	ind = IO.load_pickled_generation_dataframe('d10', True)
+	mask = ind.ssmm_latency_mu > 0
+	#plot(ind.ssmm_nAgents[mask], ind.ssmm_latency_mu[mask], 'r.'); 
+	xlab = r'$N_m$'
+	ylab = r'$\lambda_{m,\mu}$'
+	l = np.repeat(10, len(ind[mask]))
+	filename = folder + 'scatter.png'
+	make_scatter_plot_for_labelled_data(ind[mask], 'ssmm_nAgents', 'ssmm_latency_mu', l, filename, colormap, point_size = 20)
 	
+
+
 def test(dataset, overshoot_threshold):
 	from numpy import where, zeros
-	import numpy as np
 	from sklearn.neighbors.kde import KernelDensity
 	folder = make_issue_specific_figure_folder('108 cluster after removing outliers', dataset)
 	fit, par, gen, ids = IO.load_pickled_generation_dataframe(dataset)
@@ -755,8 +781,8 @@ def issue_127_marketmaker_plots():
 	pp.rc('font', family = 'serif')
 	pp.rc('font', size = 14)
 
-	def plot_step(val_before_step, stepsize, time_of_step, xmax = 14, **kwargs):
-		pp.hlines(y=val_before_step, xmin=0, xmax=time_of_step, **kwargs)
+	def plot_step(val_before_step, stepsize, time_of_step, xmin = 0, xmax = 14, **kwargs):
+		pp.hlines(y=val_before_step, xmin=xmin, xmax=time_of_step, **kwargs)
 		pp.vlines(x=time_of_step, ymin=val_before_step, ymax=val_before_step + stepsize, **kwargs)
 		return pp.hlines(y=val_before_step + stepsize, xmin=time_of_step, xmax=xmax, **kwargs)
 
@@ -769,7 +795,7 @@ def issue_127_marketmaker_plots():
 	c2=plot_step(12, 3, 2, color='blue', linewidth=3, alpha=0.5)
 	c3=plot_step(8, -3, 5+mm_delay, color='green', linewidth=3, linestyle='dashed')
 	c4=plot_step(12, 3, 2+mm_delay, color='blue', linewidth=3, linestyle='dashed')
-	pp.text(2, 16, '$\lambda = %s$'%mm_delay, fontsize = 20)
+	pp.text(2, 16, '$\delta = %s$'%mm_delay, fontsize = 20)
 	pp.legend([c1,c2,c3,c4],['Best buy price', 'Best sell price', 'Agent buy price', 'Agent sell price'])
 	pp.savefig(folder + 'a.png')
 
@@ -778,11 +804,13 @@ def issue_127_marketmaker_plots():
 	pp.ylabel('Price (ticks)')
 	mm_delay=6
 	pp.ylim(8,25)
-	c3=plot_step(18, -3, 5, color='blue', linewidth=3, alpha=0.5)
+	c3=plot_step(18, -2, 5, color='blue', linewidth=3, alpha=0.5)
 	c4=plot_step(10, 3, 5, color='green', linewidth=3, alpha=0.5)
 	c1=plot_step(18, -2, 5+mm_delay, color='blue', linewidth=3, linestyle='dashed')
 	c2=plot_step(10, 2, 5+mm_delay, color='green', linewidth=3, linestyle='dashed')
-	pp.text(2, 21, '$\lambda = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
+	pp.fill_between([11,14],[12,12],[16,16], color='red', alpha=0.3, linewidth=0)
+
+	pp.text(2, 21, '$\delta = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
 	pp.legend([c1,c2,c3,c4],['Best sell price', 'Best buy price', 'Agent sell price', 'Agent buy price'])
 	pp.savefig(folder + 'b.png')
 
@@ -797,9 +825,41 @@ def issue_127_marketmaker_plots():
 	c4=plot_step(10, 3, 2+mm_delay, color='green', linewidth=3, linestyle='dashed', xmax=20)
 	#pp.fill_between([0,8],[10,10],[14,14], color='red', alpha=0.3, linewidth=0)
 	pp.fill_between([8,20],[13,13],[17,17], color='red', alpha=0.3, linewidth=0)
-	pp.text(2, 22, '$\lambda = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
+	pp.text(2, 22, '$\delta = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
 	pp.legend([c1,c2,c3,c4],['Best sell price', 'Best buy price', 'Agent sell price', 'Agent buy price'])
 	pp.savefig(folder + 'c.png')
+
+	pp.figure()
+	pp.xlabel('Time (rounds)')
+	pp.ylabel('Price (ticks)')
+	mm_delay=6
+	pp.ylim(8,27)
+	c1=plot_step(20, -3, 10, color='blue', linewidth=3, alpha=0.5, xmax=20)
+	c2=plot_step(10, 3, 2, color='green', linewidth=3, alpha=0.5, xmax=20)
+	c3=plot_step(20, -3, 10+mm_delay, color='blue', linewidth=3, linestyle='dashed', xmax=20)
+	c4=plot_step(10, 3, 2+mm_delay, color='green', linewidth=3, linestyle='dashed', xmax=20)
+	#pp.fill_between([0,8],[10,10],[14,14], color='red', alpha=0.3, linewidth=0)
+	pp.fill_between([8,20],[13,13],[17,17], color='red', alpha=0.3, linewidth=0)
+	pp.text(2, 22, '$\delta = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
+	pp.legend([c1,c2,c3,c4],['Best sell price', 'Best buy price', 'Agent sell price', 'Agent buy price'])
+	pp.savefig(folder + 'd.png')
+
+	pp.figure()
+	pp.xlabel('Time (rounds)')
+	pp.ylabel('Price (ticks)')
+	mm_delay=6
+	pp.ylim(8,27)
+	pp.xlim(0, 30)
+	c1=plot_step(20, -3, 5, color='blue', linewidth=3, alpha=0.5, xmin = 0, xmax=12)
+	plot_step(17, 2, 18, color='blue', linewidth=3, alpha=0.5, xmin = 12, xmax=30)
+	c2=plot_step(10, 0, 5, color='green', linewidth=3, alpha=0.5, xmin = 0, xmax=30)
+	
+	
+	#pp.fill_between([0,8],[10,10],[14,14], color='red', alpha=0.3, linewidth=0)
+	#pp.fill_between([8,20],[13,13],[17,17], color='red', alpha=0.3, linewidth=0)
+	#pp.text(2, 22, '$\lambda = %s$\n $\\theta = 4$'%mm_delay, fontsize = 20)
+	#pp.legend([c1,c2,c3,c4],['Best sell price', 'Best buy price', 'Agent sell price', 'Agent buy price'])
+	pp.savefig(folder + 'e.png')
 
 
 def plots_for_d3():
@@ -839,6 +899,9 @@ def plots_for_d11():
 
 def run_others():
 	issue_115_agent_ratio(ratio_threshold=5)
+	thesis_plots.issue_118_fitness_corelation_matrix('d9')
+	thesis_plots.issue_118_fitness_corelation_matrix('d10')
+	thesis_plots.issue_118_fitness_corelation_matrix('d11')
 
 def remake_make_all_thesis_plots():
 	plots_for_d3()

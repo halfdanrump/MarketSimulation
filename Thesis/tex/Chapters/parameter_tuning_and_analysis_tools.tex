@@ -133,7 +133,7 @@ This fitness measure reflects how much the traded price fluctuates by calculatin
 \begin{equation}\label{eq:stdev}
 \stdev = \sum\limits_{n = \round{F}}^{\nrounds}  \sum\limits_{i=1}^{N_n} \frac{\big(\bar{p}_n - \tradeprice{n}{i}\big)^2}{N_n}
 \end{equation}
-where $N_j$ is the number of transactions in round $j$, and $\bar{p}_n$ is the average traded price in round $n$.
+where $N_j$ is the number of transactions in round $j$, and $\bar{p}_n$ is the average traded price in round $n$. One problem with the definition of \stdev{} is that it assumes that the distribution of prices is stationary after the stock has first been traded at the new fundamental. This assumption holds for markets in which the traded price stabilizes around a constant mean, but does not hold when the market crashes, as the mean statistic will constantly change.
 
 \subsubsection{Time to stabilize}
 The margin of two ticks sets a fairly strict requirement for when a simulation is considered stable, as a flicker of just a few ticks 

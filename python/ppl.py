@@ -66,6 +66,7 @@ class Ppl:
 
         plt.rc('text', usetex=True)
         plt.rc('font', family='serif')
+        plt.rc('font', size='16')
     def set_colormap(self, colormap):
         self.colormap = colormap
         self.set2 = colormap.mpl_colors

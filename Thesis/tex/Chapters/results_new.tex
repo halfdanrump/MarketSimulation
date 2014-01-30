@@ -36,21 +36,21 @@ ID & Description & Fixed parameters& As genes \\
 
 
 \subsection{Correlation between fitness measures}\label{section:correlation_fitness}
-A factor which influences the evolution of parameters is correlation between the fitness-measures. If two or more fitness measures have non-negative correlation coefficients, individuals will be statistically more likely to get good scores in the correlated fitness measures at the same time. Since all fitness measures are given equal weight in the selection process, individuals scoring well in the correlated fitness-measures will win over individuals which score well on another, statistically independent fitness measure. It is therefore important to compare the selection tendencies with the correlation between fitness-measures. Figure \ref{figure:d10_fitness_correlation} shows a plot of the correlation matrix for \dten. Since later generations will be affected by the biased selection and therefore contain more individuals which did well on the correlated fitness measures, the correlation coefficients in the figure were calculated over individuals in the first generation only.
+A factor which influences the evolution of parameters is correlation between the fitness-measures. If two or more fitness measures have non-negative correlation coefficients, individuals will be statistically more likely to get good scores in the correlated fitness measures at the same time. Since all fitness measures are given equal weight in the selection process, individuals scoring well in the correlated fitness-measures will win over individuals which score well on another, statistically independent fitness measure. It is therefore important to compare the selection tendencies with the correlation between fitness-measures. Figure \ref{figure:d10_fitness_correlation} shows a plot of the correlation matrix for \dten{} and \deleven. Since later generations will be affected by the biased selection and therefore contain more individuals which did well on the correlated fitness measures, the correlation coefficients in the figure were calculated over individuals in the first generation only.
 \begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{Electron.pdf}
-\caption{Correlation matrix of the four fitness measures in the first generation of dataset \dten	}
-\label{figure:d10_fitness_correlation}
+	%issue 15
+	\centering
+	\subcaptionbox{\dten}
+	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{fitness_correlation/d10/correlation_matrix.png}}
+	\subcaptionbox{\deleven}
+		[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{fitness_correlation/d11/correlation_matrix.png}}
+	\caption{Correlation between model fitness measures}
+	\label{fig:fitness_correlation}
 \end{figure}
 
-For instance, the correlation between \overshoot and \stdev means that an individual which scores a good \overshoot-fitness will be statistically likely to also score a good \stdev-fitness. Since all four fitness measures are weighed evenly in the selection, models with behavior which is assigned good values for \overshoot and \stdev will score a better overall fitness than a simulation with a good fitness 
+For instance, the correlation between \overshoot{} and \stdev{} means that an individual which scores a good \overshoot-fitness will be statistically likely to also score a good \stdev-fitness. Since all four fitness measures are weighed evenly in the selection, models with behavior which is assigned good values for \overshoot{} and \stdev{} will score a better overall fitness than a simulation with a good \timetoreachnewfundamental-fitness. In other words, the correlation between \stdev{} and \overshoot{} means that stable individuals will outlive fast individuals as they are selected for breeding more often. This is not a property of the model itself, but something that arises due to the definition of the fitness measures. 
 
-In other words, the correlation between \stdev and \overshoot means that stable individuals will outlive fast individuals as they are selected for breeding more often. This is not a property of a model itself, but rather a problem with the definition of the fitness measures. This problem can be circumvented by not using of the correlated fitness values. XXX
-
-Both \overshoot and \stdev were used for the GA selection, and although these two fitness measures do reflect different properties of the simulations, they were found to be somewhat correlated. That is, a simulation which tends to have a small overshoot also tends to have stable traded prices. 
-
- (simulations with a small overshoot also tend to have more stable trade prices), and there work together towards selecting the same type of simulations. \timetoreachnewfundamental and \roundstable both  The same is not the case for \timetoreachnewfundamental and \roundstable, as it possible that a simulation responds quickly to the shock, but does not stay within the stability margin. 
+The correlations also speak of trade-offs between speed and stability in the model. For instance, a negative correlation between \overshoot{} and \timetoreachnewfundamental{} means that the model is statistically likely to have a large overshoot when it responds quickly to the change in the fundamental.
 
 \section{Fitness and parameter evolution}\label{section:fitness_and_paraeter_evolution}
 
@@ -300,7 +300,7 @@ The next section will examine how the market behaves with respect to how many ch
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{faster_mm_makes_worse_markets/d10/stdev_MM_mmlatency.png}}
 	\subcaptionbox{\label{fig:faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_mmlatency}}
 	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{faster_mm_makes_worse_markets/d10/time_to_reach_new_fundamental_MM_mmlatency.png}}
-	\caption{Relation between \ssmmnAgents, \ssmmlatencymu, and the model fitness when the number of chartists was fixed to $\scnAgents = 150 agents$. Due to missing data, some of the curves are not complete.}
+	\caption{Relation between \ssmmnAgents, \ssmmlatencymu, and the model fitness when the number of chartists was fixed to $\scnAgents = 150$ agents. Due to missing data, some of the curves are not complete.}
 	\label{fig:faster_mm_makes_worse_markets/d10/MM_mmlatency}
 \end{figure}
 
@@ -551,30 +551,32 @@ The description below provides a brief summary of which simulations belong in th
 
 
 \subsubsection*{Fast and stable simulations with flickering prices}
-The points in the lower left corner in are those which quickly reached the new fundamental price, and quickly because stable, leading those simulations to be assigned low \timetoreachnewfundamental and \roundstable fitness-values. These points are extracted by using filter F1 (see table \ref{table:manual_filtering})
+The points in the lower left corner in are those which quickly reached the new fundamental price, and quickly because stable, leading those simulations to be assigned low \timetoreachnewfundamental and \roundstable fitness-values. These points are extracted by using filter $\mathcal{F}_1$ (see table \ref{table:manual_filtering})
 
 \subsubsection*{Slow or fast and stable simulations with non-flickering prices}
-All three data sets have data points which are close to the diagonal. However, only \dnine{} has data points which are close to the diagonal in the upper right corner of the figure. These points are interesting because they belong to simulations which became stable as soon as they reached the new fundamental price. Hence, these simulations should have prices that do not flicker, and therefore yield a small \stdev-fitness. This is confirmed by looking at the left scatter plot of \dnine, as all the points close to the dotted line has a green/blue color. The right plot of \dnine{} shows that these simulations did not have any overshoot. It is interesting that both slow simulations which take a long time to reach the new fundamental, as well as simulations who manage to be fast, have no overshoot, and this observation begs the question of whether or not these simulations have some common parameters that make them behave in such a way. These points are extracted by applying filters F2 and F3 (see table \ref{table:manual_filtering}) to the data matrix \datamatrixfit{\dnine} which selects points that lie within a distance of 400 rounds of the diagonal. 
+All three data sets have data points which are close to the diagonal. However, only \dnine{} has data points which are close to the diagonal in the upper right corner of the figure. These points are interesting because they belong to simulations which became stable as soon as they reached the new fundamental price. Hence, these simulations should have prices that do not flicker, and therefore yield a small \stdev-fitness. This is confirmed by looking at the left scatter plot of \dnine, as all the points close to the dotted line has a green/blue color. The right plot of \dnine{} shows that these simulations did not have any overshoot. It is interesting that both slow simulations which take a long time to reach the new fundamental, as well as simulations who manage to be fast, have no overshoot, and this observation begs the question of whether or not these simulations have some common parameters that make them behave in such a way. These points are extracted by applying filters $\mathcal{F}_2$ and $\mathcal{F}_3$ (see table \ref{table:manual_filtering}) to the data matrix \datamatrixfit{\dnine} which selects points that lie within a distance of 400 rounds of the diagonal. 
 
 
 \subsubsection*{Stable before reaching the new fundamental}
-Most of the simulations falling in region B, meaning that they became stable before reaching the new fundamental price, had no overshoot. However, when the model was allowed to have a large number of chartists, but in \deleven, a group of simulations did have a small overshoot. These two groups of points were extracted by applying filters F4 and F5  (see table \ref{table:manual_filtering}).
+Most of the simulations falling in region B, meaning that they became stable before reaching the new fundamental price, had no overshoot. However, when the model was allowed to have a large number of chartists, but in \deleven, a group of simulations did have a small overshoot. These two groups of points were extracted by applying filters $\mathcal{F}_4$ and $\mathcal{F}_5$  (see table \ref{table:manual_filtering}).
 
 \subsubsection*{Simulations with overshoot}
-XXX NOT FINISHED
+Filter $\mathcal{F}_6$ selects all the simulation which had an overshoot, as it is interesting to see if the parameters that caused the market to have an overshoot can be somehow differentiated from parameters which cause the market to have no overshoot.
 
-\subsubsection{Fast simulations}
-All three experiments produces a group of simulations which had a quick response to the shock, but took longer to become stable. The simulations are in the column-shaped cluster in figure \ref{figure:scatter_fitness_inliers_a} and the all have relatively low \timetoreachnewfundamental-fitness of less than 25000 rounds or so. These data points were extracted using filters F7 and F8 (see table \ref{table:manual_filtering}).
+\subsubsection*{Fast simulations}
+All three experiments produces a group of simulations which had a quick response to the shock, but took longer to become stable. The simulations are in the column-shaped cluster in figure \ref{figure:scatter_fitness_inliers_a} and the all have relatively low \timetoreachnewfundamental-fitness of less than 25000 rounds or so. These data points were extracted using filters $\mathcal{F}_7$ and $\mathcal{F}_8$ (see table \ref{table:manual_filtering}).
 
 \subsubsection*{Unstable simulations with non-flickering prices}
-The final group of simulation that are singles out in this section are those that had very smooth price curves (that is, a small value for \stdev), yet did not manage to become stable. These simulations were selected by filter F9.
+The final group of simulation that are singles out in this section are those that had very smooth price curves (that is, a small value for \stdev), yet did not manage to become stable. These simulations were selected by filter $\mathcal{F}_9$.
 
 \begin{figure}
 \centering
-\subcaptionbox{Experiment \dnine}[0.32\linewidth]{\includegraphics[width=0.32\textwidth]{manual_filtering/d9/group_overlap.png}\label{figure:jaccard_index_a}}
-\subcaptionbox{Experiment \dnine}[0.32\linewidth]{\includegraphics[width=0.32\textwidth]{manual_filtering/d10/group_overlap.png}\label{figure:jaccard_index_b}}
-\subcaptionbox{Experiment \dten}[0.32\linewidth]{\includegraphics[width=0.32\textwidth]{manual_filtering/d11/group_overlap.png}\label{figure:jaccard_index_c}}
-\caption{Jaccard index between the sets of data points extracted by each filter}
+%\subcaptionbox{Experiment \dnine}[0.32\linewidth]{\includegraphics[width=0.32\textwidth]{manual_filtering/d9/group_overlap.png}\label{figure:jaccard_index_a}}
+\subcaptionbox{Experiment \dten}[0.49\linewidth]
+{\includegraphics[width=0.49\textwidth]{manual_filtering/d10/group_overlap.png}\label{figure:jaccard_index_b}}
+\subcaptionbox{Experiment \dten}[0.49\linewidth]
+{\includegraphics[width=0.49\textwidth]{manual_filtering/d11/group_overlap.png}\label{figure:jaccard_index_c}}
+\caption{Jaccard index between the sets of data points extracted by each filter.}
 \label{figure:jaccard_index}
 \end{figure}
 
@@ -589,71 +591,44 @@ J(A,B) = \frac{\lvert A \cap B \rvert}{\min \lvert A \rvert, \lvert B\rvert }
 \end{equation}
 
 
+
 \begin{table}
 \centering
 \begin{tabular}{l|E|l|E}
 \toprule
 ID & Target simulations & Filter criteria\\
 \midrule
-F1 & Fast and stable (but maybe flickering) & $\timetoreachnewfundamental < 12000$, $\roundstable < 12000$, $\log \stdev > 0$ \\
+$\mathcal{F}_1$ & Fast and stable (but maybe flickering) & $\timetoreachnewfundamental < 12000$, $\roundstable < 12000$, $\log \stdev > 0$ \\
 \midrule
-F2 & Slow, stable and not flickering (diagonal)& $\lvert \timetoreachnewfundamental - \roundstable \rvert < 400$\\
+$\mathcal{F}_2$ & Slow, stable and not flickering (diagonal)& $\lvert \timetoreachnewfundamental - \roundstable \rvert < 400$\\
 \midrule 
-F3 & Fast and stable and not flickering (diagonal)& $\lvert \timetoreachnewfundamental - \roundstable \rvert < 400$\\
+$\mathcal{F}_3$ & Fast and stable and not flickering (diagonal)& $\lvert \timetoreachnewfundamental - \roundstable \rvert < 400$\\
 \midrule
-F4 & Stable before reaching fundamental, no overshoot& $\roundstable < \timetoreachnewfundamental$, $\overshoot = 0$\\
+$\mathcal{F}_4$ & Stable before reaching fundamental, no overshoot& $\roundstable < \timetoreachnewfundamental$, $\overshoot = 0$\\
 \midrule
-F5 & Stable before reaching fundamental, with overshoot& $\roundstable < \timetoreachnewfundamental$, $\overshoot = >$\\
+$\mathcal{F}_5$ & Stable before reaching fundamental, with overshoot& $\roundstable < \timetoreachnewfundamental$, $\overshoot > 0$\\
 \midrule
-F6 & Has overshoot & $\roundstable > \timetoreachnewfundamental$, $\overshoot > 0$ \\
+$\mathcal{F}_6$ & Has overshoot & $\roundstable > \timetoreachnewfundamental$, $\overshoot > 0$ \\
 \midrule
-F7 & Fast response, quick to stabilize & $1000 < \timetoreachnewfundamental < 25000$, $20000 < \roundstable < 40000$ \\
+$\mathcal{F}_7$ & Fast response, quick to stabilize & $1000 < \timetoreachnewfundamental < 25000$, $20000 < \roundstable < 40000$ \\
 \midrule
-F8 & Fast response, slow to stabilize & $1000 < \timetoreachnewfundamental < 25000$, $40000 < \roundstable < 75000$ \\
+$\mathcal{F}_8$ & Fast response, slow to stabilize & $1000 < \timetoreachnewfundamental < 25000$, $40000 < \roundstable < 75000$ \\
 \midrule
-F9 & Smooth prices with a small overshoot, yet unstable & $e^{-0.5} - 0.1 < \log \stdev < e^{-0.5} + 0.1$ \\
-\midrule
+$\mathcal{F}_9$ & Smooth prices with a small overshoot, yet unstable & $e^{-0.5} - 0.1 < \log \stdev < e^{-0.5} + 0.1$ \\
 \bottomrule
 \end{tabular}
 \caption{Filter IDs and fitness-regions}
 \label{table:manual_filtering}
 \end{table}
 
+ 
+ 
+ 
 \begin{table}
  \centering
  \begin{tabular}{l|rrrrrrrrr}
 \toprule
-{} &      F1 &      F2 &      F3 &      F4 &      F5 &      F6 &      F7 &      F8 &      F9 \\
-\midrule
-\sclatencymu                 &    70.1 &    65.5 &    49.5 &    81.5 &    76.7 &    58.5 &    75.8 &    75.6 &    76.0 \\
- \sclatencys                 &     5.4 &     5.5 &     7.8 &     4.5 &     4.9 &     6.8 &     5.0 &     4.9 &     5.0 \\
- \scthinkmu                  &    59.7 &    58.8 &    51.8 &    70.1 &    65.8 &    53.5 &    65.7 &    64.8 &    65.9 \\
- \scthinks                   &    12.0 &    12.0 &    12.8 &    11.2 &    11.6 &    11.2 &    11.4 &    11.6 &    11.6 \\
- \sctimehorizonmu            &  1744.0 &  1676.1 &  1758.1 &  1766.8 &  1773.6 &  1906.9 &  1795.3 &  1757.2 &  1777.9 \\
- \sctimehorizons             &  1483.2 &  1472.7 &  1573.4 &  1415.7 &  1444.2 &  1346.7 &  1437.3 &  1442.4 &  1465.4 \\
- \scwaitTimeBetweenTradingmu &    29.5 &    27.4 &    29.3 &    30.5 &    30.0 &    28.6 &    30.0 &    29.7 &    29.9 \\
- \scwaitTimeBetweenTradings  &     3.2 &     4.1 &     4.2 &     3.0 &     3.1 &     5.1 &     3.1 &     3.0 &     3.1 \\
- \ssmmlatencymu              &    45.2 &    38.5 &    37.6 &    49.8 &    47.3 &    39.2 &    46.1 &    46.3 &    44.5 \\
- \ssmmlatencys               &     4.2 &     4.9 &     4.6 &     4.3 &     4.4 &     5.4 &     4.1 &     4.2 &     5.1 \\
- \ssmmthinkmu                &    39.8 &    38.2 &    40.1 &    37.9 &    38.6 &    35.5 &    39.0 &    39.1 &    35.5 \\
- \ssmmthinks                 &     0.0 &     0.0 &     0.0 &     0.0 &     0.0 &     3.6 &     0.0 &     0.3 &     0.2 \\
- \midrule
-\overshoot                   &     1.0 &     1.1 &     1.3 &     0.0 &     1.0 &     3.9 &     1.9 &     2.1 &     1.4 \\
- \roundstable                & 11712.3 & 44993.4 & 13454.5 & 13121.9 & 13468.1 & 80410.6 & 26840.4 & 61259.6 & 54143.9 \\
- \stdev                      &     1.2 &     0.7 &     0.7 &     0.6 &     0.7 &     1.1 &     0.8 &     0.9 &     0.6 \\
- \timetoreachnewfundamental  & 13767.0 & 45089.4 & 13579.4 & 15564.3 & 16743.6 & 16513.3 & 17502.8 & 16812.7 & 40564.2 \\
- \midrule
-Count                        &   498 &    33 &  1031 & 33928 & 41982 & 30468 &  2016 &  1733 &  2160 \\
-\bottomrule
-\end{tabular}
- \label{table:manual_filtering_d9}
- \caption{XXX}
- \end{table}
-\begin{table}
- \centering
- \begin{tabular}{l|rrrrrrrrr}
-\toprule
-{} &      F1 &  F2 &  F3 &      F4 &      F5 &      F6 &      F7 &      F8 &      F9 \\
+{} &      $\mathcal{F}_1$ &  $\mathcal{F}_2$ &  $\mathcal{F}_3$ &      $\mathcal{F}_4$ &     $\mathcal{F}_5$ &     $\mathcal{F}_6$ &      $\mathcal{F}_7$ &     $\mathcal{F}_8$ &     $\mathcal{F}_9$ \\
 \midrule
 \sclatencymu                &   N/A & N/A & N/A &   123.8 &   121.5 &    78.3 &   116.9 &   104.2 &    95.0 \\
  \sclatencys                &    N/A & N/A & N/A &     6.5 &     6.5 &     9.0 &     7.1 &     8.7 &     8.7 \\
@@ -670,13 +645,13 @@ Count                       &     0 & 0 & 0 &  8486 & 25574 & 47493 &  5379 &  2
 \bottomrule
 \end{tabular}
  \label{table:manual_filtering_d10}
- \caption{XXX}
+ \caption{Means of $\mathcal{F}_1$ through $\mathcal{F}_9$ for \dten}
  \end{table}
 \begin{table}
  \centering
  \begin{tabular}{l|rrrrrrrrr}
 \toprule
-{} &      F1 &  F2 &  F3 &      F4 &      F5 &      F6 &      F7 &      F8 &      F9 \\
+{} &      $\mathcal{F}_1$ &  $\mathcal{F}_2$ &  $\mathcal{F}_3$&    $\mathcal{F}_4$&      $\mathcal{F}_5$&      $\mathcal{F}_6$&      $\mathcal{F}_7$&      $\mathcal{F}_8$ &      $\mathcal{F}_9$ \\
 \midrule
 \sclatencymu                &    N/A & N/A & N/A &    30.4 &    32.3 &    33.3 &    34.3 &    35.1 &    35.8 \\
  \sclatencys                &     N/A & N/A & N/A &     9.3 &     9.9 &     4.6 &     7.2 &     6.6 &     9.0 \\
@@ -693,31 +668,37 @@ Count                       &     0 & 0 & 0 & 71329 & 31377 & 84597 &   349 &  3
 \bottomrule
 \end{tabular}
  \label{table:manual_filtering_d11}
- \caption{XXX}
+ \caption{Means of $\mathcal{F}_1$ through $\mathcal{F}_9$ for \deleven}
  \end{table}
  
-Tables \ref{table:manual_filtering_d9}, \ref{table:manual_filtering_d10} and \ref{table:manual_filtering_d11} show the fitness and parameter arithmetic means for each of the nine groups selected by the filters
+Tables \ref{table:manual_filtering_d10} and \ref{table:manual_filtering_d11} show the fitness and parameter arithmetic means for each of the nine groups selected by the filters for \dten{} and \deleven. Since the average parameters of the filters when applied to \dnine{} did not differ significantly, nothing of interest could be derived from the data, and the table for \dnine{} has therefore been moved to the appendix for reference.
  
-When the number of chartists were fixed as in experiment \dten, the simulations with overshoot (picked out by filter F6) has an average overshot of $\Efilter{6}{\overshoot} = 4.1$ ticks. These markets had comparatively few, but fast market makers ($\Efilter{6}{\ssmmnAgents} = 67.1$ and $\Efilter{6}{\ssmmlatencymu}$), and fast chartists ($\Efilter{6}{\sclatencymu} = 78.3$). Figure \ref{figure:jaccard_index_b} shows that F7 and F8 mostly contain points that are also contained in F6. Both F7 and F8 a lower average overshoot, and this is caused by the markets to have slower chartists, and fewer, slower market makers. When the number of chartists were varied as in experiment \deleven{} (and with a constant of $\ssmmnAgents=52$ market makers), the average latency of the chartists $\Efilter{6}{\sclatencymu}$ did not differ from the other groups. Instead, the biggest difference was that markets with overshoot on average had a high number of chartists. As for the market maker latency, it was smaller than any of the other groups. On the the other hand, markets with no overshoot on average had a large number of marker makers when \scnAgents is fixed to $\scnAgents = 150$, although the market makers were not particularly fast. Markets with no overshoot also had the lowest average number of chartists among the nine groups.
+When the number of chartists was fixed as in experiment \dten, the simulations with overshoot (picked out by filter F6) has an average overshot of $\Efilter{6}{\overshoot} = 4.1$ ticks. These markets had comparatively few, but fast market makers ($\Efilter{6}{\ssmmnAgents} = 67.1$ and $\Efilter{6}{\ssmmlatencymu}$), and fast chartists ($\Efilter{6}{\sclatencymu} = 78.3$). Figure \ref{figure:jaccard_index_b} shows that F7 and F8 mostly contain points that are also contained in F6. Both F7 and F8 a lower average overshoot, and this is caused by the markets to have slower chartists, and fewer, slower market makers. When the number of chartists were varied as in experiment \deleven{} (and with a constant of $\ssmmnAgents=52$ market makers), the average latency of the chartists $\Efilter{6}{\sclatencymu}$ did not differ from the other groups. Instead, the biggest difference was that markets with overshoot on average had a high number of chartists. As for the market maker latency, it was smaller than any of the other groups. On the the other hand, markets with no overshoot on average had a large number of marker makers when \scnAgents is fixed to $\scnAgents = 150$, although the market makers were not particularly fast. Markets with no overshoot also had the lowest average number of chartists among the nine groups.
 
-\subsection{Using clustering algorithms to group markets by behavior}\label{section:clustering}
+%\subsection{Using clustering algorithms to group markets by behavior}
 
-\subsection{Clustering with mixture of Gaussians}
+\subsection{Clustering with mixture of Gaussians}\label{section:clustering}
 In this section, the focus is shifted from looking at population wide statistics to analysis sub-groups within each population. Whereas the previous sections showed that there do indeed exist statistical relationships between the latency of the agents and the behavior of the model, each discovered correlation was calculated over the entire population. Although the correlations reveal overall tendencies of the model behavior when changing a single parameter, little can be said about how the various parameters interact to determine model behavior. For instance, even though prediction of, say a negative correlation between \timetoreachnewfundamental was \sclatencymu was found, there might be configurations of the model in which faster chartists were actually beneficial to the market. 
 
 One way to approach this problem is to see whether or not there exists relationships between partitions in the parameter space to partitions in the fitness space. As in section \ref{section:filtering_parameters}, the first step is to partition space, since each partition can be interpreted in terms of the model behavior. For instance, a partition covering the lower left half of the 2-dimensional space in figure \ref{figure:scatter_fitness_inliers_a} would encompass all the simulations which had a fast response time and became stable quickly (no matter if they had prices that flickered within the stability margin or not).
 
-In order to investigate this, a Gaussian mixture model (GMM) was used to find clusters in the fitness space. All four fitness measures were used for the clustering. After discarding simulations with undefined fitness values and removing outliers, the data set contained 80813 data points. The large number of data points and the low number of dimensions made it possible to allow a each Gaussian component to have a full covariance matrix, giving the model a high level of flexibility. Figure \ref{fig:d10_scatter_clusters} shows scatter plots of the data after it has been grouped. Tables \ref{table:fit_gmm_all_mean} and \ref{table:fit_gmm_all_std} respectively show the mean and standard deviation calculated over each cluster. The tables are sorted by the average value of \overshoot.
+In order to investigate this, a Gaussian mixture model (GMM) was used to find clusters in the fitness space. All four fitness measures were used for the clustering. After discarding simulations with undefined fitness values and removing outliers, the data set \dten{} contained 80813 data points, whereas \deleven{} contained 187310 data points. The large number of data points and the low dimensionality made it possible to allow a each Gaussian component to have a full covariance matrix, giving the model a high level of flexibility. A mixture model with 12 components was calculated for each of \dten{} and \deleven. Figure \ref{fig:d10_scatter_clusters} shows scatter plots of the . Scatter plots of \deleven{} are quite similar to those of \dten{} and have therefore been omitted. Tables \ref{table:d10_gmm_mean} and \ref{table:d11_gmm_mean} show the mean values of the fitness and parameters calculated over each cluster in \dten{} and \deleven. 
 
 
+Tables \ref{table:d10_gmm_mean} and \ref{table:d10_gmm_mean} respectively show the mean and standard deviation calculated over each cluster. The tables are sorted by the average value of \overshoot. \outliers{} is used to denote the set of outliers, that is, markets with $\overshoot > 10$
 
+
+A general note of the results di
 \begin{figure}
 	%issue 15
 	\centering
-	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_0.png}}
-	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_1.png}}
-	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_2.png}}
-	\caption{Scatter plots in fitness space showing the grouping of data points when using a GMM with 12 clusters.}
+	\subcaptionbox{\dten}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_0.png}}
+	\subcaptionbox{\dten}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_1.png}}
+	\subcaptionbox{\dten}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d10/12_gmm_all_fit_2.png}}
+	\subcaptionbox{\deleven}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d11/12_gmm_all_fit_0.png}}
+	\subcaptionbox{\deleven}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d11/12_gmm_all_fit_1.png}}
+	\subcaptionbox{\deleven}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{manually_selected/108_cluster_after_removing_outliers/d11/12_gmm_all_fit_2.png}}
+	\caption{GMM cluster assignments in \dten{} and \deleven. Note that there is no correspondence between the displayed colors in \dten{} and \deleven, as colors were assigned randomly by the algorithm.}
 	\label{fig:d10_scatter_clusters}
 \end{figure}
 
@@ -729,32 +710,50 @@ $\Varcluster{\roundstable}{8}$ and $\Varcluster{\roundstable}{11}$ and $\Varclus
 \subsubsection*{Chartist latency and market response time}
 As was noted earlier, the evolution of \sclatencymu and \timetoreachnewfundamental indicates that slow chartists made the market slow, and fast chartists made the market fast. C1 is the cluster with the $\Ecluster{\timetoreachnewfundamental}{1}$
 
+
+
+
 \begin{table}
  \centering
  \begin{tabular}{l|rrrr|rrrrr|r}
 \toprule
 {} &  \overshoot &  \roundstable &  \stdev &  \timetoreachnewfundamental &  \sclatencymu &  \sclatencys &  \ssmmlatencymu &  \ssmmlatencys &  \ssmmnAgents &  \Count \\
 \midrule
-C1  &         0.0 &       16301.2 &     0.6 &                     19217.4 &         127.2 &          6.2 &            78.4 &            5.2 &         132.2 &  7803 \\
-C7  &         0.3 &       24383.1 &     0.7 &                     32005.5 &          87.0 &          9.5 &            25.8 &           10.5 &          66.7 &  1012 \\
-C10 &         1.0 &       15832.8 &     0.7 &                     18602.8 &         121.9 &          6.5 &            76.3 &            6.0 &         126.3 & 25245 \\
-C8  &         2.0 &       81599.7 &     0.9 &                     16333.6 &         101.8 &          8.7 &            56.4 &            9.2 &          91.3 &  7442 \\
-C11 &         2.0 &       30515.0 &     0.7 &                     17822.9 &         114.2 &          7.3 &            71.7 &            7.0 &         117.5 &  5056 \\
-C0  &         3.0 &       89015.0 &     1.1 &                     14687.5 &          89.0 &          9.2 &            39.5 &           10.0 &          66.8 &  9201 \\
-C5  &         3.0 &       51306.4 &     0.9 &                     16508.7 &         102.2 &          9.0 &            59.2 &            8.8 &          96.0 &   356 \\
-C6  &         3.0 &       83914.2 &     1.1 &                     16820.9 &          92.3 &          9.2 &            40.6 &           10.0 &          72.4 &  1598 \\
-C9  &         4.0 &       89496.0 &     1.2 &                     14459.8 &          77.7 &          9.6 &            29.9 &           10.4 &          56.7 &  7278 \\
-C4  &         5.0 &       89896.6 &     1.4 &                     22034.2 &          62.4 &          9.4 &            21.5 &           10.3 &          51.6 &  5331 \\
-C3  &         6.7 &       86440.9 &     1.8 &                     18692.7 &          54.9 &          9.2 &            26.2 &           10.5 &          38.0 &   390 \\
-C2  &         7.9 &       89996.1 &     1.6 &                     11574.7 &          36.4 &          9.2 &            26.4 &            9.6 &          36.4 &  10101 \\
-Outliers  &        11.5 &       89998.8 &     2.2 &                      8835.1 &          17.8 &          9.3 &            24.3 &            8.5 &          19.4 &   740 \\
+\C{1}  &         0.0 &       16301.2 &     0.6 &                     19217.4 &         127.2 &          6.2 &            78.4 &            5.2 &         132.2 &  7803 \\
+\C{7}  &         0.3 &       24383.1 &     0.7 &                     32005.5 &          87.0 &          9.5 &            25.8 &           10.5 &          66.7 &  1012 \\
+\C{10} &         1.0 &       15832.8 &     0.7 &                     18602.8 &         121.9 &          6.5 &            76.3 &            6.0 &         126.3 & 25245 \\
+\C{8}  &         2.0 &       81599.7 &     0.9 &                     16333.6 &         101.8 &          8.7 &            56.4 &            9.2 &          91.3 &  7442 \\
+\C{11} &         2.0 &       30515.0 &     0.7 &                     17822.9 &         114.2 &          7.3 &            71.7 &            7.0 &         117.5 &  5056 \\
+\C{0}  &         3.0 &       89015.0 &     1.1 &                     14687.5 &          89.0 &          9.2 &            39.5 &           10.0 &          66.8 &  9201 \\
+\C{5}  &         3.0 &       51306.4 &     0.9 &                     16508.7 &         102.2 &          9.0 &            59.2 &            8.8 &          96.0 &   356 \\
+\C{6}  &         3.0 &       83914.2 &     1.1 &                     16820.9 &          92.3 &          9.2 &            40.6 &           10.0 &          72.4 &  1598 \\
+\C{9}  &         4.0 &       89496.0 &     1.2 &                     14459.8 &          77.7 &          9.6 &            29.9 &           10.4 &          56.7 &  7278 \\
+\C{4}  &         5.0 &       89896.6 &     1.4 &                     22034.2 &          62.4 &          9.4 &            21.5 &           10.3 &          51.6 &  5331 \\
+\C{3}  &         6.7 &       86440.9 &     1.8 &                     18692.7 &          54.9 &          9.2 &            26.2 &           10.5 &          38.0 &   390 \\
+\C{2}  &         7.9 &       89996.1 &     1.6 &                     11574.7 &          36.4 &          9.2 &            26.4 &            9.6 &          36.4 &  10101 \\
+\outliers  &        11.5 &       89998.8 &     2.2 &                      8835.1 &          17.8 &          9.3 &            24.3 &            8.5 &          19.4 &   740 \\
 \bottomrule
 \end{tabular}
  \label{table:d10_gmm_mean}
  \caption{Cluster means (\dten)}
  \end{table}
  
+ As table \ref{table:d10_gmm_mean} shows, \dten{} only contained 740 cases of a market with an overshoot of more than ten ticks. The most noticeable thing about the parameters of the markets with a large overshoot is that the average latency of both types of fast traders are very small. Compared to the fast in markets with no overshoot assigned to \C{1}, the chartists in \outliers were almost seven times faster, while the market makers were a bit over three times faster. Furtherore, the markets in \outliers{} took only 8835 rounds on average, while the markets in \C{1} took more than twice. Hence, this is a further illustration of the speed/stability trade-off. 
  
+ Comparing \C{0} and \C{5}, it is seen that the largest difference is that $\Ecluster{\roundstable}{5}$ is around 38000 rounds smaller than $\Ecluster{\roundstable}{0}$. Collaborating this with the facts that $\Ecluster{\stdev}{5} < \Ecluster{\stdev}{0}$ and $\Ecluster{\overshoot}{5} = \Ecluster{\overshoot}{0}$, it becomes clear than \C{0} contains markets which did non become stable due to large price flickering. Comparing the average parameters of the two clusters, it is seen that the two main differences are the speed and number of the market makers. \C{5} has around 30\% more market makers than \C{0}, while the market makers in \C{0} are around 33\% faster than the market makers in \C{5}. This suggests that a large number of slower market makers does a better job of reducing price flickering than a smaller number of fast market makers. The same phenomenon can be observed by comparing clusters \C{8} and \C{11}.
+ 
+ Clusters \C{1} and \C{7} both contain markets with never left the stability margin after entering the first time. In other words, stable markets with little or no overshoot, and very little price flickering. It is interesting to compare the response time of the two clusters, and the markets in \C{7} took 40\% longer to reach the new fundamental price than the markets in \C{1}. The cause for this appears to be that the markets in \C{7} has market makers that were three times faster than the market makers in \C{1}. Furthermore, the markets in \C{1} had around twice as many market makers than the markets in \C{7}. These results suggest that the presence of a relatively small group of fast market makers actually made the market respond \textit{slower} to the fundamental shock. The markets in \C{7} had just as market makers as the markets in \C{5}, and the chartists were just as fast in \C{7} as in \C{5}. The reason for the markets in \C{0} to respond almost twice as fast as the markets in \C{7} is therefore that the market makers in \C{0} are around 34\% slower than the market makers in . This result is consistent with the finding that faster market makers tend to slow down the response of the market. 
+ 
+ A group of markets which have not yet been discussed are those in which the trade price never reaches the new fundamental. Since \timetoreachnewfundamental{} is undefined in this case, such data points were removed in order to be able to calculate statistics over \timetoreachnewfundamental. However, such markets are interesting because the stock is essentially traded at more than what it is true worth (according to the fundamentalists), and hence they are markets in which the stock is overvalued. An interesting question is which parameters cause such a thing to occur in the market. As was previously shown, market makers have a tendency of slowing down the response to the shock in the fundamental price, which is the same as saying that the market makers increase the duration of the temporary overvaluation. It seems reasonable to assume that what causes the market to remain frozen in a state of overvaluation is the same that causes temporary overvaluation, mainly the presence of a large number of market makers, or the presence of fast market makers. Figure \ref{figure:overvaluation_scatter} verifies this hypothesis. The figure shows that market in which permanent\footnote{Permanent for the duration of the simulation, that is} overvaluation occurs, \ssmmnAgents{} is correlated with \ssmmlatencymu{}. Hence if a market has a large number of market makers, overvaluation can occur even with relatively slow agents. On the other hand, when then market makers are fast, it only takes a few agents to cause prolonged overvaluation.
+ 
+ \begin{figure}
+ \centering
+ \includegraphics[width=0.8\linewidth]{issue_130_overvaluation_scatter/d10/scatter.png}
+\caption{Scatter plot of \ssmmnAgents{} and \ssmmlatencymu{} for markets with lasting overvaluation. $\text{Corr}(\ssmmnAgents, \ssmmlatencymu) = 0.897$}.
+\label{figure:overvaluation_scatter}
+ \end{figure}
+ 
+
  \begin{comment}
  C2 contains the fastest simulations, which take an average of $11.5\times 10^3$ rounds to reach the new fundamental. This group is also the one with the largest overshoot. 
  
@@ -772,32 +771,7 @@ Due to the high latency of the slow traders, any order submitted by a slow trade
 
  \end{comment}
 
-\begin{comment}
-\begin{table}
- \centering
- \begin{tabular}{l|rrrr|rrrrr|r}
-\toprule
-{} &  \overshoot &  \roundstable &  \stdev &  \timetoreachnewfundamental &  \sclatencymu &  \sclatencys &  \ssmmlatencymu &  \ssmmlatencys &  \ssmmnAgents &  \Count \\
-\midrule
-C1  &         0.0 &        2142.8 &     0.0 &                      2220.9 &          10.9 &          4.7 &             7.1 &            3.3 &          11.3 &  7803 \\
-C7  &         0.5 &        4827.7 &     0.2 &                      7424.7 &          18.4 &          3.8 &            18.7 &            5.4 &          23.2 &  1012 \\
-C10 &         0.0 &        2150.8 &     0.1 &                      2261.1 &          12.7 &          4.7 &             9.3 &            4.1 &          14.7 & 25245 \\
-C8  &         0.0 &       10563.6 &     0.1 &                      1926.7 &          10.3 &          4.0 &            12.2 &            5.3 &          20.0 &  7442 \\
-C11 &         0.0 &        6952.5 &     0.1 &                      2276.1 &          13.8 &          4.7 &            11.6 &            4.7 &          18.3 &  5056 \\
-C0  &         0.0 &        1380.7 &     0.1 &                      1479.2 &           9.7 &          3.4 &            14.7 &            5.0 &          12.7 &  9201 \\
-C5  &         0.0 &       17151.2 &     0.1 &                      2087.1 &          11.2 &          4.2 &            12.5 &            5.2 &          21.4 &   356 \\
-C6  &         0.0 &        3961.3 &     0.1 &                      2646.9 &          10.3 &          3.5 &            16.9 &            5.2 &          16.0 &  1598 \\
-C9  &         0.0 &        1048.5 &     0.1 &                      2368.7 &          13.0 &          3.4 &            12.7 &            4.9 &           9.4 &  7278 \\
-C4  &         1.4 &         423.6 &     0.2 &                      4246.5 &          21.3 &          4.3 &            11.6 &            5.3 &          10.4 &  5331 \\
-C2  &         1.6 &         211.8 &     0.2 &                      1943.0 &          16.0 &          5.2 &            11.7 &            5.5 &          13.7 & 10101 \\
-C3  &         2.9 &        7387.0 &     0.4 &                     11884.0 &          26.0 &          4.5 &            15.0 &            5.5 &          30.6 &   390 \\
-Outliers  &         0.8 &           0.6 &     0.3 &                      2691.9 &          11.3 &          6.1 &            13.4 &            5.7 &          14.2 &   740 \\
-\bottomrule
-\end{tabular}
- \label{table:d10_gmm_std}
- \caption{Cluster standard deviations (\dten)}
- \end{table}
-\end{comment}
+
 
 \begin{table}
  \centering
@@ -805,57 +779,52 @@ Outliers  &         0.8 &           0.6 &     0.3 &                      2691.9 
 \toprule
 {} &  \overshoot &  \roundstable &  \stdev &  \timetoreachnewfundamental &  \sclatencymu &  \sclatencys &  \scnAgents &  \ssmmlatencymu &  \ssmmlatencys &  \Count \\
 \midrule
-C5  &         0.0 &       15270.3 &     0.7 &                     19209.4 &          30.0 &          9.3 &        17.5 &            68.7 &            7.9 & 66665 \\
-C11 &         0.0 &       21182 &     0.6 &                     29334.9 &          35.5 &          8.9 &        40.2 &            46.6 &           14.5 &  4369 \\
-C0  &         1.0 &       14897 &     0.8 &                     18523.0 &          32.2 &         10.0 &        25.9 &            55.6 &           11.3 & 30258 \\
-C4  &         1.0 &       19666 &     0.9 &                     25087.1 &          35.3 &          7.3 &        55.5 &            39.0 &           18.9 &  1108 \\
-C9  &         1.0 &       30399 &     0.7 &                     35789.7 &          34.4 &          7.8 &        45.6 &            43.6 &           17.9 &   591 \\
-C6  &         2.0 &       79198 &     0.9 &                     15620.1 &          37.5 &          6.1 &        63.5 &            47.3 &           20.6 & 11141 \\
-C7  &         2.6 &       78771 &     1.0 &                     20524.6 &          37.7 &          5.6 &        63.8 &            38.5 &           22.6 &   967 \\
-C1  &         3.0 &       88210 &     1.0 &                     14225.8 &          37.9 &          4.6 &        88.0 &            44.2 &           23.3 & 10577 \\
-C8  &         4.0 &       89633 &     1.1 &                     13452.7 &          33.6 &          4.4 &       103.9 &            44.4 &           22.7 &  8099 \\
-C3  &         5.7 &       89842 &     1.4 &                     20087.3 &          34.6 &          4.5 &       136.1 &            29.6 &           23.9 &  9613 \\
-C10 &         7.0 &       89935 &     1.8 &                     27587.6 &          32.8 &          4.2 &       165.8 &            25.9 &           24.3 &  1401 \\
-C2  &         7.0 &       89982 &     1.5 &                     11691.4 &          32.3 &          4.4 &       154.4 &            37.6 &           22.7 & 19067 \\
-Outliers  &        40.5 &       89951 &     9.9 &                     10434.7 &          29.2 &          4.0 &       255.5 &            36.4 &           23.5 & 23454 \\
+\C{5}  &         0.0 &       15270.3 &     0.7 &                     19209.4 &          30.0 &          9.3 &        17.5 &            68.7 &            7.9 & 66665 \\
+\C{11} &         0.0 &       21182 &     0.6 &                     29334.9 &          35.5 &          8.9 &        40.2 &            46.6 &           14.5 &  4369 \\
+\C{0}  &         1.0 &       14897 &     0.8 &                     18523.0 &          32.2 &         10.0 &        25.9 &            55.6 &           11.3 & 30258 \\
+\C{4}  &         1.0 &       19666 &     0.9 &                     25087.1 &          35.3 &          7.3 &        55.5 &            39.0 &           18.9 &  1108 \\
+\C{9}  &         1.0 &       30399 &     0.7 &                     35789.7 &          34.4 &          7.8 &        45.6 &            43.6 &           17.9 &   591 \\
+\C{6}  &         2.0 &       79198 &     0.9 &                     15620.1 &          37.5 &          6.1 &        63.5 &            47.3 &           20.6 & 11141 \\
+\C{7}  &         2.6 &       78771 &     1.0 &                     20524.6 &          37.7 &          5.6 &        63.8 &            38.5 &           22.6 &   967 \\
+\C{1}  &         3.0 &       88210 &     1.0 &                     14225.8 &          37.9 &          4.6 &        88.0 &            44.2 &           23.3 & 10577 \\
+\C{8}  &         4.0 &       89633 &     1.1 &                     13452.7 &          33.6 &          4.4 &       103.9 &            44.4 &           22.7 &  8099 \\
+\C{3}  &         5.7 &       89842 &     1.4 &                     20087.3 &          34.6 &          4.5 &       136.1 &            29.6 &           23.9 &  9613 \\
+\C{10} &         7.0 &       89935 &     1.8 &                     27587.6 &          32.8 &          4.2 &       165.8 &            25.9 &           24.3 &  1401 \\
+\C{2}  &         7.0 &       89982 &     1.5 &                     11691.4 &          32.3 &          4.4 &       154.4 &            37.6 &           22.7 & 19067 \\
+\outliers  &        40.5 &       89951 &     9.9 &                     10434.7 &          29.2 &          4.0 &       255.5 &            36.4 &           23.5 & 23454 \\
 \bottomrule
 \end{tabular}
  \label{table:d11_gmm_mean}
  \caption{Cluster means (\deleven)}
  \end{table}
  
- \begin{comment}
- \begin{table}
-  \centering
-  \begin{tabular}{l|rrrr|rrrrr|r}
- \toprule
- {} &  \overshoot &  \roundstable &  \stdev &  \timetoreachnewfundamental &  \sclatencymu &  \sclatencys &  \scnAgents &  \ssmmlatencymu &  \ssmmlatencys &  \Count \\
- \midrule
- C0  &         0.0 &        1349.9 &     0.1 &                      1678.1 &          13.7 &          6.5 &        12.1 &            16.3 &            8.1 & 30258 \\
- C1  &         0.0 &        2448 &     0.1 &                      1383.3 &          16.8 &          4.6 &        15.5 &            18.6 &           10.1 & 10577 \\
- C4  &         0.0 &        3347 &     0.1 &                      4304.5 &          16.8 &          5.7 &        33.3 &            17.4 &           10.8 &  1108 \\
- C5  &         0.0 &        1102 &     0.0 &                      1155.7 &          12.0 &          6.8 &         4.2 &            13.0 &            6.9 & 66665 \\
- C6  &         0.0 &       11795 &     0.1 &                      1640.9 &          17.7 &          5.1 &        18.1 &            19.4 &           10.1 & 11141 \\
- C8  &         0.0 &         893 &     0.1 &                      1446.5 &          16.7 &          4.4 &        19.1 &            20.5 &            9.7 &  8099 \\
- C11 &         0.0 &        2801 &     0.1 &                      4505.8 &          15.0 &          6.4 &        31.7 &            18.6 &           11.2 &  4369 \\
- C7  &         0.6 &        6266 &     0.2 &                      4695.2 &          17.4 &          4.9 &        29.9 &            16.7 &            9.7 &   967 \\
- C9  &         1.1 &        9640 &     0.2 &                     18435.6 &          16.5 &          5.8 &        33.1 &            18.6 &           10.2 &   591 \\
- C2  &         1.7 &         143 &     0.2 &                      1566.7 &          16.3 &          4.7 &        39.8 &            17.6 &            8.9 & 19067 \\
- C3  &         2.2 &         522 &     0.3 &                      3765.1 &          16.7 &          4.5 &        48.7 &            13.0 &            8.9 &  9613 \\
- C10 &         2.3 &         407 &     0.3 &                     10643.3 &          16.8 &          4.4 &        52.4 &            12.4 &            8.8 &  1401 \\
+Table \ref{table:d11_gmm_mean} shows the the data from the experiment in which the number of chartists were varied while the number of market makers was kept constant. The clustering was not able to distinguish behavior in terms of the chartist latency, as the average of \sclatencymu{} is more or less the same in all the clusters. Instead, the parameter with the most noticeable impact on the overshoot is \scnAgents. I big difference from the results in table \ref{table:d10_gmm_mean} is that the outliers in \deleven{} have a large average overshoot. Some of the markets in this groups manage to recover from the overshoot, while some of them stabilize at a level below the fundamental. Markets that do not return to the fundamental or stabilize at a lower price continue to plummet, and such markets are said to have crashes. Since the duration of the simulation is only a few minutes of real-time, the observed crashes are flash crashes.
 
- Outliers  &        53.1 &        1107 &    15.0 &                      3790.6 &          15.5 &          4.5 &        50.7 &            15.9 &            8.3 & 23454 \\
- \bottomrule
- \end{tabular}
-  \label{table:d11_gmm_std}
-  \caption{Cluster standard deviations (\deleven)}
-  \end{table}
- \end{comment}
+Although table \ref{table:d11_gmm_mean} seems to indicate that the chartist latency has little influence on when the market will crash, this is not quite true, and simply a result of limits in trying do group models by behavior using a clustering algorithm. Figure \ref{fig:faster_mm_makes_worse_markets/d11/SC_sclatency} showed that the chartist latency does indeed have a large role to play for the market stability, but only when the number of chartists is more than 200 or so. 
 
 
+
+\section{Ratios}
+The previous sections showed that the number of fast traders and their latencies were important for deciding how the market is going to respond to the fundamental shock. However, in terms of modeling, the number of agents is not particularly interesting as the number of agents in real markets is surely much larger. The same argument can be somewhat applied to the latenci
+
+The findings in the previous 
+
+ \begin{figure}
+ 	%issue 15
+ 	\centering
+ 	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/overshoot_log.png}}
+ 	\subcaptionbox{$\dten \deleven$}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/round_stable.png}}
+ 	\subcaptionbox{$\dten \deleven$}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/stdev.png}}
+ 	\subcaptionbox{$\dten \deleven$}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/time_to_reach_new_fundamental.png}}
+	\caption{}
+ 	\label{fig:ratio_image}
+ \end{figure}
+
+
+Crashes never occur in markets with only fast market makers or fast chartists, no matter how many agents are active and how fast they are. Even markets with 
  
 
-XXX CONSIDER MOVING SOME OF THE TABLES TO THE APPENDIX?
+
 
 \section{Summary of results}
 The results showed that both types of HFT agents influence the market in positive and negative ways. This section contains a summary of the results.
@@ -863,20 +832,29 @@ The results showed that both types of HFT agents influence the market in positiv
 
  Analysis of the results showed that a moderate amount of high speed trading activity was not in itself problematic.
 \begin{itemize}
-\item Market makers have a stabilizing effect on the markets and make the market more robust
 
-\item High speed chartists influence the market so as to decrease the duration of the period of time in which the stock price stock price is overvalued by reducing the time required for the price to return to the new fundamental price after the negative shock. 
-\item Crashes never occur in markets with only fast market makers or fast chartists, no matter how many agents are active and how fast they are. Even markets with 
+\item 
 
 In fact, the markets that had the fastest and most stable response to the shock had both several fast chartists and fast market makers. However, it was found that flash-crashes could occur in markets in which  the number of chartists was four times or greater that of the number of market makers. Furthermore, crashes occurred four times more often when the chartists were faster than the market makers.
 
-
-
-
-
 \end{itemize}
 
+\begin{description}
+\item[Speed/stability trade-off] Correlation between \overshoot{} and \timetoreachnewfundamental
+\item[Agent latency　influences the impact of agent strategy] However, the latency of the agents has the greatest effect when the number of fast traders is large.
+\item[Ratio of agent latencies influences the market]
+\item[Ratio of agent types influences the market]
+\item[Market makers add market stability] Market makers have a stabilizing effect on the markets and make the market more robust to the impact of the chartists. Thus markets with market makers tend to have less flickering prices
+\item[Market makers slow market response] Market makers 
 
+\item[Chartists cause price flickering] As was shown in table \ref{table:d11_gmm_mean}, price flickering increases with the number of chartists in the market 
+
+\item[Chartists increase market response] High speed chartists influence the market so as to decrease the duration of the period of time in which the stock price stock price is overvalued by reducing the time required for the price to return to the new fundamental price after the negative shock. This was seen both in table \ref{table:d11_gmm_mean} and in table 
+
+\item[Occurrence of permanent overvaluation] The market was shown to respond slowly to the shock in the fundamental price when the market contained market makers. This overvaluation could be permanent in the influence of the market makers was big enough. Figure \ref{figure:overvaluation_scatter} showed how the interplay of \ssmmnAgents{} and \ssmmlatencymu{} caused the stock price to become overvalued. 
+%\item[Occurrence of undervaluation] 
+\item[Occurrence of flash crashes] Flash crashes were seen to happen when the ratio of the number of chartists to the number of market makers, \ratioagents{} was large when the ratio between the latencies \ratiolatency{} was also large. Crashes thus required rather specific conditions to occur, and did not occur very often.
+\end{description}
 
 
 

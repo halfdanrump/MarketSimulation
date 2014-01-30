@@ -38,7 +38,12 @@
 %\newcommand*{\varpopulation}[1]{\mathrm{E}_\text{p}[#1]}
 
 
-\newcommand*{\Efilter}[2]{\ensuremath{\mathrm{E}_{\mathcal{F}{#2}}[#1]}}
+\newcommand*{\Efilter}[2]{\ensuremath{\mathrm{E}_{\mathcal{F}{#1}}[#2]}}
+
+
+% % % CLUSTERS
+\newcommand*{\C}[1]{\ensuremath{\mathcal{C}_{#1}}}
+\newcommand*{\outliers}{\ensuremath{\mathcal{O}}}
 
 % % % DATASETS
 \newcommand*{\dthree}{\ensuremath{\mathcal{D}_3}}
@@ -221,18 +226,21 @@ The model simulates the market events in the minutes after the advent of bad new
 
 
 %\newpage
-%\lhead{\emph{XXX}}
+%\lhead{\emph{Inverse simulation}}
 %\input{Chapters/parameter_tuning_and_analysis_tools}
 
 \newpage
-\lhead{\emph{XXX}}
+\lhead{\emph{Results}}
 \input{Chapters/results_new}
 
 \newpage
-\lhead{\emph{XXX}}
+\lhead{\emph{Discussion}}
 \input{Chapters/discussion}
 
 
+\newpage
+\lhead{\emph{Appendix}}
+\input{Appendices/AppendixA}
 
 \newpage
 \bibliography{references}

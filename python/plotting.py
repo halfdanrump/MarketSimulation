@@ -129,8 +129,8 @@ def multiline_xy_plot(x, ys, xlabel, ylabel, legend_labels, filename, y_errorbar
     cmap = brewer2mpl.get_map('Set1', 'qualitative', 9)
     p = Ppl(cmap, alpha=1)
     fig, ax = plt.subplots(1)    
-    ax.set_xlabel(pfn(xlabel))
-    ax.set_ylabel(pfn(ylabel))
+    ax.set_xlabel(fl(xlabel))
+    ax.set_ylabel(fl(ylabel))
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     for i, y in enumerate(ys):
         #print "Errorbar: %s"%y_errorbar
@@ -263,12 +263,12 @@ def make_scatter_plot_for_labelled_data(data_frame, x_name, y_name, labels, file
     #ax.set_autoscale_on(False)
     ax.set_xlim([eval(x_function)(min(data_frame[x_name])), eval(x_function)(max(data_frame[x_name]))])
     ax.set_ylim([eval(y_function)(min(data_frame[y_name])), eval(y_function)(max(data_frame[y_name]))])
-    x_label = x_name.capitalize().replace('_', ' ')
+    #x_label = x_name.capitalize().replace('_', ' ')
     if x_function == 'log': x_label += ' (log)'
-    y_label = y_name.capitalize().replace('_', ' ')
+    #y_label = y_name.capitalize().replace('_', ' ')
     if y_function == 'log': y_label += ' (log)'
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
+    ax.set_xlabel(fl(x_name))
+    ax.set_ylabel(fl(y_name))
     ax.xaxis.get_major_formatter().set_powerlimits((0, 1))
     ax.yaxis.get_major_formatter().set_powerlimits((0, 1))
     # Show the whole color range
@@ -322,8 +322,8 @@ def plot_image_matrix(filename, jaccard_matrix, x_ticklabels = None, y_ticklabel
     #x_ticklabels.reverse()
     ax.set_yticklabels(y_ticklabels)
     ax.set_xticklabels(x_ticklabels)
-    ax.set_ylabel('Chartist to market maker ratio')
-    ax.set_xlabel('Chartist latency to market maker latency ratio')
+    ax.set_ylabel(fl('ratioagent'))
+    ax.set_xlabel(fl('ratiolatency'))
     fig.savefig(filename)
     return fig, ax
 
@@ -345,6 +345,25 @@ def plot_group_overlap(filename, jaccard_matrix):
     ax.set_xticklabels(y_ticklabels)
     fig.savefig(filename)
     return fig, ax
+
+def plot_correlation_matrix(filename, correlation_matrix, labels):
+    size = correlation_matrix.shape[0]
+    colormap = brewer2mpl.get_map('Set1', 'qualitative', 9)
+    p = Ppl(colormap, alpha=1)
+    fig, ax = plt.subplots(1)
+    #masked_jaccard = np.ma.masked_where(np.isnan(jaccard_matrix), jaccard_matrix)
+    p.pcolormesh(fig, ax, correlation_matrix)
+    #ax.imshow(jaccard_matrix, interpolation = 'none')
+    ax.set_xticks([])
+    yticks = np.linspace(size - 0.5, 0.5, size)
+    ax.set_yticks(yticks)
+    labels.reverse()
+    ax.set_yticklabels(labels)
+    ax.set_xticks(yticks)
+    ax.set_xticklabels(labels)
+    fig.savefig(filename)
+    return fig, ax
+
 
 def plot_histogram():
     import numpy as np

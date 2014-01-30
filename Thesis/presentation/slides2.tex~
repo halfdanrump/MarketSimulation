@@ -1,0 +1,359 @@
+% $Header: /cvsroot/latex-beamer/latex-beamer/solutions/conference-talks/conference-ornate-20min.en.tex,v 1.7 2007/01/28 20:48:23 tantau Exp $
+
+\documentclass{beamer}
+
+% This file is a solution template for:
+
+% - Talk at a conference/colloquium.
+% - Talk length is about 20min.
+% - Style is ornate.
+
+
+
+% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+%
+% In principle, this file can be redistributed and/or modified under
+% the terms of the GNU Public License, version 2.
+%
+% However, this file is supposed to be a template to be modified
+% for your own needs. For this reason, if you use this file as a
+% template and not specifically distribute it as part of a another
+% package/program, I grant the extra permission to freely copy and
+% modify this file as you see fit and even to delete this copyright
+% notice. 
+\setbeamercolor{item projected}{bg=black}
+
+\mode<presentation>
+{
+%  \usetheme{Boadilla}
+  \usetheme{CambridgeUS}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+
+
+%\usepackage[english]{babel}
+% or whatever
+
+%\usepackage[latin1]{inputenc}
+% or whatever
+\usepackage{amsmath,amssymb,latexsym,epsfig,graphicx,psfrag,pstricks, fancybox}
+%\usepackage{times}
+%\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+%\title[short title]{long title}
+%\subtitle[short subtitle]{long subtitle}
+%\author[short name]{long name}
+%\date[short date]{long date}
+%\institution[short name]{long name}
+
+
+
+
+
+ % (optional, use only with lots of authors)
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\title{Seminar Presentation} % (optional, use only with long paper titles)
+\author{Halfdan Rump}
+\date{May 9th 2012} % (optional, should be abbreviation of conference name)
+\institute{Sugawara Lab} % (optional, but mostly needed)
+%  \inst{1}%
+%  Department of Computer Science\\
+%  University of Somewhere
+%  \and
+%  \inst{2}%
+%  Department of Theoretical Philosophy\\
+%  University of Elsewhere}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+%{Conference on Fabulous Presentations, 2003}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+%\subject{Theoretical Computer Science}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+%\AtBeginSubsection[]
+%{
+%  \begin{frame}<beamer>{Outline}
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+%}
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command: 
+
+%\beamerdefaultoverlayspecification{<+->}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents%[part=1,pausesections]
+\end{frame}
+
+
+
+
+	
+%\begin{frame}{Outline Of My Activities}
+%  \tableofcontents
+%  % You might wish to add the option [pausesections]
+%\end{frame}
+
+% Structuring a talk is a difficult task and the following structure
+% may not be suitable. Here are some rules that apply for this
+% solution: 
+
+% - Exactly two or three sections (other than the summary).
+% - At *most* three subsections per section.
+% - Talk about 30s to 2min per frame. So there should be between about
+%   15 and 30 frames, all told.
+
+% - A conference audience is likely to know very little of what you
+%   are going to talk about. So *simplify*!
+% - In a 20min talk, getting the main ideas across is hard
+%   enough. Leave out details, even if it means being less precise than
+%   you think necessary.
+% - If you omit details that are vital to the proof/implementation,
+%   just say so once. Everybody will be happy with that.
+\section{Introduction}
+
+\begin{frame}
+\frametitle{}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}\frametitle{Disclaimer}
+	\begin{itemize}
+		\item This is a presentation about my thoughts about research after entering the lab.  \pause
+		\item I have not yet been able to decide on a specific research question.\pause
+		\item I warmly welcome any suggestions.\pause
+		\item I am sorry that the slides are only in English.
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Outline of Activity}
+I have been reading about the following topics
+	\begin{itemize}
+		\item Rational vs. boundedly rational agents\pause
+		\item Agent based social simulation\pause
+		\item Cognitively realistic agents\pause
+		\item Slides in \LaTeX.
+	\end{itemize}
+\end{frame}
+
+
+
+\section{Boundedly Rational Agents}
+
+\begin{frame}{Economics and Sociology}
+The scientific fields of economics and social science are changing. These changes are of interest to us engineers who are interested in A.I.\pause
+	\begin{itemize}
+		\item Sociology is moving towards the use of multi agent simulations for understanding society.\pause
+		\item Economics theory is moving away from the classical assumptions of completely rational agents.\pause
+		\item The rationality assumption is nice, because it vastly simplifies behavior and makes it possible to mathematically predict behavior.\pause 
+		\item We can use game theory to model a wide range of situations, both in economics and in sociology.\pause
+		\item Game theory scales well, in that we can calculate aggregate behavior.
+	\end{itemize}
+
+\end{frame}
+
+%Are we always being rational at some level? 
+%When a mother sacrifises herself to save her child, is she being rational?
+
+
+
+\begin{frame}{The Complexity of Social Phenomena}
+Why is social phenomena, including the economy, so difficult to predict?\pause		
+	\begin{itemize}
+		\item People are not always rational. In fact, we cannot be. Our brain is too limited and the world is too complex.\pause
+		\item Social phenomena are path dependent and have network effects.\pause
+		\item Very rare events, known as Black Swans, are basically unpredictable because they have little or no precedence.\pause
+		\item Interactions between people are often complex and non-linear, meaning that we cannot understand society as a whole by studying the individuals within it. Macro level organization \textbf{emerges} from micro level behavior. [Gilbert]\pause
+		\item It's usually not possible to run expleriments in the real world.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Picture of the Day}
+\begin{center}
+\includegraphics[scale=0.08]{brain.jpg}
+\end{center}
+\end{frame}
+
+
+
+
+
+\section{Designing Boundedly Rational Agents}
+
+\begin{frame}
+\frametitle{}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Personality Types}
+We can analyze how people behave, and try to make agents that behave similarly.\pause
+	\begin{itemize}
+		\item People vary greatly in the capabilities, desires, needs and knowledge. \pause
+		\item We can try to make agents that behave like certain kinds of people. \pause	
+		\item A group of scientists analysed questionnaires sent out to market traders and came up with two agent types with fundamentally different behavior: Fundamentalists and chartists.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Predictably Irrational}
+We can try to find out how people's behavior is shaped by their limited capacity for information processing.\pause
+	\begin{itemize}
+		\item People are not rational, so how do we predict behavior?\pause	
+		\item It turns out that people are "predictably irrational" [Ariely]\pause
+		\item Examples: The Ultimatum Game, The Public Goods Game	.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Cognitive Biases}
+But if we are irrational, how is it possible to predict how we behave?\pause
+	\begin{itemize}
+		\item What makes us predictable is that we suffer from a number of cognitive biases. They provide us with rules of thumb about how people are likely to behave in different situations.\pause	
+		\item	 Cognitive biases are heuristics and mental shortcuts.\pause
+		\item The human brain has limitied processing capacity, and heuristics are necessary to navigate a complex world.\pause	
+		\item It has even been suggested that emotions function as mental shortcuts to speed up the decision process [Taleb].\pause
+		\item Examples: Confirmation bias, anchoring, availability, etc.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Cognitive Modelling}
+We know a great deal about such biases, but there are still many unaswered questions.\pause
+	\begin{itemize}
+		\item How can cognitive biases can be modelled?\pause
+		\item How do the different biases interact and when are they active?\pause
+		\item For the purposes of simulating social or economic systems, can we avoid considering the underlying, physical qualities of our brain that such produce biases?\pause	
+		\item To what extend is cognition a social process?\pause
+		\item How can we determine which cognitive biases are relevant for which observed social phenomenon?	
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Cognitive Modelling}
+So why bother?\pause
+	\begin{itemize}
+		\item In order to be able to generalize observations, our agents need to act humanlike.\pause		
+		\item We don't know how the human hardware works, but we can make agents whose behavior mimics that of humans.\pause
+		\item Rationality is mathematical in nature, and we understand it well enough to make agents that behave rationally to the limit of their processing power.\pause
+		\item A.I. has long been using heuristics to solve computationally hard problems, but these have not been particularly inspired by human heuristics.\pause
+		\item	 We should try to make agents that use heuristics that are inspired by how humans actually behave.			
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Why Cognitive Modelling? An example}
+\begin{itemize}
+		\item \textit{"Simpler models of agents is all that is needed if the objective is to predict the behavior of the organisation as a whole, but more cognitively accurate models are needed to generate the same predictive accuracy at the individual or small group level."} [Carley et al.]\pause		
+		\item A lot of important decisions that have a large impact on the world are made by a small group of people (typically politicians or company leaders). Although such people may be brilliant in many ways, they still suffer from the same shortcomings as the rest of us.\pause	
+		\item Groupthink: The desire to reach consensus and avoid confrontation hinders progress. \pause	
+		\item In other words, a group of highly talented people can, if in a group where social considerations come into play, make very bad decisions.\pause	
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Method of Cognitive Modelling}
+How to proceed with cognitive modelling? \pause
+	\begin{itemize}
+		\item Cognitive architecture: "Cognitive Social Simulation Incorporating Cognitive Architectures"\pause
+		\item Simpler mathematical synthesis of biases: "Towards a Synthesis of Cognitive Biases"\pause		
+		\item Both seem difficult to understand.
+		\item Is there a simpler way?
+	\end{itemize}
+\end{frame}
+
+\section{Agent Based Simulation}
+
+\begin{frame}
+\frametitle{}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Agent Based Simulation}
+How can we analyse society and come up with theories with predictive power?\pause		
+	\begin{itemize}
+		\item We propose a theory. E.g. "Over-representation of males in company leadership leads to over-competitive corporate behavior."\pause
+		\item We design agents with characteristics that are relevant for the research question, e.g. male agents and female agents.\pause
+		\item We design an environment with suitable social constraints, and rules about how agents can interact.\pause
+		\item We initialize the environment according to some parameters.\pause
+		\item We then let time pass, and observe emerging patterns.
+	\end{itemize}
+\end{frame}		
+		
+
+\begin{frame}{Agent Based Simulation}
+	\begin{itemize}
+		\item A problem with this approach is that it is easy for the researcher to encode personal expectations into the agent design, thus biasing the results of the simulation.\pause
+		\item	 The same patterns can arise under many different circumstances, and we might not be able attribute emerging patterns directly to specific patterns of behavior of the agents.\pause
+		\item One way to proceed is equivalent to the Null-hypothesis in statistics: We design a system which we do not expect to exhibit some behavior. Then, if the addition of extra rules, behavior or components leads to the emergence of a certain pattern, then these additions are likely to be responsible for that pattern.
+	\end{itemize}
+\end{frame}
+
+
+We already have a pretty good idea how heuristics and biases affect individual human behavior. What impact do they have on our society as a whole? \pause
+	\begin{description}
+		\item[From cognitive biases to social phenomena] Make a world populated by agents with some cognitive biases and see what norms arise. By trying different biases we might be able to learn about what biases are responsible for what emerging behavior.\pause
+		\item[From social phenomena to cognitive biases] Make a world with a fitness function corresponding to observed social norms. Use optimization algorithm to tune agents until the observed behavior emerges.		
+	\end{description}
+\end{frame}
+
+
+\section{What Will I Do Next?}
+
+\begin{frame}{To Do}
+	\begin{itemize}
+		\item Read some papers on social science that described some of the problems in the field.\pause
+		\item Read some papers that have done some simulations with agents - see how they did it. In particular, how did they design the agents and the environment?\pause
+		\item Read about the CLARION cognitive architecture. 
+		\item Prof. Toriumi has given me quite a few papers... I need some time to get through these.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Personal Doubts}
+
+	\begin{itemize}
+		\item I really feel that I am trying to gap too much: social science/economics, cognitive modelling, multi agent simulation. I need help narrowing down what I should study. \pause
+		\item When we design the agents or an environment, we need to simplify the real world. But how do we know that our simplifications actually keep the relevant aspects and discards the irrelevant ones? Aren't we merely guessing?
+		\item Can rationality be clearly defined? Doesn't it always depend on what perspective we take?
+	\end{itemize}
+\end{frame}
+
+
+\end{document}
+
+

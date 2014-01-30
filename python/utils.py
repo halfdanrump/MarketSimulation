@@ -9,7 +9,7 @@ latex_dict = {
 				'stdev' : r'$f_\sigma$',
                 'overshoot' : r'$f_\text{o}$',
                 'time_to_reach_new_fundamental' : r'$f_t$',
-                'round_stable' : r'$f_\text{t}$',
+                'round_stable' : r'$f_\text{s}$',
                 'fundamental_initial_value' : 10000,
 			    'fundamental_shock_size' : -10,
 			    'fundamental_shock_round' : 10000,
@@ -44,7 +44,11 @@ latex_dict = {
 			    'sc_waitTimeBetweenTrading_s' : 20,
 
 			    'ratio_c2m' : r'$\frac{N_{c}}{N_{m}}$',
-			    'ratio_m2c' : r'$\frac{N_{m}}{N_{c}}$'
+			    'ratio_m2c' : r'$\frac{N_{m}}{N_{c}}$',
+			    'ratioagent' : r'$\rho_A$',
+			    'ratiolatency' : r'$\rho_\lambda$',
+			    'ratioagentinv' : r'$(\rho_A)^{-1}$',
+			    'ratiolatencyinv' : r'$(\rho_\lambda)^{-1}$'
                 }
 
 def get_fundamental_after_shock():
@@ -174,5 +178,11 @@ def load_d10d11():
 	fit = concat([fit10, fit11])
 	return fit, par
 
-def format_as_latex_parameter(parameter):
-	return latex_dict[parameter]
+def format_as_latex_parameter(parameter, mathmode = True):
+	l = latex_dict[parameter]
+	if mathmode: 
+		l = l[0] + '\displaystyle ' + l[1:]
+		return l
+	else: 
+		return l[1:-1]
+
