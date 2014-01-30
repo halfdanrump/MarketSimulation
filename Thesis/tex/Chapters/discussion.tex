@@ -1,26 +1,28 @@
 \part{Discussion}\label{chapter:discussion}
 
-\section{Benefits of fast traders}
+%\section{Benefits of fast traders}
 
 
-\subsection{Fast market makers reduce price flickering}
-In 
 
-\section{Market makers causing overvaluation of the stock}
-In the previous part it was shown that overvaluation, that is, a discrepancy between the fundamental price and the traded price of the stock occurred in some markets. 
+%Generally, the results make it possible to conclude that, if each agent strategy can be said to have a particular way of influencing the market causing what may be dubbed ``agent consistent dynamics'', reducing the latency of the agents caused  resulted in this tendency to become stronger.
 
 
-occurred more frequently when the market had a high proportion of market makers
+%\section{Fast }
 
-As was shown in figure XXX, both an increased number of market makers and market makers with lower latencies tended to push the market towards responding slower to the change in the fundamental price. A slower response means that a discrepancy between the traded price and the true fundamental price persists for longer. In the case of a negative shock ($\fundamentalshocksize < 0$), the fundamental price will be lower than the traded price, which is the same as saying that the stock is overvalued.
+%This work has provided several suggestions for how scenarios 
 
-While this does not pose a problem in the current market model, it is easy to see how such an inefficiency can be exploited. In the current market model, the fast traders do not know the fundamental price, and therefore have no concept of the true value of the stock. Instead the fast traders trade only by observing the order book, whereas it is the slow traders who know the funamental. However, if a fast trader also knew the fundamental price he could explots. This is exactly what the agents in \cite did, and in this work we have shown that the presence of fast market makers make the scenario assumed in that work more likely to happen
+%This work has investigated some of the fundamental circumstances that are 
 
-Furthermore, we speculate that this prolonging of the overvaluation is not only due to the nature of the market making strategy, but due to the the market making strategy being used by traders \textit{who are very fast}. When the market makers are very fast, their behavior will be more alike, since they act on almost the same information, and hence their aggregate behavior will combine into a consistent force that has a strong influence on the market. 
-be more consistent than if the market makers are slow, simply because the market making strategy is simple 
+%In conclusion, this work carried out as part of this thesis has produced results which 
 
-Generally, the results make it possible to conclude that, if each agent strategy can be said to have a particular way of influencing the market causing what may be dubbed ``agent consistent dynamics'', reducing the latency of the agents caused  resulted in this tendency to become stronger.
 
+
+\section{Co-location and communication delays}
+Information technology has made it possible to trade on markets anywhere on the globe with a latency that is so low that it is not registered by humans. According to \cite{golub2012high}, trading across the transatlantic ocean can currently be accomplished with a delay of around 60ms, which is around 10 times faster than the shortest time that a trained person needs to react to an event that requires cognitive effort to be resolved. 
+
+Some algorithmic traders use high performance computing techniques such as dedicated FPGA processing \cite{morris2009fpga} to analyze market data in a few dozen microseconds. Co-location, in which trading firms pay premium rates for a location close to the market has become a more or less (as it were: \cite{najarian2013hft}) accepted standard requirement for firms that want to do high frequency trading \cite{jeffs2010colocation, brogaard2013trading, rogow2012colocation}. Other algorithmic traders rely less on speed and use regular communications channels. Hence, in the real world, algorithmic agents trade with delays stemming from network latency and computation time, varying from moderately fast (a few hundred milliseconds) to extremely fast (a few milliseconds, or less).
+
+A latency of 60ms, which as already mentioned is the current cutting edge trading speed over the Atlantic Ocean \cite{williams2011cable, phillips2012cable}, corresponds to 60 rounds in the model. A round trip from New York to Chicago takes 8.5 milliseconds\cite{adler2012cable}, corresponding to 8 or 9 rounds in the simulation. Hence, the delays of the fast traders in the model approximate the delays of actual algorithmic traders. We therefore believe that the findings showing that the right combination of fast traders can cause the market to crash is rather interesting. Furthermore, we believe that this work contributes to the ongoing discussion for and against high frequency trading and the accompanying technological arms-race. 
 
 
 \section{Market crashes}
@@ -57,32 +59,19 @@ On the other side of the order book, the best buy price starts to drop as the se
      \label{}
 \end{figure}
 
-\subsection{Frequency of crashes}
+\section{Fast market makers causing overvaluation of the stock}
+In the previous part it was shown that overvaluation, that is, a discrepancy between the fundamental price and the traded price of the stock, occurs in some markets. 
 
+As was shown in figure XXX, both an increased number of market makers and market makers with lower latencies tended to push the market towards responding slowly to the change in the fundamental price. A slower response means that a discrepancy between the traded price and the true fundamental price persists for longer. In the case of a negative shock ($\fundamentalshocksize < 0$), the fundamental price will be lower than the traded price, which is the same as saying that the stock is overvalued.
+
+While this does not pose a problem in the current market model, it is easy to see how such an inefficiency can be exploited. In the current model, the fast traders do not know the fundamental price, and therefore have no concept of the true value of the stock. Instead the fast agents trade only by observing the order book, whereas it is the slow traders who know the fundamental. However, if fast traders were to obtain information about the fundamental. such a trader would be able to use this knowledge to deliberately trade at below optimal prices, in expectation that the traded price will eventually return to the fundamental price. In the case of a sudden negative shock in the fundamental, such fast fundamentalists would be able to be reasonably safe by short-selling, as aggregated action of all the active fundamentalists will most likely drive the traded price down towards the new and lower fundamental. In the case of a sudden positive shock to the fundamental, the fast fundamentalists would be able to profit by buying up large volumes of stock which they would then sell after the traded price has descended fully or partly to the higher fundamental price. The profit generated by such a strategy would be at the expense of the slow fundamentalist, and is exactly how the fast and informed (e.i., informed of the fundamental price) agents in \cite{} managed to turn a profit. This work has shown that the presence of fast market makers make the scenario assumed in that work more likely to happen.
+
+We find it reasonable to speculate that the increased response time, or prolonged overvaluation of the stock price, is not only due to the nature of the market making strategy, but due to the the market making strategy being used by traders \textit{who are very fast}. When the market makers are very fast, their behavior will be more alike, since they act on almost the same information, and hence their aggregate behavior will combine into a consistent force that has a strong influence on the market. In the field of multi-agent simulation, this phenomenon is known as strategy crowding \cite{macal2005tutorial}, and basically means that agents using similar strategies and/or observe the same environment tend to act in similar ways. In this model. agents generally \textit{do not} observe the same information at the same time, and strategy crowding therefore seems less likely to happen. However, when the agents become fast, the will increasingly start to observe the same information, or at least information which is only very slightly delayed and therefore very similar. This is similar to the argument raised in \cite{}, but whereas the model in that work assumed identical strategies, this work has shown that 
+
+\subsection{Frequency of crashes}
 Crashes did not occur often particularly. Even during experiment \deleven, in which the genetic algorithm ended up prioritizing the market response times, and generate a large number of genes with many chartists and very fast market makers, the market had an overshoot of over 25 tick in just less than 0.2\% of the cases\footnote{The simulation was run around $4\cdot 10^5$ times, and 7989 of these had $\overshoot > 25$}. In experiment \dten, not a single case of markets with an overshoot of over 17 ticks was generated. 
 
 
 
-\subsection{Agent speed and market crashes}
-XXX INSERT DATA THAT SHOWS THAT CRASHING MARKETS HAD FASTER AGENTS THAN NON CRASHING MARKETS
-
-
-\section{title}
-XXX discuss the variability of market behavior for markets simulated with the same parameters. is it reasonable that the same set of parameters can cause various types of behavior? XXX 
-
-
-\section{Co-location}
-Stable markets had an average market maker latency of $\ssmmlatencymu = 60 ms$, while crashing markets had an average of $\ssmmlatencymu = 30 ms$. Is it realistic that just a factor of two can have such a dramatic effect on the markets? 
-
-The recent construction of the transatlantic fiber line reduced the latency from European markets to American markets 
-
-Note also that latency is nt just a result of physical distance in the market. Network crowding can cause an increase in the latency as well. 
-
-
-\section{Strategy crowding}
-Strategy crowding is a commonly observed phenomenon in the field of multi-agent systems. XXX FIND REFERENCE XXX
-
-\section{Future work}
-A commonly used strategy among high frequency traders is that of arbitrage, 
 
 

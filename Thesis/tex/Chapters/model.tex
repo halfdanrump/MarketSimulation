@@ -17,7 +17,7 @@ The model consists of a market and agents. Agents and the market communicate by 
 
 \section{Model overview}
 
-As has already been pointed out, the primary goal of the model is to simulate the presence of delays in communication between agents and then market. Furthermore, unlike previous models in which agents are divided into slow and fast traders, the model proposed in this work puts emphasis on modeling the real world scenario in which the latency with which the agents trade is an arbitrary period of time. As is discussed in section \ref{section:agents}, agents in this model are also divided into two groups of slow and fast traders, but since agents in either group have delays of an arbitrary number of simulation rounds, this division of the agents is much less strict than in previous models, such as \cite{keylist}, \cite{} and \cite{}.
+As has already been pointed out, the primary goal of the model is to simulate the presence of delays in communication between agents and then market. Furthermore, unlike previous models in which agents are divided into slow and fast traders, the model proposed in this work puts emphasis on modeling the real world scenario in which the latency with which the agents trade is an arbitrary period of time. As is discussed in section \ref{section:agents}, agents in this model are also divided into two groups of slow and fast traders, but since agents in either group have delays of an arbitrary number of simulation rounds, this division of the agents is much less strict than in previous models, such as \cite{mcinish2012strategic, hoffmann2012dynamic, foucault2012news}.
 
 Each round of the simulation corresponds to a period of real-time, but it is not particularly important to specify how long that period is. Instead, what matters is that there is a difference in speed between the agents. In other words, the important thing is that some agents are much faster than other agents. If one thinks of each round as a millisecond of real-time, one realizes that an agent simulating a human trader will require several thousands of simulation rounds to react to market news. On the other hand, fast algorithmic traders may only require a few rounds, making them several orders of magnitude faster than the slow traders. 
 
@@ -50,7 +50,7 @@ A complete simulation consists of executing $10^5$ consecutive rounds. Each roun
 \end{description}
 
 
-\subsection{The stock and its prices}
+\subsection{The stock and its prices}\label{section:stock_and_prices}
 A single stock is traded in the market. The market uses a continuous double auction to match orders. As with anything that is traded in an auction, the traded asset cannot be said to have a single defining price. Instead, the value of the asset can be defined in (at least) three ways, as described below
 
 \begin{description}
@@ -108,7 +108,7 @@ When a trade is executed between orders $o_1$ and $o_2$, the traded volume is
 \end{equation}
 If $v_{o_1} = v_{o_2}$ the orders are \textit{fully matched}, and both are removed from the order book. In the case of a \textit{partial match}, that is, if the volume of one order is larger than the volume of the other, then the order with the smaller volume is removed, and the volume of the other order is subtracted by $\Delta v$. The price of the transaction is the price of the market order which was already in the book. 
 
-Each agent knows the volume of every order that it submitted, when the order was dispatched. However, when an order is partially filled by a matching but smaller order, the volume of the order at the market changes. Since it takes time for the order to be transmitted for the agent to the market, the agent cannot immediately update its knowledge of the order volume. In this case the order has one volume at the agent side and another in the market side. The momentary disparity of agent market side and agent side volumes can have several consequences, such as agents short-selling without, agents submitting cancellations for orders which have already been filled. Rules that handle these situations are described in section \ref{section_marketRules}. Unlike volumes, the price of a standing market order does not change, and hence the situation of a disparity between market- and agent-side price knowledge does not occur.
+Each agent knows the volume of every order that it submitted, when the order was dispatched. However, when an order is partially filled by a matching but smaller order, the volume of the order at the market changes. Since it takes time for the order to be transmitted for the agent to the market, the agent cannot immediately update its knowledge of the order volume. In this case the order has one volume at the agent side and another in the market side. The momentary disparity of agent market side and agent side volumes can have several consequences, such as agents short-selling without, agents submitting cancellations for orders which have already been filled. Unlike volumes, the price of a standing market order does not change, and hence the situation of a disparity between market- and agent-side price knowledge does not occur.
 
 
 
@@ -183,7 +183,7 @@ The slow trader model used in this work is inspired by the stylized trader model
 %Since the stylized trader model is so predominant in the market simulation literature (see \cite{asd}, \cite{asd} etc.), we feel that we need to justify our choice of not using it. 
 The idea of the model is that there are three basic trading strategies techniques that any human trader trader mixes to form his own personal strategy. 
 \begin{description}
-\item[Fundamental analysis] Traders subscribing to this way of thinking believe that they can know the true value of a stock by estimating the fundamental price (see section \ref{section:fundamental_price}). Furthermore, such traders believe that any deviation from the fundamental price is due to other traders misinterpreting the market, and that such deviations will eventually disappear. In other words, given enough time, the traded price will converge towards the fundamental price. 
+\item[Fundamental analysis] Traders subscribing to this way of thinking believe that they can know the true value of a stock by estimating the fundamental price (see section \ref{section:stock_and_prices}). Furthermore, such traders believe that any deviation from the fundamental price is due to other traders misinterpreting the market, and that such deviations will eventually disappear. In other words, given enough time, the traded price will converge towards the fundamental price. 
 \item[Technical analysis] Traders using technical analysis do not care whether or not the stock is overvalued. Instead, they believe that they can predict future price movements from past data. Traditional technical analyst approaches extrapolates on price movements by using simple mathematical models and a good deal of heuristics.
 \item[Noise trading] Some traders are in possession of insider knowledge, which means that they think that they know something about the stock that others do not. They use this information to trade the stock, for better or for worse. Such traders were dubbed noise traders, since it is highly unlikely that any one individual would come in possession of information which actually gives that person an advantage in the market. Any such belief is therefore naive, and might as well inflict a loss on the agent than generate a profit.
 \end{description}
@@ -212,7 +212,7 @@ The arrival of orders from slow traders is modeled as a Poisson process, as this
 \begin{equation}\label{eq:poisson_distribution}
 \kappa_T \sim Pois(\storderarrivalrate)
 \end{equation}
-In \cite{amihud1980dealership} the number of buy order and the number of sell orders are distributed according to two separate Poisson processes. In this work the market is assumed to be in a stable state prior to the shock to the fundamental price, and hence the average number of arriving buy orders is assumed to be the same as the average number of sell orders. Therefore a single Poisson process is used to obtain the number of newly arriving orders, and these orders are then divided into sell and buy orders with equal probability. Furthermore, since the model only simulated a short span of time after the shock, it is reasonable to assume that \avrstorders{} is constant as the population of slow traders can be assumed not to be exhibit any herding behavior which might occur over longer periods of time \cite{herding}.
+In \cite{amihud1980dealership} the number of buy order and the number of sell orders are distributed according to two separate Poisson processes. In this work the market is assumed to be in a stable state prior to the shock to the fundamental price, and hence the average number of arriving buy orders is assumed to be the same as the average number of sell orders. Therefore a single Poisson process is used to obtain the number of newly arriving orders, and these orders are then divided into sell and buy orders with equal probability. Furthermore, since the model only simulated a short span of time after the shock, it is reasonable to assume that \avrstorders{} is constant as the population of slow traders can be assumed not to be exhibit any herding behavior which might occur over longer periods of time.
 
 
 \subsection{HFT Market makers}\label{section:market_maker}
@@ -354,30 +354,6 @@ Figure \ref{figure:chartist_strategy} provides two examples of how the sensitivi
 \label{figure:chartist_strategy}
 \end{figure}
 
-
-
-
-
-\begin{comment}
-\subsubsection{Fundamental price}\label{section:fundamental_price}
-A common way to model the development of the fundamental price is to use a stochastic random walk process. The idea is that, assuming that markets are efficient, any available information about the stock is already reflected in the fundamental price. When some news arrive, this will quickly cause the price to change according to the nature of the news, as rational traders act to adapt to the new situation. The justification for modeling this with a random walk is that, since the fundamental price already reflect whatever news is available, it will only change as new information is released. In other words, the fundamental price is independent of past information. Since new information is fundamentally unpredictable, a random walk model seems suitable. 
-
-
-\begin{figure}
-%issue 11
-\subcaptionbox{\label{subfig:}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\subcaptionbox{\label{subfig:}}
-[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{Electron.pdf}}
-\caption{\textbf{:}}\label{fig:}
-\end{figure}
-content...
-\end{comment}
-
-%\section{Implementation}
-
-
-%\section{Overview of model parameters}\label{section:overview_of_model_parameters}
 
 
 
