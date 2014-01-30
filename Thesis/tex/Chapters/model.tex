@@ -44,7 +44,7 @@ A complete simulation consists of executing $10^5$ consecutive rounds. Each roun
 \begin{description}
 \item[The round is initialized] Time is incremented and the fundamental price is updated. In this thesis, the only change to the fundamental price is at time $\round = \fundamentalshocktime$, where the fundamental price changes from $\fundamentalprice{0}$ to $\fundamentalaftershock = \fundamentalprice{0} - \fundamentalshocksize$.
 \item[Arriving messages are dispatched to recipients] All messages with arrival time $\round{T}$ are delivered. Arriving transaction receipts delivered to the agents involved in the trades, and the portfolios of these agents are updated. Similarly, arriving orders and order cancellations are delivered to the market and placed in the order book message queue. Finally, all messages containing market information are received by the agents that requested the information. 
-\item[Slow trader activity] The number of slow trader orders that arrive in this round is sampled from equation \ref{eq:poisson_distribution} and the orders are created using equation \ref{eq:slow_trader_price_determination}. The orders are instantly placed in the order book message queue.
+\item[Slow trader activity] The number of slow trader orders that arrive in this round is sampled from equation \ref{eq:poisson_distribution} and the orders are created using the equations in section \ref{section:slow_trader_price_determination}. The orders are instantly placed in the order book message queue.
 \item[Fast trader activity] All HFT agents finishing evaluation of their strategies wake up and execute their decisions by sending out new orders containing orders and order cancellations. Each market maker \marketmaker{i} Each chartist \chartist{j} starts its hibernation period of \scwaitTimeBetweenTradingagent{j}.
 \item[Order book is updated] All orders expiring this round are removed from the order book. Next, messages waiting in the message queue are processed in random order. Orders targeted by order cancellations are removed from the book, and transaction receipts are created for each pair of buy and sell orders with matching prices. After all messages have been processed, the best bid and ask prices, \bestbidprice{T} and \bestaskprice{T}, are set equal to the prices of the two most competitive remaining orders. In the case that no changed were made to the order book in round \round{T}, $\bestbidprice{T} = \bestbidprice{T-1}$ and $\bestaskprice{T} = \bestaskprice{T-1}$.
 \end{description}
@@ -117,29 +117,11 @@ Each agent knows the volume of every order that it submitted, when the order was
 \subsection{Messages}
 All communication between the market and agents is transmitted in messages and all messages take a non-zero number of rounds to arrive. This means that no information is transmitted instantly between agent and market. The latency between any agent and the market is constant throughout the simulation, but different for each agent. The delay between market maker \marketmaker{i} and the market is \ssmmlatencyagent{i}, and the distance between chartist \chartist{j} and the market is \sclatencyagent{j}. All latencies between agents and markets are non-negative integers. A message created in round $\round{T}$ by an agent with a latency of $\lambda$ rounds to the market with arrive at the market in round $\round = \round{T} + \lambda$. Several message types were implemented in order to accommodate the various types of communication.
 
-\begin{figure}[htbp]
-%issue 14
-	\centering
-		\includegraphics{Figures/Electron.pdf}
-		\rule{35em}{0.5pt}
-	\caption{}
-	\label{fig:information_exchange}
-\end{figure}
-
 
 \subsubsection{Market information}
 One of the key points of simulating delays is that agents always trade on old information. Before an agent can evaluate its strategy, it has to request the most recent market information. In a model without delays, an agent would simply receive the state of the market in the current round, but when information is delayed the process is somewhat more cumbersome. First the agent sends off a request to obtain the information about the market state. When the request arrives at the market some rounds later, the market serves the request and by sending back another message containing the information. The contents of this message depends on the agent strategy, as the various agent strategies require different information. 
 In the case of a single market, it is reasonable to simplify the model such that the market serves the request instantaneously, since any delay inherent in the market is common for all agents. 
-After a further delay, the message containing the market state finally arrives at the agent, and the agent can then start evaluating its strategy. Figure \ref{fig:information_exchange} summarizes the procedure.
-
-This is analogous to how 
-\begin{figure}[htbp]
-	\centering
-		\includegraphics{Figures/Electron.pdf}
-		\rule{35em}{0.5pt}
-	\caption{When an agent wants to submit an order it has to go through several steps of interaction with the market. The process is comparable to how real traders communicate with markets via a network, such as the Internet.}
-	\label{fig:information_exchange}
-\end{figure}
+After a further delay, the message containing the market state finally arrives at the agent, and the agent can then start evaluating its strategy. 
 
 
 \subsubsection{Orders}
@@ -191,10 +173,9 @@ The idea of the model is that there are three basic trading strategies technique
  The orders submitted the stylized traders throughout the run of the simulation should be thought of as being submitted by a variety of different agents, all observing the same historical data, but interpreting it differently using different strategies. In other words, the model for the slow traders proposed in this work should thought of as representing a group of traders \cite{drogoul2003multi}. Hence, even though all the slow traders are fundamentalists, they all have slightly differing opinions on what the fundamental price actually is at any given moment. This difference in opinion is modeled by adding normally distributed noise to the price estimate, as described below. In this model the fundamental and noise trader parts of the stylized trader strategy are preserved, but the chartist behavior is removed. Most chartist strategies operate on a timescale of days to weeks to months. However, the simulation proposed in this work merely simulates a few minutes of real-time\footnote{This is not entirely accurate as each round can be interpreted as an arbitrary length of real-time. However, since we are interested in what phenomena occur when we have some agents which are several orders of magnitude faster than other agents, we need a high time resolution, effectively capping the length of real-time which can be simulated}. Any chartist strategy based on the entire history of price movement over a long period of time will simply be too sluggish to follow with the high frequency price fluctuations occurring within the simulation. In other words, to a slow trader that relies heavily on the chartists part of the stylized trader strategy and calculates the moving average of the traded price over a period of days or months, any price changes that take place during a few seconds will hardly register at all. Even to relatively fast stylized traders that rely of minute-by-minute price changes, the time span simulation by the model is so short that the price changes that take place during the simulation will be smoothed out by trader's moving average calculation. This does not mean that the model neglects to recognize the fact that slow trader chartists do exist, but since these traders base their price estimates on price data from the past days, weeks or even months, it is not possible to simulate these strategies directly as it would require an exorbitant number of simulation rounds. Instead, the presence of chartists are modeled by adding fast agents using a short-term chartist strategy, which is described in section \ref{section:hft_chartist}. 
  
 
-%Instead, the contributions of long term chartists is modeled as simply additive gaussian noise. While this may indeed be an over-simplification, this approach is justified if assuming that the slow trader chartists 
 
 
- \subsubsection{Strategy} 
+ \subsubsection{Strategy}\label{section:slow_trader_price_determination}
 The slow trader observed the market with a delay of \stlatency. Hence, in round $\round{T}$, the slow trader knows the price of the true fundamental in round $\round{T} - \stlatency$, which will be dubbed $\fundamentalprice{T-\stlatency}$. The noisy part of the agent strategy \cite{hommes2006heterogeneous} adds a normally distributed number to $\fundamentalprice{T-\stlatency}$, such that the fundamental price estimated by the slow trader is 
 \begin{equation}
 \fundamentalprice{\text{est}} = \fundamentalprice{T-\stlatency} + \stnoise
@@ -346,9 +327,9 @@ The agent then uses a simple rule to decide whether to sell or buy, and at what 
 Figure \ref{figure:chartist_strategy} provides two examples of how the sensitivity parameter \scticksbeforereactingagent{} and the parameter for the time horizon of the chartist strategy \scticksbeforereactingagent{} influences when the agent will trade or not. In the left figure, the agent has a low sensitivity to price changes, as indicated by the narrow area shaded gray around the black line indicating the moving average calculated by the agent. Since $\scticksbeforereactingagent{} = 1$, the traded price only has to deviate by a single tick from the moving average before the agent will submit orders to trade. In this case, the agent uses a moving average calculated over a relatively short span of $\scticksbeforereactingagent{} = 5000$ rounds, which makes the moving average reflect short-lived price trends. As the figure shows, these parameters prompt the agent to detect trends more or less constantly, and the agent even detects a short up-trend in the beginning of the simulation, as is shown where the traded price (red) does not stay within the gray shaded area . In the right figure, the agent has a sensitivity of $\scticksbeforereactingagent{} = 2$ and a longer time horizon of $\scticksbeforereactingagent{} = 15000$ rounds. Consequently, the agent detects a downtrend in round 12000 or so, where the traded prices, and begins to submit sell orders. However, just before round 40000, the agent decides that the downtrend has ended and the agent becomes inactive until the next time a trend is detected. 
 \begin{figure}
 %issue 11
-\subcaptionbox{\label{subfig:}}
+\subcaptionbox{}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{agent_strategies/chartist/a.png}}
-\subcaptionbox{\label{subfig:}}
+\subcaptionbox{}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{agent_strategies/chartist/h.png}}
 \caption{Examples illustrating the chartist decision strategy}
 \label{figure:chartist_strategy}

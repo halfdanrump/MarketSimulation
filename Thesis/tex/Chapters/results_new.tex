@@ -537,7 +537,7 @@ First of all, it is seen that while the data is distributed similarly in the thr
 \subcaptionbox{Experiment \deleven}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{103_scatter_manual_outlier/d11/h.png}}
 \subcaptionbox{Experiment \deleven}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{103_scatter_manual_outlier/d11/k.png}}
 \caption{Scatter plot of $\log \stdev$ against \timetoreachnewfundamental{} with coloring showing $\roundstable$ and \overshoot}
-\label{figure:d9_scatter_fitness_inliers_b}
+\label{figure:scatter_fitness_inliers_b}
 \end{figure}
 
 
@@ -550,7 +550,7 @@ In figure \ref{figure:scatter_fitness_inliers_a}, the black dashed lines at $\ti
 The description below provides a brief summary of which simulations belong in the two regions.
 \begin{description}
 \item[$\roundstable < \timetoreachnewfundamental$] This happens when the traded price never leaves the stability margin after reaching the new fundamental price. Note however that this case does not necessarily mean that the prices do not flicker. 
-\item[$\roundstable > \timetoreachnewfundamental$] This happens when the traded price leaves the stability margin once or more after reaching the new fundamental. The traded price can be close to the fundamental, but flickers in and out of the stability margin as on Figure \ref{figure:tradeprice_exaples_fitness_a} shows an example where the trade price fairly stable and with no overshoot, leading to good (low) \stdev{} and \overshoot{} fitness values to be assigned to the parameters. However, even though the traded prices are mostly within the stability margin, occasional flickers out of the margin causes the simulation to score a bad (high) \roundstable{} fitness. Note also that \timetoreachnewfundamental{} is undefined in this case. 
+\item[$\roundstable > \timetoreachnewfundamental$] This happens when the traded price leaves the stability margin once or more after reaching the new fundamental. The traded price can be close to the fundamental, but flickers in and out of the stability margin as on figure \ref{figure:typical_fitness_cases}. The figure shows one example where the trade price fairly stable and with no overshoot, leading to good (low) \stdev{} and \overshoot{} fitness values to be assigned to the parameters. However, even though the traded prices are mostly within the stability margin, occasional flickers out of the margin causes the simulation to score a bad (high) \roundstable{} fitness. Note also that \timetoreachnewfundamental{} is undefined in this case. 
 \item[$\roundstable = \timetoreachnewfundamental$] This happens if a trade is executed at price $\smargin - \fas < \pmatch < \smargin + \fas$, and another trade is executed at price $\pmatch = \fas$ in the same round. 
 \end{description}
 
