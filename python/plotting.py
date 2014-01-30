@@ -135,7 +135,7 @@ def multiline_xy_plot(x, ys, xlabel, ylabel, legend_labels, filename, y_errorbar
     for i, y in enumerate(ys):
         #print "Errorbar: %s"%y_errorbar
         #if y_errorbars is not None: ax.errorbar(x, y, yerr=y_errorbar, fmt='o')
-        print legend_labels[i]
+        #print legend_labels[i]
         p.plot(ax, x, y, linewidth=2, label = legend_labels[i])
     p.legend(ax, loc=0, frameon = False)
 

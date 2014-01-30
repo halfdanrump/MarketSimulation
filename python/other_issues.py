@@ -414,10 +414,12 @@ def latency_vs_fitness_with_lines_for_agent_ratio(dataset):
 				ssmm_ys.append(ssmm_lat_range[fitness])
 				sc_lat_range = concat(map(lambda l: f[get_sclat_mask(l,l+20) & ratio_mask].mean(), sclatencyrange), axis=1).transpose()
 				sc_ys.append(sc_lat_range[fitness])
-				legend_labels.append(r'$\displaystyle %s < %s < %s$'%(round(ratio_lower,1), ratio_direction, round(ratio_upper,1)))
-			filename = '%s_%s_%s_mmlatency.png'%(folder, 'c2m', fitness)
+				legend_labels.append(r'$\displaystyle %s < %s < %s$'%(round(ratio_lower,1), fl(ratio_direction, mathmode = False), round(ratio_upper,1)))
+			filename = '%s_%s_%s_mmlatency.png'%(folder, ratio_direction, fitness)
+			
 			multiline_xy_plot(ssmm_lat_range.index, ssmm_ys, xlabel = 'ssmm_latency_mu', ylabel = fitness, legend_labels = legend_labels, filename = filename)
-			filename = '%s_%s_%s_sclatency.png'%(folder, 'm2c', fitness)
+			filename = '%s_%s_%s_sclatency.png'%(folder, ratio_direction, fitness)
+			
 			multiline_xy_plot(sc_lat_range.index, sc_ys, xlabel = 'sc_latency_mu', ylabel = fitness, legend_labels = legend_labels, filename = filename)
 
 
@@ -441,11 +443,11 @@ def latency_vs_fitness_with_lines_for_agent_ratio(dataset):
 
 	p['ratio'] = p['sc_nAgents'].astype(float) / p['ssmm_nAgents']
 	ratio_range = np.linspace(0,3,6)
-	calc_and_plot(fl('ratioagent', mathmode = False))
+	calc_and_plot('ratioagent')
 
 	p['ratio'] = p['ssmm_nAgents'].astype(float) / p['sc_nAgents']
 	ratio_range = [0,0.01, 0.2,0.35,0.6,1]
-	calc_and_plot(fl('ratioagentinv', mathmode=False))
+	calc_and_plot('ratioagentinv')
 	
 			#concat(map(lambda l: f[get_mmlat_mask(l,l+20) & agent_mask].mean(), ssmmlatencyrange), axis=1).transpose()
 			#means = means.append(f[mask].mean()[fitness], ignore_index=True)

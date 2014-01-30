@@ -805,18 +805,18 @@ Although table \ref{table:d11_gmm_mean} seems to indicate that the chartist late
 
 
 \section{Ratios}
-The previous sections showed that the number of fast traders and their latencies were important for deciding how the market is going to respond to the fundamental shock. However, in terms of modeling, the number of agents is not particularly interesting as the number of agents in real markets is surely much larger. The same argument can be somewhat applied to the latenci
+The previous sections showed that the number of fast traders and their latencies were important for deciding how the market is going to respond to the fundamental shock. However, in terms of modeling, the number of agents is not particularly interesting as the number of agents in real markets is surely much larger. The same argument can be somewhat applied to the agent latency, as delays in real markets . To re-iterate: the main purpose of this model is to allow for agents of different types to have quantifiable speed differences. The model 
 
 The findings in the previous 
 
  \begin{figure}
  	%issue 15
  	\centering
- 	\subcaptionbox{}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/overshoot_log.png}}
- 	\subcaptionbox{$\dten \deleven$}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/round_stable.png}}
- 	\subcaptionbox{$\dten \deleven$}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/stdev.png}}
- 	\subcaptionbox{$\dten \deleven$}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/time_to_reach_new_fundamental.png}}
-	\caption{}
+ 	\subcaptionbox{\overshoot}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/overshoot_log.png}}
+ 	\subcaptionbox{\roundstable}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/round_stable.png}}
+ 	\subcaptionbox{\stdev}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/stdev.png}}
+ 	\subcaptionbox{\timetoreachnewfundamental}[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{latency_vs_agent_ratios/d10d11/time_to_reach_new_fundamental.png}}
+	\caption{Image plots for model fitness as a function of \ratioagents{} and \ratiolatency}
  	\label{fig:ratio_image}
  \end{figure}
 
@@ -830,46 +830,40 @@ Crashes never occur in markets with only fast market makers or fast chartists, n
 The results showed that both types of HFT agents influence the market in positive and negative ways. This section contains a summary of the results.
 
 
- Analysis of the results showed that a moderate amount of high speed trading activity was not in itself problematic.
-\begin{itemize}
-
-\item 
-
-In fact, the markets that had the fastest and most stable response to the shock had both several fast chartists and fast market makers. However, it was found that flash-crashes could occur in markets in which  the number of chartists was four times or greater that of the number of market makers. Furthermore, crashes occurred four times more often when the chartists were faster than the market makers.
-
-\end{itemize}
-
 \begin{description}
-\item[Speed/stability trade-off] Correlation between \overshoot{} and \timetoreachnewfundamental
-\item[Agent latency　influences the impact of agent strategy] However, the latency of the agents has the greatest effect when the number of fast traders is large.
-\item[Ratio of agent latencies influences the market]
-\item[Ratio of agent types influences the market]
-\item[Market makers add market stability] Market makers have a stabilizing effect on the markets and make the market more robust to the impact of the chartists. Thus markets with market makers tend to have less flickering prices
-\item[Market makers slow market response] Market makers 
+\item[Agent roles] Each of the three agent types can be said to play a particular role in the market. The fundamentalists are responsible for driving the market back towards the fundamental price. The market makers stay constantly in the market to fill orders submitted at sub-optimal prices. Finally, the chartists adds another driving force, the strength of which does not depend on the value of the fundamental, and the direction of which may or may not be in the direction of the fundamental.
+\item[Lower agent　latency increases the impact of agent strategy] The latency was found to have a big impact on the market in such a way that fast agents have a larger influence, according to their role as described above, than do slow traders. The agency latency was most important in markets containing a large number of fast traders, as the cumulative impact of a small group of fast traders could not be measures irregardless of how fast these agents are.
+\item[Speed/stability trade-off] A trade-off between the stability of the market in terms of overshoot and price flickering versus the speed with reach the market could respond to the shock in the fundamental was found. Thus, the fastest markets were also those with the largest overshoot, and vice versa.
 
-\item[Chartists cause price flickering] As was shown in table \ref{table:d11_gmm_mean}, price flickering increases with the number of chartists in the market 
+\item[Market makers add market stability] Market makers have a stabilizing effect on the markets and make the market more robust to the impact of the chartists. Thus markets with market makers tend to have less flickering prices than markets without market makers. 
+\item[Market makers slow market response] Market makers increase the time it takes for the market to reach the true fundamental price after the shock. 
+
+\item[Chartists cause price flickering] Price flickering increases with the number of chartists in the market.
 
 \item[Chartists increase market response] High speed chartists influence the market so as to decrease the duration of the period of time in which the stock price stock price is overvalued by reducing the time required for the price to return to the new fundamental price after the negative shock. This was seen both in table \ref{table:d11_gmm_mean} and in table 
 
-\item[Occurrence of permanent overvaluation] The market was shown to respond slowly to the shock in the fundamental price when the market contained market makers. This overvaluation could be permanent in the influence of the market makers was big enough. Figure \ref{figure:overvaluation_scatter} showed how the interplay of \ssmmnAgents{} and \ssmmlatencymu{} caused the stock price to become overvalued. 
+\item[Ratio of agent types influences the market] More important than the number of fast traders in the market was the ratio between the number of chartists and the number of market makers. The market makers proved to be quite efficient in counteracting the both the positive and negative impact of the chartists. The more chartists per market maker were present in the market, the faster the market responded to the fundamental, but at the cost of an increased risk of a market crash.
+\item[Ratio of agent latencies influences the market] The ratio between the latency of the chartists and the latency of the market makers had a similar impact as the ratio between the number of agents. Markets in which the chartists were several times faster than the market makers were fast but unstable. When market makers were fast, the likelihood of misvaluation increased.
+
+\item[Misvaluation of the stock price] The market was shown to respond slowly to the shock in the fundamental price when the market contained market makers. This overvaluation could be permanent in the influence of the market makers was big enough. Figure \ref{figure:overvaluation_scatter} showed how the interplay of \ssmmnAgents{} and \ssmmlatencymu{} caused the stock price to become overvalued. Undervaluation also occurred, but less frequently.
 %\item[Occurrence of undervaluation] 
-\item[Occurrence of flash crashes] Flash crashes were seen to happen when the ratio of the number of chartists to the number of market makers, \ratioagents{} was large when the ratio between the latencies \ratiolatency{} was also large. Crashes thus required rather specific conditions to occur, and did not occur very often.
+\item[Occurrence of flash crashes] Flash crashes were seen to happen when the ratio of the number of chartists to the number of market makers, \ratioagents{} was large when the ratio between the latencies \ratiolatency{} was also large. Specifically, it was found that flash-crashes could occur in markets in which  the number of chartists was four times or greater that of the number of market makers. Furthermore, crashes occurred four times more often when the chartists were faster than the market makers. In markets where these conditions were not present, crashes were very rare.
 \end{description}
 
 
 
-The results were analysed while focussing on the market dynamics caused by the aggregate actions of all the traders. High speed market makers were found to reduce price flickering, confirming the results of [Wang]. 
+%The results were analysed while focussing on the market dynamics caused by the aggregate actions of all the traders. High speed market makers were found to reduce price flickering, confirming the results of [Wang]. 
 
 
 
-On the negative side, the market was found to respond unfavorably to a large presence of fast traders.  First of all, a large presence of very fast market makers pushed the market towards responding sluggishly to the shock, leading to the stock being traded at a price higher than the fundamental price. Secondly, a large presence of fast chartists caused increased flickering of the traded price. 
+%On the negative side, the market was found to respond unfavorably to a large presence of fast traders.  First of all, a large presence of very fast market makers pushed the market towards responding sluggishly to the shock, leading to the stock being traded at a price higher than the fundamental price. Secondly, a large presence of fast chartists caused increased flickering of the traded price. 
 	
 	
-	 Lastly, the analysis discovered indications that strategy crowding could occur when the fast traders had narrowly distributed latencies causing them to act simultaneously on the same information, but a verfification of this would require further experiments. These results add to the current debate on computerized high frequency trading as they show both benefits and dangers of having markets where fast computer algorithms trade side by side with human traders.
+%Lastly, the analysis discovered indications that strategy crowding could occur when the fast traders had narrowly distributed latencies causing them to act simultaneously on the same information, but a verfification of this would require further experiments. These results add to the current debate on computerized high frequency trading as they show both benefits and dangers of having markets where fast computer algorithms trade side by side with human traders.
 
 
 
-Market makers were found to 
+%Market makers were found to 
 
 
 
