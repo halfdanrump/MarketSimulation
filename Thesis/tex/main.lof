@@ -1,8 +1,0 @@
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces \textbf {Motivatoin for tuning:} the two\relax }}{3}{figure.caption.23}
-\contentsline {figure}{\numberline {1.2}{\ignorespaces asdasd\relax }}{8}{figure.caption.49}
-\contentsline {figure}{\numberline {1.3}{\ignorespaces Example of a simulation which is assigned fairly good fitness values, but which was executed with clearly unrealistic parameters: $\ensuremath {N_{m}}= \ensuremath {N_{c}}= 0$. The simulation reaches the new fundamental price fairly quickly without any undershoot, and stays within the stability margin. The only point where it scores badly is the standard deviation which is slightly high due to the fluctuating trade price.\relax }}{10}{figure.caption.57}
-\contentsline {figure}{\numberline {1.4}{\ignorespaces Color toned scatter plots of \ensuremath {f_\text {t}}, \ensuremath {f_\sigma }and \ensuremath {f_\text {s}}taken from dataset d1after applying log-scaling and manually removing outliers\relax }}{16}{figure.caption.78}
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\addvspace {10\p@ }
