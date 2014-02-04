@@ -52,7 +52,6 @@
 
 
 
-
 \section{Introduction}
 \begin{frame}
 \tableofcontents[currentsection]
@@ -76,11 +75,11 @@ Models for human/machine system must be developed. Previous work:
 All discovered works in the field are recent (published 2013, or yet unpublished).
 \end{frame}
 
-\begin{frame}{Key points of proposed model}
+\begin{frame}{Key ideas in proposed model}
 \begin{description}
 \item[Delayed market information] All information exchanged between agents and the market is delayed
 \item[Agents with arbitrary time delays] Agents are not just \textit{fast} or \textit{slow}, but have \textbf{arbitrary} delays
-\item[Full-fledged MAS model] Agents with various strategies and different delays.
+%\i tem[Full-fledged MAS model] Agents with various strategies and different delays.
 \end{description}
 \end{frame}
 
@@ -109,6 +108,12 @@ Very open research, but the first steps in a new field must necessarily be somew
 \tableofcontents[currentsection]
 \end{frame}
 
+\begin{frame}{Market model}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{graph.png}
+\end{center}
+\end{frame}
+
 \begin{frame}{Model components}
 \begin{itemize}
 \item Market and order book
@@ -118,40 +123,8 @@ Very open research, but the first steps in a new field must necessarily be somew
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Market model}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{graph.png}
-\end{center}
-\end{frame}
-
-
-\begin{frame}{Market}
-\begin{block}{Auction type}
-The market uses a continuous double auction. Prices are always executed at the prices of the best standing market orders.
-\end{block}
-\end{frame}
-
-
-\begin{frame}{Order book}
-\begin{table}
-\centering
-\begin{tabular}{l|c|r}
-Sell orders & Price & Buy orders\\
-\midrule
-22 & 9994 &\\
-26 & 9993 &\\
-13 & 9992 &\\
-10 & 9991 &\\ 
-{}&{}&{}\\
-& 9988& 12\\
-& 9987& 10\\
-& 9986& 16\\
-& 9985& 25\\
-\end{tabular}
-\end{table}
-\end{frame}
-
 \begin{frame}{Messages}
+Information travels from agents to market in different kinds of messages
 \begin{itemize}
 \item Market information
 \item Orders
@@ -173,7 +146,7 @@ A single stock is traded at the market.
 \begin{frame}{Agents}
 \begin{itemize}
 \item Slow traders (ST)
-\item Fast traders (AKA High Frequency Traders, HFT)
+\item Fast traders (High Frequency Traders, HFT)
 \begin{itemize}
 \item Market makers (MM)
 \item Simple chartists (SC)
@@ -198,13 +171,13 @@ They calculate the moving from the delayed best buy and sell prices.
 The chartist detects a trend if the moving average calculated over $H_c$ rounds differs more than $\gamma_c$ ticks from the currently traded price.
 \end{frame}
 
-\begin{frame}{Chartist example 1}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{chartist/b.png}
-\end{center}
-\end{frame}
+%\begin{frame}{Chartist example 1}
+%\begin{center}
+%\includegraphics[width=0.7\textwidth]{chartist/b.png}
+%\end{center}
+%\end{frame}
 
-\begin{frame}{Chartist example 2}
+\begin{frame}{Chartist example}
 \begin{center}
 \includegraphics[width=0.7\textwidth]{chartist/h.png}
 \end{center}
@@ -225,19 +198,13 @@ The market maker has a minimum-spread parameter, $\theta$.
 \end{center}
 \end{frame}
 
-\begin{frame}{Market maker case 2}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{marketmaker/b.png}
-\end{center}
+
+
+
+\section{Experiments}
+\begin{frame}
+\tableofcontents[currentsection]
 \end{frame}
-
-\begin{frame}{Market maker case 3}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{marketmaker/c.png}
-\end{center}
-\end{frame}
-
-
 
 \begin{frame}{Important model parameters}
 The model has many parameters. The most important ones are:
@@ -247,10 +214,6 @@ The model has many parameters. The most important ones are:
 \end{itemize}
 \end{frame}
 
-\section{Experiments}
-\begin{frame}
-\tableofcontents[currentsection]
-\end{frame}
 
 \begin{frame}{Simulating bad news}
 \begin{block}{Shock to the fundamental}
@@ -258,45 +221,56 @@ How does the market react when the true price of the stock suddenly drops?
 \end{block}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{A market with bad news}
 \begin{center}
 \includegraphics[width=0.7\textwidth]{market_cases/a_stable_within_margin.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{Exploring model behavior}
+\begin{frame}{}
 \begin{block}{We want to determine how the model behavior changes with the parameters}
 A genetic algorithm was used to search the parameter space. Four fitness measures were defined in order to quantify the model behavior.
 \end{block}
 \end{frame}
 
-\begin{frame}{Model fitness}
-\begin{itemize}
-\item Overshoot
-\item Price flickering (standard deviation of trade prices)
-\item Response time (time to reach fundamental price after shock)
-\item Time to become stable (the traded price must stay within a certain range of the true price)
-\end{itemize}
+\begin{frame}{Exploring model behavior with inverse simulation}
+A genetic algorithm was used to find parameters causing \textbf{stable markets}. Four measures for model fitness were defined:
+\begin{small}
+\begin{description}
+\item[Overshoot] Used to find \textbf{market crashes}
+\item[Response time] Used to measure market reaction speed to \text{bad news}
+\item[Price flickering] Standard deviation of trade prices)
+\item[Time to become stable] the traded price must stay within a certain range of the true price)
+\end{description}
+\end{small}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Stable market}
 \begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/a_stable_within_margin.png}
+\includegraphics[width=0.6\textwidth]{market_cases/a_stable_within_margin.png}
+\end{center}
+The genetic algorithm was instructed to search for such markets.
+\end{frame}
+
+ 
+\begin{frame}{Market with large overshoot}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{market_cases/f_crash.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{Search for stable markets}
-\begin{block}{We want to see what the speed of the agents does to the market stability}
-The genetic algorithm was instructed to minimize overshoot, price flickering, response time and time to become stable.
-\end{block}
+\begin{frame}{Market with large price flicker}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{market_cases/b_flicker_but_mostly_within_margin.png}
+\end{center}
 \end{frame}
+
+
+
 
 
 	
 \section{Results}
-\begin{frame}
-\tableofcontents[currentsection]
-\end{frame}
 
 \subsection{Evolution of fitness and parameters}
 \begin{frame}
@@ -304,35 +278,19 @@ The genetic algorithm was instructed to minimize overshoot, price flickering, re
 \end{frame}
 
 \begin{frame}{Overshoot}
-The genetic algorithm found markets with a small overshoot:
+The genetic algorithm found markets with a small overshoot, but which were also slow.
 \begin{center}
-\includegraphics[width=0.7\textwidth]{evolution/overshoot.png}
+\includegraphics[width=0.4\textwidth]{evolution/overshoot.png}
+\includegraphics[width=0.4\textwidth]{evolution/time_to_reach_new_fundamental.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{Time to become stable}
-..it found markets that quickly staying within the stability margin:
-\begin{center}
-\includegraphics[width=0.7\textwidth]{evolution/round_stable.png}
-\end{center}
+\begin{frame}
+
 \end{frame}
 
-\begin{frame}{Price flickering}
-...it found markets with little price flickering:
-\begin{center}
-\includegraphics[width=0.7\textwidth]{evolution/stdev.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Response time}
-...but it was not able to find markets that were fast at the same time
-\begin{center}
-\includegraphics[width=0.7\textwidth]{evolution/time_to_reach_new_fundamental.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Interpretation of evolution results}
-\begin{block}{Speed/stability trade-off}
+\begin{frame}{Speed/stability trade-off}
+\begin{block}{}
 The evolution of the fitness and parameters illustrates a trade-off between maket stability and the response time of the market: Stable market are also slower.
 \end{block}
 What parameters cause this behavior?
@@ -340,66 +298,13 @@ What parameters cause this behavior?
 
 
 \begin{frame}{Number of market makers}
-The GA selects towards more market makers:
+The GA selects towards more market maker and slower agents
 \begin{center}
-\includegraphics[width=0.7\textwidth]{evolution/nAgents.png}
+\includegraphics[width=0.4\textwidth]{evolution/nAgents.png}
+\includegraphics[width=0.4\textwidth]{evolution/latpars_mu.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{Latency of agents}
-...and towards slower agents.
-\begin{center}
-\includegraphics[width=0.7\textwidth]{evolution/latpars_mu.png}
-\end{center}
-\end{frame}
-
-\subsection{Typical markets}
-\begin{frame}
-\tableofcontents[currentsubsection]
-\end{frame}
-
-
-\begin{frame}{Market with nice behavior}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/a_stable_within_margin.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Large price flickers}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/b_flicker_but_mostly_within_margin.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Never stable}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/c_flickering_on_margin.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Overvaluation}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/d_never_reach_fundamental.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Undervaluation}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/e_stable_under_fundamental.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Market crash}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/f_crash.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Supercrash}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/shouganai.png}
-\end{center}
-\end{frame}
 
 
 \subsection{Fitness/parameter correlations}
@@ -419,19 +324,19 @@ Faster chartists cause the market to have a larger overshoot:
 \end{center}
 \end{frame}
 
-\begin{frame}{Number of market makers}
+\begin{frame}{Market maker latence}
 The number of market makers has a great deal to say:
 \begin{center}
 \includegraphics[width=0.7\textwidth]{scatter/ssmm_nAgents__vs__overshoot(mean)_scatter.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{Number of chartists}
-...as has the number of chartists:
-\begin{center}
-\includegraphics[width=0.7\textwidth]{scatter/sc_nAgents__vs__overshoot(mean)_scatter.png}
-\end{center}
-\end{frame}
+%\begin{frame}{Number of chartists}
+%...as has the number of chartists:
+%\begin{center}
+%\ includegraphics[width=0.7\textwidth]{scatter/sc_nAgents__vs__overshoot(mean)_scatter.png}
+%\end{center}
+%\end{frame}
 
 \subsection{Parameter ratios}
 \begin{frame}
@@ -444,38 +349,39 @@ The number of market makers has a great deal to say:
 
 \begin{frame}{Overshoot}
 \begin{center}
-\includegraphics[width=0.7\textwidth]{ratio/overshoot.png}
+\includegraphics[width=0.6\textwidth]{ratio/overshoot.png}
 \end{center}
+Only markets with large chartist-to-market maker ratio crashed.
 \end{frame}
 
 
-\begin{frame}{Log-overshoot}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{ratio/overshoot_log.png}
-\end{center}
-\end{frame}
+%\begin{frame}{Log-overshoot}
+%\begin{center}
+%\ includegraphics[width=0.7\textwidth]{ratio/overshoot_log.png}
+%\end{center}
+%\end{frame}
 
 
 \begin{frame}{Market response time}
 \begin{center}
-\includegraphics[width=0.7\textwidth]{ratio/time_to_reach_new_fundamental.png}
+\includegraphics[width=0.6\textwidth]{ratio/time_to_reach_new_fundamental.png}
 \end{center}
+Markets with with a large chartist-to-market maker ratio responded faster.
 \end{frame}
 
-\begin{frame}{Summary of results}
-\begin{itemize}
-\item Market makers have a stabilizing effect of the market by reducing price movements
+\begin{frame}{Latency is important}
+\begin{enumerate}
+\item Market makers stabilize the markets
 \item Chartists increase price movements
-\item The influence was larger for faster agents
-\item The market will only crash if \textit{both} chartists \textit{and} market makers are present.
-\item The market was more likely to crash if the chartists were much faster than the market makers
-\end{itemize}
+\item The influence was \textit{larger} for \textit{faster} agents
+\end{enumerate}
 \end{frame}
 
-\begin{frame}{Log-overshoot}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{ratio/overshoot_log.png}
-\end{center}
+\begin{frame}{Conditions for market crashes}
+\begin{enumerate}
+\item The market will only crash if \textit{both} chartists \textit{and} market makers are present.
+\item The market was more likely to crash if the \textit{chartists were faster than the market makers}
+\end{enumerate}
 \end{frame}
 
 
@@ -491,6 +397,8 @@ The number of market makers has a great deal to say:
 \item[Relative agent latencies] The results illustrated the importance of allowing different agents to have different latencies.
 \end{description}
 \end{frame}
+
+
 
 %We have more control over what simplifications we make than we have over events that we never observed.
 
@@ -543,6 +451,33 @@ The number of market makers has a great deal to say:
    
 
 \end{thebibliography}
+
+\begin{frame}{Market}
+\begin{block}{Auction type}
+The market uses a continuous double auction. Prices are always executed at the prices of the best standing market orders.
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Order book}
+\begin{table}
+\centering
+\begin{tabular}{l|c|r}
+Sell orders & Price & Buy orders\\
+\midrule
+22 & 9994 &\\
+26 & 9993 &\\
+13 & 9992 &\\
+10 & 9991 &\\ 
+{}&{}&{}\\
+& 9988& 12\\
+& 9987& 10\\
+& 9986& 16\\
+& 9985& 25\\
+\end{tabular}
+\end{table}
+\end{frame}
+
 
 \end{document}
 
