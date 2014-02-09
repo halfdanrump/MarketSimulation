@@ -106,7 +106,6 @@ where $\lceil \cdot \rfloor$ denotes the function that rounds to nearest integer
 
 
 \subsection{Quantifying model behavior}\label{section:simulation_fitness}
-XXX NOT FINISHED YET. 
 In order to use inverse simulation, it is necessary to decide on how to measure the quality of an instance of the simulation. In this work, the overall goal is to examine which parameter values cause the market to be stable, and which cause it to be unstable. In order to do this, four fitness measures were defined as below. Each of the fitness measures are designed to reflect different properties of the simulation, but some correlation between the measures were found. This is discussed in section \ref{section:correlation_fitness}.
 \subsubsection{Market response time}
 After the negative shock to the fundamental price, the slow fundamentalists will start submitting orders at lower prices, thus creating a force that drives that traded price towards the new price. The number of rounds that elapse before the asset is traded at the new fundamental  can be thought of as the response time of the market and this property of the market is interesting for a few reasons. If a market has a slow response time, it means that the asset is traded for more than it is worth for a longer of period of time. The response time is denoted \timetoreachnewfundamental{} and is calculated as follows:
@@ -141,21 +140,22 @@ The margin of two ticks sets a fairly strict requirement for when a simulation i
 \arg \min \forall 
 \end{equation}
 
-Figure \ref{figure:typical_fitness_cases}illustrated how the four fitness measures are calculated, while figure XXX gives four examples and lists the respective fitness values calculated for each simulation.
 
 
 \subsubsection{Examples of typical market behavior}
 To give the reader a more intuitive idea of how the fitness measures summarize the model behavior, figure \ref{figure:typical_fitness_cases} gives six examples of some fairly common patterns.
-\begin{figure}
+\begin{figure} 
 \centering
 \subcaptionbox{Stable within margin}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/a_stable_within_margin.png}}
 \subcaptionbox{Within margin, but with flickering}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/b_flicker_but_mostly_within_margin.png}}
+\vspace{0.5cm}
 \subcaptionbox{Flickering on the edge of margin}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/c_flickering_on_margin.png}}
 \subcaptionbox{Never reach fundamental}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/d_never_reach_fundamental.png}}
+\vspace{0.5cm}
 \subcaptionbox{Stabilize under fundamental}
 [0.49\linewidth]{\includegraphics[width=0.5\textwidth]{figure_in_fitness_section/e_stable_under_fundamental.png}}
 \subcaptionbox{Market crash}

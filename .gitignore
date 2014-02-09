@@ -34,3 +34,7 @@ python/ipython_log.py
 *.out
 *.toc
 *.gz
+Thesis/presentation/Figures/
+*.pdf
+*.png
+*.odt

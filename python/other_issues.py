@@ -432,9 +432,9 @@ def latency_vs_fitness_with_lines_for_agent_ratio(dataset):
 		f, p = utils.load_d10d11()
 	else:
 		f,p,g, i=IO.load_pickled_generation_dataframe(dataset_name=dataset)
-		if 'dataset' == 'd10':
+		if dataset == 'd10':
 			p['sc_nAgents'] = 150
-		elif 'dataset' == 'd11':
+		elif dataset == 'd11':
 			p['ssmm_nAgents'] = 52
 	
 	#nssmm_mask = p.ssmm_nAgents > 50

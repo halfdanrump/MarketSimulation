@@ -1,12 +1,3 @@
 % Appendix B
-\chapter{Third party software}
-\label{AppendixB} % For referencing this appendix elsewhere, use \ref{AppendixA}
-
-\lhead{Appendix B. \emph{Software}} % This is for the header on each page - perhaps a shortened title
-
-Deap
-scoop
-sklearn
-matplotlib
-numpy, scipy and pandas
-geometric brownian walk
+\section{Software}\label{AppendixB} % For referencing this appendix elsewhere, use \ref{AppendixA}
+The model was implemented in Java, while data analysis and plotting was carried out in Python. All code made for this thesis can be downloaded from \url{https://github.com/halfdanrump/MarketSimulation}. The genetic algorithm was built using Deap \cite{rainville2012deap}, while using Scoop \cite{arslan2006scoop} for concurrency. \texttt{scikit}-learn \cite{pedregosa2011scikit} was used for clustering and other machine learning techniques. Numpy, Scipy and Pandas libraries \cite{van2011numpy, oliphant2006guide, jones2001scipy} were heavily utilized in the analysis and plotting, which was carried out using Matplotlib \cite{hunter2007matplotlib}.

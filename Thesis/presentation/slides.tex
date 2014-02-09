@@ -1,5 +1,5 @@
 \documentclass[14pt]{beamer}
-
+%\documentclass[14pt,handout]{beamer}
 
 \setbeamercolor{item projected}{bg=black}
 \setbeamertemplate{itemize items}[circle]
@@ -84,10 +84,10 @@ All discovered works in the field are recent (published 2013, or yet unpublished
 \end{frame}
 
 \begin{frame}{Research goal}
-\begin{block}{Market stability and agent speed}
+\begin{block}{Impact of agent speed on market behavior}
 Investigate how the behavior (e.g. stable, crash, etc.) of a simulated financial market changes when the latency of the traders change
 \end{block}
-Very open research, but the first steps in a new field must necessarily be somewhat exploratory.
+%Very open research, but the first steps in a new field must necessarily be somewhat exploratory.
 \end{frame}
 
 
@@ -109,21 +109,24 @@ Very open research, but the first steps in a new field must necessarily be somew
 \end{frame}
 
 \begin{frame}{Market model}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{graph.png}
-\end{center}
-\end{frame}
-
-\begin{frame}{Model components}
+\begin{columns}[c]
+\column{2.5in}
+\includegraphics[width=1.2\textwidth]{graph.png}
+\column{2in}
+Model components:
 \begin{itemize}
-\item Market and order book
+\item Market
 \item Stock
 \item Agents
-\item Messages
+\item Messages (orders, cancellations, receipts, etc.)
 \end{itemize}
+\end{columns}
+\pause
+\underline{Messages are passed between agents and the market.}
 \end{frame}
 
-\begin{frame}{Messages}
+
+\begin{frame}{Messages are delayed}
 Information travels from agents to market in different kinds of messages
 \begin{itemize}
 \item Market information
@@ -145,11 +148,12 @@ A single stock is traded at the market.
 
 \begin{frame}{Agents}
 \begin{itemize}
-\item Slow traders (ST)
-\item Fast traders (High Frequency Traders, HFT)
+\item Slow traders
+\vspace{0.1in}
+\item Fast traders (High Frequency Traders)
 \begin{itemize}
-\item Market makers (MM)
-\item Simple chartists (SC)
+\item Market makers
+\item Simple chartists
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -160,16 +164,17 @@ A single stock is traded at the market.
 \begin{block}{Slow traders model human traders}
 They know the \textbf{true} value of the fundamental, \textit{but with a large delay}
 \end{block}
+\vspace{0.1in}
 The slow traders submit orders in order to \textit{move the trade price towards the true price}.
 \end{frame}
 
 
-\begin{frame}{Simple chartists}
-\begin{block}{The chartists use a simple moving average strategy}
-They calculate the moving from the delayed best buy and sell prices. 
-\end{block}
-The chartist detects a trend if the moving average calculated over $H_c$ rounds differs more than $\gamma_c$ ticks from the currently traded price.
-\end{frame}
+%\begin{frame}{Simple chartists}
+%\begin{block}{The chartists use a simple moving average strategy}
+%They calculate the moving from the delayed best buy and sell prices. 
+%\end{block}
+%The chartist detects a trend if the moving average calculated over $H_c$ rounds differs more than $\gamma_c$ ticks f %rom the currently traded price.
+%\end{frame}
 
 %\begin{frame}{Chartist example 1}
 %\begin{center}
@@ -177,7 +182,8 @@ The chartist detects a trend if the moving average calculated over $H_c$ rounds 
 %\end{center}
 %\end{frame}
 
-\begin{frame}{Chartist example}
+\begin{frame}{Fast trader: simple chartist}
+The chartists use a simple moving average strategy:
 \begin{center}
 \includegraphics[width=0.7\textwidth]{chartist/h.png}
 \end{center}
@@ -185,56 +191,52 @@ The chartist detects a trend if the moving average calculated over $H_c$ rounds 
 
 
 
-\begin{frame}{Market makers}
-\begin{block}{Market makers keep constant buy and sell orders}
-The market maker tried to follow the best buy/sell prices to stay competitive.
-\end{block}
-The market maker has a minimum-spread parameter, $\theta$.
-\end{frame}
+%\begin{frame}{Market makers}
+%\begin{block}{Market makers keep constant buy and sell orders}
+%The market maker tried to follow the best buy/sell prices to stay competitive.
+%\end{block}
+%The market maker has a minimum-spread parameter, $\theta$.
+%\end{frame}
 
-\begin{frame}{Market maker case 1}
+\begin{frame}{Market maker case}
+Market makers try to keep constant orders at both sides of the book.
 \begin{center}
 \includegraphics[width=0.7\textwidth]{marketmaker/a.png}
 \end{center}
 \end{frame}
 
 
-
+\begin{frame}{Model recap}
+\begin{itemize}
+\item \textit{Any} exchange of information between the market and agents is time delayed.
+\vspace{0.1in}
+\item Agent speeds are \textit{quantitative} (e.g., 11 rounds or 23 rounds), instead of \textit{qualitative} (slow or fast) as in previous models
+\end{itemize}
+\end{frame}
 
 \section{Experiments}
 \begin{frame}
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{Important model parameters}
-The model has many parameters. The most important ones are:
-\begin{itemize}
-\item The average latency of chartists and of market makers, $\lambda$
-\item The number of fast traders
-\end{itemize}
-\end{frame}
-
+%\begin{frame}{Important model parameters}
+%The model has many parameters. The most important ones are:
+%\begin{itemize}
+%\ item The average latency of chartists and of market makers, $\lambda$
+%\item The ``power balance'' between the agents. 
+%\end{itemize}
+%\end{frame}
 
 \begin{frame}{Simulating bad news}
-\begin{block}{Shock to the fundamental}
 How does the market react when the true price of the stock suddenly drops?
-\end{block}
-\end{frame}
-
-\begin{frame}{A market with bad news}
 \begin{center}
 \includegraphics[width=0.7\textwidth]{market_cases/a_stable_within_margin.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{}
-\begin{block}{We want to determine how the model behavior changes with the parameters}
-A genetic algorithm was used to search the parameter space. Four fitness measures were defined in order to quantify the model behavior.
-\end{block}
-\end{frame}
-
 \begin{frame}{Exploring model behavior with inverse simulation}
 A genetic algorithm was used to find parameters causing \textbf{stable markets}. Four measures for model fitness were defined:
+\pause
 \begin{small}
 \begin{description}
 \item[Overshoot] Used to find \textbf{market crashes}
@@ -246,24 +248,29 @@ A genetic algorithm was used to find parameters causing \textbf{stable markets}.
 \end{frame}
 
 \begin{frame}{Stable market}
+Stable markets are found by minimizing all four fitness measures
 \begin{center}
 \includegraphics[width=0.6\textwidth]{market_cases/a_stable_within_margin.png}
 \end{center}
-The genetic algorithm was instructed to search for such markets.
+\pause
+Small overshoot, little price flickering
 \end{frame}
 
+\begin{frame}{Market with large price flicker}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{market_cases/b_flicker_but_mostly_within_margin.png}
+\end{center}
+Small overshoot but large price flickering.
+\end{frame}
  
-\begin{frame}{Market with large overshoot}
+\begin{frame}{Market crash}
+Crashing markets can be found by maximizing the overshoot.
 \begin{center}
 \includegraphics[width=0.7\textwidth]{market_cases/f_crash.png}
 \end{center}
 \end{frame}
 
-\begin{frame}{Market with large price flicker}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{market_cases/b_flicker_but_mostly_within_margin.png}
-\end{center}
-\end{frame}
+
 
 
 
@@ -272,63 +279,73 @@ The genetic algorithm was instructed to search for such markets.
 	
 \section{Results}
 
-\subsection{Evolution of fitness and parameters}
+
 \begin{frame}
 \tableofcontents[currentsection]
 \end{frame}
-
-\begin{frame}{Overshoot}
-The genetic algorithm found markets with a small overshoot, but which were also slow.
-\begin{center}
-\includegraphics[width=0.4\textwidth]{evolution/overshoot.png}
-\includegraphics[width=0.4\textwidth]{evolution/time_to_reach_new_fundamental.png}
-\end{center}
-\end{frame}
-
-\begin{frame}
-
-\end{frame}
+\subsection{Speed/stability trade-off}
 
 \begin{frame}{Speed/stability trade-off}
-\begin{block}{}
-The evolution of the fitness and parameters illustrates a trade-off between maket stability and the response time of the market: Stable market are also slower.
-\end{block}
+\begin{itemize}
+\item Stable markets are slow
+\item Slow markets are stable
+\end{itemize}
 What parameters cause this behavior?
 \end{frame}
 
 
-\begin{frame}{Number of market makers}
-The GA selects towards more market maker and slower agents
+
+\begin{frame}{Speed/stability trade-off}
+The GA found \color{red} stable markets \color{black} (i.e.,\textit{small overshoot})
 \begin{center}
-\includegraphics[width=0.4\textwidth]{evolution/nAgents.png}
-\includegraphics[width=0.4\textwidth]{evolution/latpars_mu.png}
+\includegraphics[width=0.6\textwidth]{evolution/overshoot_ellipse.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Speed/stability trade-off}
+... but the markets were \color{red} unresponsive \color{black} (i.e., \textit{slow to reach the new fundamental price})
+\begin{center}
+\includegraphics[width=0.6\textwidth]{evolution/time_to_reach_new_fundamental_ellipse.png}
 \end{center}
 \end{frame}
 
 
 
-\subsection{Fitness/parameter correlations}
+
+\subsection{Agent speed and market stability}
 \begin{frame}
 \tableofcontents[currentsubsection]
 \end{frame}
 
 
-\begin{frame}{Parameters and model behavior}
-\textit{How does the speed of the agents affect the market behavior?}
+\begin{frame}{Research goal recap 1}
+\begin{block}{Central question}
+How does the \color{red} fast trader speed \color{black} affect the \textit{market stability}?
+\end{block}
+\vspace{0.2in}
+\pause
+\textit{E.g., do faster traders make the markets unstable?}
 \end{frame}
 
-\begin{frame}{Chartist latency}
-Faster chartists cause the market to have a larger overshoot:
-\begin{center}
-\includegraphics[width=0.7\textwidth]{scatter/sc_latency_mu__vs__overshoot(mean)_scatter.png}
-\end{center}
+\begin{frame}{Chartist speed and market stability}
+\begin{columns}[c]
+\column{2in}
+\includegraphics[width=1.3\textwidth]{scatter/sc_latency_mu__vs__overshoot(mean)_scatter.png}
+\column{1.5in}
+%\begin{itemize}
+\color{red} Faster chartists \color{black} cause the market to have a \color{red} larger overshoot\color{black} (i.e. the market becomes \textit{unstable}).
+%\item In some markets with \textbf{very fast} chartists, the market \color{red} crashes \color{black}.
+%\end{itemize}
+\end{columns}
 \end{frame}
 
-\begin{frame}{Market maker latence}
-The number of market makers has a great deal to say:
-\begin{center}
-\includegraphics[width=0.7\textwidth]{scatter/ssmm_nAgents__vs__overshoot(mean)_scatter.png}
-\end{center}
+\begin{frame}{Market maker speed and market stability}
+\begin{columns}[c]
+\column{2in}
+\includegraphics[width=1.3\textwidth]{scatter/ssmm_latency_mu__vs__overshoot(mean)_scatter.png}
+\column{1.5in}
+\color{red} Faster market makers \color{black} cause the market to have a \color{red} somewhat \color{black} larger overshoot \textit{in some cases}.
+\end{columns}
 \end{frame}
 
 %\begin{frame}{Number of chartists}
@@ -338,20 +355,31 @@ The number of market makers has a great deal to say:
 %\end{center}
 %\end{frame}
 
-\subsection{Parameter ratios}
+\subsection{Relative speed and market stability}
 \begin{frame}
 \tableofcontents[currentsubsection]
 \end{frame}
 
-\begin{frame}{Latency ratio}
-\textit{What happens when the chartists are faster than the market makers, or the other way around?}
+\begin{frame}{Research goal recap 2}
+\begin{block}{Central question}
+Does the \color{red} relative speed \color{black} of the fast traders matter to market stability, and if so \textit{how}?
+\end{block}
+\vspace{0.2in}
+\pause
+\textit{E.g., what happens when the chartists are faster than the market makers, or the other way around?}
 \end{frame}
 
-\begin{frame}{Overshoot}
-\begin{center}
-\includegraphics[width=0.6\textwidth]{ratio/overshoot.png}
-\end{center}
-Only markets with large chartist-to-market maker ratio crashed.
+
+\begin{frame}{Relative trader speed and market crashes}
+\begin{columns}
+\column{1.7in}
+\includegraphics[width=1.5\textwidth]{ratio/overshoot_wt.png}
+\column{1.7in}
+\begin{itemize}
+\item \color{blue} \textbf{Stable markets} \color{black} had \textbf{few} and \textbf{slow} chartists
+\item \color{red} \textbf{Market crashes}\color{black}\ happened with \text{many} and \textbf{fast} chartists
+\end{itemize}
+\end{columns}
 \end{frame}
 
 
@@ -361,25 +389,41 @@ Only markets with large chartist-to-market maker ratio crashed.
 %\end{center}
 %\end{frame}
 
-
-\begin{frame}{Market response time}
-\begin{center}
-\includegraphics[width=0.6\textwidth]{ratio/time_to_reach_new_fundamental.png}
-\end{center}
-Markets with with a large chartist-to-market maker ratio responded faster.
+\begin{frame}{Relative trader speed and response time}
+\begin{columns}
+\column{1.7in}
+\includegraphics[width=1.5\textwidth]{ratio/time_to_reach_new_fundamental.png}
+\column{1.7in}
+\begin{itemize}
+\item \color{red} \textbf{Unresponsive}\color{black}\ market had \text{few} and \textbf{slow} chartists
+\item \color{blue} \textbf{Responsive} \color{black} markets had \textbf{many} and \textbf{fast} chartists
+\end{itemize}
+\end{columns}
 \end{frame}
 
-\begin{frame}{Latency is important}
+\subsection{Summary of results}
+\begin{frame}
+\tableofcontents[currentsubsection]
+\end{frame}
+
+\begin{frame}{Agent speed is important}
 \begin{enumerate}
-\item Market makers stabilize the markets
-\item Chartists increase price movements
-\item The influence was \textit{larger} for \textit{faster} agents
+\item Market makers \color{green} \textbf{increase stability} \color{black} the market, but \color{red} \textbf{decrease responsiveness} \color{black}.
+\vspace{0.1in}
+\pause
+\item Chartists \color{green} \textbf{increase responsiveness} \color{black}, but \color{red} \textbf{decrease stability} \color{black}
 \end{enumerate}
+\vspace{0.2in}
+\pause
+\begin{center}
+\large
+\underline{The influence was \textit{larger} for \textit{faster} agents}
+\end{center}
 \end{frame}
 
 \begin{frame}{Conditions for market crashes}
 \begin{enumerate}
-\item The market will only crash if \textit{both} chartists \textit{and} market makers are present.
+\item The market \textit{may} \color{red} crash \color{black} when there are \textbf{many fast} chartists, but \textbf{only} if there are also \textit{some} active of market makers \vspace{0.1in} \pause
 \item The market was more likely to crash if the \textit{chartists were faster than the market makers}
 \end{enumerate}
 \end{frame}
@@ -390,43 +434,32 @@ Markets with with a large chartist-to-market maker ratio responded faster.
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{Conclusions}
-\begin{description}
-\item[Fast trader pros and cons] Fast agents both provided benefits to the market (faster response, lower price flickering), and caused some dangers (crashes, misvaluation)
-\item[Stability/speed trade-off] The market was found to have a trade-off between speed and stability
-\item[Relative agent latencies] The results illustrated the importance of allowing different agents to have different latencies.
-\end{description}
+\begin{frame}{Conclusion}
+Fast traders are both good and bad for the market:
+\begin{itemize}
+\item Fast traders can \color{green} \textbf{reduce misvaluation} \color{black}, but also cause \color{red} \textbf{market crashes}. \color{black}
+\end{itemize}
+\vspace{0.2in}
+\pause
+Modeling relative speed of different agents can give new insights
+\begin{itemize}
+\item Market crashes did not just happen with many fast traders, but when some fast trader were \textbf{faster} than others.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Large
+Thank you for your attention.
+\end{center}
 \end{frame}
 
 
 
-%We have more control over what simplifications we make than we have over events that we never observed.
 
 
-
-
-
-%frame: black swans: some events are fundamentally unpredictable. Theories based on a few observations can never hope to predict these, as (only training data, no test data)
-
-
-
-
-%frame: what I hope to be doing for the next two years. Artificial markets and HFT
-
-
-
-
-%frame[advantages] - we can control conditions - we can repeat experiments - we can observe general trends and patterns
-
-%frame[problems] - we need to simplify a lot - how do we simplify? - difficult to know if simplifications are OK or not - difficult to validate results obtained through simulation
-
-%frame - emphasis on bottom up tinkering: create environment first, then play around - some top down approach is required when designing environment
-
-
-
-
-\begin{thebibliography}{Bib}
-
+\begin{thebibliography}{Selected bibliography}
+\scriptsize
 \bibitem{mcgowan}
   Michael, J. McGowan,
   \emph{The Rise of Computerized High Frequency Trading: Use and Controversy}.
@@ -448,35 +481,8 @@ Markets with with a large chartist-to-market maker ratio responded faster.
   N. Johnson, G. Zhao, E. Hunsader, J. Meng, A. Ravindar, S. Carran, B. Tivnan
   \emph{Financial black swans driven by ultrafast machine ecology}.
   Submitted, 2012.
-   
-
 \end{thebibliography}
 
-\begin{frame}{Market}
-\begin{block}{Auction type}
-The market uses a continuous double auction. Prices are always executed at the prices of the best standing market orders.
-\end{block}
-\end{frame}
-
-
-\begin{frame}{Order book}
-\begin{table}
-\centering
-\begin{tabular}{l|c|r}
-Sell orders & Price & Buy orders\\
-\midrule
-22 & 9994 &\\
-26 & 9993 &\\
-13 & 9992 &\\
-10 & 9991 &\\ 
-{}&{}&{}\\
-& 9988& 12\\
-& 9987& 10\\
-& 9986& 16\\
-& 9985& 25\\
-\end{tabular}
-\end{table}
-\end{frame}
 
 
 \end{document}

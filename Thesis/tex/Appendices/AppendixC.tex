@@ -1,90 +1,74 @@
-% Appendix B
-\chapter{Additional figures}
-\label{appendix:figures} % For referencing this appendix elsewhere, use \ref{AppendixA}
 
-\lhead{Appendix C. \emph{Additional figures}} % This is for the header on each page - perhaps a shortened title
-
-\begin{comment}
-\section{Scatter plots for \dten}
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d10/d.png}
-\caption{Scatter plot of $\log \stdev$, $\log \roundstable$ and \timetoreachnewfundamental}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d10/l.png}
-\caption{Scatter plot of $\log \stdev$, $\log \roundstable$ and \overshoot}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d10/f.png}
-\caption{Scatter plot of \roundstable, \timetoreachnewfundamental and \stdev}
-\end{figure}
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d10/j.png}
-\caption{Scatter plot of \overshoot, $\log \roundstable$ and \timetoreachnewfundamental}
-\end{figure}
-
-\section{Correlation plots of \sclatencys and \ssmmlatencys}
-\begin{figure}{!h}
-	%issue 15
-	\centering
-	\subcaptionbox{Correlation between \sclatencymu and \overshoot}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_s__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \roundstable}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_s__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \stdev}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_s__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \timetoreachnewfundamental}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/sc_latency_s__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
-	\caption{Correlation between \sclatencys{} and the four fitness measures in experiment \dten}
-
-\end{figure}
-
-\begin{figure}[!h]
-	%issue 15
-	\centering
-	\subcaptionbox{Correlation between \sclatencymu and \overshoot}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_s__vs__overshoot(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \roundstable}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_s__vs__round_stable(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \stdev}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_s__vs__stdev(mean)_scatter.png}}
-	\subcaptionbox{Correlation between \sclatencymu and \timetoreachnewfundamental}
-	[0.49\linewidth]{\includegraphics[width=0.5\textwidth]{101_pars_vs_fits/d10/ssmm_latency_s__vs__time_to_reach_new_fundamental(mean)_scatter.png}}
-	\caption{Correlation between \sclatencys{} and the four fitness measures in experiment \dten}
-	
-\end{figure}
-
-\end{comment}
+\section{Symbols, abbreviations and terminology}
 
 
-\begin{comment}
-\section{Scatter plots for \deleven}
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d11/d.png}
-\caption{Scatter plot of $\log \stdev$, $\log \roundstable$ and \timetoreachnewfundamental}
-\end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d11/l.png}
-\caption{Scatter plot of $\log \stdev$, $\log \roundstable$ and \overshoot}
-\end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d11/f.png}
-\caption{Scatter plot of \roundstable, \timetoreachnewfundamental and \stdev}
-\end{figure}
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{103_scatter_manual_outlier/d11/j.png}
-\caption{Scatter plot of \overshoot, $\log \roundstable$ and \timetoreachnewfundamental}
-\end{figure}
-\end{comment}
+
+{\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lW}
+\Large{\textbf{Terminology}}\vspace{1cm} & \\
+Ask price & The price of a sell order\\
+Bid price & The price of a buy order\\
+Model fitness & A quantitative measure summarizing a certain aspect of the model behavior \\
+Fundamental price & The underlying ``true'' value of the stock, typically obtained from \\
+Limit order & Order which is exists in the order book until a matching order is found, or until it expires\\
+Market order & Order is not entered into the order book if no match exists when it arrives at the market\\
+Liquidity & The degree to which an asset can be traded for other goods or cash\\
+Market depth & The extend to which the the market prices remain unchanged after the arrival of new orders\\
+Match & When a sell order and a bu order happen to have the same listed price, they are said to match\\
+Order book & The entity which keeps track of all existing limit orders and process new orders to find matches\\
+Order volume & The number of shares specified in the order\\
+Partial match & Two orders which match, but have different volumes\\
+Share & A fraction of ownership of an asset, such as a stock \\
+Spread & The (always positive) difference between the best ask price and the best sell price\\
+Tick & The smallest possible price change of the stock\\
+Volatility & The tendency of the traded price to fluctuate\\
+\end{tabular}
+
+{\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lW}
+\Large{\textbf{Symbols}}\vspace{1cm} & \\
+%\nrounds & Number of simulation rounds \\
+%$\lambda$ & Average number of ST orders per round \\
+\bestbidprice{T}, \bestaskprice{T} & Best bid and ask prices in round \round{T}\\
+
+\scnAgents & Number of HFT SC agents\\
+\ssmmnAgents& Number of HFT MM agents\\
+\sclatencymu, \sclatencys & Mean and SD parameters of the GD for HFT SC latency \\
+\sclatencyagent{i} & Latency of HFT SC agent $i$ where $\sclatencyagent{i} \sim \lvert \mathcal{N}(\sclatencymu, \sclatencys) \rvert$ \\
+\scthinkmu, \scthinks & Mean and SD parameters of the GD for HFT SC thinking time\\
+\scthinkagent{j} & Thinking time of HFT SC agent $j$ where $\scthinkagent{j} \sim \lvert \mathcal{N}(\scthinkmu, \scthinks) \rvert$ \\
+\sctimehorizonmu, \sctimehorizons & Mean and standard deviation of the Gaussian distribution for HFT SC time horizon\\
+\scwaitTimeBetweenTradingagent{j} & Number of rounds that chartist agent $j$ must wait between trading\\
+%\scwaitTimeBetweenTradingmu, \scwaitTimeBetweenTradings& Mean and SD of the GD for the HFT chartist wait time\\
+\scticksbeforereactingagent{j} & Sensitivity parameter of chartist agent $j$\\
+\scpriceticksizeagent{j} & Aggressiveness parameter of chartist agent $j$\\
+\ssmmlatencymu& Mean and SD of the GD for HFT MM latency\\
+\ssmmlatencyagent{i} & Latency of HFT MM agent $i$ where $\ssmmlatencyagent{i} \sim \lvert \mathcal{N}(\ssmmlatencymu, \ssmmlatencys) \rvert$ \\
+\ssmmthinkagent{i}& Thinking time of market maker $i$ $\ssmmthinkagent{i} \sim \lvert \mathcal{N}(\ssmmthinkmu, \ssmmthinks) \rvert$\\
+\ssmmthinkagent{i} & Thinking time of HFT MM agent $i$ where $\ssmmthinkagent{i} \sim \lvert \mathcal{N}(\ssmmthinkmu, \ssmmthinks) \rvert$ \\
+\ssmmminspreadagent{i} & Minimum spread parameter of market maker $i$\\
+\scordervolumeagent{i}, \ssmmordervolumeagent{i} & Volumes of orders submitted by HFT SC and HFT agents, respectively. \\
+\storderarrivalrate{} and $\kappa_n$& The rate parameter of the Poisson process for the number of slow trader orders in each round $\kappa_n$: $\kappa_n \sim Pois(\storderarrivalrate)$\\
+\stnoise, \stnoisemu{} and \stnoises & Parameters for the noise part of the slow trader estimate of the fundamental price: $\stnoise \sim \mathcal{N}(\stnoisemu, \stnoises)$\\
+\ratioagents, \ratiolatency & Ratio between the number of agents and their latencies.\\
+\overshoot, \roundstable, \stdev, \timetoreachnewfundamental & Model fitness: overshoot, time to become stable, price flickering and time to reach the fundamental after the shock. \\
+\stlatency & Delay with which the slow trader observes the fundamental\\
+\stnoise, \stnoisemu{} and \stnoises & Noise parameters for the slow trader price estimate: $\stnoise \sim \mathcal{N}(\stnoisemu, \stnoises)$
+\end{tabular}
+
+
+
+{\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\Large{\textbf{Abbreviations}}\vspace{1cm} & \\
+\textbf{HFT} & \textbf{H}igh \textbf{F}requency \textbf{T}rader \\
+\textbf{ST} & \textbf{S}low \textbf{T}rader\\
+\textbf{OB} & \textbf{O}rder \textbf{B}ook \\
+\textbf{MM} & \textbf{M}arket \textbf{M}aker \\
+\textbf{SD} & \textbf{S}tandard \textbf{D}eviation \\
+\textbf{GD} & \textbf{G}aussian \textbf{D}istribution \\
+\textbf{GMM} & \textbf{G}aussian \textbf{M}ixture \textbf{M}odel \\
+\textbf{GA} & \textbf{G}enetic  \textbf{A}lgorithm \\
+\end{tabular}
